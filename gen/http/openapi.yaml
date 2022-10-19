@@ -1,0 +1,64 @@
+swagger: "2.0"
+info:
+    title: ""
+    version: ""
+host: localhost:80
+consumes:
+    - application/json
+    - application/xml
+    - application/gob
+produces:
+    - application/json
+    - application/xml
+    - application/gob
+paths:
+    /add/{a}/{b}:
+        get:
+            tags:
+                - calc
+            summary: Add calc
+            operationId: calc#Add
+            parameters:
+                - name: a
+                  in: path
+                  description: First operand
+                  required: true
+                  type: integer
+                - name: b
+                  in: path
+                  description: Second operand
+                  required: true
+                  type: integer
+            responses:
+                "200":
+                    description: OK response.
+                    schema:
+                        type: integer
+                        format: int64
+            schemes:
+                - http
+    /multiply/{a}/{b}:
+        get:
+            tags:
+                - calc
+            summary: Multiply calc
+            operationId: calc#Multiply
+            parameters:
+                - name: a
+                  in: path
+                  description: First operand
+                  required: true
+                  type: integer
+                - name: b
+                  in: path
+                  description: Second operand
+                  required: true
+                  type: integer
+            responses:
+                "200":
+                    description: OK response.
+                    schema:
+                        type: integer
+                        format: int64
+            schemes:
+                - http
