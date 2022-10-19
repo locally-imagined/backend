@@ -27,7 +27,6 @@ func MakeToken(email string) (string, error) {
 		RegisteredClaims: claims,
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, payload)
-	log.Println(token)
 	signedJWT, err := token.SignedString([]byte("test"))
 	if err != nil {
 		return "", fmt.Errorf("unable to sign token with zendesk secret: %v", err)
@@ -35,11 +34,28 @@ func MakeToken(email string) (string, error) {
 	return signedJWT, nil
 }
 
-func DecodeToken(token string) string {
-	return "test"
+func DecodeToken(tokenString string) *jwt.Token {
+	claims := jwt.MapClaims{}
+	token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
+		return []byte("test"), nil
+	})
+	// ... error handling
+	if err != nil {
+		log.Println("NOOIOIO")
+	}
+	// do something with decoded claims
+	log.Println(token)
+	for key, val := range claims {
+		fmt.Printf("Key: %v, value: %v\n", key, val)
+	}
+	return token
 }
 
 func main() {
-	return
+	token, _ := MakeToken("dylan@shagsters.com")
+	log.Println(token)
+	log.Println()
+	log.Println()
+	log.Println(DecodeToken(token))
 
 }
