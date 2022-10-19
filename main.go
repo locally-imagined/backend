@@ -4,10 +4,6 @@ import (
 	"net/http"
 
 	goahttp "goa.design/goa/v3/http"
-
-	"github.com/locally-imagined/goa/gen/calc"
-	"github.com/locally-imagined/goa/gen/http/calc/server"
-	helpers "github.com/locally-imagined/goa/service"
 )
 
 func main() {
