@@ -1,12 +1,18 @@
 package main
 
 import (
+	"backend/gen/auth"
+	"backend/gen/http/auth/server"
 	"fmt"
 	"log"
+	"net/http"
 	"time"
+
+	login "backend/auth"
 
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/google/uuid"
+	goahttp "goa.design/goa/v3/http"
 )
 
 type locallyImaginedClaims struct {
@@ -52,10 +58,25 @@ func DecodeToken(tokenString string) *jwt.Token {
 }
 
 func main() {
-	token, _ := MakeToken("dylan@shagsters.com")
-	log.Println(token)
-	log.Println()
-	log.Println()
-	log.Println(DecodeToken(token))
+	// token, _ := MakeToken("dylan@shagsters.com")
+	// log.Println(token)
+	// log.Println()
+	// log.Println()
+	// log.Println(DecodeToken(token))
 
+	s := &login.Service{}                                 //# Create Service
+	endpoints := auth.NewEndpoints(s)                     // # Create endpoints
+	mux := goahttp.NewMuxer()                             //# Create HTTP muxer
+	dec := goahttp.RequestDecoder                         //# Set HTTP request decoder
+	enc := goahttp.ResponseEncoder                        // # Set HTTP response encoder
+	svr := server.New(endpoints, mux, dec, enc, nil, nil) // # Create Goa HTTP server
+	server.Mount(mux, svr)                                //# Mount Goa server on mux
+	httpsvr := &http.Server{                              // # Create Go HTTP server
+		//Addr:    ":" + port, // # Configure server address (this is for heroku)
+		Addr:    "localhost:8080", // this is for localhost obviously
+		Handler: mux,              // # Set request handler
+	}
+	if err := httpsvr.ListenAndServe(); err != nil { // # Start HTTP server
+		panic(err)
+	}
 }

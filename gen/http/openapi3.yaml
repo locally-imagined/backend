@@ -1,0 +1,45 @@
+openapi: 3.0.3
+info:
+    title: Goa API
+    version: "1.0"
+servers:
+    - url: http://localhost:80
+      description: Default server for auth
+paths:
+    /login/{username}/{password}:
+        get:
+            tags:
+                - auth
+            summary: Login auth
+            operationId: auth#Login
+            parameters:
+                - name: username
+                  in: path
+                  description: Raw username
+                  required: true
+                  schema:
+                    type: string
+                    description: Raw username
+                    example: Voluptas tenetur et.
+                  example: A molestiae occaecati aspernatur et doloremque aut.
+                - name: password
+                  in: path
+                  description: Hashed user password
+                  required: true
+                  schema:
+                    type: string
+                    description: Hashed user password
+                    example: Voluptatem consequatur maiores at cupiditate doloribus.
+                  example: Non cum perspiciatis error quasi autem.
+            responses:
+                "200":
+                    description: OK response.
+                    content:
+                        application/json:
+                            schema:
+                                type: string
+                                example: Ut soluta.
+                            example: Et voluptate.
+components: {}
+tags:
+    - name: auth
