@@ -45,6 +45,7 @@ func (s *Service) Login(ctx context.Context, p *auth.LoginPayload) (string, erro
 	if err != nil {
 		return "", fmt.Errorf("sql.Open: %v", err)
 	}
+	defer dbPool.Close()
 	var password string
 	hashedPassword := shaHashing(*p.Password)
 	// Query for a value based on a single row.
@@ -97,10 +98,10 @@ func (s *Service) Signup(ctx context.Context, p *auth.SignupPayload) (string, er
 	if err != nil {
 		return "", fmt.Errorf("sql.Open: %v", err)
 	}
+	defer dbPool.Close()
 	hashedPassword := shaHashing(*p.Password)
 	var value string = ""
 	// Query for a value based on a single row.
-	//row, err := dbPool.Query("INSERT INTO test_table (username, password) Values ('" + *p.Username + "', '" + hashedPassword + "'")
 	row, err := dbPool.Query("SELECT username from test_table where username='" + *p.Username + "'")
 	if err != nil {
 		return "", err
