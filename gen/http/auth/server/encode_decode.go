@@ -43,3 +43,33 @@ func DecodeLoginRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.D
 		return payload, nil
 	}
 }
+
+// EncodeSignupResponse returns an encoder for responses returned by the auth
+// Signup endpoint.
+func EncodeSignupResponse(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder) func(context.Context, http.ResponseWriter, interface{}) error {
+	return func(ctx context.Context, w http.ResponseWriter, v interface{}) error {
+		res, _ := v.(string)
+		enc := encoder(ctx, w)
+		body := res
+		w.WriteHeader(http.StatusOK)
+		return enc.Encode(body)
+	}
+}
+
+// DecodeSignupRequest returns a decoder for requests sent to the auth Signup
+// endpoint.
+func DecodeSignupRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (interface{}, error) {
+	return func(r *http.Request) (interface{}, error) {
+		var (
+			username string
+			password string
+
+			params = mux.Vars(r)
+		)
+		username = params["username"]
+		password = params["password"]
+		payload := NewSignupPayload(username, password)
+
+		return payload, nil
+	}
+}

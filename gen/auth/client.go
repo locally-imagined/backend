@@ -15,13 +15,15 @@ import (
 
 // Client is the "auth" service client.
 type Client struct {
-	LoginEndpoint goa.Endpoint
+	LoginEndpoint  goa.Endpoint
+	SignupEndpoint goa.Endpoint
 }
 
 // NewClient initializes a "auth" service client given the endpoints.
-func NewClient(login goa.Endpoint) *Client {
+func NewClient(login, signup goa.Endpoint) *Client {
 	return &Client{
-		LoginEndpoint: login,
+		LoginEndpoint:  login,
+		SignupEndpoint: signup,
 	}
 }
 
@@ -29,6 +31,16 @@ func NewClient(login goa.Endpoint) *Client {
 func (c *Client) Login(ctx context.Context, p *LoginPayload) (res string, err error) {
 	var ires interface{}
 	ires, err = c.LoginEndpoint(ctx, p)
+	if err != nil {
+		return
+	}
+	return ires.(string), nil
+}
+
+// Signup calls the "Signup" endpoint of the "auth" service.
+func (c *Client) Signup(ctx context.Context, p *SignupPayload) (res string, err error) {
+	var ires interface{}
+	ires, err = c.SignupEndpoint(ctx, p)
 	if err != nil {
 		return
 	}

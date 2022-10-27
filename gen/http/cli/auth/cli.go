@@ -20,16 +20,15 @@ import (
 
 // UsageCommands returns the set of commands and sub-commands using the format
 //
-//    command (subcommand1|subcommand2|...)
-//
+//	command (subcommand1|subcommand2|...)
 func UsageCommands() string {
-	return `auth login
+	return `auth (login|signup)
 `
 }
 
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
-	return os.Args[0] + ` auth login --username "Non consectetur error consequatur delectus aut." --password "Fugit possimus quo neque ab."` + "\n" +
+	return os.Args[0] + ` auth login --username "Minima possimus debitis quam pariatur et dicta." --password "Ut soluta."` + "\n" +
 		""
 }
 
@@ -47,10 +46,15 @@ func ParseEndpoint(
 
 		authLoginFlags        = flag.NewFlagSet("login", flag.ExitOnError)
 		authLoginUsernameFlag = authLoginFlags.String("username", "REQUIRED", "Raw username")
-		authLoginPasswordFlag = authLoginFlags.String("password", "REQUIRED", "Hashed user password")
+		authLoginPasswordFlag = authLoginFlags.String("password", "REQUIRED", "User password")
+
+		authSignupFlags        = flag.NewFlagSet("signup", flag.ExitOnError)
+		authSignupUsernameFlag = authSignupFlags.String("username", "REQUIRED", "Raw username")
+		authSignupPasswordFlag = authSignupFlags.String("password", "REQUIRED", "User password")
 	)
 	authFlags.Usage = authUsage
 	authLoginFlags.Usage = authLoginUsage
+	authSignupFlags.Usage = authSignupUsage
 
 	if err := flag.CommandLine.Parse(os.Args[1:]); err != nil {
 		return nil, nil, err
@@ -89,6 +93,9 @@ func ParseEndpoint(
 			case "login":
 				epf = authLoginFlags
 
+			case "signup":
+				epf = authSignupFlags
+
 			}
 
 		}
@@ -117,6 +124,9 @@ func ParseEndpoint(
 			case "login":
 				endpoint = c.Login()
 				data, err = authc.BuildLoginPayload(*authLoginUsernameFlag, *authLoginPasswordFlag)
+			case "signup":
+				endpoint = c.Signup()
+				data, err = authc.BuildSignupPayload(*authSignupUsernameFlag, *authSignupPasswordFlag)
 			}
 		}
 	}
@@ -135,6 +145,7 @@ Usage:
 
 COMMAND:
     login: Login implements Login.
+    signup: Signup implements Signup.
 
 Additional help:
     %[1]s auth COMMAND --help
@@ -145,9 +156,21 @@ func authLoginUsage() {
 
 Login implements Login.
     -username STRING: Raw username
-    -password STRING: Hashed user password
+    -password STRING: User password
 
 Example:
-    %[1]s auth login --username "Non consectetur error consequatur delectus aut." --password "Fugit possimus quo neque ab."
+    %[1]s auth login --username "Minima possimus debitis quam pariatur et dicta." --password "Ut soluta."
+`, os.Args[0])
+}
+
+func authSignupUsage() {
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] auth signup -username STRING -password STRING
+
+Signup implements Signup.
+    -username STRING: Raw username
+    -password STRING: User password
+
+Example:
+    %[1]s auth signup --username "Et voluptate." --password "Asperiores ea pariatur itaque excepturi repellendus rerum."
 `, os.Args[0])
 }

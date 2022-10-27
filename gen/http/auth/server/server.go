@@ -20,6 +20,7 @@ import (
 type Server struct {
 	Mounts []*MountPoint
 	Login  http.Handler
+	Signup http.Handler
 }
 
 // MountPoint holds information about the mounted endpoints.
@@ -50,8 +51,10 @@ func New(
 	return &Server{
 		Mounts: []*MountPoint{
 			{"Login", "GET", "/login/{username}/{password}"},
+			{"Signup", "GET", "/signup/{username}/{password}"},
 		},
-		Login: NewLoginHandler(e.Login, mux, decoder, encoder, errhandler, formatter),
+		Login:  NewLoginHandler(e.Login, mux, decoder, encoder, errhandler, formatter),
+		Signup: NewSignupHandler(e.Signup, mux, decoder, encoder, errhandler, formatter),
 	}
 }
 
@@ -61,6 +64,7 @@ func (s *Server) Service() string { return "auth" }
 // Use wraps the server handlers with the given middleware.
 func (s *Server) Use(m func(http.Handler) http.Handler) {
 	s.Login = m(s.Login)
+	s.Signup = m(s.Signup)
 }
 
 // MethodNames returns the methods served.
@@ -69,6 +73,7 @@ func (s *Server) MethodNames() []string { return auth.MethodNames[:] }
 // Mount configures the mux to serve the auth endpoints.
 func Mount(mux goahttp.Muxer, h *Server) {
 	MountLoginHandler(mux, h.Login)
+	MountSignupHandler(mux, h.Signup)
 }
 
 // Mount configures the mux to serve the auth endpoints.
@@ -106,6 +111,57 @@ func NewLoginHandler(
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
 		ctx = context.WithValue(ctx, goa.MethodKey, "Login")
+		ctx = context.WithValue(ctx, goa.ServiceKey, "auth")
+		payload, err := decodeRequest(r)
+		if err != nil {
+			if err := encodeError(ctx, w, err); err != nil {
+				errhandler(ctx, w, err)
+			}
+			return
+		}
+		res, err := endpoint(ctx, payload)
+		if err != nil {
+			if err := encodeError(ctx, w, err); err != nil {
+				errhandler(ctx, w, err)
+			}
+			return
+		}
+		if err := encodeResponse(ctx, w, res); err != nil {
+			errhandler(ctx, w, err)
+		}
+	})
+}
+
+// MountSignupHandler configures the mux to serve the "auth" service "Signup"
+// endpoint.
+func MountSignupHandler(mux goahttp.Muxer, h http.Handler) {
+	f, ok := h.(http.HandlerFunc)
+	if !ok {
+		f = func(w http.ResponseWriter, r *http.Request) {
+			h.ServeHTTP(w, r)
+		}
+	}
+	mux.Handle("GET", "/signup/{username}/{password}", f)
+}
+
+// NewSignupHandler creates a HTTP handler which loads the HTTP request and
+// calls the "auth" service "Signup" endpoint.
+func NewSignupHandler(
+	endpoint goa.Endpoint,
+	mux goahttp.Muxer,
+	decoder func(*http.Request) goahttp.Decoder,
+	encoder func(context.Context, http.ResponseWriter) goahttp.Encoder,
+	errhandler func(context.Context, http.ResponseWriter, error),
+	formatter func(ctx context.Context, err error) goahttp.Statuser,
+) http.Handler {
+	var (
+		decodeRequest  = DecodeSignupRequest(mux, decoder)
+		encodeResponse = EncodeSignupResponse(encoder)
+		encodeError    = goahttp.ErrorEncoder(encoder, formatter)
+	)
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
+		ctx = context.WithValue(ctx, goa.MethodKey, "Signup")
 		ctx = context.WithValue(ctx, goa.ServiceKey, "auth")
 		payload, err := decodeRequest(r)
 		if err != nil {

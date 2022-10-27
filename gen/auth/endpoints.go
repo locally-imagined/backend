@@ -15,19 +15,22 @@ import (
 
 // Endpoints wraps the "auth" service endpoints.
 type Endpoints struct {
-	Login goa.Endpoint
+	Login  goa.Endpoint
+	Signup goa.Endpoint
 }
 
 // NewEndpoints wraps the methods of the "auth" service with endpoints.
 func NewEndpoints(s Service) *Endpoints {
 	return &Endpoints{
-		Login: NewLoginEndpoint(s),
+		Login:  NewLoginEndpoint(s),
+		Signup: NewSignupEndpoint(s),
 	}
 }
 
 // Use applies the given middleware to all the "auth" service endpoints.
 func (e *Endpoints) Use(m func(goa.Endpoint) goa.Endpoint) {
 	e.Login = m(e.Login)
+	e.Signup = m(e.Signup)
 }
 
 // NewLoginEndpoint returns an endpoint function that calls the method "Login"
@@ -36,5 +39,14 @@ func NewLoginEndpoint(s Service) goa.Endpoint {
 	return func(ctx context.Context, req interface{}) (interface{}, error) {
 		p := req.(*LoginPayload)
 		return s.Login(ctx, p)
+	}
+}
+
+// NewSignupEndpoint returns an endpoint function that calls the method
+// "Signup" of service "auth".
+func NewSignupEndpoint(s Service) goa.Endpoint {
+	return func(ctx context.Context, req interface{}) (interface{}, error) {
+		p := req.(*SignupPayload)
+		return s.Signup(ctx, p)
 	}
 }

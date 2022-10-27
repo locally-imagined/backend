@@ -28,3 +28,21 @@ func BuildLoginPayload(authLoginUsername string, authLoginPassword string) (*aut
 
 	return v, nil
 }
+
+// BuildSignupPayload builds the payload for the auth Signup endpoint from CLI
+// flags.
+func BuildSignupPayload(authSignupUsername string, authSignupPassword string) (*auth.SignupPayload, error) {
+	var username string
+	{
+		username = authSignupUsername
+	}
+	var password string
+	{
+		password = authSignupPassword
+	}
+	v := &auth.SignupPayload{}
+	v.Username = &username
+	v.Password = &password
+
+	return v, nil
+}

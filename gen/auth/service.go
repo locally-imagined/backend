@@ -15,6 +15,8 @@ import (
 type Service interface {
 	// Login implements Login.
 	Login(context.Context, *LoginPayload) (res string, err error)
+	// Signup implements Signup.
+	Signup(context.Context, *SignupPayload) (res string, err error)
 }
 
 // ServiceName is the name of the service as defined in the design. This is the
@@ -25,12 +27,20 @@ const ServiceName = "auth"
 // MethodNames lists the service method names as defined in the design. These
 // are the same values that are set in the endpoint request contexts under the
 // MethodKey key.
-var MethodNames = [1]string{"Login"}
+var MethodNames = [2]string{"Login", "Signup"}
 
 // LoginPayload is the payload type of the auth service Login method.
 type LoginPayload struct {
 	// Raw username
 	Username *string
-	// Hashed user password
+	// User password
+	Password *string
+}
+
+// SignupPayload is the payload type of the auth service Signup method.
+type SignupPayload struct {
+	// Raw username
+	Username *string
+	// User password
 	Password *string
 }

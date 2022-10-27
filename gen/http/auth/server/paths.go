@@ -15,3 +15,8 @@ import (
 func LoginAuthPath(username string, password string) string {
 	return fmt.Sprintf("/login/%v/%v", username, password)
 }
+
+// SignupAuthPath returns the URL path to the auth service Signup HTTP endpoint.
+func SignupAuthPath(username string, password string) string {
+	return fmt.Sprintf("/signup/%v/%v", username, password)
+}

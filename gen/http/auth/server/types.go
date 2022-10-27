@@ -19,3 +19,12 @@ func NewLoginPayload(username string, password string) *auth.LoginPayload {
 
 	return v
 }
+
+// NewSignupPayload builds a auth service Signup endpoint payload.
+func NewSignupPayload(username string, password string) *auth.SignupPayload {
+	v := &auth.SignupPayload{}
+	v.Username = &username
+	v.Password = &password
+
+	return v
+}
