@@ -24,6 +24,7 @@ func (s *Service) Login(ctx context.Context, p *auth.LoginPayload) (string, erro
 		return "", fmt.Errorf("sql.Open: %v", err)
 	}
 	defer dbPool.Close()
+	return "hi", nil
 	var password string
 	hashedPassword := shaHashing(*p.Password)
 	// Query for a value based on a single row.
