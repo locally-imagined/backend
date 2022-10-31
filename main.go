@@ -59,11 +59,6 @@ func DecodeToken(tokenString string) *jwt.Token {
 }
 
 func main() {
-	// token, _ := MakeToken("dylan@shagsters.com")
-	// log.Println(token)
-	// log.Println()
-	// log.Println()
-	// log.Println(DecodeToken(token))
 	port := os.Getenv("PORT")
 	s := &login.Service{}                                 //# Create Service
 	endpoints := auth.NewEndpoints(s)                     // # Create endpoints

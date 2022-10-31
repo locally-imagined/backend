@@ -4,8 +4,10 @@ go 1.18
 
 require (
 	cloud.google.com/go/cloudsqlconn v1.0.0
+	github.com/go-sql-driver/mysql v1.6.0
 	github.com/golang-jwt/jwt/v4 v4.4.2
 	github.com/google/uuid v1.3.0
+	github.com/lib/pq v1.10.7
 	goa.design/goa/v3 v3.10.1
 )
 
@@ -13,7 +15,6 @@ require (
 	cloud.google.com/go/compute v1.10.0 // indirect
 	github.com/dimfeld/httppath v0.0.0-20170720192232-ee938bf73598 // indirect
 	github.com/dimfeld/httptreemux/v5 v5.4.0 // indirect
-	github.com/go-sql-driver/mysql v1.6.0 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.2.0 // indirect
