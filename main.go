@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	login "backend/auth"
@@ -63,7 +64,7 @@ func main() {
 	// log.Println()
 	// log.Println()
 	// log.Println(DecodeToken(token))
-
+	port := os.Getenv("PORT")
 	s := &login.Service{}                                 //# Create Service
 	endpoints := auth.NewEndpoints(s)                     // # Create endpoints
 	mux := goahttp.NewMuxer()                             //# Create HTTP muxer
@@ -72,9 +73,9 @@ func main() {
 	svr := server.New(endpoints, mux, dec, enc, nil, nil) // # Create Goa HTTP server
 	server.Mount(mux, svr)                                //# Mount Goa server on mux
 	httpsvr := &http.Server{                              // # Create Go HTTP server
-		//Addr:    ":" + port, // # Configure server address (this is for heroku)
-		Addr:    "localhost:8080", // this is for localhost obviously
-		Handler: mux,              // # Set request handler
+		Addr: ":" + port, // # Configure server address (this is for heroku)
+		//Addr:    "localhost:8080", // this is for localhost obviously
+		Handler: mux, // # Set request handler
 	}
 	if err := httpsvr.ListenAndServe(); err != nil { // # Start HTTP server
 		panic(err)
