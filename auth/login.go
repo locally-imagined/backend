@@ -54,7 +54,7 @@ func (s *Service) Signup(ctx context.Context, p *auth.SignupPayload) (string, er
 	hashedPassword := shaHashing(*p.Password)
 	var value string = ""
 	// Query for a value based on a single row.
-	row, err := dbPool.Query("SELECT username from test_table where username=$1", *p.Username)
+	row, err := dbPool.Query("SELECT username from test_users where username=$1", *p.Username)
 	if err != nil {
 		return "", err
 	}
@@ -67,7 +67,7 @@ func (s *Service) Signup(ctx context.Context, p *auth.SignupPayload) (string, er
 		return "", fmt.Errorf("account already exists")
 	}
 
-	_, err = dbPool.Query("INSERT INTO test_table (username, password) Values ('" + *p.Username + "', '" + hashedPassword + "')")
+	_, err = dbPool.Query("INSERT INTO test_users (username, password) Values ('" + *p.Username + "', '" + hashedPassword + "')")
 	if err != nil {
 		return "", fmt.Errorf("account creation failed")
 	}
