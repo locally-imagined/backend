@@ -24,11 +24,10 @@ func (s *Service) Login(ctx context.Context, p *auth.LoginPayload) (string, erro
 		return "", fmt.Errorf("sql.Open: %v", err)
 	}
 	defer dbPool.Close()
-	return "hi", nil
 	var password string
 	hashedPassword := shaHashing(*p.Password)
 	// Query for a value based on a single row.
-	row, err := dbPool.Query("SELECT password from test_table where username='" + *p.Username + "'")
+	row, err := dbPool.Query("SELECT password from test_table where username=" + *p.Username)
 	if err == sql.ErrNoRows {
 		return "", fmt.Errorf("account not found")
 	}
