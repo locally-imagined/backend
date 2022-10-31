@@ -27,7 +27,7 @@ func (s *Service) Login(ctx context.Context, p *auth.LoginPayload) (string, erro
 	var password string
 	hashedPassword := shaHashing(*p.Password)
 	// Query for a value based on a single row.
-	row, err := dbPool.Query("SELECT password from test_table where username=" + *p.Username)
+	row, err := dbPool.Query("SELECT password from test_users where username=$1", *p.Username)
 	if err == sql.ErrNoRows {
 		return "", fmt.Errorf("account not found")
 	}
