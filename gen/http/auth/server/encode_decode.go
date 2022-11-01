@@ -19,10 +19,9 @@ import (
 func EncodeLoginResponse(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder) func(context.Context, http.ResponseWriter, interface{}) error {
 	return func(ctx context.Context, w http.ResponseWriter, v interface{}) error {
 		res, _ := v.(string)
-		enc := encoder(ctx, w)
-		body := res
+		w.Header().Set("*", res)
 		w.WriteHeader(http.StatusOK)
-		return enc.Encode(body)
+		return nil
 	}
 }
 

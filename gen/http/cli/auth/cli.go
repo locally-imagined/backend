@@ -172,6 +172,6 @@ Signup implements Signup.
     -password STRING: User password
 
 Example:
-    %[1]s auth signup --username "Et voluptate." --password "Asperiores ea pariatur itaque excepturi repellendus rerum."
+    %[1]s auth signup --username "Non cum perspiciatis error quasi autem." --password "Et voluptate."
 `, os.Args[0])
 }

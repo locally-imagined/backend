@@ -20,8 +20,8 @@ paths:
                   schema:
                     type: string
                     description: Raw username
-                    example: Numquam ut odit vel.
-                  example: Voluptas et atque.
+                    example: Laudantium sequi.
+                  example: Perspiciatis nobis perspiciatis quibusdam.
                 - name: password
                   in: path
                   description: User password
@@ -29,16 +29,17 @@ paths:
                   schema:
                     type: string
                     description: User password
-                    example: Magnam placeat error sed qui.
-                  example: Ad inventore at omnis.
+                    example: Numquam ut odit vel.
+                  example: Voluptas et atque.
             responses:
                 "200":
                     description: OK response.
-                    content:
-                        application/json:
+                    headers:
+                        '*':
+                            required: true
                             schema:
                                 type: string
-                                example: Laudantium sequi.
+                                example: Magnam placeat error sed qui.
                             example: Commodi voluptatem alias dolore est.
     /signup/{username}/{password}:
         get:
@@ -72,7 +73,7 @@ paths:
                         application/json:
                             schema:
                                 type: string
-                                example: Perspiciatis nobis perspiciatis quibusdam.
+                                example: Voluptate dolores eveniet.
                             example: Quia sapiente est sed accusamus temporibus.
 components: {}
 tags:

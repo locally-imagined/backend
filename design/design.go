@@ -13,6 +13,9 @@ var _ = Service("auth", func() {
 		Result(String)
 		HTTP(func() {
 			GET("/login/{username}/{password}")
+			Response(func() {
+				Header("Access-Control-Allow-Origin:*")
+			})
 		})
 	})
 	Method("Signup", func() {
