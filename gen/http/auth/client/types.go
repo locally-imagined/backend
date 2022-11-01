@@ -6,3 +6,19 @@
 // $ goa gen backend/design
 
 package client
+
+import (
+	auth "backend/gen/auth"
+)
+
+// NewLoginResultOK builds a "auth" service "Login" endpoint result from a HTTP
+// "OK" response.
+func NewLoginResultOK(body string, accessControlAllowOrigin *string) *auth.LoginResult {
+	v := body
+	res := &auth.LoginResult{
+		JWT: &v,
+	}
+	res.AccessControlAllowOrigin = accessControlAllowOrigin
+
+	return res
+}
