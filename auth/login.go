@@ -16,7 +16,7 @@ import (
 type Service struct{}
 
 func (s *Service) Login(ctx context.Context, p *auth.LoginPayload) (*auth.LoginResult, error) {
-	access := "Access-Control-Allow-Origin:*"
+	access := "*"
 	dbPool, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
 	if err != nil {
 		return &auth.LoginResult{JWT: nil, AccessControlAllowOrigin: &access}, fmt.Errorf("sql.Open: %v", err)
