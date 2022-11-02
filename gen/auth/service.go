@@ -16,7 +16,7 @@ type Service interface {
 	// Login implements Login.
 	Login(context.Context, *LoginPayload) (res *LoginResult, err error)
 	// Signup implements Signup.
-	Signup(context.Context, *SignupPayload) (res string, err error)
+	Signup(context.Context, *SignupPayload) (res *SignupResult, err error)
 }
 
 // ServiceName is the name of the service as defined in the design. This is the
@@ -49,4 +49,10 @@ type SignupPayload struct {
 	Username *string
 	// User password
 	Password *string
+}
+
+// SignupResult is the result type of the auth service Signup method.
+type SignupResult struct {
+	JWT                      *string
+	AccessControlAllowOrigin *string
 }

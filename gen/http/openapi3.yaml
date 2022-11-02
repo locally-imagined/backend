@@ -20,8 +20,8 @@ paths:
                   schema:
                     type: string
                     description: Raw username
-                    example: Magnam placeat error sed qui.
-                  example: Ad inventore at omnis.
+                    example: Commodi voluptatem alias dolore est.
+                  example: Consequatur sit sit doloremque.
                 - name: password
                   in: path
                   description: User password
@@ -29,8 +29,8 @@ paths:
                   schema:
                     type: string
                     description: User password
-                    example: Commodi voluptatem alias dolore est.
-                  example: Consequatur sit sit doloremque.
+                    example: Ad qui est quibusdam eaque et.
+                  example: Commodi architecto velit dolorem distinctio.
             responses:
                 "200":
                     description: OK response.
@@ -38,14 +38,14 @@ paths:
                         Access-Control-Allow-Origin:
                             schema:
                                 type: string
-                                example: Ad qui est quibusdam eaque et.
-                            example: Laborum quam.
+                                example: Laborum quam.
+                            example: Autem rerum.
                     content:
                         application/json:
                             schema:
                                 type: string
-                                example: Numquam ut odit vel.
-                            example: Quia sapiente est sed accusamus temporibus.
+                                example: Magnam placeat error sed qui.
+                            example: Commodi fugit et voluptas.
     /signup/{username}/{password}:
         get:
             tags:
@@ -60,8 +60,8 @@ paths:
                   schema:
                     type: string
                     description: Raw username
-                    example: Autem rerum.
-                  example: Commodi fugit et voluptas.
+                    example: Necessitatibus ipsam illum ut repellendus velit.
+                  example: Soluta vero.
                 - name: password
                   in: path
                   description: User password
@@ -69,17 +69,23 @@ paths:
                   schema:
                     type: string
                     description: User password
-                    example: Necessitatibus ipsam illum ut repellendus velit.
-                  example: Soluta vero.
+                    example: Voluptatibus illum natus.
+                  example: Perferendis autem et et qui maiores non.
             responses:
                 "200":
                     description: OK response.
+                    headers:
+                        Access-Control-Allow-Origin:
+                            schema:
+                                type: string
+                                example: Impedit rem eligendi consectetur voluptas rem error.
+                            example: Dolores et.
                     content:
                         application/json:
                             schema:
                                 type: string
-                                example: Voluptas et atque.
-                            example: Voluptatibus illum natus.
+                                example: Ad inventore at omnis.
+                            example: Illum ducimus et voluptatem.
 components: {}
 tags:
     - name: auth

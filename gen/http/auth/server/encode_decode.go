@@ -52,9 +52,12 @@ func DecodeLoginRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.D
 // Signup endpoint.
 func EncodeSignupResponse(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder) func(context.Context, http.ResponseWriter, interface{}) error {
 	return func(ctx context.Context, w http.ResponseWriter, v interface{}) error {
-		res, _ := v.(string)
+		res, _ := v.(*auth.SignupResult)
 		enc := encoder(ctx, w)
-		body := res
+		body := res.JWT
+		if res.AccessControlAllowOrigin != nil {
+			w.Header().Set("Access-Control-Allow-Origin", *res.AccessControlAllowOrigin)
+		}
 		w.WriteHeader(http.StatusOK)
 		return enc.Encode(body)
 	}

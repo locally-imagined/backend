@@ -29,7 +29,7 @@ func UsageCommands() string {
 
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
-	return os.Args[0] + ` auth login --username "Ut soluta." --password "Voluptas tenetur et."` + "\n" +
+	return os.Args[0] + ` auth login --username "Voluptas tenetur et." --password "A molestiae occaecati aspernatur et doloremque aut."` + "\n" +
 		""
 }
 
@@ -160,7 +160,7 @@ Login implements Login.
     -password STRING: User password
 
 Example:
-    %[1]s auth login --username "Ut soluta." --password "Voluptas tenetur et."
+    %[1]s auth login --username "Voluptas tenetur et." --password "A molestiae occaecati aspernatur et doloremque aut."
 `, os.Args[0])
 }
 
@@ -172,6 +172,6 @@ Signup implements Signup.
     -password STRING: User password
 
 Example:
-    %[1]s auth signup --username "Velit consequatur consectetur et saepe voluptas ex." --password "Voluptate dolores eveniet."
+    %[1]s auth signup --username "Voluptate dolores eveniet." --password "Laudantium sequi."
 `, os.Args[0])
 }
