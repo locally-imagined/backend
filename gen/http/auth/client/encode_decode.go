@@ -16,7 +16,6 @@ import (
 	"net/url"
 
 	goahttp "goa.design/goa/v3/http"
-	goa "goa.design/goa/v3/pkg"
 )
 
 // BuildLoginRequest instantiates a HTTP request object with method and path
@@ -70,18 +69,22 @@ func DecodeLoginResponse(decoder func(*http.Response) goahttp.Decoder, restoreBo
 		switch resp.StatusCode {
 		case http.StatusOK:
 			var (
-				accessControlAllowOrigin string
-				err                      error
+				body string
+				err  error
 			)
-			accessControlAllowOriginRaw := resp.Header.Get("*")
-			if accessControlAllowOriginRaw == "" {
-				err = goa.MergeErrors(err, goa.MissingFieldError("*", "header"))
-			}
-			accessControlAllowOrigin = accessControlAllowOriginRaw
+			err = decoder(resp).Decode(&body)
 			if err != nil {
-				return nil, goahttp.ErrValidationError("auth", "Login", err)
+				return nil, goahttp.ErrDecodingError("auth", "Login", err)
 			}
-			return accessControlAllowOrigin, nil
+			var (
+				accessControlAllowOrigin *string
+			)
+			accessControlAllowOriginRaw := resp.Header.Get("Access-Control-Allow-Origin")
+			if accessControlAllowOriginRaw != "" {
+				accessControlAllowOrigin = &accessControlAllowOriginRaw
+			}
+			res := NewLoginResultOK(body, accessControlAllowOrigin)
+			return res, nil
 		default:
 			body, _ := io.ReadAll(resp.Body)
 			return nil, goahttp.ErrInvalidResponse("auth", "Login", resp.StatusCode, string(body))

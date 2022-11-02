@@ -10,11 +10,15 @@ var _ = Service("auth", func() {
 			Attribute("username", String, "Raw username")
 			Attribute("password", String, "User password")
 		})
-		Result(String)
+		Result(func() {
+			Attribute("jwt", String)
+			Attribute("Access-Control-Allow-Origin")
+		})
 		HTTP(func() {
 			GET("/login/{username}/{password}")
 			Response(func() {
-				Header("Access-Control-Allow-Origin:*")
+				Header("Access-Control-Allow-Origin")
+				Body("jwt")
 			})
 		})
 	})

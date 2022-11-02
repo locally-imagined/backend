@@ -28,13 +28,13 @@ func NewClient(login, signup goa.Endpoint) *Client {
 }
 
 // Login calls the "Login" endpoint of the "auth" service.
-func (c *Client) Login(ctx context.Context, p *LoginPayload) (res string, err error) {
+func (c *Client) Login(ctx context.Context, p *LoginPayload) (res *LoginResult, err error) {
 	var ires interface{}
 	ires, err = c.LoginEndpoint(ctx, p)
 	if err != nil {
 		return
 	}
-	return ires.(string), nil
+	return ires.(*LoginResult), nil
 }
 
 // Signup calls the "Signup" endpoint of the "auth" service.

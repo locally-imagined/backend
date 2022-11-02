@@ -8,6 +8,7 @@
 package server
 
 import (
+	auth "backend/gen/auth"
 	"context"
 	"net/http"
 
@@ -18,10 +19,14 @@ import (
 // Login endpoint.
 func EncodeLoginResponse(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder) func(context.Context, http.ResponseWriter, interface{}) error {
 	return func(ctx context.Context, w http.ResponseWriter, v interface{}) error {
-		res, _ := v.(string)
-		w.Header().Set("*", res)
+		res, _ := v.(*auth.LoginResult)
+		enc := encoder(ctx, w)
+		body := res.JWT
+		if res.AccessControlAllowOrigin != nil {
+			w.Header().Set("Access-Control-Allow-Origin", *res.AccessControlAllowOrigin)
+		}
 		w.WriteHeader(http.StatusOK)
-		return nil
+		return enc.Encode(body)
 	}
 }
 

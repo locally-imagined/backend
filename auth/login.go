@@ -15,10 +15,11 @@ import (
 
 type Service struct{}
 
-func (s *Service) Login(ctx context.Context, p *auth.LoginPayload) (string, error) {
+func (s *Service) Login(ctx context.Context, p *auth.LoginPayload) (*auth.LoginResult, error) {
+	access := "Access-Control-Allow-Origin:*"
 	dbPool, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
 	if err != nil {
-		return "", fmt.Errorf("sql.Open: %v", err)
+		return &auth.LoginResult{JWT: nil, AccessControlAllowOrigin: &access}, fmt.Errorf("sql.Open: %v", err)
 	}
 	defer dbPool.Close()
 	var password string
@@ -26,7 +27,7 @@ func (s *Service) Login(ctx context.Context, p *auth.LoginPayload) (string, erro
 	// Query for a value based on a single row.
 	row, err := dbPool.Query("SELECT password from test_users where username=$1", *p.Username)
 	if err == sql.ErrNoRows {
-		return "", fmt.Errorf("account not found")
+		return &auth.LoginResult{JWT: nil, AccessControlAllowOrigin: &access}, fmt.Errorf("account not found")
 	}
 	// return "", fmt.Errorf("%w", row)
 	for row.Next() {
@@ -36,13 +37,13 @@ func (s *Service) Login(ctx context.Context, p *auth.LoginPayload) (string, erro
 	}
 
 	if hashedPassword != password {
-		return "BADPASSWORD", nil
+		return &auth.LoginResult{JWT: nil, AccessControlAllowOrigin: &access}, nil
 	}
 	token, err := MakeToken(*p.Username)
 	if err != nil {
-		return "", err
+		return &auth.LoginResult{JWT: nil, AccessControlAllowOrigin: &access}, err
 	}
-	return token, nil
+	return &auth.LoginResult{JWT: &token, AccessControlAllowOrigin: &access}, nil
 }
 
 func (s *Service) Signup(ctx context.Context, p *auth.SignupPayload) (string, error) {
