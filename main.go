@@ -90,7 +90,7 @@ func aws3() {
 }
 
 func main() {
-	aws3()
+	// aws3()
 	port := os.Getenv("PORT")
 	sL := &login.Service{}                 //# Create Service
 	authEndpoints := auth.NewEndpoints(sL) // # Create endpoints
