@@ -41,6 +41,25 @@ var _ = Service("auth", func() {
 	})
 })
 
+var _ = Service("upload", func() {
+	Method("upload_photo", func() {
+		Payload(func() {
+			Attribute("content", Bytes, "photo content")
+		})
+		Result(func() {
+			Attribute("success", Boolean)
+			Attribute("Access-Control-Allow-Origin")
+		})
+		HTTP(func() {
+			GET("/upload/{content}")
+			Response(func() {
+				Header("Access-Control-Allow-Origin")
+				Body("success")
+			})
+		})
+	})
+})
+
 // var JWTAuth = JWTSecurity("jwt", func() {
 // 	Description(`Secures endpoint by requiring a valid JWT token retrieved via the login service.`)
 // })

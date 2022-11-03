@@ -9,6 +9,7 @@ package cli
 
 import (
 	authc "backend/gen/http/auth/client"
+	uploadc "backend/gen/http/upload/client"
 	"flag"
 	"fmt"
 	"net/http"
@@ -24,12 +25,14 @@ import (
 //
 func UsageCommands() string {
 	return `auth (login|signup)
+upload upload-photo
 `
 }
 
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
-	return os.Args[0] + ` auth login --username "Voluptas tenetur et." --password "A molestiae occaecati aspernatur et doloremque aut."` + "\n" +
+	return os.Args[0] + ` auth login --username "Doloremque aut recusandae." --password "Consequatur maiores at cupiditate."` + "\n" +
+		os.Args[0] + ` upload upload-photo --content "U2l0IHNpdCBkb2xvcmVtcXVlIGRvbG9yZW0gYWQu"` + "\n" +
 		""
 }
 
@@ -52,10 +55,18 @@ func ParseEndpoint(
 		authSignupFlags        = flag.NewFlagSet("signup", flag.ExitOnError)
 		authSignupUsernameFlag = authSignupFlags.String("username", "REQUIRED", "Raw username")
 		authSignupPasswordFlag = authSignupFlags.String("password", "REQUIRED", "User password")
+
+		uploadFlags = flag.NewFlagSet("upload", flag.ContinueOnError)
+
+		uploadUploadPhotoFlags       = flag.NewFlagSet("upload-photo", flag.ExitOnError)
+		uploadUploadPhotoContentFlag = uploadUploadPhotoFlags.String("content", "REQUIRED", "photo content")
 	)
 	authFlags.Usage = authUsage
 	authLoginFlags.Usage = authLoginUsage
 	authSignupFlags.Usage = authSignupUsage
+
+	uploadFlags.Usage = uploadUsage
+	uploadUploadPhotoFlags.Usage = uploadUploadPhotoUsage
 
 	if err := flag.CommandLine.Parse(os.Args[1:]); err != nil {
 		return nil, nil, err
@@ -74,6 +85,8 @@ func ParseEndpoint(
 		switch svcn {
 		case "auth":
 			svcf = authFlags
+		case "upload":
+			svcf = uploadFlags
 		default:
 			return nil, nil, fmt.Errorf("unknown service %q", svcn)
 		}
@@ -96,6 +109,13 @@ func ParseEndpoint(
 
 			case "signup":
 				epf = authSignupFlags
+
+			}
+
+		case "upload":
+			switch epn {
+			case "upload-photo":
+				epf = uploadUploadPhotoFlags
 
 			}
 
@@ -129,6 +149,13 @@ func ParseEndpoint(
 				endpoint = c.Signup()
 				data, err = authc.BuildSignupPayload(*authSignupUsernameFlag, *authSignupPasswordFlag)
 			}
+		case "upload":
+			c := uploadc.NewClient(scheme, host, doer, enc, dec, restore)
+			switch epn {
+			case "upload-photo":
+				endpoint = c.UploadPhoto()
+				data, err = uploadc.BuildUploadPhotoPayload(*uploadUploadPhotoContentFlag)
+			}
 		}
 	}
 	if err != nil {
@@ -160,7 +187,7 @@ Login implements Login.
     -password STRING: User password
 
 Example:
-    %[1]s auth login --username "Voluptas tenetur et." --password "A molestiae occaecati aspernatur et doloremque aut."
+    %[1]s auth login --username "Doloremque aut recusandae." --password "Consequatur maiores at cupiditate."
 `, os.Args[0])
 }
 
@@ -172,6 +199,30 @@ Signup implements Signup.
     -password STRING: User password
 
 Example:
-    %[1]s auth signup --username "Voluptate dolores eveniet." --password "Laudantium sequi."
+    %[1]s auth signup --username "Perspiciatis quibusdam dolor numquam." --password "Odit vel esse voluptas."
+`, os.Args[0])
+}
+
+// uploadUsage displays the usage of the upload command and its subcommands.
+func uploadUsage() {
+	fmt.Fprintf(os.Stderr, `Service is the upload service interface.
+Usage:
+    %[1]s [globalflags] upload COMMAND [flags]
+
+COMMAND:
+    upload-photo: UploadPhoto implements upload_photo.
+
+Additional help:
+    %[1]s upload COMMAND --help
+`, os.Args[0])
+}
+func uploadUploadPhotoUsage() {
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] upload upload-photo -content STRING
+
+UploadPhoto implements upload_photo.
+    -content STRING: photo content
+
+Example:
+    %[1]s upload upload-photo --content "U2l0IHNpdCBkb2xvcmVtcXVlIGRvbG9yZW0gYWQu"
 `, os.Args[0])
 }
