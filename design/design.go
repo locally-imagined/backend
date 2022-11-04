@@ -46,6 +46,7 @@ var _ = Service("upload", func() {
 		Payload(func() {
 			Attribute("Authorization")
 			Attribute("content", Bytes, "photo content")
+			Required("Authorization")
 		})
 		Result(func() {
 			Attribute("success", Boolean)

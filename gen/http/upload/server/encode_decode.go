@@ -13,6 +13,7 @@ import (
 	"net/http"
 
 	goahttp "goa.design/goa/v3/http"
+	goa "goa.design/goa/v3/pkg"
 )
 
 // EncodeUploadPhotoResponse returns an encoder for responses returned by the
@@ -36,7 +37,8 @@ func DecodeUploadPhotoRequest(mux goahttp.Muxer, decoder func(*http.Request) goa
 	return func(r *http.Request) (interface{}, error) {
 		var (
 			content       []byte
-			authorization *string
+			authorization string
+			err           error
 
 			params = mux.Vars(r)
 		)
@@ -44,9 +46,12 @@ func DecodeUploadPhotoRequest(mux goahttp.Muxer, decoder func(*http.Request) goa
 			contentRaw := params["content"]
 			content = []byte(contentRaw)
 		}
-		authorizationRaw := r.Header.Get("Authorization")
-		if authorizationRaw != "" {
-			authorization = &authorizationRaw
+		authorization = r.Header.Get("Authorization")
+		if authorization == "" {
+			err = goa.MergeErrors(err, goa.MissingFieldError("Authorization", "header"))
+		}
+		if err != nil {
+			return nil, err
 		}
 		payload := NewUploadPhotoPayload(content, authorization)
 

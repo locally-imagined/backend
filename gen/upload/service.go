@@ -30,7 +30,7 @@ var MethodNames = [1]string{"upload_photo"}
 // UploadPhotoPayload is the payload type of the upload service upload_photo
 // method.
 type UploadPhotoPayload struct {
-	Authorization *string
+	Authorization string
 	// photo content
 	Content []byte
 }

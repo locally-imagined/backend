@@ -60,7 +60,7 @@ func ParseEndpoint(
 
 		uploadUploadPhotoFlags             = flag.NewFlagSet("upload-photo", flag.ExitOnError)
 		uploadUploadPhotoContentFlag       = uploadUploadPhotoFlags.String("content", "REQUIRED", "photo content")
-		uploadUploadPhotoAuthorizationFlag = uploadUploadPhotoFlags.String("authorization", "", "")
+		uploadUploadPhotoAuthorizationFlag = uploadUploadPhotoFlags.String("authorization", "REQUIRED", "")
 	)
 	authFlags.Usage = authUsage
 	authLoginFlags.Usage = authLoginUsage

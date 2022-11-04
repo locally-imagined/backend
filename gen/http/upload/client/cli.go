@@ -18,11 +18,9 @@ func BuildUploadPhotoPayload(uploadUploadPhotoContent string, uploadUploadPhotoA
 	{
 		content = []byte(uploadUploadPhotoContent)
 	}
-	var authorization *string
+	var authorization string
 	{
-		if uploadUploadPhotoAuthorization != "" {
-			authorization = &uploadUploadPhotoAuthorization
-		}
+		authorization = uploadUploadPhotoAuthorization
 	}
 	v := &upload.UploadPhotoPayload{}
 	v.Content = content

@@ -51,8 +51,8 @@ func EncodeUploadPhotoRequest(encoder func(*http.Request) goahttp.Encoder) func(
 		if !ok {
 			return goahttp.ErrInvalidType("upload", "upload_photo", "*upload.UploadPhotoPayload", v)
 		}
-		if p.Authorization != nil {
-			head := *p.Authorization
+		{
+			head := p.Authorization
 			req.Header.Set("Authorization", head)
 		}
 		return nil
