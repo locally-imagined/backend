@@ -31,8 +31,8 @@ upload upload-photo
 
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
-	return os.Args[0] + ` auth login --username "Doloremque aut recusandae." --password "Consequatur maiores at cupiditate."` + "\n" +
-		os.Args[0] + ` upload upload-photo --content "U2l0IHNpdCBkb2xvcmVtcXVlIGRvbG9yZW0gYWQu"` + "\n" +
+	return os.Args[0] + ` auth login --username "Consequatur maiores at cupiditate." --password "Recusandae non cum perspiciatis error."` + "\n" +
+		os.Args[0] + ` upload upload-photo --content "RXN0IHF1aWJ1c2RhbSBlYXF1ZSBldCBudWxsYSBjb21tb2RpIGFyY2hpdGVjdG8u" --authorization "Dolorem distinctio."` + "\n" +
 		""
 }
 
@@ -58,8 +58,9 @@ func ParseEndpoint(
 
 		uploadFlags = flag.NewFlagSet("upload", flag.ContinueOnError)
 
-		uploadUploadPhotoFlags       = flag.NewFlagSet("upload-photo", flag.ExitOnError)
-		uploadUploadPhotoContentFlag = uploadUploadPhotoFlags.String("content", "REQUIRED", "photo content")
+		uploadUploadPhotoFlags             = flag.NewFlagSet("upload-photo", flag.ExitOnError)
+		uploadUploadPhotoContentFlag       = uploadUploadPhotoFlags.String("content", "REQUIRED", "photo content")
+		uploadUploadPhotoAuthorizationFlag = uploadUploadPhotoFlags.String("authorization", "", "")
 	)
 	authFlags.Usage = authUsage
 	authLoginFlags.Usage = authLoginUsage
@@ -154,7 +155,7 @@ func ParseEndpoint(
 			switch epn {
 			case "upload-photo":
 				endpoint = c.UploadPhoto()
-				data, err = uploadc.BuildUploadPhotoPayload(*uploadUploadPhotoContentFlag)
+				data, err = uploadc.BuildUploadPhotoPayload(*uploadUploadPhotoContentFlag, *uploadUploadPhotoAuthorizationFlag)
 			}
 		}
 	}
@@ -187,7 +188,7 @@ Login implements Login.
     -password STRING: User password
 
 Example:
-    %[1]s auth login --username "Doloremque aut recusandae." --password "Consequatur maiores at cupiditate."
+    %[1]s auth login --username "Consequatur maiores at cupiditate." --password "Recusandae non cum perspiciatis error."
 `, os.Args[0])
 }
 
@@ -199,7 +200,7 @@ Signup implements Signup.
     -password STRING: User password
 
 Example:
-    %[1]s auth signup --username "Perspiciatis quibusdam dolor numquam." --password "Odit vel esse voluptas."
+    %[1]s auth signup --username "Odit vel esse voluptas." --password "Atque omnis magnam."
 `, os.Args[0])
 }
 
@@ -217,12 +218,13 @@ Additional help:
 `, os.Args[0])
 }
 func uploadUploadPhotoUsage() {
-	fmt.Fprintf(os.Stderr, `%[1]s [flags] upload upload-photo -content STRING
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] upload upload-photo -content STRING -authorization STRING
 
 UploadPhoto implements upload_photo.
     -content STRING: photo content
+    -authorization STRING: 
 
 Example:
-    %[1]s upload upload-photo --content "U2l0IHNpdCBkb2xvcmVtcXVlIGRvbG9yZW0gYWQu"
+    %[1]s upload upload-photo --content "RXN0IHF1aWJ1c2RhbSBlYXF1ZSBldCBudWxsYSBjb21tb2RpIGFyY2hpdGVjdG8u" --authorization "Dolorem distinctio."
 `, os.Args[0])
 }

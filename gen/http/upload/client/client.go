@@ -54,10 +54,15 @@ func NewClient(
 // service upload_photo server.
 func (c *Client) UploadPhoto() goa.Endpoint {
 	var (
+		encodeRequest  = EncodeUploadPhotoRequest(c.encoder)
 		decodeResponse = DecodeUploadPhotoResponse(c.decoder, c.RestoreResponseBody)
 	)
 	return func(ctx context.Context, v interface{}) (interface{}, error) {
 		req, err := c.BuildUploadPhotoRequest(ctx, v)
+		if err != nil {
+			return nil, err
+		}
+		err = encodeRequest(req, v)
 		if err != nil {
 			return nil, err
 		}

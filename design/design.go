@@ -44,6 +44,7 @@ var _ = Service("auth", func() {
 var _ = Service("upload", func() {
 	Method("upload_photo", func() {
 		Payload(func() {
+			Attribute("Authorization")
 			Attribute("content", Bytes, "photo content")
 		})
 		Result(func() {
@@ -51,6 +52,7 @@ var _ = Service("upload", func() {
 			Attribute("Access-Control-Allow-Origin")
 		})
 		HTTP(func() {
+			Header("Authorization")
 			GET("/upload/{content}")
 			Response(func() {
 				Header("Access-Control-Allow-Origin")

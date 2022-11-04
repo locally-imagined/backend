@@ -43,6 +43,22 @@ func (c *Client) BuildUploadPhotoRequest(ctx context.Context, v interface{}) (*h
 	return req, nil
 }
 
+// EncodeUploadPhotoRequest returns an encoder for requests sent to the upload
+// upload_photo server.
+func EncodeUploadPhotoRequest(encoder func(*http.Request) goahttp.Encoder) func(*http.Request, interface{}) error {
+	return func(req *http.Request, v interface{}) error {
+		p, ok := v.(*upload.UploadPhotoPayload)
+		if !ok {
+			return goahttp.ErrInvalidType("upload", "upload_photo", "*upload.UploadPhotoPayload", v)
+		}
+		if p.Authorization != nil {
+			head := *p.Authorization
+			req.Header.Set("Authorization", head)
+		}
+		return nil
+	}
+}
+
 // DecodeUploadPhotoResponse returns a decoder for responses returned by the
 // upload upload_photo endpoint. restoreBody controls whether the response body
 // should be restored after having been read.

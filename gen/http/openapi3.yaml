@@ -20,8 +20,8 @@ paths:
                   schema:
                     type: string
                     description: Raw username
-                    example: Voluptas soluta.
-                  example: Ipsam illum ut repellendus velit qui soluta.
+                    example: Fugit et voluptas soluta necessitatibus.
+                  example: Illum ut repellendus velit qui.
                 - name: password
                   in: path
                   description: User password
@@ -29,8 +29,8 @@ paths:
                   schema:
                     type: string
                     description: User password
-                    example: Qui voluptatibus.
-                  example: Natus dignissimos perferendis autem et et qui.
+                    example: Vero qui voluptatibus illum natus dignissimos.
+                  example: Autem et et qui maiores.
             responses:
                 "200":
                     description: OK response.
@@ -38,14 +38,14 @@ paths:
                         Access-Control-Allow-Origin:
                             schema:
                                 type: string
-                                example: Non voluptatem impedit rem.
-                            example: Repudiandae quod consectetur quia rerum.
+                                example: Voluptatem impedit rem eligendi consectetur.
+                            example: Sunt deserunt repudiandae quod consectetur quia.
                     content:
                         application/json:
                             schema:
                                 type: string
-                                example: Quia laborum quam voluptatem quia sapiente est.
-                            example: Et minus illum ducimus et.
+                                example: Est sed accusamus temporibus.
+                            example: Dolores et.
     /signup/{username}/{password}:
         get:
             tags:
@@ -60,8 +60,8 @@ paths:
                   schema:
                     type: string
                     description: Raw username
-                    example: Unde iure iure nam nihil distinctio ipsum.
-                  example: Nobis aperiam.
+                    example: Illum ducimus et voluptatem.
+                  example: Iure iure nam.
                 - name: password
                   in: path
                   description: User password
@@ -69,8 +69,8 @@ paths:
                   schema:
                     type: string
                     description: User password
-                    example: Ipsum voluptatem.
-                  example: Et eos recusandae quod porro.
+                    example: Distinctio ipsum ut nobis aperiam sit.
+                  example: Voluptatem accusamus.
             responses:
                 "200":
                     description: OK response.
@@ -78,14 +78,14 @@ paths:
                         Access-Control-Allow-Origin:
                             schema:
                                 type: string
-                                example: Qui laudantium voluptatem assumenda ratione rem tempora.
-                            example: Debitis illo iusto maxime voluptas aliquid totam.
+                                example: Eos recusandae quod porro.
+                            example: Vel blanditiis ratione corrupti nostrum.
                     content:
                         application/json:
                             schema:
                                 type: string
-                                example: Accusamus temporibus iure autem rerum aperiam commodi.
-                            example: Et provident ab ea alias minus.
+                                example: Autem rerum.
+                            example: Debitis illo iusto maxime voluptas aliquid totam.
     /upload/{content}:
         get:
             tags:
@@ -101,40 +101,41 @@ paths:
                     type: string
                     description: photo content
                     example:
-                        - 65
-                        - 117
+                        - 69
                         - 116
                         - 32
-                        - 100
-                        - 111
-                        - 108
-                        - 111
+                        - 112
                         - 114
+                        - 111
+                        - 118
                         - 105
-                        - 98
-                        - 117
-                        - 115
-                        - 32
-                        - 99
-                        - 111
-                        - 110
-                        - 115
+                        - 100
                         - 101
-                        - 113
-                        - 117
-                        - 97
+                        - 110
                         - 116
-                        - 117
-                        - 114
                         - 32
                         - 97
+                        - 98
+                        - 32
+                        - 101
+                        - 97
+                        - 32
+                        - 97
+                        - 108
+                        - 105
+                        - 97
+                        - 115
+                        - 32
+                        - 109
+                        - 105
+                        - 110
                         - 117
-                        - 116
+                        - 115
                         - 46
                     format: binary
                   example:
-                    - 69
-                    - 115
+                    - 65
+                    - 117
                     - 116
                     - 32
                     - 100
@@ -142,13 +143,26 @@ paths:
                     - 108
                     - 111
                     - 114
-                    - 32
-                    - 108
                     - 105
                     - 98
-                    - 101
-                    - 114
+                    - 117
+                    - 115
+                    - 32
+                    - 99
                     - 111
+                    - 110
+                    - 115
+                    - 101
+                    - 113
+                    - 117
+                    - 97
+                    - 116
+                    - 117
+                    - 114
+                    - 32
+                    - 97
+                    - 117
+                    - 116
                     - 46
             responses:
                 "200":
@@ -157,8 +171,8 @@ paths:
                         Access-Control-Allow-Origin:
                             schema:
                                 type: string
-                                example: Minus cupiditate adipisci omnis ex porro.
-                            example: Quas autem eius suscipit laboriosam laborum voluptas.
+                                example: Est dolor libero.
+                            example: Illo voluptatem eligendi.
                     content:
                         application/json:
                             schema:

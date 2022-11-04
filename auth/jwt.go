@@ -2,7 +2,6 @@ package auth
 
 import (
 	"fmt"
-	"log"
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
@@ -15,6 +14,7 @@ type locallyImaginedClaims struct {
 	jwt.RegisteredClaims
 }
 
+// change token sign from 'test'
 func MakeToken(email string) (string, error) {
 	uuid := uuid.New()
 	claims := jwt.RegisteredClaims{
@@ -29,7 +29,7 @@ func MakeToken(email string) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, payload)
 	signedJWT, err := token.SignedString([]byte("test"))
 	if err != nil {
-		return "", fmt.Errorf("unable to sign token with zendesk secret: %v", err)
+		return "", fmt.Errorf("unable to sign token with secret: %v", err)
 	}
 	return signedJWT, nil
 }
@@ -39,12 +39,9 @@ func DecodeToken(tokenString string) *jwt.Token {
 	token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
 		return []byte("test"), nil
 	})
-	// ... error handling
 	if err != nil {
-		log.Println("NOOIOIO")
+		return nil
 	}
-	// do something with decoded claims
-	log.Println(token)
 	for key, val := range claims {
 		fmt.Printf("Key: %v, value: %v\n", key, val)
 	}

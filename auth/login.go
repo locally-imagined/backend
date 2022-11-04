@@ -69,7 +69,8 @@ func (s *Service) Signup(ctx context.Context, p *auth.SignupPayload) (*auth.Sign
 		return &auth.SignupResult{JWT: nil, AccessControlAllowOrigin: &access}, fmt.Errorf("account already exists")
 	}
 
-	_, err = dbPool.Query("INSERT INTO test_users (username, password) Values ('" + *p.Username + "', '" + hashedPassword + "')")
+	// double check this
+	_, err = dbPool.Query("INSERT INTO test_users (username, password) Values ($1, $2)", *p.Username, hashedPassword)
 	if err != nil {
 		return &auth.SignupResult{JWT: nil, AccessControlAllowOrigin: &access}, fmt.Errorf("account creation failed")
 	}

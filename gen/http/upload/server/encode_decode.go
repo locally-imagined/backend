@@ -35,7 +35,8 @@ func EncodeUploadPhotoResponse(encoder func(context.Context, http.ResponseWriter
 func DecodeUploadPhotoRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (interface{}, error) {
 	return func(r *http.Request) (interface{}, error) {
 		var (
-			content []byte
+			content       []byte
+			authorization *string
 
 			params = mux.Vars(r)
 		)
@@ -43,7 +44,11 @@ func DecodeUploadPhotoRequest(mux goahttp.Muxer, decoder func(*http.Request) goa
 			contentRaw := params["content"]
 			content = []byte(contentRaw)
 		}
-		payload := NewUploadPhotoPayload(content)
+		authorizationRaw := r.Header.Get("Authorization")
+		if authorizationRaw != "" {
+			authorization = &authorizationRaw
+		}
+		payload := NewUploadPhotoPayload(content, authorization)
 
 		return payload, nil
 	}

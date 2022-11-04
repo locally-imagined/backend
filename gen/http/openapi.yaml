@@ -79,6 +79,10 @@ paths:
                   required: true
                   type: string
                   format: byte
+                - name: Authorization
+                  in: header
+                  required: false
+                  type: string
             responses:
                 "200":
                     description: OK response.

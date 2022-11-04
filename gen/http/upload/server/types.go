@@ -12,9 +12,10 @@ import (
 )
 
 // NewUploadPhotoPayload builds a upload service upload_photo endpoint payload.
-func NewUploadPhotoPayload(content []byte) *upload.UploadPhotoPayload {
+func NewUploadPhotoPayload(content []byte, authorization *string) *upload.UploadPhotoPayload {
 	v := &upload.UploadPhotoPayload{}
 	v.Content = content
+	v.Authorization = authorization
 
 	return v
 }
