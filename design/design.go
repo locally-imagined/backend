@@ -11,12 +11,12 @@ var _ = Service("auth", func() {
 			Attribute("password", String, "User password")
 		})
 		Result(func() {
-			Attribute("jwt", String, "jwt token")
+			Attribute("jwt", String)
 			Attribute("Access-Control-Allow-Origin")
 		})
 		HTTP(func() {
 			GET("/login/{username}/{password}")
-			Response(StatusOK, func() {
+			Response(func() {
 				Header("Access-Control-Allow-Origin")
 				Body("jwt")
 			})
@@ -27,9 +27,35 @@ var _ = Service("auth", func() {
 			Attribute("username", String, "Raw username")
 			Attribute("password", String, "User password")
 		})
-		Result(String)
+		Result(func() {
+			Attribute("jwt", String)
+			Attribute("Access-Control-Allow-Origin")
+		})
 		HTTP(func() {
 			GET("/signup/{username}/{password}")
+			Response(func() {
+				Header("Access-Control-Allow-Origin")
+				Body("jwt")
+			})
+		})
+	})
+})
+
+var _ = Service("upload", func() {
+	Method("upload_photo", func() {
+		Payload(func() {
+			Attribute("content", Bytes, "photo content")
+		})
+		Result(func() {
+			Attribute("success", Boolean)
+			Attribute("Access-Control-Allow-Origin")
+		})
+		HTTP(func() {
+			GET("/upload/{content}")
+			Response(func() {
+				Header("Access-Control-Allow-Origin")
+				Body("success")
+			})
 		})
 	})
 })

@@ -150,7 +150,15 @@ func DecodeSignupResponse(decoder func(*http.Response) goahttp.Decoder, restoreB
 			if err != nil {
 				return nil, goahttp.ErrDecodingError("auth", "Signup", err)
 			}
-			return body, nil
+			var (
+				accessControlAllowOrigin *string
+			)
+			accessControlAllowOriginRaw := resp.Header.Get("Access-Control-Allow-Origin")
+			if accessControlAllowOriginRaw != "" {
+				accessControlAllowOrigin = &accessControlAllowOriginRaw
+			}
+			res := NewSignupResultOK(body, accessControlAllowOrigin)
+			return res, nil
 		default:
 			body, _ := io.ReadAll(resp.Body)
 			return nil, goahttp.ErrInvalidResponse("auth", "Signup", resp.StatusCode, string(body))

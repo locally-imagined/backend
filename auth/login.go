@@ -15,10 +15,11 @@ import (
 
 type Service struct{}
 
-func (s *Service) Login(ctx context.Context, p *auth.LoginPayload) (string, error) {
+func (s *Service) Login(ctx context.Context, p *auth.LoginPayload) (*auth.LoginResult, error) {
+	access := "*"
 	dbPool, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
 	if err != nil {
-		return "", fmt.Errorf("sql.Open: %v", err)
+		return &auth.LoginResult{JWT: nil, AccessControlAllowOrigin: &access}, fmt.Errorf("sql.Open: %v", err)
 	}
 	defer dbPool.Close()
 	var password string
@@ -26,7 +27,7 @@ func (s *Service) Login(ctx context.Context, p *auth.LoginPayload) (string, erro
 	// Query for a value based on a single row.
 	row, err := dbPool.Query("SELECT password from test_users where username=$1", *p.Username)
 	if err == sql.ErrNoRows {
-		return "", fmt.Errorf("account not found")
+		return &auth.LoginResult{JWT: nil, AccessControlAllowOrigin: &access}, fmt.Errorf("account not found")
 	}
 	// return "", fmt.Errorf("%w", row)
 	for row.Next() {
@@ -36,19 +37,20 @@ func (s *Service) Login(ctx context.Context, p *auth.LoginPayload) (string, erro
 	}
 
 	if hashedPassword != password {
-		return "BADPASSWORD", nil
+		return &auth.LoginResult{JWT: nil, AccessControlAllowOrigin: &access}, nil
 	}
 	token, err := MakeToken(*p.Username)
 	if err != nil {
-		return "", err
+		return &auth.LoginResult{JWT: nil, AccessControlAllowOrigin: &access}, err
 	}
-	return token, nil
+	return &auth.LoginResult{JWT: &token, AccessControlAllowOrigin: &access}, nil
 }
 
-func (s *Service) Signup(ctx context.Context, p *auth.SignupPayload) (string, error) {
+func (s *Service) Signup(ctx context.Context, p *auth.SignupPayload) (*auth.SignupResult, error) {
+	access := "*"
 	dbPool, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
 	if err != nil {
-		return "", fmt.Errorf("sql.Open: %v", err)
+		return &auth.SignupResult{JWT: nil, AccessControlAllowOrigin: &access}, fmt.Errorf("sql.Open: %v", err)
 	}
 	defer dbPool.Close()
 	hashedPassword := shaHashing(*p.Password)
@@ -56,7 +58,7 @@ func (s *Service) Signup(ctx context.Context, p *auth.SignupPayload) (string, er
 	// Query for a value based on a single row.
 	row, err := dbPool.Query("SELECT username from test_users where username=$1", *p.Username)
 	if err != nil {
-		return "", err
+		return &auth.SignupResult{JWT: nil, AccessControlAllowOrigin: &access}, err
 	}
 	for row.Next() {
 		if err := row.Scan(&value); err != nil {
@@ -64,18 +66,18 @@ func (s *Service) Signup(ctx context.Context, p *auth.SignupPayload) (string, er
 		}
 	}
 	if value != "" {
-		return "", fmt.Errorf("account already exists")
+		return &auth.SignupResult{JWT: nil, AccessControlAllowOrigin: &access}, fmt.Errorf("account already exists")
 	}
 
 	_, err = dbPool.Query("INSERT INTO test_users (username, password) Values ('" + *p.Username + "', '" + hashedPassword + "')")
 	if err != nil {
-		return "", fmt.Errorf("account creation failed")
+		return &auth.SignupResult{JWT: nil, AccessControlAllowOrigin: &access}, fmt.Errorf("account creation failed")
 	}
 	token, err := MakeToken(*p.Username)
 	if err != nil {
-		return "", err
+		return &auth.SignupResult{JWT: nil, AccessControlAllowOrigin: &access}, err
 	}
-	return token, nil
+	return &auth.SignupResult{JWT: &token, AccessControlAllowOrigin: &access}, nil
 }
 
 func shaHashing(input string) string {

@@ -61,5 +61,31 @@ paths:
                     description: OK response.
                     schema:
                         type: string
+                    headers:
+                        Access-Control-Allow-Origin:
+                            type: string
+            schemes:
+                - http
+    /upload/{content}:
+        get:
+            tags:
+                - upload
+            summary: upload_photo upload
+            operationId: upload#upload_photo
+            parameters:
+                - name: content
+                  in: path
+                  description: photo content
+                  required: true
+                  type: string
+                  format: byte
+            responses:
+                "200":
+                    description: OK response.
+                    schema:
+                        type: boolean
+                    headers:
+                        Access-Control-Allow-Origin:
+                            type: string
             schemes:
                 - http

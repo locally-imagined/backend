@@ -38,11 +38,11 @@ func (c *Client) Login(ctx context.Context, p *LoginPayload) (res *LoginResult, 
 }
 
 // Signup calls the "Signup" endpoint of the "auth" service.
-func (c *Client) Signup(ctx context.Context, p *SignupPayload) (res string, err error) {
+func (c *Client) Signup(ctx context.Context, p *SignupPayload) (res *SignupResult, err error) {
 	var ires interface{}
 	ires, err = c.SignupEndpoint(ctx, p)
 	if err != nil {
 		return
 	}
-	return ires.(string), nil
+	return ires.(*SignupResult), nil
 }

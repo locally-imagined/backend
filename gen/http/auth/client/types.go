@@ -22,3 +22,15 @@ func NewLoginResultOK(body string, accessControlAllowOrigin *string) *auth.Login
 
 	return res
 }
+
+// NewSignupResultOK builds a "auth" service "Signup" endpoint result from a
+// HTTP "OK" response.
+func NewSignupResultOK(body string, accessControlAllowOrigin *string) *auth.SignupResult {
+	v := body
+	res := &auth.SignupResult{
+		JWT: &v,
+	}
+	res.AccessControlAllowOrigin = accessControlAllowOrigin
+
+	return res
+}
