@@ -12,8 +12,8 @@ import (
 )
 
 // LoginAuthPath returns the URL path to the auth service Login HTTP endpoint.
-func LoginAuthPath(username string, password string) string {
-	return fmt.Sprintf("/login/%v/%v", username, password)
+func LoginAuthPath() string {
+	return "/login"
 }
 
 // SignupAuthPath returns the URL path to the auth service Signup HTTP endpoint.

@@ -28,6 +28,9 @@ func NewClient(login, signup goa.Endpoint) *Client {
 }
 
 // Login calls the "Login" endpoint of the "auth" service.
+// Login may return the following errors:
+//	- "unauthorized" (type Unauthorized)
+//	- error: internal error
 func (c *Client) Login(ctx context.Context, p *LoginPayload) (res *LoginResult, err error) {
 	var ires interface{}
 	ires, err = c.LoginEndpoint(ctx, p)
@@ -38,6 +41,9 @@ func (c *Client) Login(ctx context.Context, p *LoginPayload) (res *LoginResult, 
 }
 
 // Signup calls the "Signup" endpoint of the "auth" service.
+// Signup may return the following errors:
+//	- "unauthorized" (type Unauthorized)
+//	- error: internal error
 func (c *Client) Signup(ctx context.Context, p *SignupPayload) (res *SignupResult, err error) {
 	var ires interface{}
 	ires, err = c.SignupEndpoint(ctx, p)

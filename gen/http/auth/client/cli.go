@@ -23,8 +23,8 @@ func BuildLoginPayload(authLoginUsername string, authLoginPassword string) (*aut
 		password = authLoginPassword
 	}
 	v := &auth.LoginPayload{}
-	v.Username = &username
-	v.Password = &password
+	v.Username = username
+	v.Password = password
 
 	return v, nil
 }

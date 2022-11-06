@@ -11,6 +11,7 @@ import (
 	"context"
 
 	goa "goa.design/goa/v3/pkg"
+	"goa.design/goa/v3/security"
 )
 
 // Endpoints wraps the "auth" service endpoints.
@@ -21,8 +22,10 @@ type Endpoints struct {
 
 // NewEndpoints wraps the methods of the "auth" service with endpoints.
 func NewEndpoints(s Service) *Endpoints {
+	// Casting service to Auther interface
+	a := s.(Auther)
 	return &Endpoints{
-		Login:  NewLoginEndpoint(s),
+		Login:  NewLoginEndpoint(s, a.BasicAuth),
 		Signup: NewSignupEndpoint(s),
 	}
 }
@@ -35,9 +38,19 @@ func (e *Endpoints) Use(m func(goa.Endpoint) goa.Endpoint) {
 
 // NewLoginEndpoint returns an endpoint function that calls the method "Login"
 // of service "auth".
-func NewLoginEndpoint(s Service) goa.Endpoint {
+func NewLoginEndpoint(s Service, authBasicFn security.AuthBasicFunc) goa.Endpoint {
 	return func(ctx context.Context, req interface{}) (interface{}, error) {
 		p := req.(*LoginPayload)
+		var err error
+		sc := security.BasicScheme{
+			Name:           "basic",
+			Scopes:         []string{},
+			RequiredScopes: []string{},
+		}
+		ctx, err = authBasicFn(ctx, p.Username, p.Password, &sc)
+		if err != nil {
+			return nil, err
+		}
 		return s.Login(ctx, p)
 	}
 }

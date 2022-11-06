@@ -12,10 +12,8 @@ import (
 )
 
 // NewLoginPayload builds a auth service Login endpoint payload.
-func NewLoginPayload(username string, password string) *auth.LoginPayload {
+func NewLoginPayload() *auth.LoginPayload {
 	v := &auth.LoginPayload{}
-	v.Username = &username
-	v.Password = &password
 
 	return v
 }

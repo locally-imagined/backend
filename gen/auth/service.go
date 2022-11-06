@@ -9,6 +9,8 @@ package auth
 
 import (
 	"context"
+
+	"goa.design/goa/v3/security"
 )
 
 // Service is the auth service interface.
@@ -17,6 +19,12 @@ type Service interface {
 	Login(context.Context, *LoginPayload) (res *LoginResult, err error)
 	// Signup implements Signup.
 	Signup(context.Context, *SignupPayload) (res *SignupResult, err error)
+}
+
+// Auther defines the authorization functions to be implemented by the service.
+type Auther interface {
+	// BasicAuth implements the authorization logic for the Basic security scheme.
+	BasicAuth(ctx context.Context, user, pass string, schema *security.BasicScheme) (context.Context, error)
 }
 
 // ServiceName is the name of the service as defined in the design. This is the
@@ -32,9 +40,9 @@ var MethodNames = [2]string{"Login", "Signup"}
 // LoginPayload is the payload type of the auth service Login method.
 type LoginPayload struct {
 	// Raw username
-	Username *string
+	Username string
 	// User password
-	Password *string
+	Password string
 }
 
 // LoginResult is the result type of the auth service Login method.
@@ -55,4 +63,24 @@ type SignupPayload struct {
 type SignupResult struct {
 	JWT                      *string
 	AccessControlAllowOrigin *string
+}
+
+// Credentials are invalid
+type Unauthorized string
+
+// Error returns an error description.
+func (e Unauthorized) Error() string {
+	return "Credentials are invalid"
+}
+
+// ErrorName returns "unauthorized".
+//
+// Deprecated: Use GoaErrorName - https://github.com/goadesign/goa/issues/3105
+func (e Unauthorized) ErrorName() string {
+	return e.GoaErrorName()
+}
+
+// GoaErrorName returns "unauthorized".
+func (e Unauthorized) GoaErrorName() string {
+	return "unauthorized"
 }

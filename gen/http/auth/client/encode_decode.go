@@ -21,24 +21,8 @@ import (
 // BuildLoginRequest instantiates a HTTP request object with method and path
 // set to call the "auth" service "Login" endpoint
 func (c *Client) BuildLoginRequest(ctx context.Context, v interface{}) (*http.Request, error) {
-	var (
-		username string
-		password string
-	)
-	{
-		p, ok := v.(*auth.LoginPayload)
-		if !ok {
-			return nil, goahttp.ErrInvalidType("auth", "Login", "*auth.LoginPayload", v)
-		}
-		if p.Username != nil {
-			username = *p.Username
-		}
-		if p.Password != nil {
-			password = *p.Password
-		}
-	}
-	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: LoginAuthPath(username, password)}
-	req, err := http.NewRequest("GET", u.String(), nil)
+	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: LoginAuthPath()}
+	req, err := http.NewRequest("POST", u.String(), nil)
 	if err != nil {
 		return nil, goahttp.ErrInvalidURL("auth", "Login", u.String(), err)
 	}
@@ -47,6 +31,19 @@ func (c *Client) BuildLoginRequest(ctx context.Context, v interface{}) (*http.Re
 	}
 
 	return req, nil
+}
+
+// EncodeLoginRequest returns an encoder for requests sent to the auth Login
+// server.
+func EncodeLoginRequest(encoder func(*http.Request) goahttp.Encoder) func(*http.Request, interface{}) error {
+	return func(req *http.Request, v interface{}) error {
+		p, ok := v.(*auth.LoginPayload)
+		if !ok {
+			return goahttp.ErrInvalidType("auth", "Login", "*auth.LoginPayload", v)
+		}
+		req.SetBasicAuth(p.Username, p.Password)
+		return nil
+	}
 }
 
 // DecodeLoginResponse returns a decoder for responses returned by the auth

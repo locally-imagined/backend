@@ -13,6 +13,7 @@ import (
 	"net/http"
 
 	goahttp "goa.design/goa/v3/http"
+	goa "goa.design/goa/v3/pkg"
 )
 
 // EncodeLoginResponse returns an encoder for responses returned by the auth
@@ -34,15 +35,13 @@ func EncodeLoginResponse(encoder func(context.Context, http.ResponseWriter) goah
 // endpoint.
 func DecodeLoginRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (interface{}, error) {
 	return func(r *http.Request) (interface{}, error) {
-		var (
-			username string
-			password string
-
-			params = mux.Vars(r)
-		)
-		username = params["username"]
-		password = params["password"]
-		payload := NewLoginPayload(username, password)
+		payload := NewLoginPayload()
+		user, pass, ok := r.BasicAuth()
+		if !ok {
+			return nil, goa.MissingFieldError("Authorization", "header")
+		}
+		payload.Username = user
+		payload.Password = pass
 
 		return payload, nil
 	}

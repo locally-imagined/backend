@@ -12,21 +12,16 @@ produces:
     - application/xml
     - application/gob
 paths:
-    /login/{username}/{password}:
-        get:
+    /login:
+        post:
             tags:
                 - auth
             summary: Login auth
             operationId: auth#Login
             parameters:
-                - name: username
-                  in: path
-                  description: Raw username
-                  required: true
-                  type: string
-                - name: password
-                  in: path
-                  description: User password
+                - name: Authorization
+                  in: header
+                  description: Basic Auth security using Basic scheme (https://tools.ietf.org/html/rfc7617)
                   required: true
                   type: string
             responses:
@@ -39,6 +34,8 @@ paths:
                             type: string
             schemes:
                 - http
+            security:
+                - basic_header_Authorization: []
     /signup/{username}/{password}:
         get:
             tags:
@@ -93,3 +90,7 @@ paths:
                             type: string
             schemes:
                 - http
+securityDefinitions:
+    basic_header_Authorization:
+        type: basic
+        description: Basic authentication used to authenticate security principal during signin

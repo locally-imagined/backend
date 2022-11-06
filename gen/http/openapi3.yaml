@@ -6,31 +6,12 @@ servers:
     - url: http://localhost:80
       description: Default server for auth
 paths:
-    /login/{username}/{password}:
-        get:
+    /login:
+        post:
             tags:
                 - auth
             summary: Login auth
             operationId: auth#Login
-            parameters:
-                - name: username
-                  in: path
-                  description: Raw username
-                  required: true
-                  schema:
-                    type: string
-                    description: Raw username
-                    example: Fugit et voluptas soluta necessitatibus.
-                  example: Illum ut repellendus velit qui.
-                - name: password
-                  in: path
-                  description: User password
-                  required: true
-                  schema:
-                    type: string
-                    description: User password
-                    example: Vero qui voluptatibus illum natus dignissimos.
-                  example: Autem et et qui maiores.
             responses:
                 "200":
                     description: OK response.
@@ -38,14 +19,16 @@ paths:
                         Access-Control-Allow-Origin:
                             schema:
                                 type: string
-                                example: Voluptatem impedit rem eligendi consectetur.
-                            example: Sunt deserunt repudiandae quod consectetur quia.
+                                example: Voluptas soluta.
+                            example: Qui voluptatibus.
                     content:
                         application/json:
                             schema:
                                 type: string
-                                example: Est sed accusamus temporibus.
-                            example: Dolores et.
+                                example: Quia laborum quam voluptatem quia sapiente est.
+                            example: Natus dignissimos perferendis autem et et qui.
+            security:
+                - basic_header_Authorization: []
     /signup/{username}/{password}:
         get:
             tags:
@@ -60,8 +43,8 @@ paths:
                   schema:
                     type: string
                     description: Raw username
-                    example: Illum ducimus et voluptatem.
-                  example: Iure iure nam.
+                    example: Non voluptatem impedit rem.
+                  example: Consectetur voluptas rem error doloremque sunt.
                 - name: password
                   in: path
                   description: User password
@@ -69,8 +52,8 @@ paths:
                   schema:
                     type: string
                     description: User password
-                    example: Distinctio ipsum ut nobis aperiam sit.
-                  example: Voluptatem accusamus.
+                    example: Repudiandae quod consectetur quia rerum.
+                  example: Et minus illum ducimus et.
             responses:
                 "200":
                     description: OK response.
@@ -78,14 +61,14 @@ paths:
                         Access-Control-Allow-Origin:
                             schema:
                                 type: string
-                                example: Eos recusandae quod porro.
-                            example: Vel blanditiis ratione corrupti nostrum.
+                                example: Unde iure iure nam nihil distinctio ipsum.
+                            example: Ipsum voluptatem.
                     content:
                         application/json:
                             schema:
                                 type: string
-                                example: Autem rerum.
-                            example: Debitis illo iusto maxime voluptas aliquid totam.
+                                example: Accusamus temporibus iure autem rerum aperiam commodi.
+                            example: Et eos recusandae quod porro.
     /upload/{content}:
         get:
             tags:
@@ -101,68 +84,103 @@ paths:
                     type: string
                     description: photo content
                     example:
-                        - 69
-                        - 116
-                        - 32
-                        - 112
-                        - 114
-                        - 111
-                        - 118
-                        - 105
-                        - 100
-                        - 101
-                        - 110
-                        - 116
-                        - 32
-                        - 97
-                        - 98
-                        - 32
-                        - 101
-                        - 97
-                        - 32
-                        - 97
-                        - 108
-                        - 105
-                        - 97
-                        - 115
-                        - 32
-                        - 109
-                        - 105
-                        - 110
+                        - 81
                         - 117
+                        - 105
+                        - 32
+                        - 108
+                        - 97
+                        - 117
+                        - 100
+                        - 97
+                        - 110
+                        - 116
+                        - 105
+                        - 117
+                        - 109
+                        - 32
+                        - 118
+                        - 111
+                        - 108
+                        - 117
+                        - 112
+                        - 116
+                        - 97
+                        - 116
+                        - 101
+                        - 109
+                        - 32
+                        - 97
                         - 115
+                        - 115
+                        - 117
+                        - 109
+                        - 101
+                        - 110
+                        - 100
+                        - 97
+                        - 32
+                        - 114
+                        - 97
+                        - 116
+                        - 105
+                        - 111
+                        - 110
+                        - 101
+                        - 32
+                        - 114
+                        - 101
+                        - 109
+                        - 32
+                        - 116
+                        - 101
+                        - 109
+                        - 112
+                        - 111
+                        - 114
+                        - 97
                         - 46
                     format: binary
                   example:
-                    - 65
-                    - 117
-                    - 116
-                    - 32
-                    - 100
-                    - 111
+                    - 86
+                    - 101
                     - 108
-                    - 111
-                    - 114
-                    - 105
+                    - 32
                     - 98
-                    - 117
+                    - 108
+                    - 97
+                    - 110
+                    - 100
+                    - 105
+                    - 116
+                    - 105
+                    - 105
                     - 115
+                    - 32
+                    - 114
+                    - 97
+                    - 116
+                    - 105
+                    - 111
+                    - 110
+                    - 101
                     - 32
                     - 99
                     - 111
-                    - 110
-                    - 115
-                    - 101
-                    - 113
-                    - 117
-                    - 97
-                    - 116
-                    - 117
                     - 114
-                    - 32
-                    - 97
+                    - 114
                     - 117
+                    - 112
                     - 116
+                    - 105
+                    - 32
+                    - 110
+                    - 111
+                    - 115
+                    - 116
+                    - 114
+                    - 117
+                    - 109
                     - 46
             responses:
                 "200":
@@ -171,15 +189,20 @@ paths:
                         Access-Control-Allow-Origin:
                             schema:
                                 type: string
-                                example: Est dolor libero.
-                            example: Illo voluptatem eligendi.
+                                example: Debitis illo iusto maxime voluptas aliquid totam.
+                            example: Aut doloribus consequatur aut.
                     content:
                         application/json:
                             schema:
                                 type: boolean
                                 example: true
-                            example: true
-components: {}
+                            example: false
+components:
+    securitySchemes:
+        basic_header_Authorization:
+            type: http
+            description: Basic authentication used to authenticate security principal during signin
+            scheme: basic
 tags:
     - name: auth
     - name: upload
