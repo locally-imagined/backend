@@ -47,7 +47,7 @@ type UploadPhotoPayload struct {
 // UploadPhotoResult is the result type of the upload service upload_photo
 // method.
 type UploadPhotoResult struct {
-	Success                  *bool
+	Success                  *string
 	AccessControlAllowOrigin *string
 }
 

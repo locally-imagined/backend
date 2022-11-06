@@ -84,7 +84,7 @@ func DecodeUploadPhotoResponse(decoder func(*http.Response) goahttp.Decoder, res
 		switch resp.StatusCode {
 		case http.StatusOK:
 			var (
-				body bool
+				body string
 				err  error
 			)
 			err = decoder(resp).Decode(&body)

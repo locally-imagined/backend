@@ -13,7 +13,7 @@ import (
 
 // NewUploadPhotoResultOK builds a "upload" service "upload_photo" endpoint
 // result from a HTTP "OK" response.
-func NewUploadPhotoResultOK(body bool, accessControlAllowOrigin *string) *upload.UploadPhotoResult {
+func NewUploadPhotoResultOK(body string, accessControlAllowOrigin *string) *upload.UploadPhotoResult {
 	v := body
 	res := &upload.UploadPhotoResult{
 		Success: &v,

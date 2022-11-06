@@ -65,7 +65,7 @@ var _ = Service("upload", func() {
 			Required("token")
 		})
 		Result(func() {
-			Attribute("success", Boolean)
+			Attribute("success", String)
 			Attribute("Access-Control-Allow-Origin")
 		})
 		HTTP(func() {

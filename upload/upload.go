@@ -5,6 +5,7 @@ import (
 	"backend/gen/upload"
 	"context"
 
+	"github.com/golang-jwt/jwt/v4"
 	_ "github.com/lib/pq"
 	"goa.design/goa/v3/security"
 )
@@ -22,13 +23,15 @@ func (s *Service) JWTAuth(ctx context.Context, token string, scheme *security.JW
 	if tok == nil {
 		return ctx, ErrUnauthorized
 	}
+	claims := tok.Claims.(jwt.MapClaims)
+	ctx = context.WithValue(ctx, "Name", claims["Name"])
 	// 3. add authInfo to context
 	// return context.WithValue(ctx, ctxValueClaims, auth), nil
 	return ctx, nil
 }
 
 func (s *Service) UploadPhoto(ctx context.Context, p *upload.UploadPhotoPayload) (*upload.UploadPhotoResult, error) {
-	t := true
+	var name string = ctx.Value("Name").(string)
 	star := "*"
-	return &upload.UploadPhotoResult{Success: &t, AccessControlAllowOrigin: &star}, nil
+	return &upload.UploadPhotoResult{Success: &name, AccessControlAllowOrigin: &star}, nil
 }
