@@ -11,6 +11,7 @@ import (
 	"context"
 
 	goa "goa.design/goa/v3/pkg"
+	"goa.design/goa/v3/security"
 )
 
 // Endpoints wraps the "upload" service endpoints.
@@ -20,8 +21,10 @@ type Endpoints struct {
 
 // NewEndpoints wraps the methods of the "upload" service with endpoints.
 func NewEndpoints(s Service) *Endpoints {
+	// Casting service to Auther interface
+	a := s.(Auther)
 	return &Endpoints{
-		UploadPhoto: NewUploadPhotoEndpoint(s),
+		UploadPhoto: NewUploadPhotoEndpoint(s, a.JWTAuth),
 	}
 }
 
@@ -32,9 +35,19 @@ func (e *Endpoints) Use(m func(goa.Endpoint) goa.Endpoint) {
 
 // NewUploadPhotoEndpoint returns an endpoint function that calls the method
 // "upload_photo" of service "upload".
-func NewUploadPhotoEndpoint(s Service) goa.Endpoint {
+func NewUploadPhotoEndpoint(s Service, authJWTFn security.AuthJWTFunc) goa.Endpoint {
 	return func(ctx context.Context, req interface{}) (interface{}, error) {
 		p := req.(*UploadPhotoPayload)
+		var err error
+		sc := security.JWTScheme{
+			Name:           "jwt",
+			Scopes:         []string{},
+			RequiredScopes: []string{},
+		}
+		ctx, err = authJWTFn(ctx, p.Token, &sc)
+		if err != nil {
+			return nil, err
+		}
 		return s.UploadPhoto(ctx, p)
 	}
 }

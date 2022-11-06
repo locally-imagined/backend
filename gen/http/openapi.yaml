@@ -78,6 +78,7 @@ paths:
                   format: byte
                 - name: Authorization
                   in: header
+                  description: jwt used for auth
                   required: true
                   type: string
             responses:
@@ -90,7 +91,14 @@ paths:
                             type: string
             schemes:
                 - http
+            security:
+                - jwt_header_Authorization: []
 securityDefinitions:
     basic_header_Authorization:
         type: basic
         description: Basic authentication used to authenticate security principal during signin
+    jwt_header_Authorization:
+        type: apiKey
+        description: Secures endpoint by requiring a valid JWT token retrieved via the signin endpoint.
+        name: Authorization
+        in: header

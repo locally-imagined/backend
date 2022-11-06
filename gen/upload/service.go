@@ -9,12 +9,20 @@ package upload
 
 import (
 	"context"
+
+	"goa.design/goa/v3/security"
 )
 
 // Service is the upload service interface.
 type Service interface {
 	// UploadPhoto implements upload_photo.
 	UploadPhoto(context.Context, *UploadPhotoPayload) (res *UploadPhotoResult, err error)
+}
+
+// Auther defines the authorization functions to be implemented by the service.
+type Auther interface {
+	// JWTAuth implements the authorization logic for the JWT security scheme.
+	JWTAuth(ctx context.Context, token string, schema *security.JWTScheme) (context.Context, error)
 }
 
 // ServiceName is the name of the service as defined in the design. This is the
@@ -30,7 +38,8 @@ var MethodNames = [1]string{"upload_photo"}
 // UploadPhotoPayload is the payload type of the upload service upload_photo
 // method.
 type UploadPhotoPayload struct {
-	Authorization string
+	// jwt used for auth
+	Token string
 	// photo content
 	Content []byte
 }
@@ -40,4 +49,24 @@ type UploadPhotoPayload struct {
 type UploadPhotoResult struct {
 	Success                  *bool
 	AccessControlAllowOrigin *string
+}
+
+// Credentials are invalid
+type Unauthorized string
+
+// Error returns an error description.
+func (e Unauthorized) Error() string {
+	return "Credentials are invalid"
+}
+
+// ErrorName returns "unauthorized".
+//
+// Deprecated: Use GoaErrorName - https://github.com/goadesign/goa/issues/3105
+func (e Unauthorized) ErrorName() string {
+	return e.GoaErrorName()
+}
+
+// GoaErrorName returns "unauthorized".
+func (e Unauthorized) GoaErrorName() string {
+	return "unauthorized"
 }

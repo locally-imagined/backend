@@ -47,28 +47,6 @@ func (s *Service) BasicAuth(ctx context.Context, user, pass string, scheme *secu
 
 func (s *Service) Login(ctx context.Context, p *auth.LoginPayload) (*auth.LoginResult, error) {
 	access := "*"
-	// dbPool, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
-	// if err != nil {
-	// 	return &auth.LoginResult{JWT: nil, AccessControlAllowOrigin: &access}, fmt.Errorf("sql.Open: %v", err)
-	// }
-	// defer dbPool.Close()
-	// var password string
-	// hashedPassword := shaHashing(*p.Password)
-	// // Query for a value based on a single row.
-	// row, err := dbPool.Query("SELECT password from test_users where username=$1", *p.Username)
-	// if err == sql.ErrNoRows {
-	// 	return &auth.LoginResult{JWT: nil, AccessControlAllowOrigin: &access}, fmt.Errorf("account not found")
-	// }
-	// // return "", fmt.Errorf("%w", row)
-	// for row.Next() {
-	// 	if err := row.Scan(&password); err != nil {
-	// 		log.Fatal(err)
-	// 	}
-	// }
-
-	// if hashedPassword != password {
-	// 	return &auth.LoginResult{JWT: nil, AccessControlAllowOrigin: &access}, nil
-	// }
 	token, err := MakeToken(p.Username)
 	if err != nil {
 		return &auth.LoginResult{JWT: nil, AccessControlAllowOrigin: &access}, err

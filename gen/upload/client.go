@@ -26,6 +26,9 @@ func NewClient(uploadPhoto goa.Endpoint) *Client {
 }
 
 // UploadPhoto calls the "upload_photo" endpoint of the "upload" service.
+// UploadPhoto may return the following errors:
+//	- "unauthorized" (type Unauthorized)
+//	- error: internal error
 func (c *Client) UploadPhoto(ctx context.Context, p *UploadPhotoPayload) (res *UploadPhotoResult, err error) {
 	var ires interface{}
 	ires, err = c.UploadPhotoEndpoint(ctx, p)

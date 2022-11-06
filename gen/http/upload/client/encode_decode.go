@@ -14,6 +14,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"strings"
 
 	goahttp "goa.design/goa/v3/http"
 )
@@ -52,8 +53,12 @@ func EncodeUploadPhotoRequest(encoder func(*http.Request) goahttp.Encoder) func(
 			return goahttp.ErrInvalidType("upload", "upload_photo", "*upload.UploadPhotoPayload", v)
 		}
 		{
-			head := p.Authorization
-			req.Header.Set("Authorization", head)
+			head := p.Token
+			if !strings.Contains(head, " ") {
+				req.Header.Set("Authorization", "Bearer "+head)
+			} else {
+				req.Header.Set("Authorization", head)
+			}
 		}
 		return nil
 	}

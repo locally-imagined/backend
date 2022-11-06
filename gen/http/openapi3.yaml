@@ -197,12 +197,18 @@ paths:
                                 type: boolean
                                 example: true
                             example: false
+            security:
+                - jwt_header_Authorization: []
 components:
     securitySchemes:
         basic_header_Authorization:
             type: http
             description: Basic authentication used to authenticate security principal during signin
             scheme: basic
+        jwt_header_Authorization:
+            type: http
+            description: Secures endpoint by requiring a valid JWT token retrieved via the signin endpoint.
+            scheme: bearer
 tags:
     - name: auth
     - name: upload

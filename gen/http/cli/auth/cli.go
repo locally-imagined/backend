@@ -32,7 +32,7 @@ upload upload-photo
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
 	return os.Args[0] + ` auth login --username "Molestiae occaecati aspernatur." --password "Doloremque aut recusandae."` + "\n" +
-		os.Args[0] + ` upload upload-photo --content "QWxpYXMgZG9sb3JlIGVzdCBvcHRpby4=" --authorization "Sit sit doloremque dolorem ad."` + "\n" +
+		os.Args[0] + ` upload upload-photo --content "QWxpYXMgZG9sb3JlIGVzdCBvcHRpby4=" --token "Sit sit doloremque dolorem ad."` + "\n" +
 		""
 }
 
@@ -58,9 +58,9 @@ func ParseEndpoint(
 
 		uploadFlags = flag.NewFlagSet("upload", flag.ContinueOnError)
 
-		uploadUploadPhotoFlags             = flag.NewFlagSet("upload-photo", flag.ExitOnError)
-		uploadUploadPhotoContentFlag       = uploadUploadPhotoFlags.String("content", "REQUIRED", "photo content")
-		uploadUploadPhotoAuthorizationFlag = uploadUploadPhotoFlags.String("authorization", "REQUIRED", "")
+		uploadUploadPhotoFlags       = flag.NewFlagSet("upload-photo", flag.ExitOnError)
+		uploadUploadPhotoContentFlag = uploadUploadPhotoFlags.String("content", "REQUIRED", "photo content")
+		uploadUploadPhotoTokenFlag   = uploadUploadPhotoFlags.String("token", "REQUIRED", "")
 	)
 	authFlags.Usage = authUsage
 	authLoginFlags.Usage = authLoginUsage
@@ -155,7 +155,7 @@ func ParseEndpoint(
 			switch epn {
 			case "upload-photo":
 				endpoint = c.UploadPhoto()
-				data, err = uploadc.BuildUploadPhotoPayload(*uploadUploadPhotoContentFlag, *uploadUploadPhotoAuthorizationFlag)
+				data, err = uploadc.BuildUploadPhotoPayload(*uploadUploadPhotoContentFlag, *uploadUploadPhotoTokenFlag)
 			}
 		}
 	}
@@ -218,13 +218,13 @@ Additional help:
 `, os.Args[0])
 }
 func uploadUploadPhotoUsage() {
-	fmt.Fprintf(os.Stderr, `%[1]s [flags] upload upload-photo -content STRING -authorization STRING
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] upload upload-photo -content STRING -token STRING
 
 UploadPhoto implements upload_photo.
     -content STRING: photo content
-    -authorization STRING: 
+    -token STRING: 
 
 Example:
-    %[1]s upload upload-photo --content "QWxpYXMgZG9sb3JlIGVzdCBvcHRpby4=" --authorization "Sit sit doloremque dolorem ad."
+    %[1]s upload upload-photo --content "QWxpYXMgZG9sb3JlIGVzdCBvcHRpby4=" --token "Sit sit doloremque dolorem ad."
 `, os.Args[0])
 }
