@@ -4,6 +4,7 @@ import (
 	"backend/auth"
 	"backend/gen/upload"
 	"context"
+	"time"
 
 	"github.com/golang-jwt/jwt/v4"
 	_ "github.com/lib/pq"
@@ -23,15 +24,21 @@ func (s *Service) JWTAuth(ctx context.Context, token string, scheme *security.JW
 	if tok == nil {
 		return ctx, ErrUnauthorized
 	}
+	// 3. add authInfo to context
+
 	claims := tok.Claims.(jwt.MapClaims)
 	ctx = context.WithValue(ctx, "Name", claims["Name"])
-	// 3. add authInfo to context
-	// return context.WithValue(ctx, ctxValueClaims, auth), nil
+	var tm time.Time
+	switch iat := claims["iat"].(type) {
+	case float64:
+		tm = time.Unix(int64(iat), 0)
+	}
+	ctx = context.WithValue(ctx, "exptime", tm)
 	return ctx, nil
 }
 
 func (s *Service) UploadPhoto(ctx context.Context, p *upload.UploadPhotoPayload) (*upload.UploadPhotoResult, error) {
-	var name string = ctx.Value("Name").(string)
+	var name string = ctx.Value("exptime").(string)
 	star := "*"
 	return &upload.UploadPhotoResult{Success: &name, AccessControlAllowOrigin: &star}, nil
 }
