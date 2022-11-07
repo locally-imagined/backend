@@ -34,7 +34,7 @@ func (s *Service) JWTAuth(ctx context.Context, token string, scheme *security.JW
 	case float64:
 		exp = time.Unix(int64(iat), 0)
 	}
-	if exp.Add(time.Minute * 2).After(now) {
+	if exp.Add(time.Minute * 2).Before(now) {
 		return ctx, ErrUnauthorized
 	}
 
