@@ -42,7 +42,7 @@ func (s *Service) JWTAuth(ctx context.Context, token string, scheme *security.JW
 }
 
 func (s *Service) UploadPhoto(ctx context.Context, p *upload.UploadPhotoPayload) (*upload.UploadPhotoResult, error) {
-	var name string = ctx.Value("exptime").(string)
+	var name string = ctx.Value("Name").(string)
 	star := "*"
 	return &upload.UploadPhotoResult{Success: &name, AccessControlAllowOrigin: &star}, nil
 }
