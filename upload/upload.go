@@ -33,7 +33,7 @@ func (s *Service) JWTAuth(ctx context.Context, token string, scheme *security.JW
 	case float64:
 		tm = time.Unix(int64(iat), 0)
 	}
-	ctx = context.WithValue(ctx, "exptime", tm)
+	ctx = context.WithValue(ctx, "exptime", tm.String())
 	return ctx, nil
 }
 
