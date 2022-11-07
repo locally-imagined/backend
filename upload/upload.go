@@ -28,12 +28,16 @@ func (s *Service) JWTAuth(ctx context.Context, token string, scheme *security.JW
 
 	claims := tok.Claims.(jwt.MapClaims)
 	ctx = context.WithValue(ctx, "Name", claims["Name"])
-	var tm time.Time
+	var exp time.Time
+	var now time.Time = time.Now()
 	switch iat := claims["iat"].(type) {
 	case float64:
-		tm = time.Unix(int64(iat), 0)
+		exp = time.Unix(int64(iat), 0)
 	}
-	ctx = context.WithValue(ctx, "exptime", tm.String())
+	if exp.Add(time.Minute * 2).After(now) {
+		return ctx, ErrUnauthorized
+	}
+
 	return ctx, nil
 }
 
