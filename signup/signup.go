@@ -44,7 +44,7 @@ func (s *Service) BasicAuth(ctx context.Context, user, pass string, scheme *secu
 	}
 
 	// double check this
-	_, err = dbPool.Query("INSERT INTO test_users (username, password) Values ($1, $2)", pass, hashedPassword)
+	_, err = dbPool.Query("INSERT INTO test_users (username, password) Values ($1, $2)", user, hashedPassword)
 	if err != nil {
 		return ctx, ErrUnauthorized
 	}
