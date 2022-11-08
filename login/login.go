@@ -45,10 +45,11 @@ func (s *Service) BasicAuth(ctx context.Context, user, pass string, scheme *secu
 
 func (s *Service) Login(ctx context.Context, p *login.LoginPayload) (*login.LoginResult, error) {
 	access := "http://localhost:3000"
+	methods := "POST"
 	creds := "true"
 	token, err := auth.MakeToken(p.Username)
 	if err != nil {
-		return &login.LoginResult{JWT: nil, AccessControlAllowOrigin: &access, AccessControlAllowCredentials: &creds}, err
+		return &login.LoginResult{JWT: nil, AccessControlAllowMethods: &methods, AccessControlAllowOrigin: &access, AccessControlAllowCredentials: &creds}, err
 	}
-	return &login.LoginResult{JWT: &token, AccessControlAllowOrigin: &access, AccessControlAllowCredentials: &creds}, nil
+	return &login.LoginResult{JWT: &token, AccessControlAllowMethods: &methods, AccessControlAllowOrigin: &access, AccessControlAllowCredentials: &creds}, nil
 }
