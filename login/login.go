@@ -44,7 +44,7 @@ func (s *Service) BasicAuth(ctx context.Context, user, pass string, scheme *secu
 }
 
 func (s *Service) Login(ctx context.Context, p *login.LoginPayload) (*login.LoginResult, error) {
-	access := "localhost:3001"
+	access := "https://localhost:3001"
 	creds := "true"
 	token, err := auth.MakeToken(p.Username)
 	if err != nil {
