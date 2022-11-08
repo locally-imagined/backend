@@ -32,6 +32,7 @@ var _ = Service("login", func() {
 		})
 		Result(func() {
 			Attribute("jwt", String)
+			Attribute("Access-Control-Allow-Headers")
 			Attribute("Access-Control-Allow-Methods")
 			Attribute("Access-Control-Allow-Origin")
 			Attribute("Access-Control-Allow-Credentials")
@@ -39,6 +40,7 @@ var _ = Service("login", func() {
 		HTTP(func() {
 			POST("/login")
 			Response(func() {
+				Header("Access-Control-Allow-Headers")
 				Header("Access-Control-Allow-Methods")
 				Header("Access-Control-Allow-Origin")
 				Header("Access-Control-Allow-Credentials")

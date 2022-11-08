@@ -47,9 +47,10 @@ func (s *Service) Login(ctx context.Context, p *login.LoginPayload) (*login.Logi
 	access := "http://localhost:3000"
 	methods := "POST"
 	creds := "true"
+	headers := "Origin, X-Requested-With, Content-Type, Accept"
 	token, err := auth.MakeToken(p.Username)
 	if err != nil {
-		return &login.LoginResult{JWT: nil, AccessControlAllowMethods: &methods, AccessControlAllowOrigin: &access, AccessControlAllowCredentials: &creds}, err
+		return &login.LoginResult{JWT: nil, AccessControlAllowHeaders: &headers, AccessControlAllowMethods: &methods, AccessControlAllowOrigin: &access, AccessControlAllowCredentials: &creds}, err
 	}
-	return &login.LoginResult{JWT: &token, AccessControlAllowMethods: &methods, AccessControlAllowOrigin: &access, AccessControlAllowCredentials: &creds}, nil
+	return &login.LoginResult{JWT: &token, AccessControlAllowHeaders: &headers, AccessControlAllowMethods: &methods, AccessControlAllowOrigin: &access, AccessControlAllowCredentials: &creds}, nil
 }

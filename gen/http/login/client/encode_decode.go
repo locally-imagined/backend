@@ -74,10 +74,15 @@ func DecodeLoginResponse(decoder func(*http.Response) goahttp.Decoder, restoreBo
 				return nil, goahttp.ErrDecodingError("login", "Login", err)
 			}
 			var (
+				accessControlAllowHeaders     *string
 				accessControlAllowMethods     *string
 				accessControlAllowOrigin      *string
 				accessControlAllowCredentials *string
 			)
+			accessControlAllowHeadersRaw := resp.Header.Get("Access-Control-Allow-Headers")
+			if accessControlAllowHeadersRaw != "" {
+				accessControlAllowHeaders = &accessControlAllowHeadersRaw
+			}
 			accessControlAllowMethodsRaw := resp.Header.Get("Access-Control-Allow-Methods")
 			if accessControlAllowMethodsRaw != "" {
 				accessControlAllowMethods = &accessControlAllowMethodsRaw
@@ -90,7 +95,7 @@ func DecodeLoginResponse(decoder func(*http.Response) goahttp.Decoder, restoreBo
 			if accessControlAllowCredentialsRaw != "" {
 				accessControlAllowCredentials = &accessControlAllowCredentialsRaw
 			}
-			res := NewLoginResultOK(body, accessControlAllowMethods, accessControlAllowOrigin, accessControlAllowCredentials)
+			res := NewLoginResultOK(body, accessControlAllowHeaders, accessControlAllowMethods, accessControlAllowOrigin, accessControlAllowCredentials)
 			return res, nil
 		default:
 			body, _ := io.ReadAll(resp.Body)

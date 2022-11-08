@@ -33,9 +33,9 @@ upload upload-photo
 
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
-	return os.Args[0] + ` login login --username "Accusantium ipsam nisi pariatur magnam." --password "Et incidunt assumenda sequi."` + "\n" +
-		os.Args[0] + ` signup signup --username "Autem neque numquam." --password "Nisi tempora delectus architecto."` + "\n" +
-		os.Args[0] + ` upload upload-photo --content "TmFtIGRvbG9yaWJ1cyBkb2xvciBjb21tb2RpIGNvbnNlcXV1bnR1ciBwZXJmZXJlbmRpcyBlYS4=" --token "Qui unde et mollitia modi."` + "\n" +
+	return os.Args[0] + ` login login --username "Et incidunt assumenda sequi." --password "Reiciendis voluptas in autem dolorem."` + "\n" +
+		os.Args[0] + ` signup signup --username "Odit nesciunt dicta tempore fugiat." --password "Velit rerum occaecati quia."` + "\n" +
+		os.Args[0] + ` upload upload-photo --content "RWFydW0gcXVpYSBhdXQu" --token "Aut id placeat voluptate expedita sunt culpa."` + "\n" +
 		""
 }
 
@@ -204,7 +204,7 @@ Login implements Login.
     -password STRING: User password
 
 Example:
-    %[1]s login login --username "Accusantium ipsam nisi pariatur magnam." --password "Et incidunt assumenda sequi."
+    %[1]s login login --username "Et incidunt assumenda sequi." --password "Reiciendis voluptas in autem dolorem."
 `, os.Args[0])
 }
 
@@ -229,7 +229,7 @@ Signup implements Signup.
     -password STRING: User password
 
 Example:
-    %[1]s signup signup --username "Autem neque numquam." --password "Nisi tempora delectus architecto."
+    %[1]s signup signup --username "Odit nesciunt dicta tempore fugiat." --password "Velit rerum occaecati quia."
 `, os.Args[0])
 }
 
@@ -254,6 +254,6 @@ UploadPhoto implements upload_photo.
     -token STRING: 
 
 Example:
-    %[1]s upload upload-photo --content "TmFtIGRvbG9yaWJ1cyBkb2xvciBjb21tb2RpIGNvbnNlcXV1bnR1ciBwZXJmZXJlbmRpcyBlYS4=" --token "Qui unde et mollitia modi."
+    %[1]s upload upload-photo --content "RWFydW0gcXVpYSBhdXQu" --token "Aut id placeat voluptate expedita sunt culpa."
 `, os.Args[0])
 }

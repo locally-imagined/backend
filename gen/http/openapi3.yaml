@@ -19,24 +19,29 @@ paths:
                         Access-Control-Allow-Credentials:
                             schema:
                                 type: string
-                                example: Aut animi et deserunt est.
-                            example: Ab enim aut et quas quo.
+                                example: Excepturi ut voluptatum.
+                            example: Quod aut alias optio quidem ducimus.
+                        Access-Control-Allow-Headers:
+                            schema:
+                                type: string
+                                example: Ut molestiae nihil ipsam voluptatem explicabo qui.
+                            example: At ad.
                         Access-Control-Allow-Methods:
                             schema:
                                 type: string
-                                example: Minima nisi.
-                            example: Ut molestiae nihil ipsam voluptatem explicabo qui.
+                                example: Aut et atque.
+                            example: Doloremque ut vel.
                         Access-Control-Allow-Origin:
                             schema:
                                 type: string
-                                example: Quae autem quia nemo iste similique veritatis.
-                            example: Aut et atque.
+                                example: Ab enim aut et quas quo.
+                            example: Dolorem eligendi aut consequatur minima rem tempora.
                     content:
                         application/json:
                             schema:
                                 type: string
-                                example: Magnam non voluptas aut vero pariatur.
-                            example: Officiis est optio voluptates qui recusandae sit.
+                                example: Autem quia veritatis dolorem.
+                            example: Aut qui cum temporibus asperiores qui.
             security:
                 - login_header_Authorization: []
     /signup:
@@ -52,19 +57,19 @@ paths:
                         Access-Control-Allow-Credentials:
                             schema:
                                 type: string
-                                example: Quod aut alias optio quidem ducimus.
-                            example: Eveniet incidunt et ut consequatur.
+                                example: Modi dolores laborum.
+                            example: Incidunt et ipsum facilis.
                         Access-Control-Allow-Origin:
                             schema:
                                 type: string
-                                example: Dolorem eligendi aut consequatur minima rem tempora.
-                            example: Dignissimos sed eius odio commodi eos consequatur.
+                                example: Eveniet incidunt et ut consequatur.
+                            example: Quasi non qui esse non praesentium expedita.
                     content:
                         application/json:
                             schema:
                                 type: string
-                                example: Ut in sapiente illo explicabo aut.
-                            example: Voluptas quo.
+                                example: Minima nisi.
+                            example: Neque praesentium distinctio impedit perferendis aut.
             security:
                 - signup_header_Authorization: []
     /upload/{content}:
@@ -82,56 +87,67 @@ paths:
                     type: string
                     description: photo content
                     example:
-                        - 81
-                        - 117
-                        - 97
-                        - 115
-                        - 105
-                        - 32
-                        - 110
+                        - 86
                         - 111
-                        - 110
-                        - 32
-                        - 113
+                        - 108
                         - 117
-                        - 105
-                        - 32
-                        - 101
-                        - 115
-                        - 115
-                        - 101
-                        - 32
-                        - 110
-                        - 111
-                        - 110
-                        - 32
                         - 112
-                        - 114
-                        - 97
-                        - 101
-                        - 115
-                        - 101
-                        - 110
                         - 116
+                        - 97
+                        - 115
+                        - 32
                         - 105
+                        - 112
+                        - 115
                         - 117
                         - 109
                         - 32
+                        - 114
                         - 101
-                        - 120
-                        - 112
+                        - 114
+                        - 117
+                        - 109
+                        - 32
+                        - 105
+                        - 117
+                        - 114
                         - 101
+                        - 32
+                        - 109
+                        - 105
+                        - 110
+                        - 105
+                        - 109
+                        - 97
+                        - 32
+                        - 110
+                        - 105
+                        - 104
+                        - 105
+                        - 108
+                        - 32
+                        - 111
                         - 100
                         - 105
-                        - 116
-                        - 97
+                        - 111
                         - 46
                     format: binary
                   example:
-                    - 77
+                    - 68
                     - 111
-                    - 100
+                    - 108
+                    - 111
+                    - 114
+                    - 101
+                    - 109
+                    - 32
+                    - 97
+                    - 117
+                    - 116
+                    - 32
+                    - 104
                     - 105
+                    - 99
                     - 32
                     - 100
                     - 111
@@ -141,13 +157,9 @@ paths:
                     - 101
                     - 115
                     - 32
-                    - 108
-                    - 97
-                    - 98
-                    - 111
-                    - 114
-                    - 117
-                    - 109
+                    - 101
+                    - 115
+                    - 116
                     - 46
             responses:
                 "200":
@@ -156,14 +168,14 @@ paths:
                         Access-Control-Allow-Origin:
                             schema:
                                 type: string
-                                example: Repudiandae tempore molestiae illo.
-                            example: Neque praesentium distinctio impedit perferendis aut.
+                                example: Eaque nesciunt impedit aut rerum qui.
+                            example: Excepturi quos ut.
                     content:
                         application/json:
                             schema:
                                 type: string
-                                example: Autem quia veritatis dolorem.
-                            example: Voluptas ipsum rerum iure minima nihil odio.
+                                example: Ut ut omnis.
+                            example: Sit et quaerat non nobis repudiandae autem.
             security:
                 - jwt_header_Authorization: []
 components:
