@@ -49,7 +49,7 @@ func New(
 ) *Server {
 	return &Server{
 		Mounts: []*MountPoint{
-			{"Signup", "GET", "/signup"},
+			{"Signup", "POST", "/signup"},
 		},
 		Signup: NewSignupHandler(e.Signup, mux, decoder, encoder, errhandler, formatter),
 	}
@@ -85,7 +85,7 @@ func MountSignupHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("GET", "/signup", f)
+	mux.Handle("POST", "/signup", f)
 }
 
 // NewSignupHandler creates a HTTP handler which loads the HTTP request and

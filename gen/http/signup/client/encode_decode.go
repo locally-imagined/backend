@@ -22,7 +22,7 @@ import (
 // set to call the "signup" service "Signup" endpoint
 func (c *Client) BuildSignupRequest(ctx context.Context, v interface{}) (*http.Request, error) {
 	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: SignupSignupPath()}
-	req, err := http.NewRequest("GET", u.String(), nil)
+	req, err := http.NewRequest("POST", u.String(), nil)
 	if err != nil {
 		return nil, goahttp.ErrInvalidURL("signup", "Signup", u.String(), err)
 	}

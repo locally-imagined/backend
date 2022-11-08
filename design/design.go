@@ -57,7 +57,7 @@ var _ = Service("signup", func() {
 			Attribute("Access-Control-Allow-Origin")
 		})
 		HTTP(func() {
-			GET("/signup")
+			POST("/signup")
 			Response(func() {
 				Header("Access-Control-Allow-Origin")
 				Body("jwt")

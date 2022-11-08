@@ -30,7 +30,7 @@ paths:
             security:
                 - login_header_Authorization: []
     /signup:
-        get:
+        post:
             tags:
                 - signup
             summary: Signup signup
