@@ -33,11 +33,13 @@ var _ = Service("login", func() {
 		Result(func() {
 			Attribute("jwt", String)
 			Attribute("Access-Control-Allow-Origin")
+			Attribute("Access-Control-Allow-Credentials")
 		})
 		HTTP(func() {
 			POST("/login")
 			Response(func() {
 				Header("Access-Control-Allow-Origin")
+				Header("Access-Control-Allow-Credentials")
 				Body("jwt")
 			})
 		})
@@ -55,11 +57,13 @@ var _ = Service("signup", func() {
 		Result(func() {
 			Attribute("jwt", String)
 			Attribute("Access-Control-Allow-Origin")
+			Attribute("Access-Control-Allow-Credentials")
 		})
 		HTTP(func() {
 			POST("/signup")
 			Response(func() {
 				Header("Access-Control-Allow-Origin")
+				Header("Access-Control-Allow-Credentials")
 				Body("jwt")
 			})
 		})

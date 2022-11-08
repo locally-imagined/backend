@@ -26,6 +26,9 @@ func EncodeLoginResponse(encoder func(context.Context, http.ResponseWriter) goah
 		if res.AccessControlAllowOrigin != nil {
 			w.Header().Set("Access-Control-Allow-Origin", *res.AccessControlAllowOrigin)
 		}
+		if res.AccessControlAllowCredentials != nil {
+			w.Header().Set("Access-Control-Allow-Credentials", *res.AccessControlAllowCredentials)
+		}
 		w.WriteHeader(http.StatusOK)
 		return enc.Encode(body)
 	}

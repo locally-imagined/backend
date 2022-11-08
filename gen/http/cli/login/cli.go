@@ -33,9 +33,9 @@ upload upload-photo
 
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
-	return os.Args[0] + ` login login --username "Officia officia quia quisquam." --password "Tempore enim voluptatem unde cumque."` + "\n" +
-		os.Args[0] + ` signup signup --username "Reiciendis voluptas in autem dolorem." --password "Corporis ipsum neque."` + "\n" +
-		os.Args[0] + ` upload upload-photo --content "TmlzaSB0ZW1wb3JhIGRlbGVjdHVzIGFyY2hpdGVjdG8u" --token "Odit nesciunt dicta tempore fugiat."` + "\n" +
+	return os.Args[0] + ` login login --username "Neque ut." --password "Accusantium ipsam nisi pariatur magnam."` + "\n" +
+		os.Args[0] + ` signup signup --username "Laborum ut iste et harum." --password "Unde quod."` + "\n" +
+		os.Args[0] + ` upload upload-photo --content "RG9sb3J1bSBhdXQgYXV0IGltcGVkaXQgbmlzaSBvZGlvLg==" --token "Commodi officiis numquam molestiae."` + "\n" +
 		""
 }
 
@@ -204,7 +204,7 @@ Login implements Login.
     -password STRING: User password
 
 Example:
-    %[1]s login login --username "Officia officia quia quisquam." --password "Tempore enim voluptatem unde cumque."
+    %[1]s login login --username "Neque ut." --password "Accusantium ipsam nisi pariatur magnam."
 `, os.Args[0])
 }
 
@@ -229,7 +229,7 @@ Signup implements Signup.
     -password STRING: User password
 
 Example:
-    %[1]s signup signup --username "Reiciendis voluptas in autem dolorem." --password "Corporis ipsum neque."
+    %[1]s signup signup --username "Laborum ut iste et harum." --password "Unde quod."
 `, os.Args[0])
 }
 
@@ -254,6 +254,6 @@ UploadPhoto implements upload_photo.
     -token STRING: 
 
 Example:
-    %[1]s upload upload-photo --content "TmlzaSB0ZW1wb3JhIGRlbGVjdHVzIGFyY2hpdGVjdG8u" --token "Odit nesciunt dicta tempore fugiat."
+    %[1]s upload upload-photo --content "RG9sb3J1bSBhdXQgYXV0IGltcGVkaXQgbmlzaSBvZGlvLg==" --token "Commodi officiis numquam molestiae."
 `, os.Args[0])
 }

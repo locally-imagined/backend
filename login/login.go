@@ -45,9 +45,10 @@ func (s *Service) BasicAuth(ctx context.Context, user, pass string, scheme *secu
 
 func (s *Service) Login(ctx context.Context, p *login.LoginPayload) (*login.LoginResult, error) {
 	access := "*"
+	creds := "true"
 	token, err := auth.MakeToken(p.Username)
 	if err != nil {
 		return &login.LoginResult{JWT: nil, AccessControlAllowOrigin: &access}, err
 	}
-	return &login.LoginResult{JWT: &token, AccessControlAllowOrigin: &access}, nil
+	return &login.LoginResult{JWT: &token, AccessControlAllowOrigin: &access, AccessControlAllowCredentials: &creds}, nil
 }

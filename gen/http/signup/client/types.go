@@ -13,12 +13,13 @@ import (
 
 // NewSignupResultOK builds a "signup" service "Signup" endpoint result from a
 // HTTP "OK" response.
-func NewSignupResultOK(body string, accessControlAllowOrigin *string) *signup.SignupResult {
+func NewSignupResultOK(body string, accessControlAllowOrigin *string, accessControlAllowCredentials *string) *signup.SignupResult {
 	v := body
 	res := &signup.SignupResult{
 		JWT: &v,
 	}
 	res.AccessControlAllowOrigin = accessControlAllowOrigin
+	res.AccessControlAllowCredentials = accessControlAllowCredentials
 
 	return res
 }

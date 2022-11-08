@@ -45,6 +45,7 @@ type SignupPayload struct {
 
 // SignupResult is the result type of the signup service Signup method.
 type SignupResult struct {
-	JWT                      *string
-	AccessControlAllowOrigin *string
+	JWT                           *string
+	AccessControlAllowOrigin      *string
+	AccessControlAllowCredentials *string
 }
