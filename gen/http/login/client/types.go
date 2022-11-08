@@ -13,12 +13,11 @@ import (
 
 // NewLoginResultOK builds a "login" service "Login" endpoint result from a
 // HTTP "OK" response.
-func NewLoginResultOK(body string, accessControlAllowHeaders *string, accessControlAllowOrigin *string, accessControlAllowCredentials *string) *login.LoginResult {
+func NewLoginResultOK(body string, accessControlAllowOrigin *string, accessControlAllowCredentials *string) *login.LoginResult {
 	v := body
 	res := &login.LoginResult{
 		JWT: &v,
 	}
-	res.AccessControlAllowHeaders = accessControlAllowHeaders
 	res.AccessControlAllowOrigin = accessControlAllowOrigin
 	res.AccessControlAllowCredentials = accessControlAllowCredentials
 

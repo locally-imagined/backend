@@ -32,8 +32,6 @@ paths:
                     headers:
                         Access-Control-Allow-Credentials:
                             type: string
-                        Access-Control-Allow-Headers:
-                            type: string
                         Access-Control-Allow-Origin:
                             type: string
             schemes:
