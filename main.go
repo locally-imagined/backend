@@ -1,15 +1,18 @@
 package main
 
 import (
-	"backend/gen/auth"
-	authServer "backend/gen/http/auth/server"
+	loginServer "backend/gen/http/login/server"
+	signupServer "backend/gen/http/signup/server"
 	uploadServer "backend/gen/http/upload/server"
-	"backend/gen/upload"
+	genlogin "backend/gen/login"
+	gensignup "backend/gen/signup"
+	genupload "backend/gen/upload"
 	"net/http"
 	"os"
 
-	login "backend/auth"
-	uploads "backend/upload"
+	login "backend/login"
+	signup "backend/signup"
+	upload "backend/upload"
 
 	goahttp "goa.design/goa/v3/http"
 )
@@ -44,21 +47,25 @@ func main() {
 	// aws3()
 	port := os.Getenv("PORT")
 
-	sL := &login.Service{}                 //# Create Service
-	authEndpoints := auth.NewEndpoints(sL) // # Create endpoints
-	sU := &uploads.Service{}
-	upEndpoints := upload.NewEndpoints(sU)
+	sL := &login.Service{}                      //# Create Service
+	loginEndpoints := genlogin.NewEndpoints(sL) // # Create endpoints
+	sU := &upload.Service{}
+	uploadEndpoints := genupload.NewEndpoints(sU)
+	sS := &signup.Service{}
+	signupEndpoints := gensignup.NewEndpoints(sS)
 
 	mux := goahttp.NewMuxer()      //# Create HTTP muxer
 	dec := goahttp.RequestDecoder  //# Set HTTP request decoder
 	enc := goahttp.ResponseEncoder // # Set HTTP response encoder
 
-	authSvr := authServer.New(authEndpoints, mux, dec, enc, nil, nil) // # Create Goa HTTP server
-	authServer.Mount(mux, authSvr)                                    //# Mount Goa server on mux
+	loginSvr := loginServer.New(loginEndpoints, mux, dec, enc, nil, nil) // # Create Goa HTTP server
+	loginServer.Mount(mux, loginSvr)                                     //# Mount Goa server on mux
 
-	uploadSvr := uploadServer.New(upEndpoints, mux, dec, enc, nil, nil) // # Create Goa HTTP server
+	uploadSvr := uploadServer.New(uploadEndpoints, mux, dec, enc, nil, nil) // # Create Goa HTTP server
+	uploadServer.Mount(mux, uploadSvr)                                      //# Mount Goa server on mux
 
-	uploadServer.Mount(mux, uploadSvr) //# Mount Goa server on mux
+	signupSvr := signupServer.New(signupEndpoints, mux, dec, enc, nil, nil) // # Create Goa HTTP server
+	signupServer.Mount(mux, signupSvr)                                      //# Mount Goa server on mux
 
 	httpsvr := &http.Server{ // # Create Go HTTP server
 		Addr: ":" + port, // # Configure server address (this is for heroku)

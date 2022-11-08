@@ -1,6 +1,8 @@
 package auth
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
 	"fmt"
 	"time"
 
@@ -46,4 +48,10 @@ func DecodeToken(tokenString string) *jwt.Token {
 		fmt.Printf("Key: %v, value: %v\n", key, val)
 	}
 	return token
+}
+
+func ShaHashing(input string) string {
+	plainText := []byte(input)
+	sha256Hash := sha256.Sum256(plainText)
+	return hex.EncodeToString(sha256Hash[:])
 }

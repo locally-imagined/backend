@@ -5,8 +5,14 @@ import (
 )
 
 // BasicAuth defines a security scheme using basic authentication. The scheme
-// protects the "signin" action used to create JWTs.
-var BasicAuth = BasicAuthSecurity("basic", func() {
+// protects the "login" action used to create JWTs.
+var LoginBasicAuth = BasicAuthSecurity("login", func() {
+	Description("Basic authentication used to authenticate security principal during signin")
+})
+
+// BasicAuth defines a security scheme using basic authentication. The scheme
+// protects the "signup" action used to create JWTs.
+var SignupBasicAuth = BasicAuthSecurity("signup", func() {
 	Description("Basic authentication used to authenticate security principal during signin")
 })
 
@@ -15,10 +21,10 @@ var JWTAuth = JWTSecurity("jwt", func() {
 	Description(`Secures endpoint by requiring a valid JWT token retrieved via the signin endpoint.`)
 })
 
-var _ = Service("auth", func() {
+var _ = Service("login", func() {
 	Error("unauthorized", String, "Credentials are invalid")
 	Method("Login", func() {
-		Security(BasicAuth)
+		Security(LoginBasicAuth)
 		Payload(func() {
 			Username("username", String, "Raw username")
 			Password("password", String, "User password")
@@ -36,17 +42,22 @@ var _ = Service("auth", func() {
 			})
 		})
 	})
+})
+
+var _ = Service("signup", func() {
 	Method("Signup", func() {
+		Security(SignupBasicAuth)
 		Payload(func() {
-			Attribute("username", String, "Raw username")
-			Attribute("password", String, "User password")
+			Username("username", String, "Raw username")
+			Password("password", String, "User password")
+			Required("username", "password")
 		})
 		Result(func() {
 			Attribute("jwt", String)
 			Attribute("Access-Control-Allow-Origin")
 		})
 		HTTP(func() {
-			GET("/signup/{username}/{password}")
+			GET("/signup")
 			Response(func() {
 				Header("Access-Control-Allow-Origin")
 				Body("jwt")

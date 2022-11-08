@@ -15,9 +15,9 @@ paths:
     /login:
         post:
             tags:
-                - auth
-            summary: Login auth
-            operationId: auth#Login
+                - login
+            summary: Login login
+            operationId: login#Login
             parameters:
                 - name: Authorization
                   in: header
@@ -35,22 +35,17 @@ paths:
             schemes:
                 - http
             security:
-                - basic_header_Authorization: []
-    /signup/{username}/{password}:
+                - login_header_Authorization: []
+    /signup:
         get:
             tags:
-                - auth
-            summary: Signup auth
-            operationId: auth#Signup
+                - signup
+            summary: Signup signup
+            operationId: signup#Signup
             parameters:
-                - name: username
-                  in: path
-                  description: Raw username
-                  required: true
-                  type: string
-                - name: password
-                  in: path
-                  description: User password
+                - name: Authorization
+                  in: header
+                  description: Basic Auth security using Basic scheme (https://tools.ietf.org/html/rfc7617)
                   required: true
                   type: string
             responses:
@@ -63,6 +58,8 @@ paths:
                             type: string
             schemes:
                 - http
+            security:
+                - signup_header_Authorization: []
     /upload/{content}:
         get:
             tags:
@@ -94,11 +91,14 @@ paths:
             security:
                 - jwt_header_Authorization: []
 securityDefinitions:
-    basic_header_Authorization:
-        type: basic
-        description: Basic authentication used to authenticate security principal during signin
     jwt_header_Authorization:
         type: apiKey
         description: Secures endpoint by requiring a valid JWT token retrieved via the signin endpoint.
         name: Authorization
         in: header
+    login_header_Authorization:
+        type: basic
+        description: Basic authentication used to authenticate security principal during signin
+    signup_header_Authorization:
+        type: basic
+        description: Basic authentication used to authenticate security principal during signin
