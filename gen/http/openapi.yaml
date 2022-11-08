@@ -13,7 +13,7 @@ produces:
     - application/gob
 paths:
     /login:
-        get:
+        post:
             tags:
                 - login
             summary: Login login

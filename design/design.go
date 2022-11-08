@@ -37,7 +37,7 @@ var _ = Service("login", func() {
 			Attribute("Access-Control-Allow-Credentials")
 		})
 		HTTP(func() {
-			GET("/login")
+			POST("/login")
 			Response(func() {
 				Header("Access-Control-Allow-Methods")
 				Header("Access-Control-Allow-Origin")

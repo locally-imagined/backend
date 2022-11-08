@@ -7,7 +7,7 @@ servers:
       description: Default server for login
 paths:
     /login:
-        get:
+        post:
             tags:
                 - login
             summary: Login login
