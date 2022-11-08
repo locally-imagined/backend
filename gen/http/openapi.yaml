@@ -13,7 +13,7 @@ produces:
     - application/gob
 paths:
     /login:
-        post:
+        get:
             tags:
                 - login
             summary: Login login
@@ -31,6 +31,8 @@ paths:
                         type: string
                     headers:
                         Access-Control-Allow-Credentials:
+                            type: string
+                        Access-Control-Allow-Headers:
                             type: string
                         Access-Control-Allow-Origin:
                             type: string

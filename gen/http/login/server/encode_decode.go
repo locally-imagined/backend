@@ -23,6 +23,9 @@ func EncodeLoginResponse(encoder func(context.Context, http.ResponseWriter) goah
 		res, _ := v.(*login.LoginResult)
 		enc := encoder(ctx, w)
 		body := res.JWT
+		if res.AccessControlAllowHeaders != nil {
+			w.Header().Set("Access-Control-Allow-Headers", *res.AccessControlAllowHeaders)
+		}
 		if res.AccessControlAllowOrigin != nil {
 			w.Header().Set("Access-Control-Allow-Origin", *res.AccessControlAllowOrigin)
 		}

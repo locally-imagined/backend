@@ -22,7 +22,7 @@ import (
 // set to call the "login" service "Login" endpoint
 func (c *Client) BuildLoginRequest(ctx context.Context, v interface{}) (*http.Request, error) {
 	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: LoginLoginPath()}
-	req, err := http.NewRequest("POST", u.String(), nil)
+	req, err := http.NewRequest("GET", u.String(), nil)
 	if err != nil {
 		return nil, goahttp.ErrInvalidURL("login", "Login", u.String(), err)
 	}
@@ -74,9 +74,14 @@ func DecodeLoginResponse(decoder func(*http.Response) goahttp.Decoder, restoreBo
 				return nil, goahttp.ErrDecodingError("login", "Login", err)
 			}
 			var (
+				accessControlAllowHeaders     *string
 				accessControlAllowOrigin      *string
 				accessControlAllowCredentials *string
 			)
+			accessControlAllowHeadersRaw := resp.Header.Get("Access-Control-Allow-Headers")
+			if accessControlAllowHeadersRaw != "" {
+				accessControlAllowHeaders = &accessControlAllowHeadersRaw
+			}
 			accessControlAllowOriginRaw := resp.Header.Get("Access-Control-Allow-Origin")
 			if accessControlAllowOriginRaw != "" {
 				accessControlAllowOrigin = &accessControlAllowOriginRaw
@@ -85,7 +90,7 @@ func DecodeLoginResponse(decoder func(*http.Response) goahttp.Decoder, restoreBo
 			if accessControlAllowCredentialsRaw != "" {
 				accessControlAllowCredentials = &accessControlAllowCredentialsRaw
 			}
-			res := NewLoginResultOK(body, accessControlAllowOrigin, accessControlAllowCredentials)
+			res := NewLoginResultOK(body, accessControlAllowHeaders, accessControlAllowOrigin, accessControlAllowCredentials)
 			return res, nil
 		default:
 			body, _ := io.ReadAll(resp.Body)

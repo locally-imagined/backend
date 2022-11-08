@@ -48,7 +48,7 @@ func (s *Service) Login(ctx context.Context, p *login.LoginPayload) (*login.Logi
 	creds := "true"
 	token, err := auth.MakeToken(p.Username)
 	if err != nil {
-		return &login.LoginResult{JWT: nil, AccessControlAllowOrigin: &access}, err
+		return &login.LoginResult{JWT: nil, AccessControlAllowHeaders: &access, AccessControlAllowOrigin: &access, AccessControlAllowCredentials: &creds}, err
 	}
-	return &login.LoginResult{JWT: &token, AccessControlAllowOrigin: &access, AccessControlAllowCredentials: &creds}, nil
+	return &login.LoginResult{JWT: &token, AccessControlAllowHeaders: &access, AccessControlAllowOrigin: &access, AccessControlAllowCredentials: &creds}, nil
 }

@@ -46,6 +46,7 @@ type LoginPayload struct {
 // LoginResult is the result type of the login service Login method.
 type LoginResult struct {
 	JWT                           *string
+	AccessControlAllowHeaders     *string
 	AccessControlAllowOrigin      *string
 	AccessControlAllowCredentials *string
 }
