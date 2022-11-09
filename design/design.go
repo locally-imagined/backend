@@ -2,6 +2,7 @@ package design
 
 import (
 	. "goa.design/goa/v3/dsl"
+	cors "goa.design/plugins/v3/cors/dsl"
 )
 
 // BasicAuth defines a security scheme using basic authentication. The scheme
@@ -22,6 +23,13 @@ var JWTAuth = JWTSecurity("jwt", func() {
 })
 
 var _ = Service("login", func() {
+	cors.Origin("http://localhost:3000", func() { // Define CORS policy, may be prefixed with "*" wildcard
+		cors.Headers("*")           // One or more authorized headers, use "*" to authorize all
+		cors.Methods("GET", "POST") // One or more authorized HTTP methods
+		cors.Expose("*")            // One or more headers exposed to clients
+		cors.MaxAge(600)            // How long to cache a preflight request response
+		cors.Credentials()          // Sets Access-Control-Allow-Credentials header
+	})
 	Error("unauthorized", String, "Credentials are invalid")
 	Method("Login", func() {
 		Security(LoginBasicAuth)
