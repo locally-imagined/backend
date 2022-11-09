@@ -32,7 +32,33 @@ func EncodeSignupResponse(encoder func(context.Context, http.ResponseWriter) goa
 // endpoint.
 func DecodeSignupRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (interface{}, error) {
 	return func(r *http.Request) (interface{}, error) {
-		payload := NewSignupPayload()
+		var (
+			firstName string
+			lastName  string
+			email     string
+			phone     string
+			err       error
+		)
+		firstName = r.URL.Query().Get("firstName")
+		if firstName == "" {
+			err = goa.MergeErrors(err, goa.MissingFieldError("firstName", "query string"))
+		}
+		lastName = r.URL.Query().Get("lastName")
+		if lastName == "" {
+			err = goa.MergeErrors(err, goa.MissingFieldError("lastName", "query string"))
+		}
+		email = r.URL.Query().Get("email")
+		if email == "" {
+			err = goa.MergeErrors(err, goa.MissingFieldError("email", "query string"))
+		}
+		phone = r.URL.Query().Get("phone")
+		if phone == "" {
+			err = goa.MergeErrors(err, goa.MissingFieldError("phone", "query string"))
+		}
+		if err != nil {
+			return nil, err
+		}
+		payload := NewSignupPayload(firstName, lastName, email, phone)
 		user, pass, ok := r.BasicAuth()
 		if !ok {
 			return nil, goa.MissingFieldError("Authorization", "header")

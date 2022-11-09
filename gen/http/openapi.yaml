@@ -40,6 +40,26 @@ paths:
             summary: Signup signup
             operationId: signup#Signup
             parameters:
+                - name: firstName
+                  in: query
+                  description: User first name
+                  required: true
+                  type: string
+                - name: lastName
+                  in: query
+                  description: User last name
+                  required: true
+                  type: string
+                - name: email
+                  in: query
+                  description: User email
+                  required: true
+                  type: string
+                - name: phone
+                  in: query
+                  description: User phone number
+                  required: true
+                  type: string
                 - name: Authorization
                   in: header
                   description: Basic Auth security using Basic scheme (https://tools.ietf.org/html/rfc7617)

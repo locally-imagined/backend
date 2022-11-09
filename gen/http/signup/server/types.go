@@ -12,8 +12,12 @@ import (
 )
 
 // NewSignupPayload builds a signup service Signup endpoint payload.
-func NewSignupPayload() *signup.SignupPayload {
+func NewSignupPayload(firstName string, lastName string, email string, phone string) *signup.SignupPayload {
 	v := &signup.SignupPayload{}
+	v.FirstName = firstName
+	v.LastName = lastName
+	v.Email = email
+	v.Phone = phone
 
 	return v
 }
