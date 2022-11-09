@@ -4,7 +4,6 @@ import (
 	"backend/auth"
 	"backend/gen/upload"
 	"context"
-	"fmt"
 	"time"
 
 	"os"
@@ -13,7 +12,6 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 
 	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/awsutil"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
@@ -72,16 +70,19 @@ func (s *Service) UploadPhoto(ctx context.Context, p *upload.UploadPhotoPayload)
 
 	new_uuid := uuid.NewString()
 	// put the object in the bucket
-	resp, err := svc.PutObjectWithContext(ctx, &s3.PutObjectInput{
+	_, err := svc.PutObjectWithContext(ctx, &s3.PutObjectInput{
 		Bucket: aws.String(awsBucketName),
-		Key:    aws.String(new_uuid),
+		Key:    aws.String("public/" + new_uuid),
 		Body:   reader,
 	})
 	if err != nil {
 		return &upload.UploadPhotoResult{Success: &star}, err
 	}
-
-	// insert uuid into the database
-	fmt.Printf("response %s", awsutil.Prettify(resp))
+	// x := resp.
+	// 	// insert uuid into the database
+	// 	fmt.Printf("response %s", awsutil.Prettify(resp))
+	// params := &s3.ListObjectsInput{
+	// 	Bucket: aws.String("bucket"),
+	// }
 	return &upload.UploadPhotoResult{Success: &star}, nil
 }
