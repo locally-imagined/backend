@@ -52,10 +52,9 @@ func (s *Service) BasicAuth(ctx context.Context, user, pass string, scheme *secu
 }
 
 func (s *Service) Signup(ctx context.Context, p *signup.SignupPayload) (*signup.SignupResult, error) {
-	access := "*"
 	token, err := auth.MakeToken(p.Username)
 	if err != nil {
-		return &signup.SignupResult{JWT: nil, AccessControlAllowOrigin: &access}, err
+		return &signup.SignupResult{JWT: nil}, err
 	}
-	return &signup.SignupResult{JWT: &token, AccessControlAllowOrigin: &access}, nil
+	return &signup.SignupResult{JWT: &token}, nil
 }
