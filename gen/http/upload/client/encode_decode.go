@@ -32,7 +32,7 @@ func (c *Client) BuildUploadPhotoRequest(ctx context.Context, v interface{}) (*h
 		content = p.Content
 	}
 	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: UploadPhotoUploadPath(content)}
-	req, err := http.NewRequest("GET", u.String(), nil)
+	req, err := http.NewRequest("POST", u.String(), nil)
 	if err != nil {
 		return nil, goahttp.ErrInvalidURL("upload", "upload_photo", u.String(), err)
 	}

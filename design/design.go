@@ -54,7 +54,7 @@ var _ = Service("upload", func() {
 		})
 		HTTP(func() {
 			Header("Authorization")
-			GET("/upload/{content}")
+			POST("/upload/{content}")
 			Response(func() {
 				Header("Access-Control-Allow-Origin")
 				Body("success")

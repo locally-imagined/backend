@@ -87,7 +87,7 @@ paths:
                                 example: Autem rerum.
                             example: Debitis illo iusto maxime voluptas aliquid totam.
     /upload/{content}:
-        get:
+        post:
             tags:
                 - upload
             summary: upload_photo upload

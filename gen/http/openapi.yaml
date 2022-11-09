@@ -67,7 +67,7 @@ paths:
             schemes:
                 - http
     /upload/{content}:
-        get:
+        post:
             tags:
                 - upload
             summary: upload_photo upload
