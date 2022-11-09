@@ -33,9 +33,9 @@ upload upload-photo
 
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
-	return os.Args[0] + ` login login --username "Et incidunt assumenda sequi." --password "Reiciendis voluptas in autem dolorem."` + "\n" +
-		os.Args[0] + ` signup signup --username "Odit nesciunt dicta tempore fugiat." --password "Velit rerum occaecati quia."` + "\n" +
-		os.Args[0] + ` upload upload-photo --content "RWFydW0gcXVpYSBhdXQu" --token "Aut id placeat voluptate expedita sunt culpa."` + "\n" +
+	return os.Args[0] + ` login login --username "Officia officia quia quisquam." --password "Tempore enim voluptatem unde cumque."` + "\n" +
+		os.Args[0] + ` signup signup --username "Et incidunt assumenda sequi." --password "Reiciendis voluptas in autem dolorem."` + "\n" +
+		os.Args[0] + ` upload upload-photo --content "TmlzaSB0ZW1wb3JhIGRlbGVjdHVzIGFyY2hpdGVjdG8u" --token "Odit nesciunt dicta tempore fugiat."` + "\n" +
 		""
 }
 
@@ -204,7 +204,7 @@ Login implements Login.
     -password STRING: User password
 
 Example:
-    %[1]s login login --username "Et incidunt assumenda sequi." --password "Reiciendis voluptas in autem dolorem."
+    %[1]s login login --username "Officia officia quia quisquam." --password "Tempore enim voluptatem unde cumque."
 `, os.Args[0])
 }
 
@@ -229,7 +229,7 @@ Signup implements Signup.
     -password STRING: User password
 
 Example:
-    %[1]s signup signup --username "Odit nesciunt dicta tempore fugiat." --password "Velit rerum occaecati quia."
+    %[1]s signup signup --username "Et incidunt assumenda sequi." --password "Reiciendis voluptas in autem dolorem."
 `, os.Args[0])
 }
 
@@ -254,6 +254,6 @@ UploadPhoto implements upload_photo.
     -token STRING: 
 
 Example:
-    %[1]s upload upload-photo --content "RWFydW0gcXVpYSBhdXQu" --token "Aut id placeat voluptate expedita sunt culpa."
+    %[1]s upload upload-photo --content "TmlzaSB0ZW1wb3JhIGRlbGVjdHVzIGFyY2hpdGVjdG8u" --token "Odit nesciunt dicta tempore fugiat."
 `, os.Args[0])
 }
