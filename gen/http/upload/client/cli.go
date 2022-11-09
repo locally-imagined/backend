@@ -24,7 +24,7 @@ func BuildUploadPhotoPayload(uploadUploadPhotoBody string, uploadUploadPhotoToke
 	}
 	v := body
 	res := &upload.UploadPhotoPayload{
-		Content: &v,
+		Content: v,
 	}
 	res.Token = token
 

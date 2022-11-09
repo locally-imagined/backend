@@ -15,7 +15,7 @@ import (
 func NewUploadPhotoPayload(body []byte, token string) *upload.UploadPhotoPayload {
 	v := body
 	res := &upload.UploadPhotoPayload{
-		Content: &v,
+		Content: v,
 	}
 	res.Token = token
 

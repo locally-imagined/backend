@@ -98,7 +98,7 @@ var _ = Service("upload", func() {
 		Payload(func() {
 			Token("token", String, "jwt used for auth")
 			Attribute("content", Bytes, "photo content")
-			Required("token")
+			Required("token", "content")
 		})
 		Result(func() {
 			Attribute("success", String)

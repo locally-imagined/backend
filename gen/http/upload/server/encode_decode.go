@@ -41,10 +41,9 @@ func DecodeUploadPhotoRequest(mux goahttp.Muxer, decoder func(*http.Request) goa
 		err = decoder(r).Decode(&body)
 		if err != nil {
 			if err == io.EOF {
-				err = nil
-			} else {
-				return nil, goa.DecodePayloadError(err.Error())
+				return nil, goa.MissingPayloadError()
 			}
+			return nil, goa.DecodePayloadError(err.Error())
 		}
 
 		var (
