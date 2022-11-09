@@ -57,6 +57,8 @@ func (s *Service) Signup(ctx context.Context, p *signup.SignupPayload) (*signup.
 		return &signup.SignupResult{JWT: nil}, err
 	}
 	hashedPassword := auth.ShaHashing(p.Password)
+	// _, err = dbPool.Query("INSERT INTO test_users (username, password, firstName, lastName, email, phone)
+	//	Values ($1, $2, $3, $4, $5, $6)", p.Username, hashedPassword, p.FirstName, p.LastName, p.Email, p.Phone)
 	_, err = dbPool.Query("INSERT INTO test_users (username, password) Values ($1, $2)", p.Username, hashedPassword)
 	if err != nil {
 		return &signup.SignupResult{JWT: nil}, err
