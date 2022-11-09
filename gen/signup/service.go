@@ -41,6 +41,14 @@ type SignupPayload struct {
 	Username string
 	// User password
 	Password string
+	// User first name
+	FirstName string
+	// User last name
+	LastName string
+	// User email
+	Email string
+	// User phone number
+	Phone string
 }
 
 // SignupResult is the result type of the signup service Signup method.

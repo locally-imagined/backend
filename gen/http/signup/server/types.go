@@ -9,11 +9,48 @@ package server
 
 import (
 	signup "backend/gen/signup"
+
+	goa "goa.design/goa/v3/pkg"
 )
 
+// SignupRequestBody is the type of the "signup" service "Signup" endpoint HTTP
+// request body.
+type SignupRequestBody struct {
+	// User first name
+	FirstName *string `form:"firstName,omitempty" json:"firstName,omitempty" xml:"firstName,omitempty"`
+	// User last name
+	LastName *string `form:"lastName,omitempty" json:"lastName,omitempty" xml:"lastName,omitempty"`
+	// User email
+	Email *string `form:"email,omitempty" json:"email,omitempty" xml:"email,omitempty"`
+	// User phone number
+	Phone *string `form:"phone,omitempty" json:"phone,omitempty" xml:"phone,omitempty"`
+}
+
 // NewSignupPayload builds a signup service Signup endpoint payload.
-func NewSignupPayload() *signup.SignupPayload {
-	v := &signup.SignupPayload{}
+func NewSignupPayload(body *SignupRequestBody) *signup.SignupPayload {
+	v := &signup.SignupPayload{
+		FirstName: *body.FirstName,
+		LastName:  *body.LastName,
+		Email:     *body.Email,
+		Phone:     *body.Phone,
+	}
 
 	return v
+}
+
+// ValidateSignupRequestBody runs the validations defined on SignupRequestBody
+func ValidateSignupRequestBody(body *SignupRequestBody) (err error) {
+	if body.FirstName == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("firstName", "body"))
+	}
+	if body.LastName == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("lastName", "body"))
+	}
+	if body.Email == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("email", "body"))
+	}
+	if body.Phone == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("phone", "body"))
+	}
+	return
 }
