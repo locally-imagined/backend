@@ -77,17 +77,21 @@ var _ = Service("signup", func() {
 		Payload(func() {
 			Username("username", String, "Raw username")
 			Password("password", String, "User password")
-			// Attribute("firstName", String, "User first name")
-			// Attribute("lastName", String, "User last name")
-			// Attribute("email", String, "User email")
-			// Attribute("phone", String, "User phone number")
-			Required("username", "password") //, "firstName", "lastName", "email", "phone")
+			Attribute("firstName", String, "User first name")
+			Attribute("lastName", String, "User last name")
+			Attribute("email", String, "User email")
+			Attribute("phone", String, "User phone number")
+			Required("username", "password", "firstName", "lastName", "email", "phone")
 		})
 		Result(func() {
 			Attribute("jwt", String)
 		})
 		HTTP(func() {
 			POST("/signup")
+			Param("firstName")
+			Param("lastName")
+			Param("email")
+			Param("phone")
 			Response(func() {
 				Body("jwt")
 			})
