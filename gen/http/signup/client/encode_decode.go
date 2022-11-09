@@ -73,19 +73,7 @@ func DecodeSignupResponse(decoder func(*http.Response) goahttp.Decoder, restoreB
 			if err != nil {
 				return nil, goahttp.ErrDecodingError("signup", "Signup", err)
 			}
-			var (
-				accessControlAllowOrigin      *string
-				accessControlAllowCredentials *string
-			)
-			accessControlAllowOriginRaw := resp.Header.Get("Access-Control-Allow-Origin")
-			if accessControlAllowOriginRaw != "" {
-				accessControlAllowOrigin = &accessControlAllowOriginRaw
-			}
-			accessControlAllowCredentialsRaw := resp.Header.Get("Access-Control-Allow-Credentials")
-			if accessControlAllowCredentialsRaw != "" {
-				accessControlAllowCredentials = &accessControlAllowCredentialsRaw
-			}
-			res := NewSignupResultOK(body, accessControlAllowOrigin, accessControlAllowCredentials)
+			res := NewSignupResultOK(body)
 			return res, nil
 		default:
 			body, _ := io.ReadAll(resp.Body)

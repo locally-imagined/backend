@@ -50,11 +50,6 @@ paths:
                     description: OK response.
                     schema:
                         type: string
-                    headers:
-                        Access-Control-Allow-Credentials:
-                            type: string
-                        Access-Control-Allow-Origin:
-                            type: string
             schemes:
                 - http
             security:
