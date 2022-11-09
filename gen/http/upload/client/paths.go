@@ -7,11 +7,7 @@
 
 package client
 
-import (
-	"fmt"
-)
-
 // UploadPhotoUploadPath returns the URL path to the upload service upload_photo HTTP endpoint.
-func UploadPhotoUploadPath(content []byte) string {
-	return fmt.Sprintf("/upload/%v", content)
+func UploadPhotoUploadPath() string {
+	return "/upload"
 }

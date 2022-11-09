@@ -68,11 +68,11 @@ func (s *Service) UploadPhoto(ctx context.Context, p *upload.UploadPhotoPayload)
 	// put the bytes into a reader, bytes must be in base 64 for this to work
 	reader := strings.NewReader(string(p.Content))
 
-	new_uuid := uuid.NewString()
+	postID := uuid.NewString()
 	// put the object in the bucket
 	_, err := svc.PutObjectWithContext(ctx, &s3.PutObjectInput{
 		Bucket: aws.String(awsBucketName),
-		Key:    aws.String("public/" + new_uuid),
+		Key:    aws.String("public/" + postID),
 		Body:   reader,
 	})
 	if err != nil {

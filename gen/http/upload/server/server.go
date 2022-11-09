@@ -50,8 +50,8 @@ func New(
 ) *Server {
 	return &Server{
 		Mounts: []*MountPoint{
-			{"UploadPhoto", "POST", "/upload/{content}"},
-			{"CORS", "OPTIONS", "/upload/{content}"},
+			{"UploadPhoto", "POST", "/upload"},
+			{"CORS", "OPTIONS", "/upload"},
 		},
 		UploadPhoto: NewUploadPhotoHandler(e.UploadPhoto, mux, decoder, encoder, errhandler, formatter),
 		CORS:        NewCORSHandler(),
@@ -90,7 +90,7 @@ func MountUploadPhotoHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("POST", "/upload/{content}", f)
+	mux.Handle("POST", "/upload", f)
 }
 
 // NewUploadPhotoHandler creates a HTTP handler which loads the HTTP request
@@ -136,7 +136,7 @@ func NewUploadPhotoHandler(
 // service upload.
 func MountCORSHandler(mux goahttp.Muxer, h http.Handler) {
 	h = HandleUploadOrigin(h)
-	mux.Handle("OPTIONS", "/upload/{content}", h.ServeHTTP)
+	mux.Handle("OPTIONS", "/upload", h.ServeHTTP)
 }
 
 // NewCORSHandler creates a HTTP handler which returns a simple 200 response.

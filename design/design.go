@@ -104,7 +104,8 @@ var _ = Service("upload", func() {
 			Attribute("success", String)
 		})
 		HTTP(func() {
-			POST("/upload/{content}")
+			POST("/upload")
+			Body("content")
 			Response(func() {
 				Body("success")
 			})

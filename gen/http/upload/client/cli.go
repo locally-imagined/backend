@@ -13,18 +13,20 @@ import (
 
 // BuildUploadPhotoPayload builds the payload for the upload upload_photo
 // endpoint from CLI flags.
-func BuildUploadPhotoPayload(uploadUploadPhotoContent string, uploadUploadPhotoToken string) (*upload.UploadPhotoPayload, error) {
-	var content []byte
+func BuildUploadPhotoPayload(uploadUploadPhotoBody string, uploadUploadPhotoToken string) (*upload.UploadPhotoPayload, error) {
+	var body []byte
 	{
-		content = []byte(uploadUploadPhotoContent)
+		body = []byte(uploadUploadPhotoBody)
 	}
 	var token string
 	{
 		token = uploadUploadPhotoToken
 	}
-	v := &upload.UploadPhotoPayload{}
-	v.Content = content
-	v.Token = token
+	v := body
+	res := &upload.UploadPhotoPayload{
+		Content: &v,
+	}
+	res.Token = token
 
-	return v, nil
+	return res, nil
 }

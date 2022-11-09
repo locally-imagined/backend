@@ -10,6 +10,7 @@ package server
 import (
 	upload "backend/gen/upload"
 	"context"
+	"io"
 	"net/http"
 	"strings"
 
@@ -34,16 +35,21 @@ func EncodeUploadPhotoResponse(encoder func(context.Context, http.ResponseWriter
 func DecodeUploadPhotoRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (interface{}, error) {
 	return func(r *http.Request) (interface{}, error) {
 		var (
-			content []byte
-			token   string
-			err     error
-
-			params = mux.Vars(r)
+			body []byte
+			err  error
 		)
-		{
-			contentRaw := params["content"]
-			content = []byte(contentRaw)
+		err = decoder(r).Decode(&body)
+		if err != nil {
+			if err == io.EOF {
+				err = nil
+			} else {
+				return nil, goa.DecodePayloadError(err.Error())
+			}
 		}
+
+		var (
+			token string
+		)
 		token = r.Header.Get("Authorization")
 		if token == "" {
 			err = goa.MergeErrors(err, goa.MissingFieldError("Authorization", "header"))
@@ -51,7 +57,7 @@ func DecodeUploadPhotoRequest(mux goahttp.Muxer, decoder func(*http.Request) goa
 		if err != nil {
 			return nil, err
 		}
-		payload := NewUploadPhotoPayload(content, token)
+		payload := NewUploadPhotoPayload(body, token)
 		if strings.Contains(payload.Token, " ") {
 			// Remove authorization scheme prefix (e.g. "Bearer")
 			cred := strings.SplitN(payload.Token, " ", 2)[1]

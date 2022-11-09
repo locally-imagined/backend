@@ -22,17 +22,7 @@ import (
 // BuildUploadPhotoRequest instantiates a HTTP request object with method and
 // path set to call the "upload" service "upload_photo" endpoint
 func (c *Client) BuildUploadPhotoRequest(ctx context.Context, v interface{}) (*http.Request, error) {
-	var (
-		content []byte
-	)
-	{
-		p, ok := v.(*upload.UploadPhotoPayload)
-		if !ok {
-			return nil, goahttp.ErrInvalidType("upload", "upload_photo", "*upload.UploadPhotoPayload", v)
-		}
-		content = p.Content
-	}
-	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: UploadPhotoUploadPath(content)}
+	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: UploadPhotoUploadPath()}
 	req, err := http.NewRequest("POST", u.String(), nil)
 	if err != nil {
 		return nil, goahttp.ErrInvalidURL("upload", "upload_photo", u.String(), err)
@@ -59,6 +49,10 @@ func EncodeUploadPhotoRequest(encoder func(*http.Request) goahttp.Encoder) func(
 			} else {
 				req.Header.Set("Authorization", head)
 			}
+		}
+		body := p.Content
+		if err := encoder(req).Encode(&body); err != nil {
+			return goahttp.ErrEncodingError("upload", "upload_photo", err)
 		}
 		return nil
 	}

@@ -35,7 +35,7 @@ upload upload-photo
 func UsageExamples() string {
 	return os.Args[0] + ` login login --username "Qui soluta ut qui perferendis." --password "Quia qui."` + "\n" +
 		os.Args[0] + ` signup signup --username "Tempore enim voluptatem unde cumque." --password "Neque ut."` + "\n" +
-		os.Args[0] + ` upload upload-photo --content "Q29ycG9yaXMgaXBzdW0gbmVxdWUu" --token "Unde vero."` + "\n" +
+		os.Args[0] + ` upload upload-photo --body "VW5kZSBxdW9kLg==" --token "Unde vero."` + "\n" +
 		""
 }
 
@@ -63,9 +63,9 @@ func ParseEndpoint(
 
 		uploadFlags = flag.NewFlagSet("upload", flag.ContinueOnError)
 
-		uploadUploadPhotoFlags       = flag.NewFlagSet("upload-photo", flag.ExitOnError)
-		uploadUploadPhotoContentFlag = uploadUploadPhotoFlags.String("content", "REQUIRED", "photo content")
-		uploadUploadPhotoTokenFlag   = uploadUploadPhotoFlags.String("token", "REQUIRED", "")
+		uploadUploadPhotoFlags     = flag.NewFlagSet("upload-photo", flag.ExitOnError)
+		uploadUploadPhotoBodyFlag  = uploadUploadPhotoFlags.String("body", "REQUIRED", "")
+		uploadUploadPhotoTokenFlag = uploadUploadPhotoFlags.String("token", "REQUIRED", "")
 	)
 	loginFlags.Usage = loginUsage
 	loginLoginFlags.Usage = loginLoginUsage
@@ -172,7 +172,7 @@ func ParseEndpoint(
 			switch epn {
 			case "upload-photo":
 				endpoint = c.UploadPhoto()
-				data, err = uploadc.BuildUploadPhotoPayload(*uploadUploadPhotoContentFlag, *uploadUploadPhotoTokenFlag)
+				data, err = uploadc.BuildUploadPhotoPayload(*uploadUploadPhotoBodyFlag, *uploadUploadPhotoTokenFlag)
 			}
 		}
 	}
@@ -247,13 +247,13 @@ Additional help:
 `, os.Args[0])
 }
 func uploadUploadPhotoUsage() {
-	fmt.Fprintf(os.Stderr, `%[1]s [flags] upload upload-photo -content STRING -token STRING
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] upload upload-photo -body STRING -token STRING
 
 UploadPhoto implements upload_photo.
-    -content STRING: photo content
+    -body STRING: 
     -token STRING: 
 
 Example:
-    %[1]s upload upload-photo --content "Q29ycG9yaXMgaXBzdW0gbmVxdWUu" --token "Unde vero."
+    %[1]s upload upload-photo --body "VW5kZSBxdW9kLg==" --token "Unde vero."
 `, os.Args[0])
 }

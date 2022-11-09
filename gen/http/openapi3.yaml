@@ -19,8 +19,8 @@ paths:
                         application/json:
                             schema:
                                 type: string
-                                example: Autem neque numquam.
-                            example: Velit rerum occaecati quia.
+                                example: Odit nesciunt dicta tempore fugiat.
+                            example: Commodi officiis numquam molestiae.
             security:
                 - login_header_Authorization: []
     /signup:
@@ -36,96 +36,68 @@ paths:
                         application/json:
                             schema:
                                 type: string
-                                example: Nisi tempora delectus architecto.
-                            example: Voluptate quod.
+                                example: Velit rerum occaecati quia.
+                            example: Nam doloribus dolor commodi consequuntur perferendis ea.
             security:
                 - signup_header_Authorization: []
-    /upload/{content}:
+    /upload:
         post:
             tags:
                 - upload
             summary: upload_photo upload
             operationId: upload#upload_photo
-            parameters:
-                - name: content
-                  in: path
-                  description: photo content
-                  required: true
-                  schema:
-                    type: string
-                    description: photo content
-                    example:
-                        - 68
-                        - 111
-                        - 108
-                        - 111
-                        - 114
-                        - 117
-                        - 109
-                        - 32
-                        - 97
-                        - 117
-                        - 116
-                        - 32
-                        - 97
-                        - 117
-                        - 116
-                        - 32
-                        - 105
-                        - 109
-                        - 112
-                        - 101
-                        - 100
-                        - 105
-                        - 116
-                        - 32
-                        - 110
-                        - 105
-                        - 115
-                        - 105
-                        - 32
-                        - 111
-                        - 100
-                        - 105
-                        - 111
-                        - 46
-                    format: binary
-                  example:
-                    - 67
-                    - 111
-                    - 109
-                    - 109
-                    - 111
-                    - 100
-                    - 105
-                    - 32
-                    - 111
-                    - 102
-                    - 102
-                    - 105
-                    - 99
-                    - 105
-                    - 105
-                    - 115
-                    - 32
-                    - 110
-                    - 117
-                    - 109
-                    - 113
-                    - 117
-                    - 97
-                    - 109
-                    - 32
-                    - 109
-                    - 111
-                    - 108
-                    - 101
-                    - 115
-                    - 116
-                    - 105
-                    - 97
-                    - 101
-                    - 46
+            requestBody:
+                description: photo content
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: string
+                            description: photo content
+                            example:
+                                - 86
+                                - 111
+                                - 108
+                                - 117
+                                - 112
+                                - 116
+                                - 97
+                                - 116
+                                - 101
+                                - 32
+                                - 113
+                                - 117
+                                - 111
+                                - 100
+                                - 46
+                            format: binary
+                        example:
+                            - 81
+                            - 117
+                            - 105
+                            - 32
+                            - 117
+                            - 110
+                            - 100
+                            - 101
+                            - 32
+                            - 101
+                            - 116
+                            - 32
+                            - 109
+                            - 111
+                            - 108
+                            - 108
+                            - 105
+                            - 116
+                            - 105
+                            - 97
+                            - 32
+                            - 109
+                            - 111
+                            - 100
+                            - 105
+                            - 46
             responses:
                 "200":
                     description: OK response.
@@ -133,8 +105,8 @@ paths:
                         application/json:
                             schema:
                                 type: string
-                                example: Odit nesciunt dicta tempore fugiat.
-                            example: Nam doloribus dolor commodi consequuntur perferendis ea.
+                                example: Dolorum aut aut impedit nisi odio.
+                            example: Earum quia aut.
             security:
                 - jwt_header_Authorization: []
 components:

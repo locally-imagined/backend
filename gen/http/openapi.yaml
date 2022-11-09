@@ -54,24 +54,25 @@ paths:
                 - http
             security:
                 - signup_header_Authorization: []
-    /upload/{content}:
+    /upload:
         post:
             tags:
                 - upload
             summary: upload_photo upload
             operationId: upload#upload_photo
             parameters:
-                - name: content
-                  in: path
-                  description: photo content
-                  required: true
-                  type: string
-                  format: byte
                 - name: Authorization
                   in: header
                   description: jwt used for auth
                   required: true
                   type: string
+                - name: bytes
+                  in: body
+                  description: photo content
+                  required: true
+                  schema:
+                    type: string
+                    format: byte
             responses:
                 "200":
                     description: OK response.
