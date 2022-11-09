@@ -33,7 +33,7 @@ func (c *Client) BuildUploadPhotoRequest(ctx context.Context, v interface{}) (*h
 		content = p.Content
 	}
 	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: UploadPhotoUploadPath(content)}
-	req, err := http.NewRequest("GET", u.String(), nil)
+	req, err := http.NewRequest("POST", u.String(), nil)
 	if err != nil {
 		return nil, goahttp.ErrInvalidURL("upload", "upload_photo", u.String(), err)
 	}
@@ -91,14 +91,7 @@ func DecodeUploadPhotoResponse(decoder func(*http.Response) goahttp.Decoder, res
 			if err != nil {
 				return nil, goahttp.ErrDecodingError("upload", "upload_photo", err)
 			}
-			var (
-				accessControlAllowOrigin *string
-			)
-			accessControlAllowOriginRaw := resp.Header.Get("Access-Control-Allow-Origin")
-			if accessControlAllowOriginRaw != "" {
-				accessControlAllowOrigin = &accessControlAllowOriginRaw
-			}
-			res := NewUploadPhotoResultOK(body, accessControlAllowOrigin)
+			res := NewUploadPhotoResultOK(body)
 			return res, nil
 		default:
 			body, _ := io.ReadAll(resp.Body)

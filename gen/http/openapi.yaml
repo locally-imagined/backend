@@ -55,7 +55,7 @@ paths:
             security:
                 - signup_header_Authorization: []
     /upload/{content}:
-        get:
+        post:
             tags:
                 - upload
             summary: upload_photo upload
@@ -77,9 +77,6 @@ paths:
                     description: OK response.
                     schema:
                         type: string
-                    headers:
-                        Access-Control-Allow-Origin:
-                            type: string
             schemes:
                 - http
             security:

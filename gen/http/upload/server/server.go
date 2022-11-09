@@ -50,7 +50,7 @@ func New(
 ) *Server {
 	return &Server{
 		Mounts: []*MountPoint{
-			{"UploadPhoto", "GET", "/upload/{content}"},
+			{"UploadPhoto", "POST", "/upload/{content}"},
 			{"CORS", "OPTIONS", "/upload/{content}"},
 		},
 		UploadPhoto: NewUploadPhotoHandler(e.UploadPhoto, mux, decoder, encoder, errhandler, formatter),
@@ -90,7 +90,7 @@ func MountUploadPhotoHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("GET", "/upload/{content}", f)
+	mux.Handle("POST", "/upload/{content}", f)
 }
 
 // NewUploadPhotoHandler creates a HTTP handler which loads the HTTP request

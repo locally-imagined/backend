@@ -24,9 +24,6 @@ func EncodeUploadPhotoResponse(encoder func(context.Context, http.ResponseWriter
 		res, _ := v.(*upload.UploadPhotoResult)
 		enc := encoder(ctx, w)
 		body := res.Success
-		if res.AccessControlAllowOrigin != nil {
-			w.Header().Set("Access-Control-Allow-Origin", *res.AccessControlAllowOrigin)
-		}
 		w.WriteHeader(http.StatusOK)
 		return enc.Encode(body)
 	}

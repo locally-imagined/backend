@@ -102,12 +102,10 @@ var _ = Service("upload", func() {
 		})
 		Result(func() {
 			Attribute("success", String)
-			Attribute("Access-Control-Allow-Origin")
 		})
 		HTTP(func() {
-			GET("/upload/{content}")
+			POST("/upload/{content}")
 			Response(func() {
-				Header("Access-Control-Allow-Origin")
 				Body("success")
 			})
 		})
