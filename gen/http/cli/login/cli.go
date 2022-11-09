@@ -33,14 +33,9 @@ upload upload-photo
 
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
-	return os.Args[0] + ` login login --username "Neque ut." --password "Accusantium ipsam nisi pariatur magnam."` + "\n" +
-		os.Args[0] + ` signup signup --body '{
-      "email": "Laborum ut iste et harum.",
-      "firstName": "Corporis ipsum neque.",
-      "lastName": "Unde vero.",
-      "phone": "Unde quod."
-   }' --username "Autem neque numquam." --password "Nisi tempora delectus architecto."` + "\n" +
-		os.Args[0] + ` upload upload-photo --content "RG9sb3J1bSBhdXQgYXV0IGltcGVkaXQgbmlzaSBvZGlvLg==" --token "Commodi officiis numquam molestiae."` + "\n" +
+	return os.Args[0] + ` login login --username "Quia qui." --password "Debitis explicabo qui eveniet odio sit ducimus."` + "\n" +
+		os.Args[0] + ` signup signup --username "Neque ut." --password "Accusantium ipsam nisi pariatur magnam."` + "\n" +
+		os.Args[0] + ` upload upload-photo --content "VW5kZSB2ZXJvLg==" --token "Laborum ut iste et harum."` + "\n" +
 		""
 }
 
@@ -63,7 +58,6 @@ func ParseEndpoint(
 		signupFlags = flag.NewFlagSet("signup", flag.ContinueOnError)
 
 		signupSignupFlags        = flag.NewFlagSet("signup", flag.ExitOnError)
-		signupSignupBodyFlag     = signupSignupFlags.String("body", "REQUIRED", "")
 		signupSignupUsernameFlag = signupSignupFlags.String("username", "REQUIRED", "Raw username")
 		signupSignupPasswordFlag = signupSignupFlags.String("password", "REQUIRED", "User password")
 
@@ -171,7 +165,7 @@ func ParseEndpoint(
 			switch epn {
 			case "signup":
 				endpoint = c.Signup()
-				data, err = signupc.BuildSignupPayload(*signupSignupBodyFlag, *signupSignupUsernameFlag, *signupSignupPasswordFlag)
+				data, err = signupc.BuildSignupPayload(*signupSignupUsernameFlag, *signupSignupPasswordFlag)
 			}
 		case "upload":
 			c := uploadc.NewClient(scheme, host, doer, enc, dec, restore)
@@ -210,7 +204,7 @@ Login implements Login.
     -password STRING: User password
 
 Example:
-    %[1]s login login --username "Neque ut." --password "Accusantium ipsam nisi pariatur magnam."
+    %[1]s login login --username "Quia qui." --password "Debitis explicabo qui eveniet odio sit ducimus."
 `, os.Args[0])
 }
 
@@ -228,20 +222,14 @@ Additional help:
 `, os.Args[0])
 }
 func signupSignupUsage() {
-	fmt.Fprintf(os.Stderr, `%[1]s [flags] signup signup -body JSON -username STRING -password STRING
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] signup signup -username STRING -password STRING
 
 Signup implements Signup.
-    -body JSON: 
     -username STRING: Raw username
     -password STRING: User password
 
 Example:
-    %[1]s signup signup --body '{
-      "email": "Laborum ut iste et harum.",
-      "firstName": "Corporis ipsum neque.",
-      "lastName": "Unde vero.",
-      "phone": "Unde quod."
-   }' --username "Autem neque numquam." --password "Nisi tempora delectus architecto."
+    %[1]s signup signup --username "Neque ut." --password "Accusantium ipsam nisi pariatur magnam."
 `, os.Args[0])
 }
 
@@ -266,6 +254,6 @@ UploadPhoto implements upload_photo.
     -token STRING: 
 
 Example:
-    %[1]s upload upload-photo --content "RG9sb3J1bSBhdXQgYXV0IGltcGVkaXQgbmlzaSBvZGlvLg==" --token "Commodi officiis numquam molestiae."
+    %[1]s upload upload-photo --content "VW5kZSB2ZXJvLg==" --token "Laborum ut iste et harum."
 `, os.Args[0])
 }

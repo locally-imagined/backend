@@ -9,21 +9,11 @@ package client
 
 import (
 	signup "backend/gen/signup"
-	"encoding/json"
-	"fmt"
 )
 
 // BuildSignupPayload builds the payload for the signup Signup endpoint from
 // CLI flags.
-func BuildSignupPayload(signupSignupBody string, signupSignupUsername string, signupSignupPassword string) (*signup.SignupPayload, error) {
-	var err error
-	var body SignupRequestBody
-	{
-		err = json.Unmarshal([]byte(signupSignupBody), &body)
-		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"email\": \"Laborum ut iste et harum.\",\n      \"firstName\": \"Corporis ipsum neque.\",\n      \"lastName\": \"Unde vero.\",\n      \"phone\": \"Unde quod.\"\n   }'")
-		}
-	}
+func BuildSignupPayload(signupSignupUsername string, signupSignupPassword string) (*signup.SignupPayload, error) {
 	var username string
 	{
 		username = signupSignupUsername
@@ -32,12 +22,7 @@ func BuildSignupPayload(signupSignupBody string, signupSignupUsername string, si
 	{
 		password = signupSignupPassword
 	}
-	v := &signup.SignupPayload{
-		FirstName: body.FirstName,
-		LastName:  body.LastName,
-		Email:     body.Email,
-		Phone:     body.Phone,
-	}
+	v := &signup.SignupPayload{}
 	v.Username = username
 	v.Password = password
 

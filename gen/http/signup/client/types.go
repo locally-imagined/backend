@@ -11,31 +11,6 @@ import (
 	signup "backend/gen/signup"
 )
 
-// SignupRequestBody is the type of the "signup" service "Signup" endpoint HTTP
-// request body.
-type SignupRequestBody struct {
-	// User first name
-	FirstName string `form:"firstName" json:"firstName" xml:"firstName"`
-	// User last name
-	LastName string `form:"lastName" json:"lastName" xml:"lastName"`
-	// User email
-	Email string `form:"email" json:"email" xml:"email"`
-	// User phone number
-	Phone string `form:"phone" json:"phone" xml:"phone"`
-}
-
-// NewSignupRequestBody builds the HTTP request body from the payload of the
-// "Signup" endpoint of the "signup" service.
-func NewSignupRequestBody(p *signup.SignupPayload) *SignupRequestBody {
-	body := &SignupRequestBody{
-		FirstName: p.FirstName,
-		LastName:  p.LastName,
-		Email:     p.Email,
-		Phone:     p.Phone,
-	}
-	return body
-}
-
 // NewSignupResultOK builds a "signup" service "Signup" endpoint result from a
 // HTTP "OK" response.
 func NewSignupResultOK(body string) *signup.SignupResult {
