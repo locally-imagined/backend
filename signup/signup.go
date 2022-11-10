@@ -30,7 +30,7 @@ func (s *Service) BasicAuth(ctx context.Context, user, pass string, scheme *secu
 	defer dbPool.Close()
 	var value string = ""
 	// Query for a value based on a single row.
-	row, err := dbPool.Query("SELECT username from test_users where username=$1", user)
+	row, err := dbPool.Query("SELECT username from users where username=$1", user)
 	if err != nil {
 		return ctx, ErrUnauthorized
 	}
