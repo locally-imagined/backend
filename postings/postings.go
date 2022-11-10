@@ -138,7 +138,8 @@ func (s *Service) GetPostPage(ctx context.Context, p *postings.GetPostPagePayloa
 	// FROM posts AS p LEFT JOIN images
 	// AS i ON p.postid = i.postid WHERE i.index =
 	// 0 OFFSET $1 ROWS FETCH NEXT 25 ROWS ONLY`
-	rows, err := dbPool.Query("SELECT p.postid, p.userid, p.title, p.description, p.price, p.uploaddate, i.imgid FROM posts AS p LEFT JOIN images AS i ON p.postid=i.postid WHERE i.index=0 OFFSET 0 ROWS FETCH NEXT 25 ROWS ONLY") //, (p.Page-1)*25)
+	//offset := p.Page * 25
+	rows, err := dbPool.Query("SELECT p.postid, p.userid, p.title, p.description, p.price, p.uploaddate, i.imgid FROM posts AS p LEFT JOIN images AS i ON p.postid=i.postid WHERE i.index=0 OFFSET 0 ROWS FETCH NEXT 25 ROWS ONLY")
 
 	defer dbPool.Close()
 
@@ -149,8 +150,8 @@ func (s *Service) GetPostPage(ctx context.Context, p *postings.GetPostPagePayloa
 	res := make([]*postings.PostResponse, 25)
 	i := 0
 	for rows.Next() {
-		var row post
-		if err := rows.Scan(&row.postID, &row.userID, &row.postTitle, &row.postDesc, &row.price, &row.uploadDate, &row.imageID); err != nil {
+		row := post{postID: "", userID: "", postTitle: "", postDesc: "", price: "", uploadDate: "", imageID: ""}
+		if err := rows.Scan(row.postID, row.userID, row.postTitle, &row.postDesc, &row.price, &row.uploadDate, &row.imageID); err != nil {
 			log.Fatal(err)
 		}
 		res[i] = &postings.PostResponse{Title: row.postTitle, Description: row.postDesc, Price: row.price, ImageID: row.imageID, PostID: row.postID, UploadDate: row.uploadDate}
