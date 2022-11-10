@@ -59,7 +59,7 @@ type Post struct {
 	// Post price
 	Price string
 	// Post content
-	Content []byte
+	Content string
 }
 
 // Credentials are invalid

@@ -41,7 +41,7 @@ func UsageExamples() string {
       "phone": "Autem neque numquam."
    }' --username "Odit nesciunt dicta tempore fugiat." --password "Velit rerum occaecati quia."` + "\n" +
 		os.Args[0] + ` postings create-post --body '{
-      "content": "RWFydW0gcXVpYSBhdXQu",
+      "content": "Earum quia aut.",
       "description": "Nam doloribus dolor commodi consequuntur perferendis ea.",
       "price": "Qui unde et mollitia modi.",
       "title": "Commodi officiis numquam molestiae."
@@ -272,7 +272,7 @@ CreatePost implements create_post.
 
 Example:
     %[1]s postings create-post --body '{
-      "content": "RWFydW0gcXVpYSBhdXQu",
+      "content": "Earum quia aut.",
       "description": "Nam doloribus dolor commodi consequuntur perferendis ea.",
       "price": "Qui unde et mollitia modi.",
       "title": "Commodi officiis numquam molestiae."

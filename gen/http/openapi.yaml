@@ -94,57 +94,7 @@ definitions:
             content:
                 type: string
                 description: Post content
-                example:
-                    - 79
-                    - 102
-                    - 102
-                    - 105
-                    - 99
-                    - 105
-                    - 105
-                    - 115
-                    - 32
-                    - 101
-                    - 115
-                    - 116
-                    - 32
-                    - 111
-                    - 112
-                    - 116
-                    - 105
-                    - 111
-                    - 32
-                    - 118
-                    - 111
-                    - 108
-                    - 117
-                    - 112
-                    - 116
-                    - 97
-                    - 116
-                    - 101
-                    - 115
-                    - 32
-                    - 113
-                    - 117
-                    - 105
-                    - 32
-                    - 114
-                    - 101
-                    - 99
-                    - 117
-                    - 115
-                    - 97
-                    - 110
-                    - 100
-                    - 97
-                    - 101
-                    - 32
-                    - 115
-                    - 105
-                    - 116
-                    - 46
-                format: byte
+                example: Officiis est optio voluptates qui recusandae sit.
             description:
                 type: string
                 description: Post description
@@ -159,43 +109,7 @@ definitions:
                 example: Aut animi et deserunt est.
         description: Describes a post
         example:
-            content:
-                - 81
-                - 117
-                - 111
-                - 100
-                - 32
-                - 97
-                - 117
-                - 116
-                - 32
-                - 97
-                - 108
-                - 105
-                - 97
-                - 115
-                - 32
-                - 111
-                - 112
-                - 116
-                - 105
-                - 111
-                - 32
-                - 113
-                - 117
-                - 105
-                - 100
-                - 101
-                - 109
-                - 32
-                - 100
-                - 117
-                - 99
-                - 105
-                - 109
-                - 117
-                - 115
-                - 46
+            content: Quod aut alias optio quidem ducimus.
             description: Excepturi ut voluptatum.
             price: Dignissimos sed eius odio commodi eos consequatur.
             title: Dolorem eligendi aut consequatur minima rem tempora.

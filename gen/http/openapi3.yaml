@@ -20,22 +20,7 @@ paths:
                         schema:
                             $ref: '#/components/schemas/Post'
                         example:
-                            content:
-                                - 69
-                                - 97
-                                - 114
-                                - 117
-                                - 109
-                                - 32
-                                - 113
-                                - 117
-                                - 105
-                                - 97
-                                - 32
-                                - 97
-                                - 117
-                                - 116
-                                - 46
+                            content: Earum quia aut.
                             description: Nam doloribus dolor commodi consequuntur perferendis ea.
                             price: Qui unde et mollitia modi.
                             title: Commodi officiis numquam molestiae.
@@ -103,51 +88,7 @@ components:
                 content:
                     type: string
                     description: Post content
-                    example:
-                        - 83
-                        - 105
-                        - 116
-                        - 32
-                        - 101
-                        - 116
-                        - 32
-                        - 113
-                        - 117
-                        - 97
-                        - 101
-                        - 114
-                        - 97
-                        - 116
-                        - 32
-                        - 110
-                        - 111
-                        - 110
-                        - 32
-                        - 110
-                        - 111
-                        - 98
-                        - 105
-                        - 115
-                        - 32
-                        - 114
-                        - 101
-                        - 112
-                        - 117
-                        - 100
-                        - 105
-                        - 97
-                        - 110
-                        - 100
-                        - 97
-                        - 101
-                        - 32
-                        - 97
-                        - 117
-                        - 116
-                        - 101
-                        - 109
-                        - 46
-                    format: binary
+                    example: Sit et quaerat non nobis repudiandae autem.
                 description:
                     type: string
                     description: Post description
@@ -162,42 +103,7 @@ components:
                     example: Eaque nesciunt impedit aut rerum qui.
             description: Describes a post
             example:
-                content:
-                    - 67
-                    - 117
-                    - 112
-                    - 105
-                    - 100
-                    - 105
-                    - 116
-                    - 97
-                    - 116
-                    - 101
-                    - 32
-                    - 118
-                    - 111
-                    - 108
-                    - 117
-                    - 112
-                    - 116
-                    - 97
-                    - 116
-                    - 101
-                    - 109
-                    - 32
-                    - 97
-                    - 32
-                    - 101
-                    - 97
-                    - 113
-                    - 117
-                    - 101
-                    - 32
-                    - 111
-                    - 100
-                    - 105
-                    - 116
-                    - 46
+                content: Cupiditate voluptatem a eaque odit.
                 description: Provident ipsa dignissimos sed.
                 price: Est inventore.
                 title: Tempora vero.
