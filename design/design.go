@@ -36,7 +36,7 @@ var Post = Type("Post", func() {
 	Attribute("title", String, "Post title")
 	Attribute("description", String, "Post description")
 	Attribute("price", String, "Post price")
-	Attribute("content", String, "Post content")
+	Attribute("content", Bytes, "Post content")
 	Required("title", "description", "price", "content")
 })
 
