@@ -45,12 +45,11 @@ paths:
                   description: Basic Auth security using Basic scheme (https://tools.ietf.org/html/rfc7617)
                   required: true
                   type: string
-                - name: string
+                - name: SignupRequestBody
                   in: body
-                  description: Email
                   required: true
                   schema:
-                    type: string
+                    $ref: '#/definitions/SignupSignupRequestBody'
             responses:
                 "200":
                     description: OK response.
@@ -88,6 +87,33 @@ paths:
                 - http
             security:
                 - jwt_header_Authorization: []
+definitions:
+    SignupSignupRequestBody:
+        title: SignupSignupRequestBody
+        type: object
+        properties:
+            email:
+                type: string
+                description: Email
+                example: Ut in sapiente illo explicabo aut.
+            firstName:
+                type: string
+                description: First name
+                example: Aut id placeat voluptate expedita sunt culpa.
+            lastName:
+                type: string
+                description: Last name
+                example: Voluptatibus cupiditate ea cum ut beatae.
+            phone:
+                type: string
+                description: Phone number
+                example: Magnam non voluptas aut vero pariatur.
+        description: Describes a user
+        example:
+            email: Ut molestiae nihil ipsam voluptatem explicabo qui.
+            firstName: Autem quia veritatis dolorem.
+            lastName: Minima nisi.
+            phone: Ut ut omnis.
 securityDefinitions:
     jwt_header_Authorization:
         type: apiKey

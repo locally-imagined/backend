@@ -41,17 +41,22 @@ type SignupPayload struct {
 	Username string
 	// User password
 	Password string
-	// First name
-	FirstName string
-	// Last name
-	LastName string
-	// Phone number
-	Phone string
-	// Email
-	Email string
+	User     *User
 }
 
 // SignupResult is the result type of the signup service Signup method.
 type SignupResult struct {
 	JWT *string
+}
+
+// Describes a user
+type User struct {
+	// First name
+	FirstName *string
+	// Last name
+	LastName *string
+	// Phone number
+	Phone *string
+	// Email
+	Email *string
 }

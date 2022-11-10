@@ -22,6 +22,14 @@ var JWTAuth = JWTSecurity("jwt", func() {
 	Description(`Secures endpoint by requiring a valid JWT token retrieved via the signin endpoint.`)
 })
 
+var User = Type("User", func() {
+	Description("Describes a user")
+	Attribute("firstName", String, "First name")
+	Attribute("lastName", String, "Last name")
+	Attribute("phone", String, "Phone number")
+	Attribute("email", String, "Email")
+})
+
 var _ = Service("login", func() {
 	cors.Origin("http://localhost:3000", func() { // Define CORS policy, may be prefixed with "*" wildcard
 		cors.Headers("*")                      // One or more authorized headers, use "*" to authorize all
@@ -77,21 +85,15 @@ var _ = Service("signup", func() {
 		Payload(func() {
 			Username("username", String, "Raw username")
 			Password("password", String, "User password")
-			Attribute("firstName", String, "First name")
-			Attribute("lastName", String, "Last name")
-			Attribute("phone", String, "Phone number")
-			Attribute("email", String, "Email")
-			Required("username", "password", "firstName", "lastName", "phone", "email")
+			Attribute("user", User)
+			Required("username", "password", "user")
 		})
 		Result(func() {
 			Attribute("jwt", String)
 		})
 		HTTP(func() {
 			POST("/signup")
-			Body("firstName")
-			Body("lastName")
-			Body("phone")
-			Body("email")
+			Body("user")
 			Response(func() {
 				Body("jwt")
 			})

@@ -34,7 +34,12 @@ upload upload-photo
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
 	return os.Args[0] + ` login login --username "Tempore enim voluptatem unde cumque." --password "Neque ut."` + "\n" +
-		os.Args[0] + ` signup signup --body "Laborum ut iste et harum." --username "Unde quod." --password "Autem neque numquam."` + "\n" +
+		os.Args[0] + ` signup signup --body '{
+      "email": "Laborum ut iste et harum.",
+      "firstName": "Reiciendis voluptas in autem dolorem.",
+      "lastName": "Corporis ipsum neque.",
+      "phone": "Unde vero."
+   }' --username "Unde quod." --password "Autem neque numquam."` + "\n" +
 		os.Args[0] + ` upload upload-photo --body "TmFtIGRvbG9yaWJ1cyBkb2xvciBjb21tb2RpIGNvbnNlcXV1bnR1ciBwZXJmZXJlbmRpcyBlYS4=" --token "Dolorum aut aut impedit nisi odio."` + "\n" +
 		""
 }
@@ -223,15 +228,20 @@ Additional help:
 `, os.Args[0])
 }
 func signupSignupUsage() {
-	fmt.Fprintf(os.Stderr, `%[1]s [flags] signup signup -body STRING -username STRING -password STRING
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] signup signup -body JSON -username STRING -password STRING
 
 Signup implements Signup.
-    -body STRING: 
+    -body JSON: 
     -username STRING: Raw username
     -password STRING: User password
 
 Example:
-    %[1]s signup signup --body "Laborum ut iste et harum." --username "Unde quod." --password "Autem neque numquam."
+    %[1]s signup signup --body '{
+      "email": "Laborum ut iste et harum.",
+      "firstName": "Reiciendis voluptas in autem dolorem.",
+      "lastName": "Corporis ipsum neque.",
+      "phone": "Unde vero."
+   }' --username "Unde quod." --password "Autem neque numquam."
 `, os.Args[0])
 }
 

@@ -19,8 +19,8 @@ paths:
                         application/json:
                             schema:
                                 type: string
-                                example: Aut id placeat voluptate expedita sunt culpa.
-                            example: Minima nisi.
+                                example: Quae autem quia nemo iste similique veritatis.
+                            example: Eveniet incidunt et ut consequatur.
             security:
                 - login_header_Authorization: []
     /signup:
@@ -30,15 +30,16 @@ paths:
             summary: Signup signup
             operationId: signup#Signup
             requestBody:
-                description: Email
                 required: true
                 content:
                     application/json:
                         schema:
-                            type: string
-                            description: Email
-                            example: Voluptatibus cupiditate ea cum ut beatae.
-                        example: Ut ut omnis.
+                            $ref: '#/components/schemas/User'
+                        example:
+                            email: Laborum ut iste et harum.
+                            firstName: Reiciendis voluptas in autem dolorem.
+                            lastName: Corporis ipsum neque.
+                            phone: Unde vero.
             responses:
                 "200":
                     description: OK response.
@@ -46,8 +47,8 @@ paths:
                         application/json:
                             schema:
                                 type: string
-                                example: Magnam non voluptas aut vero pariatur.
-                            example: Ut molestiae nihil ipsam voluptatem explicabo qui.
+                                example: Dignissimos sed eius odio commodi eos consequatur.
+                            example: Voluptas quo.
             security:
                 - signup_header_Authorization: []
     /upload:
@@ -65,87 +66,87 @@ paths:
                             type: string
                             description: photo content
                             example:
-                                - 85
-                                - 116
-                                - 32
-                                - 105
-                                - 110
-                                - 32
-                                - 115
-                                - 97
-                                - 112
-                                - 105
-                                - 101
-                                - 110
-                                - 116
-                                - 101
-                                - 32
-                                - 105
-                                - 108
-                                - 108
+                                - 81
+                                - 117
                                 - 111
-                                - 32
-                                - 101
-                                - 120
-                                - 112
-                                - 108
-                                - 105
-                                - 99
-                                - 97
-                                - 98
-                                - 111
+                                - 100
                                 - 32
                                 - 97
                                 - 117
                                 - 116
+                                - 32
+                                - 97
+                                - 108
+                                - 105
+                                - 97
+                                - 115
+                                - 32
+                                - 111
+                                - 112
+                                - 116
+                                - 105
+                                - 111
+                                - 32
+                                - 113
+                                - 117
+                                - 105
+                                - 100
+                                - 101
+                                - 109
+                                - 32
+                                - 100
+                                - 117
+                                - 99
+                                - 105
+                                - 109
+                                - 117
+                                - 115
                                 - 46
                             format: binary
                         example:
                             - 81
                             - 117
                             - 97
-                            - 101
-                            - 32
-                            - 97
-                            - 117
-                            - 116
-                            - 101
-                            - 109
-                            - 32
-                            - 113
-                            - 117
+                            - 115
                             - 105
-                            - 97
                             - 32
                             - 110
-                            - 101
-                            - 109
                             - 111
+                            - 110
                             - 32
-                            - 105
-                            - 115
-                            - 116
-                            - 101
-                            - 32
-                            - 115
-                            - 105
-                            - 109
-                            - 105
-                            - 108
-                            - 105
                             - 113
                             - 117
+                            - 105
+                            - 32
+                            - 101
+                            - 115
+                            - 115
                             - 101
                             - 32
-                            - 118
-                            - 101
+                            - 110
+                            - 111
+                            - 110
+                            - 32
+                            - 112
                             - 114
+                            - 97
+                            - 101
+                            - 115
+                            - 101
+                            - 110
+                            - 116
+                            - 105
+                            - 117
+                            - 109
+                            - 32
+                            - 101
+                            - 120
+                            - 112
+                            - 101
+                            - 100
                             - 105
                             - 116
                             - 97
-                            - 116
-                            - 105
-                            - 115
                             - 46
             responses:
                 "200":
@@ -154,11 +155,37 @@ paths:
                         application/json:
                             schema:
                                 type: string
-                                example: Autem quia veritatis dolorem.
-                            example: At ad.
+                                example: Aut qui cum temporibus asperiores qui.
+                            example: Modi dolores laborum.
             security:
                 - jwt_header_Authorization: []
 components:
+    schemas:
+        User:
+            type: object
+            properties:
+                email:
+                    type: string
+                    description: Email
+                    example: Doloremque ut vel.
+                firstName:
+                    type: string
+                    description: First name
+                    example: At ad.
+                lastName:
+                    type: string
+                    description: Last name
+                    example: Aut et atque.
+                phone:
+                    type: string
+                    description: Phone number
+                    example: Aut animi et deserunt est.
+            description: Describes a user
+            example:
+                email: Excepturi ut voluptatum.
+                firstName: Ab enim aut et quas quo.
+                lastName: Officiis est optio voluptates qui recusandae sit.
+                phone: Dolorem eligendi aut consequatur minima rem tempora.
     securitySchemes:
         jwt_header_Authorization:
             type: http

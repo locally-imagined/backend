@@ -34,7 +34,7 @@ func EncodeSignupResponse(encoder func(context.Context, http.ResponseWriter) goa
 func DecodeSignupRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (interface{}, error) {
 	return func(r *http.Request) (interface{}, error) {
 		var (
-			body string
+			body SignupRequestBody
 			err  error
 		)
 		err = decoder(r).Decode(&body)
@@ -44,7 +44,7 @@ func DecodeSignupRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.
 			}
 			return nil, goa.DecodePayloadError(err.Error())
 		}
-		payload := NewSignupPayload(body)
+		payload := NewSignupPayload(&body)
 		user, pass, ok := r.BasicAuth()
 		if !ok {
 			return nil, goa.MissingFieldError("Authorization", "header")

@@ -11,11 +11,29 @@ import (
 	signup "backend/gen/signup"
 )
 
+// SignupRequestBody is the type of the "signup" service "Signup" endpoint HTTP
+// request body.
+type SignupRequestBody struct {
+	// First name
+	FirstName *string `form:"firstName,omitempty" json:"firstName,omitempty" xml:"firstName,omitempty"`
+	// Last name
+	LastName *string `form:"lastName,omitempty" json:"lastName,omitempty" xml:"lastName,omitempty"`
+	// Phone number
+	Phone *string `form:"phone,omitempty" json:"phone,omitempty" xml:"phone,omitempty"`
+	// Email
+	Email *string `form:"email,omitempty" json:"email,omitempty" xml:"email,omitempty"`
+}
+
 // NewSignupPayload builds a signup service Signup endpoint payload.
-func NewSignupPayload(body string) *signup.SignupPayload {
-	v := body
+func NewSignupPayload(body *SignupRequestBody) *signup.SignupPayload {
+	v := &signup.User{
+		FirstName: body.FirstName,
+		LastName:  body.LastName,
+		Phone:     body.Phone,
+		Email:     body.Email,
+	}
 	res := &signup.SignupPayload{
-		Email: v,
+		User: v,
 	}
 
 	return res
