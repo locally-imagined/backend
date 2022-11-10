@@ -133,7 +133,7 @@ func (s *Service) GetPostPage(ctx context.Context, p *postings.GetPostPagePayloa
 		return nil, err
 	}
 
-	queryString := `SELECT p.postID, p.userID, p.title, 
+	queryString := `SELECT p.postid, p.userid, p.title, 
 	p.description, p.price, p.uploaddate, i.imgid 
 	FROM posts AS p LEFT JOIN images 
 	AS i ON p.postID = i.postID WHERE i.index = 
