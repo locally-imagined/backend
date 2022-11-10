@@ -133,9 +133,11 @@ func (s *Service) GetPostPage(ctx context.Context, p *postings.GetPostPagePayloa
 		return nil, err
 	}
 
-	queryString := `SELECT * FROM posts  
-	OFFSET $1 ROWS FETCH NEXT 25 ROWS ONLY 
-	LEFT JOIN images ON posts.postID = images.postID`
+	queryString := `SELECT p.postID, p.userID, p.title, 
+	p.description, p.price, p.uploaddate, i.imgid 
+	FROM posts AS p LEFT JOIN images 
+	AS i ON p.postID = i.postID WHERE i.index = 
+	0 OFFSET $1 ROWS FETCH NEXT 25 ROWS ONLY`
 	rows, err := dbPool.Query(queryString, (p.Page-1)*25)
 
 	defer dbPool.Close()
