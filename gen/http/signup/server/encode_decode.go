@@ -10,6 +10,7 @@ package server
 import (
 	signup "backend/gen/signup"
 	"context"
+	"io"
 	"net/http"
 
 	goahttp "goa.design/goa/v3/http"
@@ -32,7 +33,18 @@ func EncodeSignupResponse(encoder func(context.Context, http.ResponseWriter) goa
 // endpoint.
 func DecodeSignupRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (interface{}, error) {
 	return func(r *http.Request) (interface{}, error) {
-		payload := NewSignupPayload()
+		var (
+			body string
+			err  error
+		)
+		err = decoder(r).Decode(&body)
+		if err != nil {
+			if err == io.EOF {
+				return nil, goa.MissingPayloadError()
+			}
+			return nil, goa.DecodePayloadError(err.Error())
+		}
+		payload := NewSignupPayload(body)
 		user, pass, ok := r.BasicAuth()
 		if !ok {
 			return nil, goa.MissingFieldError("Authorization", "header")

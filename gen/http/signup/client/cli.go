@@ -13,7 +13,11 @@ import (
 
 // BuildSignupPayload builds the payload for the signup Signup endpoint from
 // CLI flags.
-func BuildSignupPayload(signupSignupUsername string, signupSignupPassword string) (*signup.SignupPayload, error) {
+func BuildSignupPayload(signupSignupBody string, signupSignupUsername string, signupSignupPassword string) (*signup.SignupPayload, error) {
+	var body string
+	{
+		body = signupSignupBody
+	}
 	var username string
 	{
 		username = signupSignupUsername
@@ -22,9 +26,12 @@ func BuildSignupPayload(signupSignupUsername string, signupSignupPassword string
 	{
 		password = signupSignupPassword
 	}
-	v := &signup.SignupPayload{}
-	v.Username = username
-	v.Password = password
+	v := body
+	res := &signup.SignupPayload{
+		Email: v,
+	}
+	res.Username = username
+	res.Password = password
 
-	return v, nil
+	return res, nil
 }

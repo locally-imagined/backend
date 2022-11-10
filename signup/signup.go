@@ -28,7 +28,6 @@ func (s *Service) BasicAuth(ctx context.Context, user, pass string, scheme *secu
 		return ctx, ErrUnauthorized
 	}
 	defer dbPool.Close()
-	hashedPassword := auth.ShaHashing(pass)
 	var value string = ""
 	// Query for a value based on a single row.
 	row, err := dbPool.Query("SELECT username from test_users where username=$1", user)
@@ -44,20 +43,21 @@ func (s *Service) BasicAuth(ctx context.Context, user, pass string, scheme *secu
 		return ctx, ErrUnauthorized
 	}
 
-	// double check this
-	userID := uuid.New()
-
-	_, err = dbPool.Query("INSERT INTO Users (username, password) Values ($1, $2)", user, hashedPassword)
-	// insert other items including generated userID
-	if err != nil {
-		return ctx, ErrUnauthorized
-	}
-	ctx = context.WithValue(ctx, "UserID", userID)
 	return ctx, nil
 }
 
 func (s *Service) Signup(ctx context.Context, p *signup.SignupPayload) (*signup.SignupResult, error) {
-	token, err := auth.MakeToken(p.Username, ctx.Value("UserID").(string))
+	dbPool, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
+	if err != nil {
+		return &signup.SignupResult{JWT: nil}, err
+	}
+	hashedPassword := auth.ShaHashing(p.Password)
+	userID := uuid.New().String()
+	_, err = dbPool.Query("INSERT INTO Users Values ($1, $2, $3, $4, $5, $6, $7)", userID, p.Username, p.FirstName, p.LastName, p.Phone, p.Email, hashedPassword)
+	if err != nil {
+		return &signup.SignupResult{JWT: nil}, err
+	}
+	token, err := auth.MakeToken(p.Username, userID)
 	if err != nil {
 		return &signup.SignupResult{JWT: nil}, err
 	}

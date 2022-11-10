@@ -19,8 +19,8 @@ paths:
                         application/json:
                             schema:
                                 type: string
-                                example: Odit nesciunt dicta tempore fugiat.
-                            example: Commodi officiis numquam molestiae.
+                                example: Aut id placeat voluptate expedita sunt culpa.
+                            example: Minima nisi.
             security:
                 - login_header_Authorization: []
     /signup:
@@ -29,6 +29,16 @@ paths:
                 - signup
             summary: Signup signup
             operationId: signup#Signup
+            requestBody:
+                description: Email
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: string
+                            description: Email
+                            example: Voluptatibus cupiditate ea cum ut beatae.
+                        example: Ut ut omnis.
             responses:
                 "200":
                     description: OK response.
@@ -36,8 +46,8 @@ paths:
                         application/json:
                             schema:
                                 type: string
-                                example: Velit rerum occaecati quia.
-                            example: Nam doloribus dolor commodi consequuntur perferendis ea.
+                                example: Magnam non voluptas aut vero pariatur.
+                            example: Ut molestiae nihil ipsam voluptatem explicabo qui.
             security:
                 - signup_header_Authorization: []
     /upload:
@@ -55,48 +65,87 @@ paths:
                             type: string
                             description: photo content
                             example:
-                                - 86
-                                - 111
-                                - 108
-                                - 117
-                                - 112
+                                - 85
                                 - 116
+                                - 32
+                                - 105
+                                - 110
+                                - 32
+                                - 115
                                 - 97
+                                - 112
+                                - 105
+                                - 101
+                                - 110
                                 - 116
                                 - 101
                                 - 32
-                                - 113
-                                - 117
+                                - 105
+                                - 108
+                                - 108
                                 - 111
-                                - 100
+                                - 32
+                                - 101
+                                - 120
+                                - 112
+                                - 108
+                                - 105
+                                - 99
+                                - 97
+                                - 98
+                                - 111
+                                - 32
+                                - 97
+                                - 117
+                                - 116
                                 - 46
                             format: binary
                         example:
                             - 81
                             - 117
-                            - 105
+                            - 97
+                            - 101
                             - 32
+                            - 97
                             - 117
-                            - 110
-                            - 100
-                            - 101
-                            - 32
-                            - 101
                             - 116
-                            - 32
+                            - 101
                             - 109
-                            - 111
-                            - 108
-                            - 108
-                            - 105
-                            - 116
+                            - 32
+                            - 113
+                            - 117
                             - 105
                             - 97
                             - 32
+                            - 110
+                            - 101
                             - 109
                             - 111
-                            - 100
+                            - 32
                             - 105
+                            - 115
+                            - 116
+                            - 101
+                            - 32
+                            - 115
+                            - 105
+                            - 109
+                            - 105
+                            - 108
+                            - 105
+                            - 113
+                            - 117
+                            - 101
+                            - 32
+                            - 118
+                            - 101
+                            - 114
+                            - 105
+                            - 116
+                            - 97
+                            - 116
+                            - 105
+                            - 115
                             - 46
             responses:
                 "200":
@@ -105,8 +154,8 @@ paths:
                         application/json:
                             schema:
                                 type: string
-                                example: Dolorum aut aut impedit nisi odio.
-                            example: Earum quia aut.
+                                example: Autem quia veritatis dolorem.
+                            example: At ad.
             security:
                 - jwt_header_Authorization: []
 components:

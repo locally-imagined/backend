@@ -41,6 +41,10 @@ func EncodeSignupRequest(encoder func(*http.Request) goahttp.Encoder) func(*http
 		if !ok {
 			return goahttp.ErrInvalidType("signup", "Signup", "*signup.SignupPayload", v)
 		}
+		body := p.Email
+		if err := encoder(req).Encode(&body); err != nil {
+			return goahttp.ErrEncodingError("signup", "Signup", err)
+		}
 		req.SetBasicAuth(p.Username, p.Password)
 		return nil
 	}
