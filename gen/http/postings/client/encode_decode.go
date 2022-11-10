@@ -78,14 +78,18 @@ func DecodeCreatePostResponse(decoder func(*http.Response) goahttp.Decoder, rest
 		switch resp.StatusCode {
 		case http.StatusOK:
 			var (
-				body string
+				body CreatePostResponseBody
 				err  error
 			)
 			err = decoder(resp).Decode(&body)
 			if err != nil {
 				return nil, goahttp.ErrDecodingError("postings", "create_post", err)
 			}
-			res := NewCreatePostResultOK(body)
+			err = ValidateCreatePostResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("postings", "create_post", err)
+			}
+			res := NewCreatePostResultOK(&body)
 			return res, nil
 		default:
 			body, _ := io.ReadAll(resp.Body)

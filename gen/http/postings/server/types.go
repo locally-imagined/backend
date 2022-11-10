@@ -26,6 +26,40 @@ type CreatePostRequestBody struct {
 	Content []byte `form:"content,omitempty" json:"content,omitempty" xml:"content,omitempty"`
 }
 
+// CreatePostResponseBody is the type of the "postings" service "create_post"
+// endpoint HTTP response body.
+type CreatePostResponseBody PostResponseResponseBody
+
+// PostResponseResponseBody is used to define fields on response body types.
+type PostResponseResponseBody struct {
+	// Post title
+	Title string `form:"title" json:"title" xml:"title"`
+	// Post description
+	Description string `form:"description" json:"description" xml:"description"`
+	// Post price
+	Price string `form:"price" json:"price" xml:"price"`
+	// Image ID
+	ImageID string `form:"imageID" json:"imageID" xml:"imageID"`
+	// Post ID
+	PostID string `form:"postID" json:"postID" xml:"postID"`
+	// Upload Date
+	UploadDate string `form:"uploadDate" json:"uploadDate" xml:"uploadDate"`
+}
+
+// NewCreatePostResponseBody builds the HTTP response body from the result of
+// the "create_post" endpoint of the "postings" service.
+func NewCreatePostResponseBody(res *postings.CreatePostResult) *CreatePostResponseBody {
+	body := &CreatePostResponseBody{
+		Title:       res.Posted.Title,
+		Description: res.Posted.Description,
+		Price:       res.Posted.Price,
+		ImageID:     res.Posted.ImageID,
+		PostID:      res.Posted.PostID,
+		UploadDate:  res.Posted.UploadDate,
+	}
+	return body
+}
+
 // NewCreatePostPayload builds a postings service create_post endpoint payload.
 func NewCreatePostPayload(body *CreatePostRequestBody, token string) *postings.CreatePostPayload {
 	v := &postings.Post{

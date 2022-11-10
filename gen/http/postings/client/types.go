@@ -9,6 +9,8 @@ package client
 
 import (
 	postings "backend/gen/postings"
+
+	goa "goa.design/goa/v3/pkg"
 )
 
 // CreatePostRequestBody is the type of the "postings" service "create_post"
@@ -22,6 +24,26 @@ type CreatePostRequestBody struct {
 	Price string `form:"price" json:"price" xml:"price"`
 	// Post content
 	Content []byte `form:"content" json:"content" xml:"content"`
+}
+
+// CreatePostResponseBody is the type of the "postings" service "create_post"
+// endpoint HTTP response body.
+type CreatePostResponseBody PostResponseResponseBody
+
+// PostResponseResponseBody is used to define fields on response body types.
+type PostResponseResponseBody struct {
+	// Post title
+	Title *string `form:"title,omitempty" json:"title,omitempty" xml:"title,omitempty"`
+	// Post description
+	Description *string `form:"description,omitempty" json:"description,omitempty" xml:"description,omitempty"`
+	// Post price
+	Price *string `form:"price,omitempty" json:"price,omitempty" xml:"price,omitempty"`
+	// Image ID
+	ImageID *string `form:"imageID,omitempty" json:"imageID,omitempty" xml:"imageID,omitempty"`
+	// Post ID
+	PostID *string `form:"postID,omitempty" json:"postID,omitempty" xml:"postID,omitempty"`
+	// Upload Date
+	UploadDate *string `form:"uploadDate,omitempty" json:"uploadDate,omitempty" xml:"uploadDate,omitempty"`
 }
 
 // NewCreatePostRequestBody builds the HTTP request body from the payload of
@@ -38,11 +60,66 @@ func NewCreatePostRequestBody(p *postings.CreatePostPayload) *CreatePostRequestB
 
 // NewCreatePostResultOK builds a "postings" service "create_post" endpoint
 // result from a HTTP "OK" response.
-func NewCreatePostResultOK(body string) *postings.CreatePostResult {
-	v := body
+func NewCreatePostResultOK(body *CreatePostResponseBody) *postings.CreatePostResult {
+	v := &postings.PostResponse{
+		Title:       *body.Title,
+		Description: *body.Description,
+		Price:       *body.Price,
+		ImageID:     *body.ImageID,
+		PostID:      *body.PostID,
+		UploadDate:  *body.UploadDate,
+	}
 	res := &postings.CreatePostResult{
-		UploadDate: v,
+		Posted: v,
 	}
 
 	return res
+}
+
+// ValidateCreatePostResponseBody runs the validations defined on
+// create_post_response_body
+func ValidateCreatePostResponseBody(body *CreatePostResponseBody) (err error) {
+	if body.Title == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("title", "body"))
+	}
+	if body.Description == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("description", "body"))
+	}
+	if body.Price == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("price", "body"))
+	}
+	if body.ImageID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("imageID", "body"))
+	}
+	if body.PostID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("postID", "body"))
+	}
+	if body.UploadDate == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("uploadDate", "body"))
+	}
+	return
+}
+
+// ValidatePostResponseResponseBody runs the validations defined on
+// PostResponseResponseBody
+func ValidatePostResponseResponseBody(body *PostResponseResponseBody) (err error) {
+	if body.Title == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("title", "body"))
+	}
+	if body.Description == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("description", "body"))
+	}
+	if body.Price == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("price", "body"))
+	}
+	if body.ImageID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("imageID", "body"))
+	}
+	if body.PostID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("postID", "body"))
+	}
+	if body.UploadDate == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("uploadDate", "body"))
+	}
+	return
 }

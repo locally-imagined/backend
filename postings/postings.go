@@ -97,6 +97,16 @@ func (s *Service) CreatePost(ctx context.Context, p *postings.CreatePostPayload)
 	if err != nil {
 		return nil, err
 	}
-	posted := postings.CreatePostResult{Title: p.Post.Title, Description: p.Post.Description, Price: p.Post.Price, ImageID: imageID, PostID: postID, UploadDate: now}
-	return &posted, nil
+	posted := &postings.PostResponse{
+		Title:       p.Post.Title,
+		Description: p.Post.Description,
+		Price:       p.Post.Price,
+		ImageID:     imageID,
+		PostID:      postID,
+		UploadDate:  now,
+	}
+	res := &postings.CreatePostResult{
+		Posted: posted,
+	}
+	return res, nil
 }

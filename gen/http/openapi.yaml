@@ -34,7 +34,14 @@ paths:
                 "200":
                     description: OK response.
                     schema:
-                        type: string
+                        $ref: '#/definitions/PostingsCreatePostResponseBody'
+                        required:
+                            - title
+                            - description
+                            - price
+                            - imageID
+                            - postID
+                            - uploadDate
             schemes:
                 - http
             security:
@@ -87,6 +94,49 @@ paths:
             security:
                 - signup_header_Authorization: []
 definitions:
+    PostResponseResponseBody:
+        title: PostResponseResponseBody
+        type: object
+        properties:
+            description:
+                type: string
+                description: Post description
+                example: Voluptas quo.
+            imageID:
+                type: string
+                description: Image ID
+                example: Modi dolores laborum.
+            postID:
+                type: string
+                description: Post ID
+                example: Repudiandae tempore molestiae illo.
+            price:
+                type: string
+                description: Post price
+                example: Quasi non qui esse non praesentium expedita.
+            title:
+                type: string
+                description: Post title
+                example: Eveniet incidunt et ut consequatur.
+            uploadDate:
+                type: string
+                description: Upload Date
+                example: Incidunt et ipsum facilis.
+        description: Describes a post
+        example:
+            description: Voluptas ipsum rerum iure minima nihil odio.
+            imageID: Eaque nesciunt impedit aut rerum qui.
+            postID: Minima quis numquam.
+            price: Dolorem aut hic dolores est.
+            title: Neque praesentium distinctio impedit perferendis aut.
+            uploadDate: Excepturi quos ut.
+        required:
+            - title
+            - description
+            - price
+            - imageID
+            - postID
+            - uploadDate
     PostingsCreatePostRequestBody:
         title: PostingsCreatePostRequestBody
         type: object
@@ -95,89 +145,88 @@ definitions:
                 type: string
                 description: Post content
                 example:
-                    - 65
-                    - 117
+                    - 69
+                    - 115
                     - 116
                     - 32
-                    - 113
-                    - 117
                     - 105
-                    - 32
-                    - 99
-                    - 117
-                    - 109
-                    - 32
+                    - 110
+                    - 118
+                    - 101
+                    - 110
                     - 116
-                    - 101
-                    - 109
-                    - 112
-                    - 111
-                    - 114
-                    - 105
-                    - 98
-                    - 117
-                    - 115
-                    - 32
-                    - 97
-                    - 115
-                    - 112
-                    - 101
-                    - 114
-                    - 105
                     - 111
                     - 114
                     - 101
-                    - 115
-                    - 32
-                    - 113
-                    - 117
-                    - 105
                     - 46
                 format: byte
             description:
                 type: string
                 description: Post description
-                example: Dignissimos sed eius odio commodi eos consequatur.
+                example: Tempora vero.
             price:
                 type: string
                 description: Post price
-                example: Quod aut alias optio quidem ducimus.
+                example: Provident ipsa dignissimos sed.
             title:
                 type: string
                 description: Post title
-                example: Excepturi ut voluptatum.
+                example: Sit et quaerat non nobis repudiandae autem.
         description: Describes a post
         example:
             content:
-                - 77
-                - 111
-                - 100
+                - 68
                 - 105
-                - 32
-                - 100
-                - 111
-                - 108
-                - 111
-                - 114
-                - 101
                 - 115
+                - 116
+                - 105
+                - 110
+                - 99
+                - 116
+                - 105
+                - 111
+                - 32
+                - 117
+                - 116
                 - 32
                 - 108
                 - 97
                 - 98
                 - 111
                 - 114
-                - 117
+                - 105
+                - 111
+                - 115
+                - 97
                 - 109
+                - 32
+                - 110
+                - 97
+                - 109
+                - 32
+                - 104
+                - 105
+                - 99
+                - 32
+                - 118
+                - 101
+                - 108
+                - 32
+                - 118
+                - 101
+                - 108
                 - 46
-            description: Voluptas quo.
-            price: Quasi non qui esse non praesentium expedita.
-            title: Eveniet incidunt et ut consequatur.
+            description: Atque voluptates at perferendis.
+            price: Provident dignissimos.
+            title: Cupiditate voluptatem a eaque odit.
         required:
             - title
             - description
             - price
             - content
+    PostingsCreatePostResponseBody:
+        title: PostingsCreatePostResponseBody
+        $ref: '#/definitions/PostResponseResponseBody'
     SignupSignupRequestBody:
         title: SignupSignupRequestBody
         type: object
@@ -186,90 +235,84 @@ definitions:
                 type: string
                 description: Email
                 example:
-                    - 65
+                    - 68
+                    - 111
+                    - 108
+                    - 111
+                    - 114
+                    - 101
+                    - 109
+                    - 32
+                    - 101
+                    - 108
+                    - 105
+                    - 103
+                    - 101
+                    - 110
+                    - 100
+                    - 105
+                    - 32
+                    - 97
                     - 117
                     - 116
                     - 32
+                    - 99
+                    - 111
+                    - 110
+                    - 115
+                    - 101
+                    - 113
+                    - 117
                     - 97
+                    - 116
+                    - 117
+                    - 114
+                    - 32
+                    - 109
+                    - 105
                     - 110
                     - 105
                     - 109
-                    - 105
+                    - 97
                     - 32
-                    - 101
-                    - 116
-                    - 32
-                    - 100
-                    - 101
-                    - 115
-                    - 101
                     - 114
-                    - 117
-                    - 110
-                    - 116
-                    - 32
                     - 101
-                    - 115
+                    - 109
+                    - 32
                     - 116
+                    - 101
+                    - 109
+                    - 112
+                    - 111
+                    - 114
+                    - 97
                     - 46
                 format: byte
             firstName:
                 type: string
                 description: First name
-                example: Quae autem quia nemo iste similique veritatis.
+                example: Doloremque ut vel.
             lastName:
                 type: string
                 description: Last name
-                example: At ad.
+                example: Ab enim aut et quas quo.
             phone:
                 type: string
                 description: Phone number
-                example: Aut et atque.
+                example: Officiis est optio voluptates qui recusandae sit.
         description: Describes a user
         example:
             email:
-                - 68
-                - 111
-                - 108
-                - 111
-                - 114
-                - 101
-                - 109
-                - 32
-                - 101
-                - 108
-                - 105
-                - 103
-                - 101
-                - 110
-                - 100
-                - 105
-                - 32
-                - 97
+                - 65
                 - 117
                 - 116
                 - 32
-                - 99
-                - 111
-                - 110
-                - 115
-                - 101
                 - 113
                 - 117
-                - 97
-                - 116
+                - 105
+                - 32
+                - 99
                 - 117
-                - 114
-                - 32
-                - 109
-                - 105
-                - 110
-                - 105
-                - 109
-                - 97
-                - 32
-                - 114
-                - 101
                 - 109
                 - 32
                 - 116
@@ -278,11 +321,29 @@ definitions:
                 - 112
                 - 111
                 - 114
+                - 105
+                - 98
+                - 117
+                - 115
+                - 32
                 - 97
+                - 115
+                - 112
+                - 101
+                - 114
+                - 105
+                - 111
+                - 114
+                - 101
+                - 115
+                - 32
+                - 113
+                - 117
+                - 105
                 - 46
-            firstName: Doloremque ut vel.
-            lastName: Ab enim aut et quas quo.
-            phone: Officiis est optio voluptates qui recusandae sit.
+            firstName: Excepturi ut voluptatum.
+            lastName: Dignissimos sed eius odio commodi eos consequatur.
+            phone: Quod aut alias optio quidem ducimus.
         required:
             - firstName
             - lastName

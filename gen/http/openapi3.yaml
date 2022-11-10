@@ -59,10 +59,14 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: string
-                                description: Upload Date
-                                example: Odit deleniti non praesentium molestiae consequuntur.
-                            example: Voluptas commodi.
+                                $ref: '#/components/schemas/PostingscreatePostResponseBody'
+                            example:
+                                description: Ut molestiae nihil ipsam voluptatem explicabo qui.
+                                imageID: At ad.
+                                postID: Aut et atque.
+                                price: Quae autem quia nemo iste similique veritatis.
+                                title: Ut ut omnis.
+                                uploadDate: Aut animi et deserunt est.
             security:
                 - jwt_header_Authorization: []
     /login:
@@ -78,8 +82,8 @@ paths:
                         application/json:
                             schema:
                                 type: string
-                                example: Repudiandae tempore molestiae illo.
-                            example: Eum molestiae ut deleniti laborum.
+                                example: Dignissimos repellendus quia.
+                            example: Aut sunt ut.
             security:
                 - login_header_Authorization: []
     /signup:
@@ -141,8 +145,8 @@ paths:
                         application/json:
                             schema:
                                 type: string
-                                example: Tempora vero.
-                            example: Minus quia labore recusandae quae omnis et.
+                                example: Ut blanditiis deleniti illo.
+                            example: Odit quia culpa vero sed.
             security:
                 - signup_header_Authorization: []
 components:
@@ -154,114 +158,149 @@ components:
                     type: string
                     description: Post content
                     example:
-                        - 65
-                        - 116
-                        - 113
-                        - 117
-                        - 101
-                        - 32
-                        - 118
-                        - 111
+                        - 69
+                        - 120
+                        - 112
                         - 108
-                        - 117
-                        - 112
-                        - 116
+                        - 105
+                        - 99
                         - 97
-                        - 116
+                        - 98
+                        - 111
+                        - 32
+                        - 114
                         - 101
-                        - 115
-                        - 32
-                        - 97
-                        - 116
-                        - 32
                         - 112
                         - 101
-                        - 114
-                        - 102
-                        - 101
-                        - 114
+                        - 108
+                        - 108
                         - 101
                         - 110
                         - 100
-                        - 105
+                        - 117
                         - 115
+                        - 32
+                        - 109
+                        - 111
+                        - 100
+                        - 105
+                        - 32
+                        - 101
+                        - 116
                         - 46
                     format: binary
                 description:
                     type: string
                     description: Post description
-                    example: Est inventore.
+                    example: Ea magni fugit aperiam eum.
                 price:
                     type: string
                     description: Post price
-                    example: Cupiditate voluptatem a eaque odit.
+                    example: Dolores nostrum suscipit rerum consequatur.
                 title:
                     type: string
                     description: Post title
-                    example: Provident ipsa dignissimos sed.
+                    example: Libero a id aut.
             description: Describes a post
             example:
                 content:
-                    - 65
-                    - 114
-                    - 99
-                    - 104
-                    - 105
-                    - 116
+                    - 67
+                    - 117
+                    - 109
+                    - 113
+                    - 117
                     - 101
-                    - 99
-                    - 116
-                    - 111
                     - 32
+                    - 100
+                    - 111
+                    - 108
+                    - 111
+                    - 114
                     - 101
+                    - 115
+                    - 32
+                    - 97
+                    - 117
                     - 116
                     - 32
                     - 101
                     - 120
+                    - 99
+                    - 101
                     - 112
-                    - 101
-                    - 100
-                    - 105
-                    - 116
-                    - 97
-                    - 32
-                    - 101
-                    - 117
-                    - 109
-                    - 32
-                    - 118
-                    - 111
-                    - 108
-                    - 117
-                    - 112
-                    - 116
-                    - 97
-                    - 116
-                    - 105
-                    - 98
-                    - 117
-                    - 115
-                    - 32
-                    - 116
-                    - 101
-                    - 110
-                    - 101
                     - 116
                     - 117
                     - 114
+                    - 105
                     - 32
-                    - 110
-                    - 111
-                    - 110
+                    - 97
+                    - 116
+                    - 113
+                    - 117
+                    - 101
+                    - 32
+                    - 117
+                    - 116
+                    - 32
+                    - 113
+                    - 117
+                    - 105
+                    - 100
+                    - 101
+                    - 109
                     - 46
-                description: Distinctio ut laboriosam nam hic vel vel.
-                price: Dignissimos repellendus quia.
-                title: Provident dignissimos.
+                description: Vitae laudantium quo laboriosam totam ad quia.
+                price: Nesciunt enim optio quia debitis totam temporibus.
+                title: Voluptas et impedit qui praesentium autem.
             required:
                 - title
                 - description
                 - price
                 - content
+        PostResponse:
+            type: object
+            properties:
+                description:
+                    type: string
+                    description: Post description
+                    example: Omnis odio molestiae nesciunt natus vitae.
+                imageID:
+                    type: string
+                    description: Image ID
+                    example: Ab a consequatur enim quasi qui.
+                postID:
+                    type: string
+                    description: Post ID
+                    example: Doloremque ut non.
+                price:
+                    type: string
+                    description: Post price
+                    example: Et voluptatem quia quidem recusandae qui.
+                title:
+                    type: string
+                    description: Post title
+                    example: Dolores blanditiis ut culpa.
+                uploadDate:
+                    type: string
+                    description: Upload Date
+                    example: Enim quo.
+            description: Describes a post
+            example:
+                description: Id ut et.
+                imageID: Dolores praesentium vel blanditiis nihil blanditiis porro.
+                postID: In vero voluptatem saepe tempore eius ducimus.
+                price: Vel culpa ut expedita consequatur facilis non.
+                title: Voluptates ut.
+                uploadDate: Sit distinctio est corrupti suscipit aperiam aut.
+            required:
+                - title
+                - description
+                - price
+                - imageID
+                - postID
+                - uploadDate
+        PostingscreatePostResponseBody:
+            $ref: '#/components/schemas/PostResponse'
         User:
             type: object
             properties:
@@ -269,96 +308,86 @@ components:
                     type: string
                     description: Email
                     example:
-                        - 68
-                        - 111
-                        - 108
-                        - 111
-                        - 114
-                        - 101
-                        - 109
-                        - 32
-                        - 97
-                        - 117
-                        - 116
-                        - 32
-                        - 104
+                        - 77
                         - 105
-                        - 99
+                        - 110
+                        - 117
+                        - 115
                         - 32
-                        - 100
-                        - 111
+                        - 113
+                        - 117
+                        - 105
+                        - 97
+                        - 32
                         - 108
+                        - 97
+                        - 98
                         - 111
                         - 114
                         - 101
+                        - 32
+                        - 114
+                        - 101
+                        - 99
+                        - 117
+                        - 115
+                        - 97
+                        - 110
+                        - 100
+                        - 97
+                        - 101
+                        - 32
+                        - 113
+                        - 117
+                        - 97
+                        - 101
+                        - 32
+                        - 111
+                        - 109
+                        - 110
+                        - 105
                         - 115
                         - 32
                         - 101
-                        - 115
                         - 116
                         - 46
                     format: binary
                 firstName:
                     type: string
                     description: First name
-                    example: Incidunt et ipsum facilis.
+                    example: Architecto et expedita eum voluptatibus tenetur non.
                 lastName:
                     type: string
                     description: Last name
-                    example: Neque praesentium distinctio impedit perferendis aut.
+                    example: Odit deleniti non praesentium molestiae consequuntur.
                 phone:
                     type: string
                     description: Phone number
-                    example: Voluptas ipsum rerum iure minima nihil odio.
+                    example: Eum molestiae ut deleniti laborum.
             description: Describes a user
             example:
                 email:
-                    - 83
-                    - 105
-                    - 116
-                    - 32
-                    - 101
-                    - 116
-                    - 32
-                    - 113
-                    - 117
+                    - 85
+                    - 108
+                    - 108
                     - 97
+                    - 109
+                    - 32
+                    - 112
                     - 101
                     - 114
-                    - 97
-                    - 116
-                    - 32
+                    - 102
+                    - 101
+                    - 114
+                    - 101
                     - 110
-                    - 111
-                    - 110
-                    - 32
-                    - 110
-                    - 111
-                    - 98
+                    - 100
                     - 105
                     - 115
-                    - 32
-                    - 114
-                    - 101
-                    - 112
-                    - 117
-                    - 100
-                    - 105
-                    - 97
-                    - 110
-                    - 100
-                    - 97
-                    - 101
-                    - 32
-                    - 97
-                    - 117
-                    - 116
-                    - 101
-                    - 109
                     - 46
-                firstName: Eaque nesciunt impedit aut rerum qui.
-                lastName: Minima quis numquam.
-                phone: Excepturi quos ut.
+                firstName: Voluptas commodi.
+                lastName: Est et aut doloribus nobis dolorem.
+                phone: Facere voluptatum quis dolores qui.
             required:
                 - firstName
                 - lastName

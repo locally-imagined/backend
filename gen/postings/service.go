@@ -47,18 +47,7 @@ type CreatePostPayload struct {
 // CreatePostResult is the result type of the postings service create_post
 // method.
 type CreatePostResult struct {
-	// Post title
-	Title string
-	// Post description
-	Description string
-	// Post price
-	Price string
-	// Image ID
-	ImageID string
-	// Post ID
-	PostID string
-	// Upload Date
-	UploadDate string
+	Posted *PostResponse
 }
 
 // Describes a post
@@ -71,6 +60,22 @@ type Post struct {
 	Price string
 	// Post content
 	Content []byte
+}
+
+// Describes a post
+type PostResponse struct {
+	// Post title
+	Title string
+	// Post description
+	Description string
+	// Post price
+	Price string
+	// Image ID
+	ImageID string
+	// Post ID
+	PostID string
+	// Upload Date
+	UploadDate string
 }
 
 // Credentials are invalid
