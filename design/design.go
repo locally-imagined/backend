@@ -121,13 +121,13 @@ var _ = Service("postings", func() {
 			Required("token", "post")
 		})
 		Result(func() {
-			Attribute("success", String)
+			Attribute("imageID", String)
 		})
 		HTTP(func() {
 			POST("/create")
 			Body("post")
 			Response(func() {
-				Body("success")
+				Body("imageID")
 			})
 		})
 	})

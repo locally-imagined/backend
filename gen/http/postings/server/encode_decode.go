@@ -24,7 +24,7 @@ func EncodeCreatePostResponse(encoder func(context.Context, http.ResponseWriter)
 	return func(ctx context.Context, w http.ResponseWriter, v interface{}) error {
 		res, _ := v.(*postings.CreatePostResult)
 		enc := encoder(ctx, w)
-		body := res.Success
+		body := res.ImageID
 		w.WriteHeader(http.StatusOK)
 		return enc.Encode(body)
 	}

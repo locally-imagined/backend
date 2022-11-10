@@ -41,7 +41,7 @@ func NewCreatePostRequestBody(p *postings.CreatePostPayload) *CreatePostRequestB
 func NewCreatePostResultOK(body string) *postings.CreatePostResult {
 	v := body
 	res := &postings.CreatePostResult{
-		Success: &v,
+		ImageID: &v,
 	}
 
 	return res

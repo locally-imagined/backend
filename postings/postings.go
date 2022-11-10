@@ -4,8 +4,8 @@ package upload
 import (
 	"backend/auth"
 	"backend/gen/postings"
-	"backend/gen/upload"
 	"context"
+	"database/sql"
 	"time"
 
 	"os"
@@ -27,7 +27,7 @@ type Service struct{}
 var (
 	// ErrUnauthorized is the error returned by Login when the request credentials
 	// are invalid.
-	ErrUnauthorized error = upload.Unauthorized("invalid jwt")
+	ErrUnauthorized error = postings.Unauthorized("invalid jwt")
 )
 
 func (s *Service) JWTAuth(ctx context.Context, token string, scheme *security.JWTScheme) (context.Context, error) {
@@ -56,7 +56,6 @@ func (s *Service) JWTAuth(ctx context.Context, token string, scheme *security.JW
 func (s *Service) CreatePost(ctx context.Context, p *postings.CreatePostPayload) (*postings.CreatePostResult, error) {
 	// this is really CreatePost now
 	// create a different endpoint UploadPhoto that takes in a postID
-	star := "*"
 	// get info from os variables
 	awsAccessKey := os.Getenv("BUCKETEER_AWS_ACCESS_KEY_ID")
 	awsSecretKey := os.Getenv("BUCKETEER_AWS_SECRET_ACCESS_KEY")
@@ -73,18 +72,30 @@ func (s *Service) CreatePost(ctx context.Context, p *postings.CreatePostPayload)
 	// put the bytes into a reader, bytes must be in base 64 for this to work
 	reader := strings.NewReader(string(p.Post.Content))
 
-	postID := uuid.NewString()
+	imageID := uuid.New().String()
 	// put the object in the bucket
 	_, err := svc.PutObjectWithContext(ctx, &s3.PutObjectInput{
 		Bucket: aws.String(awsBucketName),
-		Key:    aws.String("public/" + postID),
+		Key:    aws.String("public/" + imageID),
 		Body:   reader,
 	})
 	if err != nil {
-		return &upload.UploadPhotoResult{Success: &star}, err
+		return &postings.CreatePostResult{ImageID: nil}, nil
 	}
-	// postID = new uuid
-	// insert into 'posts' postID, p.title, p.desc, p.price, currentDate
-	// insert into 'images', imageID (maybe), postID, https://bucketeer-8e1fe0c2-5dfb-4787-8878-55a22a5940a8.s3.amazonaws.com/public/postID, isThumbnail=tru
-	return &upload.UploadPhotoResult{Success: &star}, nil
+
+	postID := uuid.New().String()
+	dbPool, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
+	if err != nil {
+		return nil, err
+	}
+	date := time.Now().Format(time.RFC3339)
+	_, err = dbPool.Query("INSERT INTO Posts Values ($1, $2, $3, $4, $5, $6)", postID, ctx.Value("UserID").(string), p.Post.Title, p.Post.Description, p.Post.Price, date)
+	if err != nil {
+		return nil, err
+	}
+	_, err = dbPool.Query("INSERT INTO Images Values ($1, $2, $3, $4, $5)", imageID, postID, 0)
+	if err != nil {
+		return nil, err
+	}
+	return &postings.CreatePostResult{ImageID: &imageID}, nil
 }
