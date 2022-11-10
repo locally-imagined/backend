@@ -151,7 +151,7 @@ func (s *Service) GetPostPage(ctx context.Context, p *postings.GetPostPagePayloa
 	i := 0
 	for rows.Next() {
 		row := post{postID: "", userID: "", postTitle: "", postDesc: "", price: "", uploadDate: "", imageID: ""}
-		if err := rows.Scan(row.postID, row.userID, row.postTitle, &row.postDesc, &row.price, &row.uploadDate, &row.imageID); err != nil {
+		if err := rows.Scan(&row.postID, &row.userID, &row.postTitle, &row.postDesc, &row.price, &row.uploadDate, &row.imageID); err != nil {
 			log.Fatal(err)
 		}
 		res[i] = &postings.PostResponse{Title: row.postTitle, Description: row.postDesc, Price: row.price, ImageID: row.imageID, PostID: row.postID, UploadDate: row.uploadDate}
