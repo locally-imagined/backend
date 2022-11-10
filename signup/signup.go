@@ -9,6 +9,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/google/uuid"
 	_ "github.com/lib/pq"
 	"goa.design/goa/v3/security"
 )
@@ -44,15 +45,19 @@ func (s *Service) BasicAuth(ctx context.Context, user, pass string, scheme *secu
 	}
 
 	// double check this
-	_, err = dbPool.Query("INSERT INTO test_users (username, password) Values ($1, $2)", user, hashedPassword)
+	userID := uuid.New()
+
+	_, err = dbPool.Query("INSERT INTO Users (username, password) Values ($1, $2)", user, hashedPassword)
+	// insert other items including generated userID
 	if err != nil {
 		return ctx, ErrUnauthorized
 	}
+	ctx = context.WithValue(ctx, "UserID", userID)
 	return ctx, nil
 }
 
 func (s *Service) Signup(ctx context.Context, p *signup.SignupPayload) (*signup.SignupResult, error) {
-	token, err := auth.MakeToken(p.Username)
+	token, err := auth.MakeToken(p.Username, ctx.Value("UserID").(string))
 	if err != nil {
 		return &signup.SignupResult{JWT: nil}, err
 	}

@@ -11,21 +11,21 @@ import (
 )
 
 type locallyImaginedClaims struct {
-	Name  string
-	Email string
+	Username string
+	UserID   string
 	jwt.RegisteredClaims
 }
 
 // change token sign from 'test'
-func MakeToken(email string) (string, error) {
+func MakeToken(username, userID string) (string, error) {
 	uuid := uuid.New()
 	claims := jwt.RegisteredClaims{
 		IssuedAt: jwt.NewNumericDate(time.Now()),
 		ID:       uuid.String()}
 
 	payload := &locallyImaginedClaims{
-		Name:             email,
-		Email:            email,
+		Username:         username,
+		UserID:           userID,
 		RegisteredClaims: claims,
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, payload)

@@ -28,6 +28,8 @@ func (s *Service) BasicAuth(ctx context.Context, user, pass string, scheme *secu
 	defer dbPool.Close()
 	var password string
 	hashedPassword := auth.ShaHashing(pass)
+	// select userID too
+	// row, err := dbPool.Query("SELECT password, userID from users where username=$1", user)
 	row, err := dbPool.Query("SELECT password from test_users where username=$1", user)
 	if err == sql.ErrNoRows {
 		return ctx, ErrUnauthorized
@@ -40,15 +42,24 @@ func (s *Service) BasicAuth(ctx context.Context, user, pass string, scheme *secu
 	if hashedPassword != password {
 		return ctx, ErrUnauthorized
 	}
+	var userID string
+	row, err = dbPool.Query("SELECT userID from test_users where username=$1", user)
+	if err == sql.ErrNoRows {
+		return ctx, ErrUnauthorized
+	}
+	for row.Next() {
+		if err := row.Scan(&userID); err != nil {
+			log.Fatal(err)
+		}
+	}
+	// add userID into context
+	ctx = context.WithValue(ctx, "UserID", userID)
 	return ctx, nil
 }
 
 func (s *Service) Login(ctx context.Context, p *login.LoginPayload) (*login.LoginResult, error) {
-	// access := "http://localhost:3000"
-	// methods := "POST"
-	// creds := "true"
-	// headers := "Origin, X-Requested-With, Content-Type, Accept"
-	token, err := auth.MakeToken(p.Username)
+	// add userID into token
+	token, err := auth.MakeToken(p.Username, ctx.Value("UserID").(string))
 	if err != nil {
 		return &login.LoginResult{JWT: nil}, err
 	}

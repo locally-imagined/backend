@@ -1,5 +1,6 @@
 package upload
 
+// should be package postings
 import (
 	"backend/auth"
 	"backend/gen/upload"
@@ -51,6 +52,8 @@ func (s *Service) JWTAuth(ctx context.Context, token string, scheme *security.JW
 }
 
 func (s *Service) UploadPhoto(ctx context.Context, p *upload.UploadPhotoPayload) (*upload.UploadPhotoResult, error) {
+	// this is really CreatePost now
+	// create a different endpoint UploadPhoto that takes in a postID
 	star := "*"
 	// get info from os variables
 	awsAccessKey := os.Getenv("BUCKETEER_AWS_ACCESS_KEY_ID")
@@ -78,11 +81,8 @@ func (s *Service) UploadPhoto(ctx context.Context, p *upload.UploadPhotoPayload)
 	if err != nil {
 		return &upload.UploadPhotoResult{Success: &star}, err
 	}
-	// x := resp.
-	// 	// insert uuid into the database
-	// 	fmt.Printf("response %s", awsutil.Prettify(resp))
-	// params := &s3.ListObjectsInput{
-	// 	Bucket: aws.String("bucket"),
-	// }
+	// postID = new uuid
+	// insert into 'posts' postID, p.title, p.desc, p.price, currentDate
+	// insert into 'images', imageID (maybe), postID, https://bucketeer-8e1fe0c2-5dfb-4787-8878-55a22a5940a8.s3.amazonaws.com/public/postID, isThumbnail=tru
 	return &upload.UploadPhotoResult{Success: &star}, nil
 }
