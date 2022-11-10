@@ -146,7 +146,7 @@ func (s *Service) GetPostPage(ctx context.Context, p *postings.GetPostPagePayloa
 		return nil, err
 	}
 
-	res := make([]*postings.PostResponse, 0)
+	res := make([]*postings.PostResponse, 25)
 	i := 0
 	for rows.Next() {
 		var row post
