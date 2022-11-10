@@ -28,7 +28,7 @@ func (s *Service) BasicAuth(ctx context.Context, user, pass string, scheme *secu
 	defer dbPool.Close()
 	var password string
 	hashedPassword := auth.ShaHashing(pass)
-	row, err := dbPool.Query("SELECT password from users where username=$1", user)
+	row, err := dbPool.Query("SELECT passhash from users where username=$1", user)
 	if err == sql.ErrNoRows {
 		return ctx, ErrUnauthorized
 	}

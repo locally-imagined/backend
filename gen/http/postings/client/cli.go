@@ -11,6 +11,7 @@ import (
 	postings "backend/gen/postings"
 	"encoding/json"
 	"fmt"
+	"strconv"
 
 	goa "goa.design/goa/v3/pkg"
 )
@@ -23,7 +24,7 @@ func BuildCreatePostPayload(postingsCreatePostBody string, postingsCreatePostTok
 	{
 		err = json.Unmarshal([]byte(postingsCreatePostBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"content\": \"QXV0ZW0gcXVpYSB2ZXJpdGF0aXMgZG9sb3JlbS4=\",\n      \"description\": \"Magnam non voluptas aut vero pariatur.\",\n      \"price\": \"Ut in sapiente illo explicabo aut.\",\n      \"title\": \"Voluptatibus cupiditate ea cum ut beatae.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"content\": \"VXQgdXQgb21uaXMu\",\n      \"description\": \"Autem quia veritatis dolorem.\",\n      \"price\": \"Minima nisi.\",\n      \"title\": \"Ut in sapiente illo explicabo aut.\"\n   }'")
 		}
 		if body.Content == nil {
 			err = goa.MergeErrors(err, goa.MissingFieldError("content", "body"))
@@ -48,4 +49,28 @@ func BuildCreatePostPayload(postingsCreatePostBody string, postingsCreatePostTok
 	res.Token = token
 
 	return res, nil
+}
+
+// BuildGetPostPagePayload builds the payload for the postings get_post_page
+// endpoint from CLI flags.
+func BuildGetPostPagePayload(postingsGetPostPagePage string, postingsGetPostPageToken string) (*postings.GetPostPagePayload, error) {
+	var err error
+	var page int
+	{
+		var v int64
+		v, err = strconv.ParseInt(postingsGetPostPagePage, 10, strconv.IntSize)
+		page = int(v)
+		if err != nil {
+			return nil, fmt.Errorf("invalid value for page, must be INT")
+		}
+	}
+	var token string
+	{
+		token = postingsGetPostPageToken
+	}
+	v := &postings.GetPostPagePayload{}
+	v.Page = page
+	v.Token = token
+
+	return v, nil
 }

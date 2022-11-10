@@ -7,7 +7,16 @@
 
 package client
 
+import (
+	"fmt"
+)
+
 // CreatePostPostingsPath returns the URL path to the postings service create_post HTTP endpoint.
 func CreatePostPostingsPath() string {
 	return "/create"
+}
+
+// GetPostPagePostingsPath returns the URL path to the postings service get_post_page HTTP endpoint.
+func GetPostPagePostingsPath(page int) string {
+	return fmt.Sprintf("/posts/%v", page)
 }

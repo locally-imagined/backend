@@ -30,8 +30,28 @@ type CreatePostRequestBody struct {
 // endpoint HTTP response body.
 type CreatePostResponseBody PostResponseResponseBody
 
+// GetPostPageResponseBody is the type of the "postings" service
+// "get_post_page" endpoint HTTP response body.
+type GetPostPageResponseBody []*PostResponse
+
 // PostResponseResponseBody is used to define fields on response body types.
 type PostResponseResponseBody struct {
+	// Post title
+	Title *string `form:"title,omitempty" json:"title,omitempty" xml:"title,omitempty"`
+	// Post description
+	Description *string `form:"description,omitempty" json:"description,omitempty" xml:"description,omitempty"`
+	// Post price
+	Price *string `form:"price,omitempty" json:"price,omitempty" xml:"price,omitempty"`
+	// Image ID
+	ImageID *string `form:"imageID,omitempty" json:"imageID,omitempty" xml:"imageID,omitempty"`
+	// Post ID
+	PostID *string `form:"postID,omitempty" json:"postID,omitempty" xml:"postID,omitempty"`
+	// Upload Date
+	UploadDate *string `form:"uploadDate,omitempty" json:"uploadDate,omitempty" xml:"uploadDate,omitempty"`
+}
+
+// PostResponse is used to define fields on response body types.
+type PostResponse struct {
 	// Post title
 	Title *string `form:"title,omitempty" json:"title,omitempty" xml:"title,omitempty"`
 	// Post description
@@ -76,6 +96,20 @@ func NewCreatePostResultOK(body *CreatePostResponseBody) *postings.CreatePostRes
 	return res
 }
 
+// NewGetPostPageResultOK builds a "postings" service "get_post_page" endpoint
+// result from a HTTP "OK" response.
+func NewGetPostPageResultOK(body []*PostResponse) *postings.GetPostPageResult {
+	v := make([]*postings.PostResponse, len(body))
+	for i, val := range body {
+		v[i] = unmarshalPostResponseToPostingsPostResponse(val)
+	}
+	res := &postings.GetPostPageResult{
+		Posts: v,
+	}
+
+	return res
+}
+
 // ValidateCreatePostResponseBody runs the validations defined on
 // create_post_response_body
 func ValidateCreatePostResponseBody(body *CreatePostResponseBody) (err error) {
@@ -103,6 +137,29 @@ func ValidateCreatePostResponseBody(body *CreatePostResponseBody) (err error) {
 // ValidatePostResponseResponseBody runs the validations defined on
 // PostResponseResponseBody
 func ValidatePostResponseResponseBody(body *PostResponseResponseBody) (err error) {
+	if body.Title == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("title", "body"))
+	}
+	if body.Description == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("description", "body"))
+	}
+	if body.Price == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("price", "body"))
+	}
+	if body.ImageID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("imageID", "body"))
+	}
+	if body.PostID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("postID", "body"))
+	}
+	if body.UploadDate == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("uploadDate", "body"))
+	}
+	return
+}
+
+// ValidatePostResponse runs the validations defined on PostResponse
+func ValidatePostResponse(body *PostResponse) (err error) {
 	if body.Title == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("title", "body"))
 	}

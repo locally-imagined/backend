@@ -12,6 +12,7 @@ import (
 	"context"
 	"io"
 	"net/http"
+	"strconv"
 	"strings"
 
 	goahttp "goa.design/goa/v3/http"
@@ -69,4 +70,68 @@ func DecodeCreatePostRequest(mux goahttp.Muxer, decoder func(*http.Request) goah
 
 		return payload, nil
 	}
+}
+
+// EncodeGetPostPageResponse returns an encoder for responses returned by the
+// postings get_post_page endpoint.
+func EncodeGetPostPageResponse(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder) func(context.Context, http.ResponseWriter, interface{}) error {
+	return func(ctx context.Context, w http.ResponseWriter, v interface{}) error {
+		res, _ := v.(*postings.GetPostPageResult)
+		enc := encoder(ctx, w)
+		body := NewGetPostPageResponseBody(res)
+		w.WriteHeader(http.StatusOK)
+		return enc.Encode(body)
+	}
+}
+
+// DecodeGetPostPageRequest returns a decoder for requests sent to the postings
+// get_post_page endpoint.
+func DecodeGetPostPageRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (interface{}, error) {
+	return func(r *http.Request) (interface{}, error) {
+		var (
+			page  int
+			token string
+			err   error
+
+			params = mux.Vars(r)
+		)
+		{
+			pageRaw := params["page"]
+			v, err2 := strconv.ParseInt(pageRaw, 10, strconv.IntSize)
+			if err2 != nil {
+				err = goa.MergeErrors(err, goa.InvalidFieldTypeError("page", pageRaw, "integer"))
+			}
+			page = int(v)
+		}
+		token = r.Header.Get("Authorization")
+		if token == "" {
+			err = goa.MergeErrors(err, goa.MissingFieldError("Authorization", "header"))
+		}
+		if err != nil {
+			return nil, err
+		}
+		payload := NewGetPostPagePayload(page, token)
+		if strings.Contains(payload.Token, " ") {
+			// Remove authorization scheme prefix (e.g. "Bearer")
+			cred := strings.SplitN(payload.Token, " ", 2)[1]
+			payload.Token = cred
+		}
+
+		return payload, nil
+	}
+}
+
+// marshalPostingsPostResponseToPostResponse builds a value of type
+// *PostResponse from a value of type *postings.PostResponse.
+func marshalPostingsPostResponseToPostResponse(v *postings.PostResponse) *PostResponse {
+	res := &PostResponse{
+		Title:       v.Title,
+		Description: v.Description,
+		Price:       v.Price,
+		ImageID:     v.ImageID,
+		PostID:      v.PostID,
+		UploadDate:  v.UploadDate,
+	}
+
+	return res
 }

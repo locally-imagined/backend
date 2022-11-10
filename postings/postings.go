@@ -6,6 +6,7 @@ import (
 	"backend/gen/postings"
 	"context"
 	"database/sql"
+	"log"
 	"time"
 
 	"os"
@@ -109,4 +110,46 @@ func (s *Service) CreatePost(ctx context.Context, p *postings.CreatePostPayload)
 		Posted: posted,
 	}
 	return res, nil
+}
+
+type image struct {
+	imageID string
+	index   int
+}
+
+type post struct {
+	postID     string
+	userID     string
+	postTitle  string
+	postDesc   string
+	price      string
+	uploadDate string
+	imageID    string
+}
+
+func (s *Service) GetPostPage(ctx context.Context, p *postings.GetPostPagePayload) (*postings.GetPostPageResult, error) {
+	dbPool, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
+	if err != nil {
+		return nil, err
+	}
+	offset := p.Page * 25
+	rows, err := dbPool.Query("SELECT p.postid, p.userid, p.title, p.description, p.price, p.uploaddate, i.imgid FROM posts AS p LEFT JOIN images AS i ON p.postid=i.postid WHERE i.index=0 OFFSET $1 ROWS FETCH NEXT 25 ROWS ONLY", offset)
+
+	defer dbPool.Close()
+
+	if err == sql.ErrNoRows {
+		return nil, err
+	}
+
+	res := make([]*postings.PostResponse, 0)
+	i := 0
+	for rows.Next() {
+		var row post
+		if err := rows.Scan(&row.postID, &row.userID, &row.postTitle, &row.postDesc, &row.price, &row.uploadDate, &row.imageID); err != nil {
+			log.Fatal(err)
+		}
+		res = append(res, &postings.PostResponse{Title: row.postTitle, Description: row.postDesc, Price: row.price, ImageID: row.imageID, PostID: row.postID, UploadDate: row.uploadDate})
+		i = i + 1
+	}
+	return &postings.GetPostPageResult{Posts: res}, err
 }

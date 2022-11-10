@@ -15,13 +15,15 @@ import (
 
 // Client is the "postings" service client.
 type Client struct {
-	CreatePostEndpoint goa.Endpoint
+	CreatePostEndpoint  goa.Endpoint
+	GetPostPageEndpoint goa.Endpoint
 }
 
 // NewClient initializes a "postings" service client given the endpoints.
-func NewClient(createPost goa.Endpoint) *Client {
+func NewClient(createPost, getPostPage goa.Endpoint) *Client {
 	return &Client{
-		CreatePostEndpoint: createPost,
+		CreatePostEndpoint:  createPost,
+		GetPostPageEndpoint: getPostPage,
 	}
 }
 
@@ -36,4 +38,17 @@ func (c *Client) CreatePost(ctx context.Context, p *CreatePostPayload) (res *Cre
 		return
 	}
 	return ires.(*CreatePostResult), nil
+}
+
+// GetPostPage calls the "get_post_page" endpoint of the "postings" service.
+// GetPostPage may return the following errors:
+//	- "unauthorized" (type Unauthorized)
+//	- error: internal error
+func (c *Client) GetPostPage(ctx context.Context, p *GetPostPagePayload) (res *GetPostPageResult, err error) {
+	var ires interface{}
+	ires, err = c.GetPostPageEndpoint(ctx, p)
+	if err != nil {
+		return
+	}
+	return ires.(*GetPostPageResult), nil
 }

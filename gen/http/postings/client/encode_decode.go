@@ -17,6 +17,7 @@ import (
 	"strings"
 
 	goahttp "goa.design/goa/v3/http"
+	goa "goa.design/goa/v3/pkg"
 )
 
 // BuildCreatePostRequest instantiates a HTTP request object with method and
@@ -96,4 +97,110 @@ func DecodeCreatePostResponse(decoder func(*http.Response) goahttp.Decoder, rest
 			return nil, goahttp.ErrInvalidResponse("postings", "create_post", resp.StatusCode, string(body))
 		}
 	}
+}
+
+// BuildGetPostPageRequest instantiates a HTTP request object with method and
+// path set to call the "postings" service "get_post_page" endpoint
+func (c *Client) BuildGetPostPageRequest(ctx context.Context, v interface{}) (*http.Request, error) {
+	var (
+		page int
+	)
+	{
+		p, ok := v.(*postings.GetPostPagePayload)
+		if !ok {
+			return nil, goahttp.ErrInvalidType("postings", "get_post_page", "*postings.GetPostPagePayload", v)
+		}
+		page = p.Page
+	}
+	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: GetPostPagePostingsPath(page)}
+	req, err := http.NewRequest("GET", u.String(), nil)
+	if err != nil {
+		return nil, goahttp.ErrInvalidURL("postings", "get_post_page", u.String(), err)
+	}
+	if ctx != nil {
+		req = req.WithContext(ctx)
+	}
+
+	return req, nil
+}
+
+// EncodeGetPostPageRequest returns an encoder for requests sent to the
+// postings get_post_page server.
+func EncodeGetPostPageRequest(encoder func(*http.Request) goahttp.Encoder) func(*http.Request, interface{}) error {
+	return func(req *http.Request, v interface{}) error {
+		p, ok := v.(*postings.GetPostPagePayload)
+		if !ok {
+			return goahttp.ErrInvalidType("postings", "get_post_page", "*postings.GetPostPagePayload", v)
+		}
+		{
+			head := p.Token
+			if !strings.Contains(head, " ") {
+				req.Header.Set("Authorization", "Bearer "+head)
+			} else {
+				req.Header.Set("Authorization", head)
+			}
+		}
+		return nil
+	}
+}
+
+// DecodeGetPostPageResponse returns a decoder for responses returned by the
+// postings get_post_page endpoint. restoreBody controls whether the response
+// body should be restored after having been read.
+func DecodeGetPostPageResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
+	return func(resp *http.Response) (interface{}, error) {
+		if restoreBody {
+			b, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return nil, err
+			}
+			resp.Body = io.NopCloser(bytes.NewBuffer(b))
+			defer func() {
+				resp.Body = io.NopCloser(bytes.NewBuffer(b))
+			}()
+		} else {
+			defer resp.Body.Close()
+		}
+		switch resp.StatusCode {
+		case http.StatusOK:
+			var (
+				body GetPostPageResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("postings", "get_post_page", err)
+			}
+			for _, e := range body {
+				if e != nil {
+					if err2 := ValidatePostResponse(e); err2 != nil {
+						err = goa.MergeErrors(err, err2)
+					}
+				}
+			}
+			if err != nil {
+				return nil, goahttp.ErrValidationError("postings", "get_post_page", err)
+			}
+			res := NewGetPostPageResultOK(body)
+			return res, nil
+		default:
+			body, _ := io.ReadAll(resp.Body)
+			return nil, goahttp.ErrInvalidResponse("postings", "get_post_page", resp.StatusCode, string(body))
+		}
+	}
+}
+
+// unmarshalPostResponseToPostingsPostResponse builds a value of type
+// *postings.PostResponse from a value of type *PostResponse.
+func unmarshalPostResponseToPostingsPostResponse(v *PostResponse) *postings.PostResponse {
+	res := &postings.PostResponse{
+		Title:       *v.Title,
+		Description: *v.Description,
+		Price:       *v.Price,
+		ImageID:     *v.ImageID,
+		PostID:      *v.PostID,
+		UploadDate:  *v.UploadDate,
+	}
+
+	return res
 }
