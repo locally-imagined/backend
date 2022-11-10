@@ -211,7 +211,20 @@ definitions:
             email:
                 type: string
                 description: Email
-                example: Ut ut omnis.
+                example:
+                    - 85
+                    - 116
+                    - 32
+                    - 117
+                    - 116
+                    - 32
+                    - 111
+                    - 109
+                    - 110
+                    - 105
+                    - 115
+                    - 46
+                format: byte
             firstName:
                 type: string
                 description: First name
@@ -226,7 +239,20 @@ definitions:
                 example: Minima nisi.
         description: Describes a user
         example:
-            email: Aut et atque.
+            email:
+                - 65
+                - 117
+                - 116
+                - 32
+                - 101
+                - 116
+                - 32
+                - 97
+                - 116
+                - 113
+                - 117
+                - 101
+                - 46
             firstName: Ut molestiae nihil ipsam voluptatem explicabo qui.
             lastName: Quae autem quia nemo iste similique veritatis.
             phone: At ad.

@@ -58,5 +58,5 @@ type User struct {
 	// Phone number
 	Phone string
 	// Email
-	Email string
+	Email []byte
 }

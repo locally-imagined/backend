@@ -35,7 +35,7 @@ postings create-post
 func UsageExamples() string {
 	return os.Args[0] + ` login login --username "Et incidunt assumenda sequi." --password "Reiciendis voluptas in autem dolorem."` + "\n" +
 		os.Args[0] + ` signup signup --body '{
-      "email": "Nisi tempora delectus architecto.",
+      "email": "TmlzaSB0ZW1wb3JhIGRlbGVjdHVzIGFyY2hpdGVjdG8u",
       "firstName": "Laborum ut iste et harum.",
       "lastName": "Unde quod.",
       "phone": "Autem neque numquam."
@@ -242,7 +242,7 @@ Signup implements Signup.
 
 Example:
     %[1]s signup signup --body '{
-      "email": "Nisi tempora delectus architecto.",
+      "email": "TmlzaSB0ZW1wb3JhIGRlbGVjdHVzIGFyY2hpdGVjdG8u",
       "firstName": "Laborum ut iste et harum.",
       "lastName": "Unde quod.",
       "phone": "Autem neque numquam."

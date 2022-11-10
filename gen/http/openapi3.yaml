@@ -80,7 +80,40 @@ paths:
                         schema:
                             $ref: '#/components/schemas/User'
                         example:
-                            email: Nisi tempora delectus architecto.
+                            email:
+                                - 78
+                                - 105
+                                - 115
+                                - 105
+                                - 32
+                                - 116
+                                - 101
+                                - 109
+                                - 112
+                                - 111
+                                - 114
+                                - 97
+                                - 32
+                                - 100
+                                - 101
+                                - 108
+                                - 101
+                                - 99
+                                - 116
+                                - 117
+                                - 115
+                                - 32
+                                - 97
+                                - 114
+                                - 99
+                                - 104
+                                - 105
+                                - 116
+                                - 101
+                                - 99
+                                - 116
+                                - 111
+                                - 46
                             firstName: Laborum ut iste et harum.
                             lastName: Unde quod.
                             phone: Autem neque numquam.
@@ -212,7 +245,29 @@ components:
                 email:
                     type: string
                     description: Email
-                    example: Modi dolores laborum.
+                    example:
+                        - 77
+                        - 111
+                        - 100
+                        - 105
+                        - 32
+                        - 100
+                        - 111
+                        - 108
+                        - 111
+                        - 114
+                        - 101
+                        - 115
+                        - 32
+                        - 108
+                        - 97
+                        - 98
+                        - 111
+                        - 114
+                        - 117
+                        - 109
+                        - 46
+                    format: binary
                 firstName:
                     type: string
                     description: First name
@@ -227,7 +282,51 @@ components:
                     example: Quasi non qui esse non praesentium expedita.
             description: Describes a user
             example:
-                email: Voluptas ipsum rerum iure minima nihil odio.
+                email:
+                    - 86
+                    - 111
+                    - 108
+                    - 117
+                    - 112
+                    - 116
+                    - 97
+                    - 115
+                    - 32
+                    - 105
+                    - 112
+                    - 115
+                    - 117
+                    - 109
+                    - 32
+                    - 114
+                    - 101
+                    - 114
+                    - 117
+                    - 109
+                    - 32
+                    - 105
+                    - 117
+                    - 114
+                    - 101
+                    - 32
+                    - 109
+                    - 105
+                    - 110
+                    - 105
+                    - 109
+                    - 97
+                    - 32
+                    - 110
+                    - 105
+                    - 104
+                    - 105
+                    - 108
+                    - 32
+                    - 111
+                    - 100
+                    - 105
+                    - 111
+                    - 46
                 firstName: Repudiandae tempore molestiae illo.
                 lastName: Incidunt et ipsum facilis.
                 phone: Neque praesentium distinctio impedit perferendis aut.

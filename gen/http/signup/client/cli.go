@@ -11,6 +11,8 @@ import (
 	signup "backend/gen/signup"
 	"encoding/json"
 	"fmt"
+
+	goa "goa.design/goa/v3/pkg"
 )
 
 // BuildSignupPayload builds the payload for the signup Signup endpoint from
@@ -21,7 +23,13 @@ func BuildSignupPayload(signupSignupBody string, signupSignupUsername string, si
 	{
 		err = json.Unmarshal([]byte(signupSignupBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"email\": \"Nisi tempora delectus architecto.\",\n      \"firstName\": \"Laborum ut iste et harum.\",\n      \"lastName\": \"Unde quod.\",\n      \"phone\": \"Autem neque numquam.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"email\": \"TmlzaSB0ZW1wb3JhIGRlbGVjdHVzIGFyY2hpdGVjdG8u\",\n      \"firstName\": \"Laborum ut iste et harum.\",\n      \"lastName\": \"Unde quod.\",\n      \"phone\": \"Autem neque numquam.\"\n   }'")
+		}
+		if body.Email == nil {
+			err = goa.MergeErrors(err, goa.MissingFieldError("email", "body"))
+		}
+		if err != nil {
+			return nil, err
 		}
 	}
 	var username string

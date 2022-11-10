@@ -21,7 +21,7 @@ type SignupRequestBody struct {
 	// Phone number
 	Phone string `form:"phone" json:"phone" xml:"phone"`
 	// Email
-	Email string `form:"email" json:"email" xml:"email"`
+	Email []byte `form:"email" json:"email" xml:"email"`
 }
 
 // NewSignupRequestBody builds the HTTP request body from the payload of the

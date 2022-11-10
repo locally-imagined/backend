@@ -23,7 +23,7 @@ type SignupRequestBody struct {
 	// Phone number
 	Phone *string `form:"phone,omitempty" json:"phone,omitempty" xml:"phone,omitempty"`
 	// Email
-	Email *string `form:"email,omitempty" json:"email,omitempty" xml:"email,omitempty"`
+	Email []byte `form:"email,omitempty" json:"email,omitempty" xml:"email,omitempty"`
 }
 
 // NewSignupPayload builds a signup service Signup endpoint payload.
@@ -32,7 +32,7 @@ func NewSignupPayload(body *SignupRequestBody) *signup.SignupPayload {
 		FirstName: *body.FirstName,
 		LastName:  *body.LastName,
 		Phone:     *body.Phone,
-		Email:     *body.Email,
+		Email:     body.Email,
 	}
 	res := &signup.SignupPayload{
 		User: v,
