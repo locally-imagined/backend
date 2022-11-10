@@ -58,7 +58,7 @@ type CreatePostResult struct {
 // get_images_for_post method.
 type GetImagesForPostPayload struct {
 	// Post to get images for
-	PostID string
+	Post string
 }
 
 // GetImagesForPostResult is the result type of the postings service

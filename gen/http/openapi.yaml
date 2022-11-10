@@ -88,14 +88,14 @@ paths:
                             $ref: '#/definitions/PostResponse'
             schemes:
                 - http
-    /posts/{postID}:
+    /posts/{post}:
         get:
             tags:
                 - postings
             summary: get_images_for_post postings
             operationId: postings#get_images_for_post
             parameters:
-                - name: postID
+                - name: post
                   in: path
                   description: Post to get images for
                   required: true

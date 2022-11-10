@@ -117,9 +117,9 @@ func NewGetPostPagePayload(page int) *postings.GetPostPagePayload {
 
 // NewGetImagesForPostPayload builds a postings service get_images_for_post
 // endpoint payload.
-func NewGetImagesForPostPayload(postID string) *postings.GetImagesForPostPayload {
+func NewGetImagesForPostPayload(post string) *postings.GetImagesForPostPayload {
 	v := &postings.GetImagesForPostPayload{}
-	v.PostID = postID
+	v.Post = post
 
 	return v
 }

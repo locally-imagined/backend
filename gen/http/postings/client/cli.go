@@ -72,13 +72,13 @@ func BuildGetPostPagePayload(postingsGetPostPagePage string) (*postings.GetPostP
 
 // BuildGetImagesForPostPayload builds the payload for the postings
 // get_images_for_post endpoint from CLI flags.
-func BuildGetImagesForPostPayload(postingsGetImagesForPostPostID string) (*postings.GetImagesForPostPayload, error) {
-	var postID string
+func BuildGetImagesForPostPayload(postingsGetImagesForPostPost string) (*postings.GetImagesForPostPayload, error) {
+	var post string
 	{
-		postID = postingsGetImagesForPostPostID
+		post = postingsGetImagesForPostPost
 	}
 	v := &postings.GetImagesForPostPayload{}
-	v.PostID = postID
+	v.Post = post
 
 	return v, nil
 }

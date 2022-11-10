@@ -158,7 +158,7 @@ func (s *Service) GetImagesForPost(ctx context.Context, p *postings.GetImagesFor
 	if err != nil {
 		return nil, err
 	}
-	rows, err := dbPool.Query("SELECT * from images where postid=$1 ORDER BY index", p.PostID)
+	rows, err := dbPool.Query("SELECT * from images where postid=$1 ORDER BY index", p.Post)
 
 	defer dbPool.Close()
 

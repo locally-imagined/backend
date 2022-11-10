@@ -134,14 +134,14 @@ paths:
                                   price: Reiciendis voluptas in autem dolorem.
                                   title: Accusantium ipsam nisi pariatur magnam.
                                   uploadDate: Laborum ut iste et harum.
-    /posts/{postID}:
+    /posts/{post}:
         get:
             tags:
                 - postings
             summary: get_images_for_post postings
             operationId: postings#get_images_for_post
             parameters:
-                - name: postID
+                - name: post
                   in: path
                   description: Post to get images for
                   required: true
