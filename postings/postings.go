@@ -93,7 +93,7 @@ func (s *Service) CreatePost(ctx context.Context, p *postings.CreatePostPayload)
 	if err != nil {
 		return nil, err
 	}
-	_, err = dbPool.Query("INSERT INTO Images Values ($1, $2, $3, $4, $5)", imageID, postID, 0)
+	_, err = dbPool.Query("INSERT INTO Images Values ($1, $2, $3)", imageID, postID, 0)
 	if err != nil {
 		return nil, err
 	}
