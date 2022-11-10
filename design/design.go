@@ -159,14 +159,14 @@ var _ = Service("postings", func() {
 	})
 	Method("get_images_for_post", func() {
 		Payload(func() {
-			Attribute("postID", String, "Post to get images for")
-			Required("postID")
+			Attribute("post", String, "Post to get images for")
+			Required("post")
 		})
 		Result(func() {
 			Attribute("Images", ArrayOf(String))
 		})
 		HTTP(func() {
-			GET("/posts/{postID}")
+			GET("/posts/{post}")
 			Response(func() {
 				Body("Images")
 			})
