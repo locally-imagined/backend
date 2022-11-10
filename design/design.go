@@ -143,9 +143,7 @@ var _ = Service("postings", func() {
 		})
 	})
 	Method("get_post_page", func() {
-		Security(JWTAuth)
 		Payload(func() {
-			Token("token", String, "jwt used for auth")
 			Attribute("page", Int, "Page to get posts for")
 			Required("token", "page")
 		})
