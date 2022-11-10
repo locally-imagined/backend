@@ -20,20 +20,7 @@ paths:
                         schema:
                             $ref: '#/components/schemas/Post'
                         example:
-                            content:
-                                - 65
-                                - 117
-                                - 116
-                                - 32
-                                - 101
-                                - 116
-                                - 32
-                                - 97
-                                - 116
-                                - 113
-                                - 117
-                                - 101
-                                - 46
+                            content: Aut et atque.
                             description: Quae autem quia nemo iste similique veritatis.
                             price: At ad.
                             title: Ut molestiae nihil ipsam voluptatem explicabo qui.
@@ -205,23 +192,7 @@ components:
                 content:
                     type: string
                     description: Post content
-                    example:
-                        - 81
-                        - 117
-                        - 105
-                        - 32
-                        - 117
-                        - 110
-                        - 100
-                        - 101
-                        - 32
-                        - 110
-                        - 97
-                        - 116
-                        - 117
-                        - 115
-                        - 46
-                    format: binary
+                    example: Qui unde natus.
                 description:
                     type: string
                     description: Post description
@@ -236,15 +207,7 @@ components:
                     example: Id ex qui occaecati consectetur ratione.
             description: Describes a post
             example:
-                content:
-                    - 81
-                    - 117
-                    - 105
-                    - 32
-                    - 115
-                    - 105
-                    - 116
-                    - 46
+                content: Qui sit.
                 description: Delectus animi.
                 price: Non quaerat ipsa enim eos corporis.
                 title: Porro qui vel sed et tenetur.

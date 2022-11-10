@@ -230,43 +230,7 @@ definitions:
             content:
                 type: string
                 description: Post content
-                example:
-                    - 70
-                    - 97
-                    - 99
-                    - 101
-                    - 114
-                    - 101
-                    - 32
-                    - 118
-                    - 111
-                    - 108
-                    - 117
-                    - 112
-                    - 116
-                    - 97
-                    - 116
-                    - 117
-                    - 109
-                    - 32
-                    - 113
-                    - 117
-                    - 105
-                    - 115
-                    - 32
-                    - 100
-                    - 111
-                    - 108
-                    - 111
-                    - 114
-                    - 101
-                    - 115
-                    - 32
-                    - 113
-                    - 117
-                    - 105
-                    - 46
-                format: byte
+                example: Facere voluptatum quis dolores qui.
             description:
                 type: string
                 description: Post description
@@ -281,34 +245,7 @@ definitions:
                 example: Minus quia labore recusandae quae omnis et.
         description: Describes a post
         example:
-            content:
-                - 69
-                - 97
-                - 32
-                - 109
-                - 97
-                - 103
-                - 110
-                - 105
-                - 32
-                - 102
-                - 117
-                - 103
-                - 105
-                - 116
-                - 32
-                - 97
-                - 112
-                - 101
-                - 114
-                - 105
-                - 97
-                - 109
-                - 32
-                - 101
-                - 117
-                - 109
-                - 46
+            content: Ea magni fugit aperiam eum.
             description: Ut blanditiis deleniti illo.
             price: Libero a id aut.
             title: Ullam perferendis.

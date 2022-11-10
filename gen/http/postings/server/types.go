@@ -23,7 +23,7 @@ type CreatePostRequestBody struct {
 	// Post price
 	Price *string `form:"price,omitempty" json:"price,omitempty" xml:"price,omitempty"`
 	// Post content
-	Content []byte `form:"content,omitempty" json:"content,omitempty" xml:"content,omitempty"`
+	Content *string `form:"content,omitempty" json:"content,omitempty" xml:"content,omitempty"`
 }
 
 // CreatePostResponseBody is the type of the "postings" service "create_post"
@@ -96,7 +96,7 @@ func NewCreatePostPayload(body *CreatePostRequestBody, token string) *postings.C
 		Title:       *body.Title,
 		Description: *body.Description,
 		Price:       *body.Price,
-		Content:     body.Content,
+		Content:     *body.Content,
 	}
 	res := &postings.CreatePostPayload{
 		Post: v,

@@ -23,7 +23,7 @@ type CreatePostRequestBody struct {
 	// Post price
 	Price string `form:"price" json:"price" xml:"price"`
 	// Post content
-	Content []byte `form:"content" json:"content" xml:"content"`
+	Content string `form:"content" json:"content" xml:"content"`
 }
 
 // CreatePostResponseBody is the type of the "postings" service "create_post"
