@@ -21,38 +21,21 @@ paths:
                             $ref: '#/components/schemas/Post'
                         example:
                             content:
-                                - 65
+                                - 85
+                                - 116
+                                - 32
                                 - 117
                                 - 116
-                                - 101
+                                - 32
+                                - 111
                                 - 109
-                                - 32
-                                - 113
-                                - 117
-                                - 105
-                                - 97
-                                - 32
-                                - 118
-                                - 101
-                                - 114
-                                - 105
-                                - 116
-                                - 97
-                                - 116
+                                - 110
                                 - 105
                                 - 115
-                                - 32
-                                - 100
-                                - 111
-                                - 108
-                                - 111
-                                - 114
-                                - 101
-                                - 109
                                 - 46
-                            description: Magnam non voluptas aut vero pariatur.
-                            price: Ut in sapiente illo explicabo aut.
-                            title: Voluptatibus cupiditate ea cum ut beatae.
+                            description: Autem quia veritatis dolorem.
+                            price: Minima nisi.
+                            title: Ut in sapiente illo explicabo aut.
             responses:
                 "200":
                     description: OK response.
@@ -61,12 +44,12 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/PostingscreatePostResponseBody'
                             example:
-                                description: Ut molestiae nihil ipsam voluptatem explicabo qui.
-                                imageID: At ad.
-                                postID: Aut et atque.
-                                price: Quae autem quia nemo iste similique veritatis.
-                                title: Ut ut omnis.
-                                uploadDate: Aut animi et deserunt est.
+                                description: At ad.
+                                imageID: Aut animi et deserunt est.
+                                postID: Doloremque ut vel.
+                                price: Aut et atque.
+                                title: Quae autem quia nemo iste similique veritatis.
+                                uploadDate: Ab enim aut et quas quo.
             security:
                 - jwt_header_Authorization: []
     /login:
@@ -82,10 +65,76 @@ paths:
                         application/json:
                             schema:
                                 type: string
-                                example: Dignissimos repellendus quia.
-                            example: Aut sunt ut.
+                                example: Vitae laudantium quo laboriosam totam ad quia.
+                            example: Laudantium aut ullam eius ipsa.
             security:
                 - login_header_Authorization: []
+    /posts/{page}:
+        get:
+            tags:
+                - postings
+            summary: get_post_page postings
+            operationId: postings#get_post_page
+            parameters:
+                - name: page
+                  in: path
+                  description: Page to get posts for
+                  required: true
+                  schema:
+                    type: integer
+                    description: Page to get posts for
+                    example: 5206077168598330888
+                    format: int64
+                  example: 3762369825311389636
+            responses:
+                "200":
+                    description: OK response.
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/PostResponse'
+                                example:
+                                    - description: Et incidunt assumenda sequi.
+                                      imageID: Corporis ipsum neque.
+                                      postID: Unde vero.
+                                      price: Reiciendis voluptas in autem dolorem.
+                                      title: Accusantium ipsam nisi pariatur magnam.
+                                      uploadDate: Laborum ut iste et harum.
+                                    - description: Et incidunt assumenda sequi.
+                                      imageID: Corporis ipsum neque.
+                                      postID: Unde vero.
+                                      price: Reiciendis voluptas in autem dolorem.
+                                      title: Accusantium ipsam nisi pariatur magnam.
+                                      uploadDate: Laborum ut iste et harum.
+                                    - description: Et incidunt assumenda sequi.
+                                      imageID: Corporis ipsum neque.
+                                      postID: Unde vero.
+                                      price: Reiciendis voluptas in autem dolorem.
+                                      title: Accusantium ipsam nisi pariatur magnam.
+                                      uploadDate: Laborum ut iste et harum.
+                                    - description: Et incidunt assumenda sequi.
+                                      imageID: Corporis ipsum neque.
+                                      postID: Unde vero.
+                                      price: Reiciendis voluptas in autem dolorem.
+                                      title: Accusantium ipsam nisi pariatur magnam.
+                                      uploadDate: Laborum ut iste et harum.
+                            example:
+                                - description: Et incidunt assumenda sequi.
+                                  imageID: Corporis ipsum neque.
+                                  postID: Unde vero.
+                                  price: Reiciendis voluptas in autem dolorem.
+                                  title: Accusantium ipsam nisi pariatur magnam.
+                                  uploadDate: Laborum ut iste et harum.
+                                - description: Et incidunt assumenda sequi.
+                                  imageID: Corporis ipsum neque.
+                                  postID: Unde vero.
+                                  price: Reiciendis voluptas in autem dolorem.
+                                  title: Accusantium ipsam nisi pariatur magnam.
+                                  uploadDate: Laborum ut iste et harum.
+            security:
+                - jwt_header_Authorization: []
     /signup:
         post:
             tags:
@@ -99,10 +148,10 @@ paths:
                         schema:
                             $ref: '#/components/schemas/User'
                         example:
-                            email: Commodi officiis numquam molestiae.
-                            firstName: Velit rerum occaecati quia.
-                            lastName: Voluptate quod.
-                            phone: Dolorum aut aut impedit nisi odio.
+                            email: Qui unde et mollitia modi.
+                            firstName: Dolorum aut aut impedit nisi odio.
+                            lastName: Commodi officiis numquam molestiae.
+                            phone: Nam doloribus dolor commodi consequuntur perferendis ea.
             responses:
                 "200":
                     description: OK response.
@@ -110,8 +159,8 @@ paths:
                         application/json:
                             schema:
                                 type: string
-                                example: Ut blanditiis deleniti illo.
-                            example: Odit quia culpa vero sed.
+                                example: Voluptates ut.
+                            example: Iure consequatur eos.
             security:
                 - signup_header_Authorization: []
 components:
@@ -123,49 +172,65 @@ components:
                     type: string
                     description: Post content
                     example:
-                        - 69
-                        - 120
-                        - 112
-                        - 108
-                        - 105
-                        - 99
-                        - 97
-                        - 98
+                        - 73
+                        - 110
+                        - 32
+                        - 118
+                        - 101
+                        - 114
                         - 111
                         - 32
-                        - 114
+                        - 118
+                        - 111
+                        - 108
+                        - 117
+                        - 112
+                        - 116
+                        - 97
+                        - 116
+                        - 101
+                        - 109
+                        - 32
+                        - 115
+                        - 97
                         - 101
                         - 112
                         - 101
-                        - 108
-                        - 108
+                        - 32
+                        - 116
                         - 101
-                        - 110
-                        - 100
+                        - 109
+                        - 112
+                        - 111
+                        - 114
+                        - 101
+                        - 32
+                        - 101
+                        - 105
                         - 117
                         - 115
                         - 32
-                        - 109
-                        - 111
                         - 100
+                        - 117
+                        - 99
                         - 105
-                        - 32
-                        - 101
-                        - 116
+                        - 109
+                        - 117
+                        - 115
                         - 46
                     format: binary
                 description:
                     type: string
                     description: Post description
-                    example: Ea magni fugit aperiam eum.
+                    example: Vel culpa ut expedita consequatur facilis non.
                 price:
                     type: string
                     description: Post price
-                    example: Dolores nostrum suscipit rerum consequatur.
+                    example: Dolores praesentium vel blanditiis nihil blanditiis porro.
                 title:
                     type: string
                     description: Post title
-                    example: Libero a id aut.
+                    example: Id ut et.
             description: Describes a post
             example:
                 content:
@@ -176,47 +241,27 @@ components:
                     - 117
                     - 101
                     - 32
-                    - 100
+                    - 109
                     - 111
                     - 108
-                    - 111
-                    - 114
-                    - 101
-                    - 115
-                    - 32
-                    - 97
-                    - 117
-                    - 116
-                    - 32
-                    - 101
-                    - 120
-                    - 99
-                    - 101
-                    - 112
-                    - 116
-                    - 117
-                    - 114
+                    - 108
                     - 105
-                    - 32
-                    - 97
                     - 116
-                    - 113
-                    - 117
-                    - 101
-                    - 32
-                    - 117
-                    - 116
-                    - 32
-                    - 113
-                    - 117
                     - 105
-                    - 100
+                    - 97
+                    - 32
                     - 101
+                    - 116
+                    - 32
                     - 109
+                    - 105
+                    - 110
+                    - 117
+                    - 115
                     - 46
-                description: Vitae laudantium quo laboriosam totam ad quia.
-                price: Nesciunt enim optio quia debitis totam temporibus.
-                title: Voluptas et impedit qui praesentium autem.
+                description: Aut sunt ut.
+                price: Odit quia culpa vero sed.
+                title: Sit distinctio est corrupti suscipit aperiam aut.
             required:
                 - title
                 - description
@@ -228,35 +273,35 @@ components:
                 description:
                     type: string
                     description: Post description
-                    example: Omnis odio molestiae nesciunt natus vitae.
+                    example: Cum dolor totam sint saepe aperiam non.
                 imageID:
                     type: string
                     description: Image ID
-                    example: Ab a consequatur enim quasi qui.
+                    example: Nemo numquam iste.
                 postID:
                     type: string
                     description: Post ID
-                    example: Doloremque ut non.
+                    example: Ad voluptatem id dolor autem iusto.
                 price:
                     type: string
                     description: Post price
-                    example: Et voluptatem quia quidem recusandae qui.
+                    example: Id ex qui occaecati consectetur ratione.
                 title:
                     type: string
                     description: Post title
-                    example: Dolores blanditiis ut culpa.
+                    example: Veritatis delectus eaque.
                 uploadDate:
                     type: string
                     description: Upload Date
-                    example: Enim quo.
+                    example: Qui unde natus.
             description: Describes a post
             example:
-                description: Id ut et.
-                imageID: Dolores praesentium vel blanditiis nihil blanditiis porro.
-                postID: In vero voluptatem saepe tempore eius ducimus.
-                price: Vel culpa ut expedita consequatur facilis non.
-                title: Voluptates ut.
-                uploadDate: Sit distinctio est corrupti suscipit aperiam aut.
+                description: Delectus animi.
+                imageID: Qui sit.
+                postID: Voluptas minus et magnam.
+                price: Non quaerat ipsa enim eos corporis.
+                title: Porro qui vel sed et tenetur.
+                uploadDate: Omnis quo enim voluptatem eligendi libero doloremque.
             required:
                 - title
                 - description
@@ -272,25 +317,25 @@ components:
                 email:
                     type: string
                     description: Email
-                    example: Minus quia labore recusandae quae omnis et.
+                    example: Omnis odio molestiae nesciunt natus vitae.
                 firstName:
                     type: string
                     description: First name
-                    example: Architecto et expedita eum voluptatibus tenetur non.
+                    example: Nesciunt enim optio quia debitis totam temporibus.
                 lastName:
                     type: string
                     description: Last name
-                    example: Odit deleniti non praesentium molestiae consequuntur.
+                    example: Cumque dolores aut excepturi atque ut quidem.
                 phone:
                     type: string
                     description: Phone number
-                    example: Eum molestiae ut deleniti laborum.
+                    example: Dolores blanditiis ut culpa.
             description: Describes a user
             example:
-                email: Ullam perferendis.
-                firstName: Voluptas commodi.
-                lastName: Est et aut doloribus nobis dolorem.
-                phone: Facere voluptatum quis dolores qui.
+                email: Enim quo.
+                firstName: Et voluptatem quia quidem recusandae qui.
+                lastName: Ab a consequatur enim quasi qui.
+                phone: Doloremque ut non.
             required:
                 - firstName
                 - lastName

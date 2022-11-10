@@ -133,27 +133,29 @@ var _ = Service("postings", func() {
 		})
 		Result(func() {
 			Attribute("Posted", PostResponse)
-			// Attribute("title", String, "Post title")
-			// Attribute("description", String, "Post description")
-			// Attribute("price", String, "Post price")
-			// Attribute("imageID", String, "Image ID")
-			// Attribute("postID", String, "Post ID")
-			// Attribute("uploadDate", String, "Upload Date")
-			// Required("title", "description", "price", "imageID", "postID", "uploadDate")
-
 		})
 		HTTP(func() {
 			POST("/create")
 			Body("post")
 			Response(func() {
 				Body("Posted")
-				// Body("title")
-				// Body("description")
-				// Body("price")
-				// Body("imageID")
-				// Body("postID")
-				// Body("uploadDate")
-				// Required("title", "description", "price", "imageID", "postID", "uploadDate")
+			})
+		})
+	})
+	Method("get_post_page", func() {
+		Security(JWTAuth)
+		Payload(func() {
+			Token("token", String, "jwt used for auth")
+			Attribute("page", Int, "Page to get posts for")
+			Required("token", "page")
+		})
+		Result(func() {
+			Attribute("Posts", ArrayOf(PostResponse))
+		})
+		HTTP(func() {
+			GET("/posts/{page}")
+			Response(func() {
+				Body("Posts")
 			})
 		})
 	})

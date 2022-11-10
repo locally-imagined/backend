@@ -30,8 +30,28 @@ type CreatePostRequestBody struct {
 // endpoint HTTP response body.
 type CreatePostResponseBody PostResponseResponseBody
 
+// GetPostPageResponseBody is the type of the "postings" service
+// "get_post_page" endpoint HTTP response body.
+type GetPostPageResponseBody []*PostResponse
+
 // PostResponseResponseBody is used to define fields on response body types.
 type PostResponseResponseBody struct {
+	// Post title
+	Title string `form:"title" json:"title" xml:"title"`
+	// Post description
+	Description string `form:"description" json:"description" xml:"description"`
+	// Post price
+	Price string `form:"price" json:"price" xml:"price"`
+	// Image ID
+	ImageID string `form:"imageID" json:"imageID" xml:"imageID"`
+	// Post ID
+	PostID string `form:"postID" json:"postID" xml:"postID"`
+	// Upload Date
+	UploadDate string `form:"uploadDate" json:"uploadDate" xml:"uploadDate"`
+}
+
+// PostResponse is used to define fields on response body types.
+type PostResponse struct {
 	// Post title
 	Title string `form:"title" json:"title" xml:"title"`
 	// Post description
@@ -60,6 +80,16 @@ func NewCreatePostResponseBody(res *postings.CreatePostResult) *CreatePostRespon
 	return body
 }
 
+// NewGetPostPageResponseBody builds the HTTP response body from the result of
+// the "get_post_page" endpoint of the "postings" service.
+func NewGetPostPageResponseBody(res *postings.GetPostPageResult) GetPostPageResponseBody {
+	body := make([]*PostResponse, len(res.Posts))
+	for i, val := range res.Posts {
+		body[i] = marshalPostingsPostResponseToPostResponse(val)
+	}
+	return body
+}
+
 // NewCreatePostPayload builds a postings service create_post endpoint payload.
 func NewCreatePostPayload(body *CreatePostRequestBody, token string) *postings.CreatePostPayload {
 	v := &postings.Post{
@@ -74,6 +104,16 @@ func NewCreatePostPayload(body *CreatePostRequestBody, token string) *postings.C
 	res.Token = token
 
 	return res
+}
+
+// NewGetPostPagePayload builds a postings service get_post_page endpoint
+// payload.
+func NewGetPostPagePayload(page int, token string) *postings.GetPostPagePayload {
+	v := &postings.GetPostPagePayload{}
+	v.Page = page
+	v.Token = token
+
+	return v
 }
 
 // ValidateCreatePostRequestBody runs the validations defined on

@@ -27,25 +27,25 @@ import (
 func UsageCommands() string {
 	return `login login
 signup signup
-postings create-post
+postings (create-post|get-post-page)
 `
 }
 
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
-	return os.Args[0] + ` login login --username "Unde quod." --password "Autem neque numquam."` + "\n" +
+	return os.Args[0] + ` login login --username "Numquam quis nisi tempora delectus architecto." --password "Odit nesciunt dicta tempore fugiat."` + "\n" +
 		os.Args[0] + ` signup signup --body '{
-      "email": "Commodi officiis numquam molestiae.",
-      "firstName": "Velit rerum occaecati quia.",
-      "lastName": "Voluptate quod.",
-      "phone": "Dolorum aut aut impedit nisi odio."
-   }' --username "Nam doloribus dolor commodi consequuntur perferendis ea." --password "Qui unde et mollitia modi."` + "\n" +
+      "email": "Qui unde et mollitia modi.",
+      "firstName": "Dolorum aut aut impedit nisi odio.",
+      "lastName": "Commodi officiis numquam molestiae.",
+      "phone": "Nam doloribus dolor commodi consequuntur perferendis ea."
+   }' --username "Earum quia aut." --password "Aut id placeat voluptate expedita sunt culpa."` + "\n" +
 		os.Args[0] + ` postings create-post --body '{
-      "content": "QXV0ZW0gcXVpYSB2ZXJpdGF0aXMgZG9sb3JlbS4=",
-      "description": "Magnam non voluptas aut vero pariatur.",
-      "price": "Ut in sapiente illo explicabo aut.",
-      "title": "Voluptatibus cupiditate ea cum ut beatae."
-   }' --token "Minima nisi."` + "\n" +
+      "content": "VXQgdXQgb21uaXMu",
+      "description": "Autem quia veritatis dolorem.",
+      "price": "Minima nisi.",
+      "title": "Ut in sapiente illo explicabo aut."
+   }' --token "Ut molestiae nihil ipsam voluptatem explicabo qui."` + "\n" +
 		""
 }
 
@@ -77,6 +77,10 @@ func ParseEndpoint(
 		postingsCreatePostFlags     = flag.NewFlagSet("create-post", flag.ExitOnError)
 		postingsCreatePostBodyFlag  = postingsCreatePostFlags.String("body", "REQUIRED", "")
 		postingsCreatePostTokenFlag = postingsCreatePostFlags.String("token", "REQUIRED", "")
+
+		postingsGetPostPageFlags     = flag.NewFlagSet("get-post-page", flag.ExitOnError)
+		postingsGetPostPagePageFlag  = postingsGetPostPageFlags.String("page", "REQUIRED", "Page to get posts for")
+		postingsGetPostPageTokenFlag = postingsGetPostPageFlags.String("token", "REQUIRED", "")
 	)
 	loginFlags.Usage = loginUsage
 	loginLoginFlags.Usage = loginLoginUsage
@@ -86,6 +90,7 @@ func ParseEndpoint(
 
 	postingsFlags.Usage = postingsUsage
 	postingsCreatePostFlags.Usage = postingsCreatePostUsage
+	postingsGetPostPageFlags.Usage = postingsGetPostPageUsage
 
 	if err := flag.CommandLine.Parse(os.Args[1:]); err != nil {
 		return nil, nil, err
@@ -142,6 +147,9 @@ func ParseEndpoint(
 			case "create-post":
 				epf = postingsCreatePostFlags
 
+			case "get-post-page":
+				epf = postingsGetPostPageFlags
+
 			}
 
 		}
@@ -184,6 +192,9 @@ func ParseEndpoint(
 			case "create-post":
 				endpoint = c.CreatePost()
 				data, err = postingsc.BuildCreatePostPayload(*postingsCreatePostBodyFlag, *postingsCreatePostTokenFlag)
+			case "get-post-page":
+				endpoint = c.GetPostPage()
+				data, err = postingsc.BuildGetPostPagePayload(*postingsGetPostPagePageFlag, *postingsGetPostPageTokenFlag)
 			}
 		}
 	}
@@ -215,7 +226,7 @@ Login implements Login.
     -password STRING: User password
 
 Example:
-    %[1]s login login --username "Unde quod." --password "Autem neque numquam."
+    %[1]s login login --username "Numquam quis nisi tempora delectus architecto." --password "Odit nesciunt dicta tempore fugiat."
 `, os.Args[0])
 }
 
@@ -242,11 +253,11 @@ Signup implements Signup.
 
 Example:
     %[1]s signup signup --body '{
-      "email": "Commodi officiis numquam molestiae.",
-      "firstName": "Velit rerum occaecati quia.",
-      "lastName": "Voluptate quod.",
-      "phone": "Dolorum aut aut impedit nisi odio."
-   }' --username "Nam doloribus dolor commodi consequuntur perferendis ea." --password "Qui unde et mollitia modi."
+      "email": "Qui unde et mollitia modi.",
+      "firstName": "Dolorum aut aut impedit nisi odio.",
+      "lastName": "Commodi officiis numquam molestiae.",
+      "phone": "Nam doloribus dolor commodi consequuntur perferendis ea."
+   }' --username "Earum quia aut." --password "Aut id placeat voluptate expedita sunt culpa."
 `, os.Args[0])
 }
 
@@ -258,6 +269,7 @@ Usage:
 
 COMMAND:
     create-post: CreatePost implements create_post.
+    get-post-page: GetPostPage implements get_post_page.
 
 Additional help:
     %[1]s postings COMMAND --help
@@ -272,10 +284,22 @@ CreatePost implements create_post.
 
 Example:
     %[1]s postings create-post --body '{
-      "content": "QXV0ZW0gcXVpYSB2ZXJpdGF0aXMgZG9sb3JlbS4=",
-      "description": "Magnam non voluptas aut vero pariatur.",
-      "price": "Ut in sapiente illo explicabo aut.",
-      "title": "Voluptatibus cupiditate ea cum ut beatae."
-   }' --token "Minima nisi."
+      "content": "VXQgdXQgb21uaXMu",
+      "description": "Autem quia veritatis dolorem.",
+      "price": "Minima nisi.",
+      "title": "Ut in sapiente illo explicabo aut."
+   }' --token "Ut molestiae nihil ipsam voluptatem explicabo qui."
+`, os.Args[0])
+}
+
+func postingsGetPostPageUsage() {
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] postings get-post-page -page INT -token STRING
+
+GetPostPage implements get_post_page.
+    -page INT: Page to get posts for
+    -token STRING: 
+
+Example:
+    %[1]s postings get-post-page --page 820794979442329873 --token "Optio voluptates qui recusandae sit magni."
 `, os.Args[0])
 }

@@ -21,6 +21,10 @@ type Client struct {
 	// endpoint.
 	CreatePostDoer goahttp.Doer
 
+	// GetPostPage Doer is the HTTP client used to make requests to the
+	// get_post_page endpoint.
+	GetPostPageDoer goahttp.Doer
+
 	// CORS Doer is the HTTP client used to make requests to the  endpoint.
 	CORSDoer goahttp.Doer
 
@@ -45,6 +49,7 @@ func NewClient(
 ) *Client {
 	return &Client{
 		CreatePostDoer:      doer,
+		GetPostPageDoer:     doer,
 		CORSDoer:            doer,
 		RestoreResponseBody: restoreBody,
 		scheme:              scheme,
@@ -73,6 +78,30 @@ func (c *Client) CreatePost() goa.Endpoint {
 		resp, err := c.CreatePostDoer.Do(req)
 		if err != nil {
 			return nil, goahttp.ErrRequestError("postings", "create_post", err)
+		}
+		return decodeResponse(resp)
+	}
+}
+
+// GetPostPage returns an endpoint that makes HTTP requests to the postings
+// service get_post_page server.
+func (c *Client) GetPostPage() goa.Endpoint {
+	var (
+		encodeRequest  = EncodeGetPostPageRequest(c.encoder)
+		decodeResponse = DecodeGetPostPageResponse(c.decoder, c.RestoreResponseBody)
+	)
+	return func(ctx context.Context, v interface{}) (interface{}, error) {
+		req, err := c.BuildGetPostPageRequest(ctx, v)
+		if err != nil {
+			return nil, err
+		}
+		err = encodeRequest(req, v)
+		if err != nil {
+			return nil, err
+		}
+		resp, err := c.GetPostPageDoer.Do(req)
+		if err != nil {
+			return nil, goahttp.ErrRequestError("postings", "get_post_page", err)
 		}
 		return decodeResponse(resp)
 	}

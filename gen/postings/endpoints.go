@@ -16,7 +16,8 @@ import (
 
 // Endpoints wraps the "postings" service endpoints.
 type Endpoints struct {
-	CreatePost goa.Endpoint
+	CreatePost  goa.Endpoint
+	GetPostPage goa.Endpoint
 }
 
 // NewEndpoints wraps the methods of the "postings" service with endpoints.
@@ -24,13 +25,15 @@ func NewEndpoints(s Service) *Endpoints {
 	// Casting service to Auther interface
 	a := s.(Auther)
 	return &Endpoints{
-		CreatePost: NewCreatePostEndpoint(s, a.JWTAuth),
+		CreatePost:  NewCreatePostEndpoint(s, a.JWTAuth),
+		GetPostPage: NewGetPostPageEndpoint(s, a.JWTAuth),
 	}
 }
 
 // Use applies the given middleware to all the "postings" service endpoints.
 func (e *Endpoints) Use(m func(goa.Endpoint) goa.Endpoint) {
 	e.CreatePost = m(e.CreatePost)
+	e.GetPostPage = m(e.GetPostPage)
 }
 
 // NewCreatePostEndpoint returns an endpoint function that calls the method
@@ -49,5 +52,24 @@ func NewCreatePostEndpoint(s Service, authJWTFn security.AuthJWTFunc) goa.Endpoi
 			return nil, err
 		}
 		return s.CreatePost(ctx, p)
+	}
+}
+
+// NewGetPostPageEndpoint returns an endpoint function that calls the method
+// "get_post_page" of service "postings".
+func NewGetPostPageEndpoint(s Service, authJWTFn security.AuthJWTFunc) goa.Endpoint {
+	return func(ctx context.Context, req interface{}) (interface{}, error) {
+		p := req.(*GetPostPagePayload)
+		var err error
+		sc := security.JWTScheme{
+			Name:           "jwt",
+			Scopes:         []string{},
+			RequiredScopes: []string{},
+		}
+		ctx, err = authJWTFn(ctx, p.Token, &sc)
+		if err != nil {
+			return nil, err
+		}
+		return s.GetPostPage(ctx, p)
 	}
 }
