@@ -70,7 +70,42 @@ paths:
                             example: Sapiente labore quia.
             security:
                 - login_header_Authorization: []
-    /posts/{page}:
+    /posts/getimages/{postID}:
+        get:
+            tags:
+                - postings
+            summary: get_images_for_post postings
+            operationId: postings#get_images_for_post
+            parameters:
+                - name: postID
+                  in: path
+                  description: Post to get images for
+                  required: true
+                  schema:
+                    type: string
+                    description: Post to get images for
+                    example: Eos maxime veniam voluptatem aperiam eum non.
+                  example: Architecto et facere ratione neque.
+            responses:
+                "200":
+                    description: OK response.
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    type: string
+                                    example: Odio adipisci.
+                                example:
+                                    - Animi recusandae magni necessitatibus.
+                                    - Corrupti sequi nesciunt.
+                                    - Dolorem minima est maxime.
+                                    - Iure vel adipisci.
+                            example:
+                                - Dolorem iure dolor exercitationem nisi.
+                                - Sunt cum quibusdam sed repellendus.
+                                - Voluptatem necessitatibus iste qui sit.
+    /posts/getpage/{page}:
         get:
             tags:
                 - postings
@@ -134,41 +169,6 @@ paths:
                                   price: Reiciendis voluptas in autem dolorem.
                                   title: Accusantium ipsam nisi pariatur magnam.
                                   uploadDate: Laborum ut iste et harum.
-    /posts/{post}:
-        get:
-            tags:
-                - postings
-            summary: get_images_for_post postings
-            operationId: postings#get_images_for_post
-            parameters:
-                - name: post
-                  in: path
-                  description: Post to get images for
-                  required: true
-                  schema:
-                    type: string
-                    description: Post to get images for
-                    example: Eos maxime veniam voluptatem aperiam eum non.
-                  example: Architecto et facere ratione neque.
-            responses:
-                "200":
-                    description: OK response.
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    type: string
-                                    example: Odio adipisci.
-                                example:
-                                    - Animi recusandae magni necessitatibus.
-                                    - Corrupti sequi nesciunt.
-                                    - Dolorem minima est maxime.
-                                    - Iure vel adipisci.
-                            example:
-                                - Dolorem iure dolor exercitationem nisi.
-                                - Sunt cum quibusdam sed repellendus.
-                                - Voluptatem necessitatibus iste qui sit.
     /signup:
         post:
             tags:

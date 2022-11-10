@@ -174,16 +174,16 @@ func DecodeGetPostPageResponse(decoder func(*http.Response) goahttp.Decoder, res
 // and path set to call the "postings" service "get_images_for_post" endpoint
 func (c *Client) BuildGetImagesForPostRequest(ctx context.Context, v interface{}) (*http.Request, error) {
 	var (
-		post string
+		postID string
 	)
 	{
 		p, ok := v.(*postings.GetImagesForPostPayload)
 		if !ok {
 			return nil, goahttp.ErrInvalidType("postings", "get_images_for_post", "*postings.GetImagesForPostPayload", v)
 		}
-		post = p.Post
+		postID = p.PostID
 	}
-	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: GetImagesForPostPostingsPath(post)}
+	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: GetImagesForPostPostingsPath(postID)}
 	req, err := http.NewRequest("GET", u.String(), nil)
 	if err != nil {
 		return nil, goahttp.ErrInvalidURL("postings", "get_images_for_post", u.String(), err)

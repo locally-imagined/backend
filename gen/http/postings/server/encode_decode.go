@@ -128,12 +128,12 @@ func EncodeGetImagesForPostResponse(encoder func(context.Context, http.ResponseW
 func DecodeGetImagesForPostRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (interface{}, error) {
 	return func(r *http.Request) (interface{}, error) {
 		var (
-			post string
+			postID string
 
 			params = mux.Vars(r)
 		)
-		post = params["post"]
-		payload := NewGetImagesForPostPayload(post)
+		postID = params["postID"]
+		payload := NewGetImagesForPostPayload(postID)
 
 		return payload, nil
 	}

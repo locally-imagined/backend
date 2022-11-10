@@ -81,8 +81,8 @@ func ParseEndpoint(
 		postingsGetPostPageFlags    = flag.NewFlagSet("get-post-page", flag.ExitOnError)
 		postingsGetPostPagePageFlag = postingsGetPostPageFlags.String("page", "REQUIRED", "Page to get posts for")
 
-		postingsGetImagesForPostFlags    = flag.NewFlagSet("get-images-for-post", flag.ExitOnError)
-		postingsGetImagesForPostPostFlag = postingsGetImagesForPostFlags.String("post", "REQUIRED", "Post to get images for")
+		postingsGetImagesForPostFlags      = flag.NewFlagSet("get-images-for-post", flag.ExitOnError)
+		postingsGetImagesForPostPostIDFlag = postingsGetImagesForPostFlags.String("post-id", "REQUIRED", "Post to get images for")
 	)
 	loginFlags.Usage = loginUsage
 	loginLoginFlags.Usage = loginLoginUsage
@@ -203,7 +203,7 @@ func ParseEndpoint(
 				data, err = postingsc.BuildGetPostPagePayload(*postingsGetPostPagePageFlag)
 			case "get-images-for-post":
 				endpoint = c.GetImagesForPost()
-				data, err = postingsc.BuildGetImagesForPostPayload(*postingsGetImagesForPostPostFlag)
+				data, err = postingsc.BuildGetImagesForPostPayload(*postingsGetImagesForPostPostIDFlag)
 			}
 		}
 	}
@@ -314,12 +314,12 @@ Example:
 }
 
 func postingsGetImagesForPostUsage() {
-	fmt.Fprintf(os.Stderr, `%[1]s [flags] postings get-images-for-post -post STRING
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] postings get-images-for-post -post-id STRING
 
 GetImagesForPost implements get_images_for_post.
-    -post STRING: Post to get images for
+    -post-id STRING: Post to get images for
 
 Example:
-    %[1]s postings get-images-for-post --post "Qui autem eveniet."
+    %[1]s postings get-images-for-post --post-id "Qui autem eveniet."
 `, os.Args[0])
 }

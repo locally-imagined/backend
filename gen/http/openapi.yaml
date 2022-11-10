@@ -67,7 +67,29 @@ paths:
                 - http
             security:
                 - login_header_Authorization: []
-    /posts/{page}:
+    /posts/getimages/{postID}:
+        get:
+            tags:
+                - postings
+            summary: get_images_for_post postings
+            operationId: postings#get_images_for_post
+            parameters:
+                - name: postID
+                  in: path
+                  description: Post to get images for
+                  required: true
+                  type: string
+            responses:
+                "200":
+                    description: OK response.
+                    schema:
+                        type: array
+                        items:
+                            type: string
+                            example: Voluptates ut.
+            schemes:
+                - http
+    /posts/getpage/{page}:
         get:
             tags:
                 - postings
@@ -86,28 +108,6 @@ paths:
                         type: array
                         items:
                             $ref: '#/definitions/PostResponse'
-            schemes:
-                - http
-    /posts/{post}:
-        get:
-            tags:
-                - postings
-            summary: get_images_for_post postings
-            operationId: postings#get_images_for_post
-            parameters:
-                - name: post
-                  in: path
-                  description: Post to get images for
-                  required: true
-                  type: string
-            responses:
-                "200":
-                    description: OK response.
-                    schema:
-                        type: array
-                        items:
-                            type: string
-                            example: Voluptates ut.
             schemes:
                 - http
     /signup:

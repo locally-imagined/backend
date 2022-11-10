@@ -53,11 +53,11 @@ func New(
 	return &Server{
 		Mounts: []*MountPoint{
 			{"CreatePost", "POST", "/create"},
-			{"GetPostPage", "GET", "/posts/{page}"},
-			{"GetImagesForPost", "GET", "/posts/{post}"},
+			{"GetPostPage", "GET", "/posts/getpage/{page}"},
+			{"GetImagesForPost", "GET", "/posts/getimages/{postID}"},
 			{"CORS", "OPTIONS", "/create"},
-			{"CORS", "OPTIONS", "/posts/{page}"},
-			{"CORS", "OPTIONS", "/posts/{post}"},
+			{"CORS", "OPTIONS", "/posts/getpage/{page}"},
+			{"CORS", "OPTIONS", "/posts/getimages/{postID}"},
 		},
 		CreatePost:       NewCreatePostHandler(e.CreatePost, mux, decoder, encoder, errhandler, formatter),
 		GetPostPage:      NewGetPostPageHandler(e.GetPostPage, mux, decoder, encoder, errhandler, formatter),
@@ -153,7 +153,7 @@ func MountGetPostPageHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("GET", "/posts/{page}", f)
+	mux.Handle("GET", "/posts/getpage/{page}", f)
 }
 
 // NewGetPostPageHandler creates a HTTP handler which loads the HTTP request
@@ -204,7 +204,7 @@ func MountGetImagesForPostHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("GET", "/posts/{post}", f)
+	mux.Handle("GET", "/posts/getimages/{postID}", f)
 }
 
 // NewGetImagesForPostHandler creates a HTTP handler which loads the HTTP
@@ -251,8 +251,8 @@ func NewGetImagesForPostHandler(
 func MountCORSHandler(mux goahttp.Muxer, h http.Handler) {
 	h = HandlePostingsOrigin(h)
 	mux.Handle("OPTIONS", "/create", h.ServeHTTP)
-	mux.Handle("OPTIONS", "/posts/{page}", h.ServeHTTP)
-	mux.Handle("OPTIONS", "/posts/{post}", h.ServeHTTP)
+	mux.Handle("OPTIONS", "/posts/getpage/{page}", h.ServeHTTP)
+	mux.Handle("OPTIONS", "/posts/getimages/{postID}", h.ServeHTTP)
 }
 
 // NewCORSHandler creates a HTTP handler which returns a simple 200 response.
