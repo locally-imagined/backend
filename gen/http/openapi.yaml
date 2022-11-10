@@ -234,60 +234,7 @@ definitions:
             email:
                 type: string
                 description: Email
-                example:
-                    - 68
-                    - 111
-                    - 108
-                    - 111
-                    - 114
-                    - 101
-                    - 109
-                    - 32
-                    - 101
-                    - 108
-                    - 105
-                    - 103
-                    - 101
-                    - 110
-                    - 100
-                    - 105
-                    - 32
-                    - 97
-                    - 117
-                    - 116
-                    - 32
-                    - 99
-                    - 111
-                    - 110
-                    - 115
-                    - 101
-                    - 113
-                    - 117
-                    - 97
-                    - 116
-                    - 117
-                    - 114
-                    - 32
-                    - 109
-                    - 105
-                    - 110
-                    - 105
-                    - 109
-                    - 97
-                    - 32
-                    - 114
-                    - 101
-                    - 109
-                    - 32
-                    - 116
-                    - 101
-                    - 109
-                    - 112
-                    - 111
-                    - 114
-                    - 97
-                    - 46
-                format: byte
+                example: Dolorem eligendi aut consequatur minima rem tempora.
             firstName:
                 type: string
                 description: First name
@@ -302,45 +249,7 @@ definitions:
                 example: Officiis est optio voluptates qui recusandae sit.
         description: Describes a user
         example:
-            email:
-                - 65
-                - 117
-                - 116
-                - 32
-                - 113
-                - 117
-                - 105
-                - 32
-                - 99
-                - 117
-                - 109
-                - 32
-                - 116
-                - 101
-                - 109
-                - 112
-                - 111
-                - 114
-                - 105
-                - 98
-                - 117
-                - 115
-                - 32
-                - 97
-                - 115
-                - 112
-                - 101
-                - 114
-                - 105
-                - 111
-                - 114
-                - 101
-                - 115
-                - 32
-                - 113
-                - 117
-                - 105
-                - 46
+            email: Aut qui cum temporibus asperiores qui.
             firstName: Excepturi ut voluptatum.
             lastName: Dignissimos sed eius odio commodi eos consequatur.
             phone: Quod aut alias optio quidem ducimus.

@@ -27,7 +27,7 @@ var User = Type("User", func() {
 	Attribute("firstName", String, "First name")
 	Attribute("lastName", String, "Last name")
 	Attribute("phone", String, "Phone number")
-	Attribute("email", Bytes, "Email")
+	Attribute("email", String, "Email")
 	Required("firstName", "lastName", "phone", "email")
 })
 
