@@ -89,9 +89,8 @@ func EncodeGetPostPageResponse(encoder func(context.Context, http.ResponseWriter
 func DecodeGetPostPageRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (interface{}, error) {
 	return func(r *http.Request) (interface{}, error) {
 		var (
-			page  int
-			token string
-			err   error
+			page int
+			err  error
 
 			params = mux.Vars(r)
 		)
@@ -103,19 +102,38 @@ func DecodeGetPostPageRequest(mux goahttp.Muxer, decoder func(*http.Request) goa
 			}
 			page = int(v)
 		}
-		token = r.Header.Get("Authorization")
-		if token == "" {
-			err = goa.MergeErrors(err, goa.MissingFieldError("Authorization", "header"))
-		}
 		if err != nil {
 			return nil, err
 		}
-		payload := NewGetPostPagePayload(page, token)
-		if strings.Contains(payload.Token, " ") {
-			// Remove authorization scheme prefix (e.g. "Bearer")
-			cred := strings.SplitN(payload.Token, " ", 2)[1]
-			payload.Token = cred
-		}
+		payload := NewGetPostPagePayload(page)
+
+		return payload, nil
+	}
+}
+
+// EncodeGetImagesForPostResponse returns an encoder for responses returned by
+// the postings get_images_for_post endpoint.
+func EncodeGetImagesForPostResponse(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder) func(context.Context, http.ResponseWriter, interface{}) error {
+	return func(ctx context.Context, w http.ResponseWriter, v interface{}) error {
+		res, _ := v.(*postings.GetImagesForPostResult)
+		enc := encoder(ctx, w)
+		body := res.Images
+		w.WriteHeader(http.StatusOK)
+		return enc.Encode(body)
+	}
+}
+
+// DecodeGetImagesForPostRequest returns a decoder for requests sent to the
+// postings get_images_for_post endpoint.
+func DecodeGetImagesForPostRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (interface{}, error) {
+	return func(r *http.Request) (interface{}, error) {
+		var (
+			postID string
+
+			params = mux.Vars(r)
+		)
+		postID = params["postID"]
+		payload := NewGetImagesForPostPayload(postID)
 
 		return payload, nil
 	}

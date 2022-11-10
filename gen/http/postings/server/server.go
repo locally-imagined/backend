@@ -18,10 +18,11 @@ import (
 
 // Server lists the postings service endpoint HTTP handlers.
 type Server struct {
-	Mounts      []*MountPoint
-	CreatePost  http.Handler
-	GetPostPage http.Handler
-	CORS        http.Handler
+	Mounts           []*MountPoint
+	CreatePost       http.Handler
+	GetPostPage      http.Handler
+	GetImagesForPost http.Handler
+	CORS             http.Handler
 }
 
 // MountPoint holds information about the mounted endpoints.
@@ -53,12 +54,15 @@ func New(
 		Mounts: []*MountPoint{
 			{"CreatePost", "POST", "/create"},
 			{"GetPostPage", "GET", "/posts/{page}"},
+			{"GetImagesForPost", "GET", "/posts/{postID}"},
 			{"CORS", "OPTIONS", "/create"},
 			{"CORS", "OPTIONS", "/posts/{page}"},
+			{"CORS", "OPTIONS", "/posts/{postID}"},
 		},
-		CreatePost:  NewCreatePostHandler(e.CreatePost, mux, decoder, encoder, errhandler, formatter),
-		GetPostPage: NewGetPostPageHandler(e.GetPostPage, mux, decoder, encoder, errhandler, formatter),
-		CORS:        NewCORSHandler(),
+		CreatePost:       NewCreatePostHandler(e.CreatePost, mux, decoder, encoder, errhandler, formatter),
+		GetPostPage:      NewGetPostPageHandler(e.GetPostPage, mux, decoder, encoder, errhandler, formatter),
+		GetImagesForPost: NewGetImagesForPostHandler(e.GetImagesForPost, mux, decoder, encoder, errhandler, formatter),
+		CORS:             NewCORSHandler(),
 	}
 }
 
@@ -69,6 +73,7 @@ func (s *Server) Service() string { return "postings" }
 func (s *Server) Use(m func(http.Handler) http.Handler) {
 	s.CreatePost = m(s.CreatePost)
 	s.GetPostPage = m(s.GetPostPage)
+	s.GetImagesForPost = m(s.GetImagesForPost)
 	s.CORS = m(s.CORS)
 }
 
@@ -79,6 +84,7 @@ func (s *Server) MethodNames() []string { return postings.MethodNames[:] }
 func Mount(mux goahttp.Muxer, h *Server) {
 	MountCreatePostHandler(mux, h.CreatePost)
 	MountGetPostPageHandler(mux, h.GetPostPage)
+	MountGetImagesForPostHandler(mux, h.GetImagesForPost)
 	MountCORSHandler(mux, h.CORS)
 }
 
@@ -189,12 +195,64 @@ func NewGetPostPageHandler(
 	})
 }
 
+// MountGetImagesForPostHandler configures the mux to serve the "postings"
+// service "get_images_for_post" endpoint.
+func MountGetImagesForPostHandler(mux goahttp.Muxer, h http.Handler) {
+	f, ok := HandlePostingsOrigin(h).(http.HandlerFunc)
+	if !ok {
+		f = func(w http.ResponseWriter, r *http.Request) {
+			h.ServeHTTP(w, r)
+		}
+	}
+	mux.Handle("GET", "/posts/{postID}", f)
+}
+
+// NewGetImagesForPostHandler creates a HTTP handler which loads the HTTP
+// request and calls the "postings" service "get_images_for_post" endpoint.
+func NewGetImagesForPostHandler(
+	endpoint goa.Endpoint,
+	mux goahttp.Muxer,
+	decoder func(*http.Request) goahttp.Decoder,
+	encoder func(context.Context, http.ResponseWriter) goahttp.Encoder,
+	errhandler func(context.Context, http.ResponseWriter, error),
+	formatter func(ctx context.Context, err error) goahttp.Statuser,
+) http.Handler {
+	var (
+		decodeRequest  = DecodeGetImagesForPostRequest(mux, decoder)
+		encodeResponse = EncodeGetImagesForPostResponse(encoder)
+		encodeError    = goahttp.ErrorEncoder(encoder, formatter)
+	)
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
+		ctx = context.WithValue(ctx, goa.MethodKey, "get_images_for_post")
+		ctx = context.WithValue(ctx, goa.ServiceKey, "postings")
+		payload, err := decodeRequest(r)
+		if err != nil {
+			if err := encodeError(ctx, w, err); err != nil {
+				errhandler(ctx, w, err)
+			}
+			return
+		}
+		res, err := endpoint(ctx, payload)
+		if err != nil {
+			if err := encodeError(ctx, w, err); err != nil {
+				errhandler(ctx, w, err)
+			}
+			return
+		}
+		if err := encodeResponse(ctx, w, res); err != nil {
+			errhandler(ctx, w, err)
+		}
+	})
+}
+
 // MountCORSHandler configures the mux to serve the CORS endpoints for the
 // service postings.
 func MountCORSHandler(mux goahttp.Muxer, h http.Handler) {
 	h = HandlePostingsOrigin(h)
 	mux.Handle("OPTIONS", "/create", h.ServeHTTP)
 	mux.Handle("OPTIONS", "/posts/{page}", h.ServeHTTP)
+	mux.Handle("OPTIONS", "/posts/{postID}", h.ServeHTTP)
 }
 
 // NewCORSHandler creates a HTTP handler which returns a simple 200 response.

@@ -114,6 +114,7 @@ func (s *Service) CreatePost(ctx context.Context, p *postings.CreatePostPayload)
 
 type image struct {
 	imageID string
+	postID  string
 	index   int
 }
 
@@ -142,14 +143,36 @@ func (s *Service) GetPostPage(ctx context.Context, p *postings.GetPostPagePayloa
 	}
 
 	res := make([]*postings.PostResponse, 0)
-	i := 0
 	for rows.Next() {
 		var row post
 		if err := rows.Scan(&row.postID, &row.userID, &row.postTitle, &row.postDesc, &row.price, &row.uploadDate, &row.imageID); err != nil {
 			log.Fatal(err)
 		}
 		res = append(res, &postings.PostResponse{Title: row.postTitle, Description: row.postDesc, Price: row.price, ImageID: row.imageID, PostID: row.postID, UploadDate: row.uploadDate})
-		i = i + 1
 	}
 	return &postings.GetPostPageResult{Posts: res}, err
+}
+
+func (s *Service) GetImagesForPost(ctx context.Context, p *postings.GetImagesForPostPayload) (*postings.GetImagesForPostResult, error) {
+	dbPool, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
+	if err != nil {
+		return nil, err
+	}
+	rows, err := dbPool.Query("SELECT * from images where postid=$1 ORDER BY index", p.PostID)
+
+	defer dbPool.Close()
+
+	if err == sql.ErrNoRows {
+		return nil, err
+	}
+
+	res := make([]string, 0)
+	for rows.Next() {
+		var row image
+		if err := rows.Scan(&row.imageID, &row.postID, &row.index); err != nil {
+			log.Fatal(err)
+		}
+		res = append(res, row.imageID)
+	}
+	return &postings.GetImagesForPostResult{Images: res}, err
 }

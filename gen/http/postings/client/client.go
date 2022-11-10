@@ -25,6 +25,10 @@ type Client struct {
 	// get_post_page endpoint.
 	GetPostPageDoer goahttp.Doer
 
+	// GetImagesForPost Doer is the HTTP client used to make requests to the
+	// get_images_for_post endpoint.
+	GetImagesForPostDoer goahttp.Doer
+
 	// CORS Doer is the HTTP client used to make requests to the  endpoint.
 	CORSDoer goahttp.Doer
 
@@ -48,14 +52,15 @@ func NewClient(
 	restoreBody bool,
 ) *Client {
 	return &Client{
-		CreatePostDoer:      doer,
-		GetPostPageDoer:     doer,
-		CORSDoer:            doer,
-		RestoreResponseBody: restoreBody,
-		scheme:              scheme,
-		host:                host,
-		decoder:             dec,
-		encoder:             enc,
+		CreatePostDoer:       doer,
+		GetPostPageDoer:      doer,
+		GetImagesForPostDoer: doer,
+		CORSDoer:             doer,
+		RestoreResponseBody:  restoreBody,
+		scheme:               scheme,
+		host:                 host,
+		decoder:              dec,
+		encoder:              enc,
 	}
 }
 
@@ -87,7 +92,6 @@ func (c *Client) CreatePost() goa.Endpoint {
 // service get_post_page server.
 func (c *Client) GetPostPage() goa.Endpoint {
 	var (
-		encodeRequest  = EncodeGetPostPageRequest(c.encoder)
 		decodeResponse = DecodeGetPostPageResponse(c.decoder, c.RestoreResponseBody)
 	)
 	return func(ctx context.Context, v interface{}) (interface{}, error) {
@@ -95,13 +99,28 @@ func (c *Client) GetPostPage() goa.Endpoint {
 		if err != nil {
 			return nil, err
 		}
-		err = encodeRequest(req, v)
-		if err != nil {
-			return nil, err
-		}
 		resp, err := c.GetPostPageDoer.Do(req)
 		if err != nil {
 			return nil, goahttp.ErrRequestError("postings", "get_post_page", err)
+		}
+		return decodeResponse(resp)
+	}
+}
+
+// GetImagesForPost returns an endpoint that makes HTTP requests to the
+// postings service get_images_for_post server.
+func (c *Client) GetImagesForPost() goa.Endpoint {
+	var (
+		decodeResponse = DecodeGetImagesForPostResponse(c.decoder, c.RestoreResponseBody)
+	)
+	return func(ctx context.Context, v interface{}) (interface{}, error) {
+		req, err := c.BuildGetImagesForPostRequest(ctx, v)
+		if err != nil {
+			return nil, err
+		}
+		resp, err := c.GetImagesForPostDoer.Do(req)
+		if err != nil {
+			return nil, goahttp.ErrRequestError("postings", "get_images_for_post", err)
 		}
 		return decodeResponse(resp)
 	}

@@ -15,15 +15,17 @@ import (
 
 // Client is the "postings" service client.
 type Client struct {
-	CreatePostEndpoint  goa.Endpoint
-	GetPostPageEndpoint goa.Endpoint
+	CreatePostEndpoint       goa.Endpoint
+	GetPostPageEndpoint      goa.Endpoint
+	GetImagesForPostEndpoint goa.Endpoint
 }
 
 // NewClient initializes a "postings" service client given the endpoints.
-func NewClient(createPost, getPostPage goa.Endpoint) *Client {
+func NewClient(createPost, getPostPage, getImagesForPost goa.Endpoint) *Client {
 	return &Client{
-		CreatePostEndpoint:  createPost,
-		GetPostPageEndpoint: getPostPage,
+		CreatePostEndpoint:       createPost,
+		GetPostPageEndpoint:      getPostPage,
+		GetImagesForPostEndpoint: getImagesForPost,
 	}
 }
 
@@ -51,4 +53,18 @@ func (c *Client) GetPostPage(ctx context.Context, p *GetPostPagePayload) (res *G
 		return
 	}
 	return ires.(*GetPostPageResult), nil
+}
+
+// GetImagesForPost calls the "get_images_for_post" endpoint of the "postings"
+// service.
+// GetImagesForPost may return the following errors:
+//	- "unauthorized" (type Unauthorized)
+//	- error: internal error
+func (c *Client) GetImagesForPost(ctx context.Context, p *GetImagesForPostPayload) (res *GetImagesForPostResult, err error) {
+	var ires interface{}
+	ires, err = c.GetImagesForPostEndpoint(ctx, p)
+	if err != nil {
+		return
+	}
+	return ires.(*GetImagesForPostResult), nil
 }

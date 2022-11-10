@@ -108,10 +108,18 @@ func NewCreatePostPayload(body *CreatePostRequestBody, token string) *postings.C
 
 // NewGetPostPagePayload builds a postings service get_post_page endpoint
 // payload.
-func NewGetPostPagePayload(page int, token string) *postings.GetPostPagePayload {
+func NewGetPostPagePayload(page int) *postings.GetPostPagePayload {
 	v := &postings.GetPostPagePayload{}
 	v.Page = page
-	v.Token = token
+
+	return v
+}
+
+// NewGetImagesForPostPayload builds a postings service get_images_for_post
+// endpoint payload.
+func NewGetImagesForPostPayload(postID string) *postings.GetImagesForPostPayload {
+	v := &postings.GetImagesForPostPayload{}
+	v.PostID = postID
 
 	return v
 }

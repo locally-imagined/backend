@@ -110,6 +110,20 @@ func NewGetPostPageResultOK(body []*PostResponse) *postings.GetPostPageResult {
 	return res
 }
 
+// NewGetImagesForPostResultOK builds a "postings" service
+// "get_images_for_post" endpoint result from a HTTP "OK" response.
+func NewGetImagesForPostResultOK(body []string) *postings.GetImagesForPostResult {
+	v := make([]string, len(body))
+	for i, val := range body {
+		v[i] = val
+	}
+	res := &postings.GetImagesForPostResult{
+		Images: v,
+	}
+
+	return res
+}
+
 // ValidateCreatePostResponseBody runs the validations defined on
 // create_post_response_body
 func ValidateCreatePostResponseBody(body *CreatePostResponseBody) (err error) {

@@ -27,25 +27,25 @@ import (
 func UsageCommands() string {
 	return `login login
 signup signup
-postings (create-post|get-post-page)
+postings (create-post|get-post-page|get-images-for-post)
 `
 }
 
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
-	return os.Args[0] + ` login login --username "Numquam quis nisi tempora delectus architecto." --password "Odit nesciunt dicta tempore fugiat."` + "\n" +
+	return os.Args[0] + ` login login --username "Aut aut impedit." --password "Odio tempora commodi officiis numquam molestiae."` + "\n" +
 		os.Args[0] + ` signup signup --body '{
-      "email": "Qui unde et mollitia modi.",
-      "firstName": "Dolorum aut aut impedit nisi odio.",
-      "lastName": "Commodi officiis numquam molestiae.",
-      "phone": "Nam doloribus dolor commodi consequuntur perferendis ea."
-   }' --username "Earum quia aut." --password "Aut id placeat voluptate expedita sunt culpa."` + "\n" +
+      "email": "Magnam non voluptas aut vero pariatur.",
+      "firstName": "Earum quia aut.",
+      "lastName": "Aut id placeat voluptate expedita sunt culpa.",
+      "phone": "Voluptatibus cupiditate ea cum ut beatae."
+   }' --username "Ut in sapiente illo explicabo aut." --password "Autem quia veritatis dolorem."` + "\n" +
 		os.Args[0] + ` postings create-post --body '{
-      "content": "VXQgdXQgb21uaXMu",
-      "description": "Autem quia veritatis dolorem.",
-      "price": "Minima nisi.",
-      "title": "Ut in sapiente illo explicabo aut."
-   }' --token "Ut molestiae nihil ipsam voluptatem explicabo qui."` + "\n" +
+      "content": "QXV0IGV0IGF0cXVlLg==",
+      "description": "Quae autem quia nemo iste similique veritatis.",
+      "price": "At ad.",
+      "title": "Ut molestiae nihil ipsam voluptatem explicabo qui."
+   }' --token "Aut animi et deserunt est."` + "\n" +
 		""
 }
 
@@ -78,9 +78,11 @@ func ParseEndpoint(
 		postingsCreatePostBodyFlag  = postingsCreatePostFlags.String("body", "REQUIRED", "")
 		postingsCreatePostTokenFlag = postingsCreatePostFlags.String("token", "REQUIRED", "")
 
-		postingsGetPostPageFlags     = flag.NewFlagSet("get-post-page", flag.ExitOnError)
-		postingsGetPostPagePageFlag  = postingsGetPostPageFlags.String("page", "REQUIRED", "Page to get posts for")
-		postingsGetPostPageTokenFlag = postingsGetPostPageFlags.String("token", "REQUIRED", "")
+		postingsGetPostPageFlags    = flag.NewFlagSet("get-post-page", flag.ExitOnError)
+		postingsGetPostPagePageFlag = postingsGetPostPageFlags.String("page", "REQUIRED", "Page to get posts for")
+
+		postingsGetImagesForPostFlags      = flag.NewFlagSet("get-images-for-post", flag.ExitOnError)
+		postingsGetImagesForPostPostIDFlag = postingsGetImagesForPostFlags.String("post-id", "REQUIRED", "Post to get images for")
 	)
 	loginFlags.Usage = loginUsage
 	loginLoginFlags.Usage = loginLoginUsage
@@ -91,6 +93,7 @@ func ParseEndpoint(
 	postingsFlags.Usage = postingsUsage
 	postingsCreatePostFlags.Usage = postingsCreatePostUsage
 	postingsGetPostPageFlags.Usage = postingsGetPostPageUsage
+	postingsGetImagesForPostFlags.Usage = postingsGetImagesForPostUsage
 
 	if err := flag.CommandLine.Parse(os.Args[1:]); err != nil {
 		return nil, nil, err
@@ -150,6 +153,9 @@ func ParseEndpoint(
 			case "get-post-page":
 				epf = postingsGetPostPageFlags
 
+			case "get-images-for-post":
+				epf = postingsGetImagesForPostFlags
+
 			}
 
 		}
@@ -194,7 +200,10 @@ func ParseEndpoint(
 				data, err = postingsc.BuildCreatePostPayload(*postingsCreatePostBodyFlag, *postingsCreatePostTokenFlag)
 			case "get-post-page":
 				endpoint = c.GetPostPage()
-				data, err = postingsc.BuildGetPostPagePayload(*postingsGetPostPagePageFlag, *postingsGetPostPageTokenFlag)
+				data, err = postingsc.BuildGetPostPagePayload(*postingsGetPostPagePageFlag)
+			case "get-images-for-post":
+				endpoint = c.GetImagesForPost()
+				data, err = postingsc.BuildGetImagesForPostPayload(*postingsGetImagesForPostPostIDFlag)
 			}
 		}
 	}
@@ -226,7 +235,7 @@ Login implements Login.
     -password STRING: User password
 
 Example:
-    %[1]s login login --username "Numquam quis nisi tempora delectus architecto." --password "Odit nesciunt dicta tempore fugiat."
+    %[1]s login login --username "Aut aut impedit." --password "Odio tempora commodi officiis numquam molestiae."
 `, os.Args[0])
 }
 
@@ -253,11 +262,11 @@ Signup implements Signup.
 
 Example:
     %[1]s signup signup --body '{
-      "email": "Qui unde et mollitia modi.",
-      "firstName": "Dolorum aut aut impedit nisi odio.",
-      "lastName": "Commodi officiis numquam molestiae.",
-      "phone": "Nam doloribus dolor commodi consequuntur perferendis ea."
-   }' --username "Earum quia aut." --password "Aut id placeat voluptate expedita sunt culpa."
+      "email": "Magnam non voluptas aut vero pariatur.",
+      "firstName": "Earum quia aut.",
+      "lastName": "Aut id placeat voluptate expedita sunt culpa.",
+      "phone": "Voluptatibus cupiditate ea cum ut beatae."
+   }' --username "Ut in sapiente illo explicabo aut." --password "Autem quia veritatis dolorem."
 `, os.Args[0])
 }
 
@@ -270,6 +279,7 @@ Usage:
 COMMAND:
     create-post: CreatePost implements create_post.
     get-post-page: GetPostPage implements get_post_page.
+    get-images-for-post: GetImagesForPost implements get_images_for_post.
 
 Additional help:
     %[1]s postings COMMAND --help
@@ -284,22 +294,32 @@ CreatePost implements create_post.
 
 Example:
     %[1]s postings create-post --body '{
-      "content": "VXQgdXQgb21uaXMu",
-      "description": "Autem quia veritatis dolorem.",
-      "price": "Minima nisi.",
-      "title": "Ut in sapiente illo explicabo aut."
-   }' --token "Ut molestiae nihil ipsam voluptatem explicabo qui."
+      "content": "QXV0IGV0IGF0cXVlLg==",
+      "description": "Quae autem quia nemo iste similique veritatis.",
+      "price": "At ad.",
+      "title": "Ut molestiae nihil ipsam voluptatem explicabo qui."
+   }' --token "Aut animi et deserunt est."
 `, os.Args[0])
 }
 
 func postingsGetPostPageUsage() {
-	fmt.Fprintf(os.Stderr, `%[1]s [flags] postings get-post-page -page INT -token STRING
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] postings get-post-page -page INT
 
 GetPostPage implements get_post_page.
     -page INT: Page to get posts for
-    -token STRING: 
 
 Example:
-    %[1]s postings get-post-page --page 820794979442329873 --token "Optio voluptates qui recusandae sit magni."
+    %[1]s postings get-post-page --page 1713403309615228382
+`, os.Args[0])
+}
+
+func postingsGetImagesForPostUsage() {
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] postings get-images-for-post -post-id STRING
+
+GetImagesForPost implements get_images_for_post.
+    -post-id STRING: Post to get images for
+
+Example:
+    %[1]s postings get-images-for-post --post-id "Qui autem eveniet."
 `, os.Args[0])
 }

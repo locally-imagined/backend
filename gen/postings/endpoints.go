@@ -16,8 +16,9 @@ import (
 
 // Endpoints wraps the "postings" service endpoints.
 type Endpoints struct {
-	CreatePost  goa.Endpoint
-	GetPostPage goa.Endpoint
+	CreatePost       goa.Endpoint
+	GetPostPage      goa.Endpoint
+	GetImagesForPost goa.Endpoint
 }
 
 // NewEndpoints wraps the methods of the "postings" service with endpoints.
@@ -25,8 +26,9 @@ func NewEndpoints(s Service) *Endpoints {
 	// Casting service to Auther interface
 	a := s.(Auther)
 	return &Endpoints{
-		CreatePost:  NewCreatePostEndpoint(s, a.JWTAuth),
-		GetPostPage: NewGetPostPageEndpoint(s, a.JWTAuth),
+		CreatePost:       NewCreatePostEndpoint(s, a.JWTAuth),
+		GetPostPage:      NewGetPostPageEndpoint(s),
+		GetImagesForPost: NewGetImagesForPostEndpoint(s),
 	}
 }
 
@@ -34,6 +36,7 @@ func NewEndpoints(s Service) *Endpoints {
 func (e *Endpoints) Use(m func(goa.Endpoint) goa.Endpoint) {
 	e.CreatePost = m(e.CreatePost)
 	e.GetPostPage = m(e.GetPostPage)
+	e.GetImagesForPost = m(e.GetImagesForPost)
 }
 
 // NewCreatePostEndpoint returns an endpoint function that calls the method
@@ -57,19 +60,18 @@ func NewCreatePostEndpoint(s Service, authJWTFn security.AuthJWTFunc) goa.Endpoi
 
 // NewGetPostPageEndpoint returns an endpoint function that calls the method
 // "get_post_page" of service "postings".
-func NewGetPostPageEndpoint(s Service, authJWTFn security.AuthJWTFunc) goa.Endpoint {
+func NewGetPostPageEndpoint(s Service) goa.Endpoint {
 	return func(ctx context.Context, req interface{}) (interface{}, error) {
 		p := req.(*GetPostPagePayload)
-		var err error
-		sc := security.JWTScheme{
-			Name:           "jwt",
-			Scopes:         []string{},
-			RequiredScopes: []string{},
-		}
-		ctx, err = authJWTFn(ctx, p.Token, &sc)
-		if err != nil {
-			return nil, err
-		}
 		return s.GetPostPage(ctx, p)
+	}
+}
+
+// NewGetImagesForPostEndpoint returns an endpoint function that calls the
+// method "get_images_for_post" of service "postings".
+func NewGetImagesForPostEndpoint(s Service) goa.Endpoint {
+	return func(ctx context.Context, req interface{}) (interface{}, error) {
+		p := req.(*GetImagesForPostPayload)
+		return s.GetImagesForPost(ctx, p)
 	}
 }

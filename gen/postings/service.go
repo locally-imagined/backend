@@ -19,6 +19,8 @@ type Service interface {
 	CreatePost(context.Context, *CreatePostPayload) (res *CreatePostResult, err error)
 	// GetPostPage implements get_post_page.
 	GetPostPage(context.Context, *GetPostPagePayload) (res *GetPostPageResult, err error)
+	// GetImagesForPost implements get_images_for_post.
+	GetImagesForPost(context.Context, *GetImagesForPostPayload) (res *GetImagesForPostResult, err error)
 }
 
 // Auther defines the authorization functions to be implemented by the service.
@@ -35,7 +37,7 @@ const ServiceName = "postings"
 // MethodNames lists the service method names as defined in the design. These
 // are the same values that are set in the endpoint request contexts under the
 // MethodKey key.
-var MethodNames = [2]string{"create_post", "get_post_page"}
+var MethodNames = [3]string{"create_post", "get_post_page", "get_images_for_post"}
 
 // CreatePostPayload is the payload type of the postings service create_post
 // method.
@@ -52,11 +54,22 @@ type CreatePostResult struct {
 	Posted *PostResponse
 }
 
+// GetImagesForPostPayload is the payload type of the postings service
+// get_images_for_post method.
+type GetImagesForPostPayload struct {
+	// Post to get images for
+	PostID string
+}
+
+// GetImagesForPostResult is the result type of the postings service
+// get_images_for_post method.
+type GetImagesForPostResult struct {
+	Images []string
+}
+
 // GetPostPagePayload is the payload type of the postings service get_post_page
 // method.
 type GetPostPagePayload struct {
-	// jwt used for auth
-	Token string
 	// Page to get posts for
 	Page int
 }

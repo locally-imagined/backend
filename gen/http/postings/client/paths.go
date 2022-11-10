@@ -20,3 +20,8 @@ func CreatePostPostingsPath() string {
 func GetPostPagePostingsPath(page int) string {
 	return fmt.Sprintf("/posts/%v", page)
 }
+
+// GetImagesForPostPostingsPath returns the URL path to the postings service get_images_for_post HTTP endpoint.
+func GetImagesForPostPostingsPath(postID string) string {
+	return fmt.Sprintf("/posts/%v", postID)
+}

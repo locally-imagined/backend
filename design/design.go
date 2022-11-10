@@ -145,7 +145,7 @@ var _ = Service("postings", func() {
 	Method("get_post_page", func() {
 		Payload(func() {
 			Attribute("page", Int, "Page to get posts for")
-			Required("token", "page")
+			Required("page")
 		})
 		Result(func() {
 			Attribute("Posts", ArrayOf(PostResponse))
@@ -154,6 +154,21 @@ var _ = Service("postings", func() {
 			GET("/posts/{page}")
 			Response(func() {
 				Body("Posts")
+			})
+		})
+	})
+	Method("get_images_for_post", func() {
+		Payload(func() {
+			Attribute("postID", String, "Post to get images for")
+			Required("postID")
+		})
+		Result(func() {
+			Attribute("Images", ArrayOf(String))
+		})
+		HTTP(func() {
+			GET("/posts/{postID}")
+			Response(func() {
+				Body("Images")
 			})
 		})
 	})
