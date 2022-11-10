@@ -33,19 +33,19 @@ postings create-post
 
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
-	return os.Args[0] + ` login login --username "Et incidunt assumenda sequi." --password "Reiciendis voluptas in autem dolorem."` + "\n" +
+	return os.Args[0] + ` login login --username "Unde quod." --password "Autem neque numquam."` + "\n" +
 		os.Args[0] + ` signup signup --body '{
-      "email": "TmlzaSB0ZW1wb3JhIGRlbGVjdHVzIGFyY2hpdGVjdG8u",
-      "firstName": "Laborum ut iste et harum.",
-      "lastName": "Unde quod.",
-      "phone": "Autem neque numquam."
-   }' --username "Odit nesciunt dicta tempore fugiat." --password "Velit rerum occaecati quia."` + "\n" +
+      "email": "Q29tbW9kaSBvZmZpY2lpcyBudW1xdWFtIG1vbGVzdGlhZS4=",
+      "firstName": "Velit rerum occaecati quia.",
+      "lastName": "Voluptate quod.",
+      "phone": "Dolorum aut aut impedit nisi odio."
+   }' --username "Nam doloribus dolor commodi consequuntur perferendis ea." --password "Qui unde et mollitia modi."` + "\n" +
 		os.Args[0] + ` postings create-post --body '{
-      "content": "RWFydW0gcXVpYSBhdXQu",
-      "description": "Nam doloribus dolor commodi consequuntur perferendis ea.",
-      "price": "Qui unde et mollitia modi.",
-      "title": "Commodi officiis numquam molestiae."
-   }' --token "Aut id placeat voluptate expedita sunt culpa."` + "\n" +
+      "content": "QXV0ZW0gcXVpYSB2ZXJpdGF0aXMgZG9sb3JlbS4=",
+      "description": "Magnam non voluptas aut vero pariatur.",
+      "price": "Ut in sapiente illo explicabo aut.",
+      "title": "Voluptatibus cupiditate ea cum ut beatae."
+   }' --token "Minima nisi."` + "\n" +
 		""
 }
 
@@ -215,7 +215,7 @@ Login implements Login.
     -password STRING: User password
 
 Example:
-    %[1]s login login --username "Et incidunt assumenda sequi." --password "Reiciendis voluptas in autem dolorem."
+    %[1]s login login --username "Unde quod." --password "Autem neque numquam."
 `, os.Args[0])
 }
 
@@ -242,11 +242,11 @@ Signup implements Signup.
 
 Example:
     %[1]s signup signup --body '{
-      "email": "TmlzaSB0ZW1wb3JhIGRlbGVjdHVzIGFyY2hpdGVjdG8u",
-      "firstName": "Laborum ut iste et harum.",
-      "lastName": "Unde quod.",
-      "phone": "Autem neque numquam."
-   }' --username "Odit nesciunt dicta tempore fugiat." --password "Velit rerum occaecati quia."
+      "email": "Q29tbW9kaSBvZmZpY2lpcyBudW1xdWFtIG1vbGVzdGlhZS4=",
+      "firstName": "Velit rerum occaecati quia.",
+      "lastName": "Voluptate quod.",
+      "phone": "Dolorum aut aut impedit nisi odio."
+   }' --username "Nam doloribus dolor commodi consequuntur perferendis ea." --password "Qui unde et mollitia modi."
 `, os.Args[0])
 }
 
@@ -272,10 +272,10 @@ CreatePost implements create_post.
 
 Example:
     %[1]s postings create-post --body '{
-      "content": "RWFydW0gcXVpYSBhdXQu",
-      "description": "Nam doloribus dolor commodi consequuntur perferendis ea.",
-      "price": "Qui unde et mollitia modi.",
-      "title": "Commodi officiis numquam molestiae."
-   }' --token "Aut id placeat voluptate expedita sunt culpa."
+      "content": "QXV0ZW0gcXVpYSB2ZXJpdGF0aXMgZG9sb3JlbS4=",
+      "description": "Magnam non voluptas aut vero pariatur.",
+      "price": "Ut in sapiente illo explicabo aut.",
+      "title": "Voluptatibus cupiditate ea cum ut beatae."
+   }' --token "Minima nisi."
 `, os.Args[0])
 }

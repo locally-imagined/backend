@@ -23,7 +23,7 @@ func BuildSignupPayload(signupSignupBody string, signupSignupUsername string, si
 	{
 		err = json.Unmarshal([]byte(signupSignupBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"email\": \"TmlzaSB0ZW1wb3JhIGRlbGVjdHVzIGFyY2hpdGVjdG8u\",\n      \"firstName\": \"Laborum ut iste et harum.\",\n      \"lastName\": \"Unde quod.\",\n      \"phone\": \"Autem neque numquam.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"email\": \"Q29tbW9kaSBvZmZpY2lpcyBudW1xdWFtIG1vbGVzdGlhZS4=\",\n      \"firstName\": \"Velit rerum occaecati quia.\",\n      \"lastName\": \"Voluptate quod.\",\n      \"phone\": \"Dolorum aut aut impedit nisi odio.\"\n   }'")
 		}
 		if body.Email == nil {
 			err = goa.MergeErrors(err, goa.MissingFieldError("email", "body"))

@@ -80,7 +80,7 @@ func (s *Service) CreatePost(ctx context.Context, p *postings.CreatePostPayload)
 		Body:   reader,
 	})
 	if err != nil {
-		return &postings.CreatePostResult{ImageID: nil}, nil
+		return nil, err
 	}
 
 	postID := uuid.New().String()
@@ -88,8 +88,8 @@ func (s *Service) CreatePost(ctx context.Context, p *postings.CreatePostPayload)
 	if err != nil {
 		return nil, err
 	}
-	date := time.Now().Format(time.RFC3339)
-	_, err = dbPool.Query("INSERT INTO Posts Values ($1, $2, $3, $4, $5, $6)", postID, ctx.Value("UserID").(string), p.Post.Title, p.Post.Description, p.Post.Price, date)
+	now := time.Now().Format(time.RFC3339)
+	_, err = dbPool.Query("INSERT INTO Posts Values ($1, $2, $3, $4, $5, $6)", postID, ctx.Value("UserID").(string), p.Post.Title, p.Post.Description, p.Post.Price, now)
 	if err != nil {
 		return nil, err
 	}
@@ -97,5 +97,6 @@ func (s *Service) CreatePost(ctx context.Context, p *postings.CreatePostPayload)
 	if err != nil {
 		return nil, err
 	}
-	return &postings.CreatePostResult{ImageID: &imageID}, nil
+	posted := postings.CreatePostResult{Title: p.Post.Title, Description: p.Post.Description, Price: p.Post.Price, ImageID: imageID, PostID: postID, UploadDate: now}
+	return &posted, nil
 }

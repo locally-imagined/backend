@@ -40,6 +40,17 @@ var Post = Type("Post", func() {
 	Required("title", "description", "price", "content")
 })
 
+// var PostResponse = Type("PostResponse", func() {
+// 	Description("Describes a post")
+// 	Attribute("title", String, "Post title")
+// 	Attribute("description", String, "Post description")
+// 	Attribute("price", String, "Post price")
+// 	Attribute("imageID", String, "Image ID")
+// 	Attribute("postID", String, "Post ID")
+// 	Attribute("uploadDate", String, "Upload Date")
+// 	Required("title", "description", "price", "imageID", "postID", "uploadDate")
+// })
+
 var _ = Service("login", func() {
 	cors.Origin("http://localhost:3000", func() { // Define CORS policy, may be prefixed with "*" wildcard
 		cors.Headers("*")                      // One or more authorized headers, use "*" to authorize all
@@ -121,13 +132,25 @@ var _ = Service("postings", func() {
 			Required("token", "post")
 		})
 		Result(func() {
-			Attribute("imageID", String)
+			Attribute("title", String, "Post title")
+			Attribute("description", String, "Post description")
+			Attribute("price", String, "Post price")
+			Attribute("imageID", String, "Image ID")
+			Attribute("postID", String, "Post ID")
+			Attribute("uploadDate", String, "Upload Date")
+			Required("title", "description", "price", "imageID", "postID", "uploadDate")
+
 		})
 		HTTP(func() {
 			POST("/create")
 			Body("post")
 			Response(func() {
+				Body("title")
+				Body("description")
+				Body("price")
 				Body("imageID")
+				Body("postID")
+				Body("uploadDate")
 			})
 		})
 	})

@@ -47,7 +47,18 @@ type CreatePostPayload struct {
 // CreatePostResult is the result type of the postings service create_post
 // method.
 type CreatePostResult struct {
-	ImageID *string
+	// Post title
+	Title string
+	// Post description
+	Description string
+	// Post price
+	Price string
+	// Image ID
+	ImageID string
+	// Post ID
+	PostID string
+	// Upload Date
+	UploadDate string
 }
 
 // Describes a post

@@ -95,110 +95,84 @@ definitions:
                 type: string
                 description: Post content
                 example:
-                    - 79
-                    - 102
-                    - 102
-                    - 105
-                    - 99
-                    - 105
-                    - 105
-                    - 115
-                    - 32
-                    - 101
-                    - 115
-                    - 116
-                    - 32
-                    - 111
-                    - 112
-                    - 116
-                    - 105
-                    - 111
-                    - 32
-                    - 118
-                    - 111
-                    - 108
+                    - 65
                     - 117
+                    - 116
+                    - 32
+                    - 113
+                    - 117
+                    - 105
+                    - 32
+                    - 99
+                    - 117
+                    - 109
+                    - 32
+                    - 116
+                    - 101
+                    - 109
                     - 112
-                    - 116
+                    - 111
+                    - 114
+                    - 105
+                    - 98
+                    - 117
+                    - 115
+                    - 32
                     - 97
-                    - 116
+                    - 115
+                    - 112
+                    - 101
+                    - 114
+                    - 105
+                    - 111
+                    - 114
                     - 101
                     - 115
                     - 32
                     - 113
                     - 117
                     - 105
-                    - 32
-                    - 114
-                    - 101
-                    - 99
-                    - 117
-                    - 115
-                    - 97
-                    - 110
-                    - 100
-                    - 97
-                    - 101
-                    - 32
-                    - 115
-                    - 105
-                    - 116
                     - 46
                 format: byte
             description:
                 type: string
                 description: Post description
-                example: Doloremque ut vel.
+                example: Dignissimos sed eius odio commodi eos consequatur.
             price:
                 type: string
                 description: Post price
-                example: Ab enim aut et quas quo.
+                example: Quod aut alias optio quidem ducimus.
             title:
                 type: string
                 description: Post title
-                example: Aut animi et deserunt est.
+                example: Excepturi ut voluptatum.
         description: Describes a post
         example:
             content:
-                - 81
-                - 117
+                - 77
                 - 111
                 - 100
+                - 105
                 - 32
-                - 97
-                - 117
-                - 116
-                - 32
-                - 97
+                - 100
+                - 111
                 - 108
-                - 105
-                - 97
-                - 115
-                - 32
                 - 111
-                - 112
-                - 116
-                - 105
-                - 111
-                - 32
-                - 113
-                - 117
-                - 105
-                - 100
+                - 114
                 - 101
-                - 109
-                - 32
-                - 100
-                - 117
-                - 99
-                - 105
-                - 109
-                - 117
                 - 115
+                - 32
+                - 108
+                - 97
+                - 98
+                - 111
+                - 114
+                - 117
+                - 109
                 - 46
-            description: Excepturi ut voluptatum.
-            price: Dignissimos sed eius odio commodi eos consequatur.
-            title: Dolorem eligendi aut consequatur minima rem tempora.
+            description: Voluptas quo.
+            price: Quasi non qui esse non praesentium expedita.
+            title: Eveniet incidunt et ut consequatur.
         required:
             - title
             - description
@@ -212,50 +186,103 @@ definitions:
                 type: string
                 description: Email
                 example:
-                    - 85
-                    - 116
-                    - 32
+                    - 65
                     - 117
                     - 116
                     - 32
-                    - 111
-                    - 109
+                    - 97
                     - 110
                     - 105
+                    - 109
+                    - 105
+                    - 32
+                    - 101
+                    - 116
+                    - 32
+                    - 100
+                    - 101
                     - 115
+                    - 101
+                    - 114
+                    - 117
+                    - 110
+                    - 116
+                    - 32
+                    - 101
+                    - 115
+                    - 116
                     - 46
                 format: byte
             firstName:
                 type: string
                 description: First name
-                example: Ut in sapiente illo explicabo aut.
+                example: Quae autem quia nemo iste similique veritatis.
             lastName:
                 type: string
                 description: Last name
-                example: Autem quia veritatis dolorem.
+                example: At ad.
             phone:
                 type: string
                 description: Phone number
-                example: Minima nisi.
+                example: Aut et atque.
         description: Describes a user
         example:
             email:
-                - 65
-                - 117
-                - 116
+                - 68
+                - 111
+                - 108
+                - 111
+                - 114
+                - 101
+                - 109
                 - 32
                 - 101
-                - 116
+                - 108
+                - 105
+                - 103
+                - 101
+                - 110
+                - 100
+                - 105
                 - 32
                 - 97
+                - 117
                 - 116
+                - 32
+                - 99
+                - 111
+                - 110
+                - 115
+                - 101
                 - 113
                 - 117
+                - 97
+                - 116
+                - 117
+                - 114
+                - 32
+                - 109
+                - 105
+                - 110
+                - 105
+                - 109
+                - 97
+                - 32
+                - 114
                 - 101
+                - 109
+                - 32
+                - 116
+                - 101
+                - 109
+                - 112
+                - 111
+                - 114
+                - 97
                 - 46
-            firstName: Ut molestiae nihil ipsam voluptatem explicabo qui.
-            lastName: Quae autem quia nemo iste similique veritatis.
-            phone: At ad.
+            firstName: Doloremque ut vel.
+            lastName: Ab enim aut et quas quo.
+            phone: Officiis est optio voluptates qui recusandae sit.
         required:
             - firstName
             - lastName
