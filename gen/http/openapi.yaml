@@ -12,6 +12,33 @@ produces:
     - application/xml
     - application/gob
 paths:
+    /create:
+        post:
+            tags:
+                - postings
+            summary: create_post postings
+            operationId: postings#create_post
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: jwt used for auth
+                  required: true
+                  type: string
+                - name: create_post_request_body
+                  in: body
+                  description: Post info
+                  required: true
+                  schema:
+                    $ref: '#/definitions/PostingsCreatePostRequestBody'
+            responses:
+                "200":
+                    description: OK response.
+                    schema:
+                        type: string
+            schemes:
+                - http
+            security:
+                - jwt_header_Authorization: []
     /login:
         post:
             tags:
@@ -59,35 +86,124 @@ paths:
                 - http
             security:
                 - signup_header_Authorization: []
-    /upload:
-        post:
-            tags:
-                - upload
-            summary: upload_photo upload
-            operationId: upload#upload_photo
-            parameters:
-                - name: Authorization
-                  in: header
-                  description: jwt used for auth
-                  required: true
-                  type: string
-                - name: bytes
-                  in: body
-                  description: photo content
-                  required: true
-                  schema:
-                    type: string
-                    format: byte
-            responses:
-                "200":
-                    description: OK response.
-                    schema:
-                        type: string
-            schemes:
-                - http
-            security:
-                - jwt_header_Authorization: []
 definitions:
+    PostingsCreatePostRequestBody:
+        title: PostingsCreatePostRequestBody
+        type: object
+        properties:
+            content:
+                type: string
+                description: Post content
+                example:
+                    - 79
+                    - 102
+                    - 102
+                    - 105
+                    - 99
+                    - 105
+                    - 105
+                    - 115
+                    - 32
+                    - 101
+                    - 115
+                    - 116
+                    - 32
+                    - 111
+                    - 112
+                    - 116
+                    - 105
+                    - 111
+                    - 32
+                    - 118
+                    - 111
+                    - 108
+                    - 117
+                    - 112
+                    - 116
+                    - 97
+                    - 116
+                    - 101
+                    - 115
+                    - 32
+                    - 113
+                    - 117
+                    - 105
+                    - 32
+                    - 114
+                    - 101
+                    - 99
+                    - 117
+                    - 115
+                    - 97
+                    - 110
+                    - 100
+                    - 97
+                    - 101
+                    - 32
+                    - 115
+                    - 105
+                    - 116
+                    - 46
+                format: byte
+            description:
+                type: string
+                description: Post description
+                example: Doloremque ut vel.
+            price:
+                type: string
+                description: Post price
+                example: Ab enim aut et quas quo.
+            title:
+                type: string
+                description: Post title
+                example: Aut animi et deserunt est.
+        description: Describes a post
+        example:
+            content:
+                - 81
+                - 117
+                - 111
+                - 100
+                - 32
+                - 97
+                - 117
+                - 116
+                - 32
+                - 97
+                - 108
+                - 105
+                - 97
+                - 115
+                - 32
+                - 111
+                - 112
+                - 116
+                - 105
+                - 111
+                - 32
+                - 113
+                - 117
+                - 105
+                - 100
+                - 101
+                - 109
+                - 32
+                - 100
+                - 117
+                - 99
+                - 105
+                - 109
+                - 117
+                - 115
+                - 46
+            description: Excepturi ut voluptatum.
+            price: Dignissimos sed eius odio commodi eos consequatur.
+            title: Dolorem eligendi aut consequatur minima rem tempora.
+        required:
+            - title
+            - description
+            - price
+            - content
     SignupSignupRequestBody:
         title: SignupSignupRequestBody
         type: object
@@ -95,25 +211,30 @@ definitions:
             email:
                 type: string
                 description: Email
-                example: Ut in sapiente illo explicabo aut.
+                example: Ut ut omnis.
             firstName:
                 type: string
                 description: First name
-                example: Aut id placeat voluptate expedita sunt culpa.
+                example: Ut in sapiente illo explicabo aut.
             lastName:
                 type: string
                 description: Last name
-                example: Voluptatibus cupiditate ea cum ut beatae.
+                example: Autem quia veritatis dolorem.
             phone:
                 type: string
                 description: Phone number
-                example: Magnam non voluptas aut vero pariatur.
+                example: Minima nisi.
         description: Describes a user
         example:
-            email: Ut molestiae nihil ipsam voluptatem explicabo qui.
-            firstName: Autem quia veritatis dolorem.
-            lastName: Minima nisi.
-            phone: Ut ut omnis.
+            email: Aut et atque.
+            firstName: Ut molestiae nihil ipsam voluptatem explicabo qui.
+            lastName: Quae autem quia nemo iste similique veritatis.
+            phone: At ad.
+        required:
+            - firstName
+            - lastName
+            - phone
+            - email
 securityDefinitions:
     jwt_header_Authorization:
         type: apiKey

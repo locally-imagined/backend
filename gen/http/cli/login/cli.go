@@ -9,8 +9,8 @@ package cli
 
 import (
 	loginc "backend/gen/http/login/client"
+	postingsc "backend/gen/http/postings/client"
 	signupc "backend/gen/http/signup/client"
-	uploadc "backend/gen/http/upload/client"
 	"flag"
 	"fmt"
 	"net/http"
@@ -27,20 +27,25 @@ import (
 func UsageCommands() string {
 	return `login login
 signup signup
-upload upload-photo
+postings create-post
 `
 }
 
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
-	return os.Args[0] + ` login login --username "Tempore enim voluptatem unde cumque." --password "Neque ut."` + "\n" +
+	return os.Args[0] + ` login login --username "Et incidunt assumenda sequi." --password "Reiciendis voluptas in autem dolorem."` + "\n" +
 		os.Args[0] + ` signup signup --body '{
-      "email": "Laborum ut iste et harum.",
-      "firstName": "Reiciendis voluptas in autem dolorem.",
-      "lastName": "Corporis ipsum neque.",
-      "phone": "Unde vero."
-   }' --username "Unde quod." --password "Autem neque numquam."` + "\n" +
-		os.Args[0] + ` upload upload-photo --body "TmFtIGRvbG9yaWJ1cyBkb2xvciBjb21tb2RpIGNvbnNlcXV1bnR1ciBwZXJmZXJlbmRpcyBlYS4=" --token "Dolorum aut aut impedit nisi odio."` + "\n" +
+      "email": "Nisi tempora delectus architecto.",
+      "firstName": "Laborum ut iste et harum.",
+      "lastName": "Unde quod.",
+      "phone": "Autem neque numquam."
+   }' --username "Odit nesciunt dicta tempore fugiat." --password "Velit rerum occaecati quia."` + "\n" +
+		os.Args[0] + ` postings create-post --body '{
+      "content": "RWFydW0gcXVpYSBhdXQu",
+      "description": "Nam doloribus dolor commodi consequuntur perferendis ea.",
+      "price": "Qui unde et mollitia modi.",
+      "title": "Commodi officiis numquam molestiae."
+   }' --token "Aut id placeat voluptate expedita sunt culpa."` + "\n" +
 		""
 }
 
@@ -67,11 +72,11 @@ func ParseEndpoint(
 		signupSignupUsernameFlag = signupSignupFlags.String("username", "REQUIRED", "Raw username")
 		signupSignupPasswordFlag = signupSignupFlags.String("password", "REQUIRED", "User password")
 
-		uploadFlags = flag.NewFlagSet("upload", flag.ContinueOnError)
+		postingsFlags = flag.NewFlagSet("postings", flag.ContinueOnError)
 
-		uploadUploadPhotoFlags     = flag.NewFlagSet("upload-photo", flag.ExitOnError)
-		uploadUploadPhotoBodyFlag  = uploadUploadPhotoFlags.String("body", "REQUIRED", "")
-		uploadUploadPhotoTokenFlag = uploadUploadPhotoFlags.String("token", "REQUIRED", "")
+		postingsCreatePostFlags     = flag.NewFlagSet("create-post", flag.ExitOnError)
+		postingsCreatePostBodyFlag  = postingsCreatePostFlags.String("body", "REQUIRED", "")
+		postingsCreatePostTokenFlag = postingsCreatePostFlags.String("token", "REQUIRED", "")
 	)
 	loginFlags.Usage = loginUsage
 	loginLoginFlags.Usage = loginLoginUsage
@@ -79,8 +84,8 @@ func ParseEndpoint(
 	signupFlags.Usage = signupUsage
 	signupSignupFlags.Usage = signupSignupUsage
 
-	uploadFlags.Usage = uploadUsage
-	uploadUploadPhotoFlags.Usage = uploadUploadPhotoUsage
+	postingsFlags.Usage = postingsUsage
+	postingsCreatePostFlags.Usage = postingsCreatePostUsage
 
 	if err := flag.CommandLine.Parse(os.Args[1:]); err != nil {
 		return nil, nil, err
@@ -101,8 +106,8 @@ func ParseEndpoint(
 			svcf = loginFlags
 		case "signup":
 			svcf = signupFlags
-		case "upload":
-			svcf = uploadFlags
+		case "postings":
+			svcf = postingsFlags
 		default:
 			return nil, nil, fmt.Errorf("unknown service %q", svcn)
 		}
@@ -132,10 +137,10 @@ func ParseEndpoint(
 
 			}
 
-		case "upload":
+		case "postings":
 			switch epn {
-			case "upload-photo":
-				epf = uploadUploadPhotoFlags
+			case "create-post":
+				epf = postingsCreatePostFlags
 
 			}
 
@@ -173,12 +178,12 @@ func ParseEndpoint(
 				endpoint = c.Signup()
 				data, err = signupc.BuildSignupPayload(*signupSignupBodyFlag, *signupSignupUsernameFlag, *signupSignupPasswordFlag)
 			}
-		case "upload":
-			c := uploadc.NewClient(scheme, host, doer, enc, dec, restore)
+		case "postings":
+			c := postingsc.NewClient(scheme, host, doer, enc, dec, restore)
 			switch epn {
-			case "upload-photo":
-				endpoint = c.UploadPhoto()
-				data, err = uploadc.BuildUploadPhotoPayload(*uploadUploadPhotoBodyFlag, *uploadUploadPhotoTokenFlag)
+			case "create-post":
+				endpoint = c.CreatePost()
+				data, err = postingsc.BuildCreatePostPayload(*postingsCreatePostBodyFlag, *postingsCreatePostTokenFlag)
 			}
 		}
 	}
@@ -210,7 +215,7 @@ Login implements Login.
     -password STRING: User password
 
 Example:
-    %[1]s login login --username "Tempore enim voluptatem unde cumque." --password "Neque ut."
+    %[1]s login login --username "Et incidunt assumenda sequi." --password "Reiciendis voluptas in autem dolorem."
 `, os.Args[0])
 }
 
@@ -237,35 +242,40 @@ Signup implements Signup.
 
 Example:
     %[1]s signup signup --body '{
-      "email": "Laborum ut iste et harum.",
-      "firstName": "Reiciendis voluptas in autem dolorem.",
-      "lastName": "Corporis ipsum neque.",
-      "phone": "Unde vero."
-   }' --username "Unde quod." --password "Autem neque numquam."
+      "email": "Nisi tempora delectus architecto.",
+      "firstName": "Laborum ut iste et harum.",
+      "lastName": "Unde quod.",
+      "phone": "Autem neque numquam."
+   }' --username "Odit nesciunt dicta tempore fugiat." --password "Velit rerum occaecati quia."
 `, os.Args[0])
 }
 
-// uploadUsage displays the usage of the upload command and its subcommands.
-func uploadUsage() {
-	fmt.Fprintf(os.Stderr, `Service is the upload service interface.
+// postingsUsage displays the usage of the postings command and its subcommands.
+func postingsUsage() {
+	fmt.Fprintf(os.Stderr, `Service is the postings service interface.
 Usage:
-    %[1]s [globalflags] upload COMMAND [flags]
+    %[1]s [globalflags] postings COMMAND [flags]
 
 COMMAND:
-    upload-photo: UploadPhoto implements upload_photo.
+    create-post: CreatePost implements create_post.
 
 Additional help:
-    %[1]s upload COMMAND --help
+    %[1]s postings COMMAND --help
 `, os.Args[0])
 }
-func uploadUploadPhotoUsage() {
-	fmt.Fprintf(os.Stderr, `%[1]s [flags] upload upload-photo -body STRING -token STRING
+func postingsCreatePostUsage() {
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] postings create-post -body JSON -token STRING
 
-UploadPhoto implements upload_photo.
-    -body STRING: 
+CreatePost implements create_post.
+    -body JSON: 
     -token STRING: 
 
 Example:
-    %[1]s upload upload-photo --body "TmFtIGRvbG9yaWJ1cyBkb2xvciBjb21tb2RpIGNvbnNlcXV1bnR1ciBwZXJmZXJlbmRpcyBlYS4=" --token "Dolorum aut aut impedit nisi odio."
+    %[1]s postings create-post --body '{
+      "content": "RWFydW0gcXVpYSBhdXQu",
+      "description": "Nam doloribus dolor commodi consequuntur perferendis ea.",
+      "price": "Qui unde et mollitia modi.",
+      "title": "Commodi officiis numquam molestiae."
+   }' --token "Aut id placeat voluptate expedita sunt culpa."
 `, os.Args[0])
 }

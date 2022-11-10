@@ -15,13 +15,13 @@ import (
 // request body.
 type SignupRequestBody struct {
 	// First name
-	FirstName *string `form:"firstName,omitempty" json:"firstName,omitempty" xml:"firstName,omitempty"`
+	FirstName string `form:"firstName" json:"firstName" xml:"firstName"`
 	// Last name
-	LastName *string `form:"lastName,omitempty" json:"lastName,omitempty" xml:"lastName,omitempty"`
+	LastName string `form:"lastName" json:"lastName" xml:"lastName"`
 	// Phone number
-	Phone *string `form:"phone,omitempty" json:"phone,omitempty" xml:"phone,omitempty"`
+	Phone string `form:"phone" json:"phone" xml:"phone"`
 	// Email
-	Email *string `form:"email,omitempty" json:"email,omitempty" xml:"email,omitempty"`
+	Email string `form:"email" json:"email" xml:"email"`
 }
 
 // NewSignupRequestBody builds the HTTP request body from the payload of the

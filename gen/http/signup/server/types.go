@@ -9,6 +9,8 @@ package server
 
 import (
 	signup "backend/gen/signup"
+
+	goa "goa.design/goa/v3/pkg"
 )
 
 // SignupRequestBody is the type of the "signup" service "Signup" endpoint HTTP
@@ -27,14 +29,31 @@ type SignupRequestBody struct {
 // NewSignupPayload builds a signup service Signup endpoint payload.
 func NewSignupPayload(body *SignupRequestBody) *signup.SignupPayload {
 	v := &signup.User{
-		FirstName: body.FirstName,
-		LastName:  body.LastName,
-		Phone:     body.Phone,
-		Email:     body.Email,
+		FirstName: *body.FirstName,
+		LastName:  *body.LastName,
+		Phone:     *body.Phone,
+		Email:     *body.Email,
 	}
 	res := &signup.SignupPayload{
 		User: v,
 	}
 
 	return res
+}
+
+// ValidateSignupRequestBody runs the validations defined on SignupRequestBody
+func ValidateSignupRequestBody(body *SignupRequestBody) (err error) {
+	if body.FirstName == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("firstName", "body"))
+	}
+	if body.LastName == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("lastName", "body"))
+	}
+	if body.Phone == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("phone", "body"))
+	}
+	if body.Email == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("email", "body"))
+	}
+	return
 }

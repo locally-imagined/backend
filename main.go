@@ -2,17 +2,17 @@ package main
 
 import (
 	loginServer "backend/gen/http/login/server"
+	uploadServer "backend/gen/http/postings/server"
 	signupServer "backend/gen/http/signup/server"
-	uploadServer "backend/gen/http/upload/server"
 	genlogin "backend/gen/login"
+	genpostings "backend/gen/postings"
 	gensignup "backend/gen/signup"
-	genupload "backend/gen/upload"
 	"net/http"
 	"os"
 
 	login "backend/login"
+	postings "backend/postings"
 	signup "backend/signup"
-	upload "backend/upload"
 
 	goahttp "goa.design/goa/v3/http"
 )
@@ -49,8 +49,8 @@ func main() {
 
 	sL := &login.Service{}                      //# Create Service
 	loginEndpoints := genlogin.NewEndpoints(sL) // # Create endpoints
-	sU := &upload.Service{}
-	uploadEndpoints := genupload.NewEndpoints(sU)
+	sP := &postings.Service{}
+	postingsEndpoints := genpostings.NewEndpoints(sP)
 	sS := &signup.Service{}
 	signupEndpoints := gensignup.NewEndpoints(sS)
 
@@ -61,8 +61,8 @@ func main() {
 	loginSvr := loginServer.New(loginEndpoints, mux, dec, enc, nil, nil) // # Create Goa HTTP server
 	loginServer.Mount(mux, loginSvr)                                     //# Mount Goa server on mux
 
-	uploadSvr := uploadServer.New(uploadEndpoints, mux, dec, enc, nil, nil) // # Create Goa HTTP server
-	uploadServer.Mount(mux, uploadSvr)                                      //# Mount Goa server on mux
+	uploadSvr := uploadServer.New(postingsEndpoints, mux, dec, enc, nil, nil) // # Create Goa HTTP server
+	uploadServer.Mount(mux, uploadSvr)                                        //# Mount Goa server on mux
 
 	signupSvr := signupServer.New(signupEndpoints, mux, dec, enc, nil, nil) // # Create Goa HTTP server
 	signupServer.Mount(mux, signupSvr)                                      //# Mount Goa server on mux

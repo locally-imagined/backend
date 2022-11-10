@@ -52,11 +52,11 @@ type SignupResult struct {
 // Describes a user
 type User struct {
 	// First name
-	FirstName *string
+	FirstName string
 	// Last name
-	LastName *string
+	LastName string
 	// Phone number
-	Phone *string
+	Phone string
 	// Email
-	Email *string
+	Email string
 }

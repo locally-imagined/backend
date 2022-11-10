@@ -28,6 +28,16 @@ var User = Type("User", func() {
 	Attribute("lastName", String, "Last name")
 	Attribute("phone", String, "Phone number")
 	Attribute("email", String, "Email")
+	Required("firstName", "lastName", "phone", "email")
+})
+
+var Post = Type("Post", func() {
+	Description("Describes a post")
+	Attribute("title", String, "Post title")
+	Attribute("description", String, "Post description")
+	Attribute("price", String, "Post price")
+	Attribute("content", Bytes, "Post content")
+	Required("title", "description", "price", "content")
 })
 
 var _ = Service("login", func() {
@@ -101,21 +111,21 @@ var _ = Service("signup", func() {
 	})
 })
 
-var _ = Service("upload", func() {
+var _ = Service("postings", func() {
 	Error("unauthorized", String, "Credentials are invalid")
-	Method("upload_photo", func() {
+	Method("create_post", func() {
 		Security(JWTAuth)
 		Payload(func() {
 			Token("token", String, "jwt used for auth")
-			Attribute("content", Bytes, "photo content")
-			Required("token", "content")
+			Attribute("post", Post, "Post info")
+			Required("token", "post")
 		})
 		Result(func() {
 			Attribute("success", String)
 		})
 		HTTP(func() {
-			POST("/upload")
-			Body("content")
+			POST("/create")
+			Body("post")
 			Response(func() {
 				Body("success")
 			})

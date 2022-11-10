@@ -3,6 +3,7 @@ package upload
 // should be package postings
 import (
 	"backend/auth"
+	"backend/gen/postings"
 	"backend/gen/upload"
 	"context"
 	"time"
@@ -37,7 +38,8 @@ func (s *Service) JWTAuth(ctx context.Context, token string, scheme *security.JW
 	// 3. add authInfo to context
 
 	claims := tok.Claims.(jwt.MapClaims)
-	ctx = context.WithValue(ctx, "Name", claims["Name"])
+	ctx = context.WithValue(ctx, "Username", claims["Username"])
+	ctx = context.WithValue(ctx, "UserID", claims["UserID"])
 	var exp time.Time
 	var now time.Time = time.Now()
 	switch iat := claims["iat"].(type) {
@@ -51,7 +53,7 @@ func (s *Service) JWTAuth(ctx context.Context, token string, scheme *security.JW
 	return ctx, nil
 }
 
-func (s *Service) UploadPhoto(ctx context.Context, p *upload.UploadPhotoPayload) (*upload.UploadPhotoResult, error) {
+func (s *Service) CreatePost(ctx context.Context, p *postings.CreatePostPayload) (*postings.CreatePostResult, error) {
 	// this is really CreatePost now
 	// create a different endpoint UploadPhoto that takes in a postID
 	star := "*"
@@ -69,7 +71,7 @@ func (s *Service) UploadPhoto(ctx context.Context, p *upload.UploadPhotoPayload)
 	// create a new instance of the service's client iwth a session.
 	svc := s3.New(sess)
 	// put the bytes into a reader, bytes must be in base 64 for this to work
-	reader := strings.NewReader(string(p.Content))
+	reader := strings.NewReader(string(p.Post.Content))
 
 	postID := uuid.NewString()
 	// put the object in the bucket

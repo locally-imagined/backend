@@ -44,6 +44,10 @@ func DecodeSignupRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.
 			}
 			return nil, goa.DecodePayloadError(err.Error())
 		}
+		err = ValidateSignupRequestBody(&body)
+		if err != nil {
+			return nil, err
+		}
 		payload := NewSignupPayload(&body)
 		user, pass, ok := r.BasicAuth()
 		if !ok {
