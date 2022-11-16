@@ -37,7 +37,8 @@ var Post = Type("Post", func() {
 	Attribute("description", String, "Post description")
 	Attribute("price", String, "Post price")
 	Attribute("content", String, "Post content")
-	Required("title", "description", "price", "content")
+	Attribute("medium", String, "Art type")
+	Required("title", "description", "price", "content", "medium")
 })
 
 var PostResponse = Type("PostResponse", func() {
@@ -47,8 +48,10 @@ var PostResponse = Type("PostResponse", func() {
 	Attribute("price", String, "Post price")
 	Attribute("imageID", String, "Image ID")
 	Attribute("postID", String, "Post ID")
+	Attribute("medium", String, "Art type")
 	Attribute("uploadDate", String, "Upload Date")
-	Required("title", "description", "price", "imageID", "postID", "uploadDate")
+	Attribute("sold", Boolean, "is sold")
+	Required("title", "description", "price", "imageID", "postID", "medium", "uploadDate", "sold")
 })
 
 var _ = Service("login", func() {
@@ -154,6 +157,15 @@ var _ = Service("postings", func() {
 			Response(func() {
 				Body("Posted")
 			})
+		})
+	})
+	Method("delete_post", func() {
+		Payload(func() {
+			Attribute("postID", String, "Post to delete")
+			Required("postID")
+		})
+		HTTP(func() {
+			DELETE("/posts/delete/{postID}")
 		})
 	})
 	Method("get_post_page", func() {

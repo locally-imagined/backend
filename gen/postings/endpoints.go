@@ -17,6 +17,7 @@ import (
 // Endpoints wraps the "postings" service endpoints.
 type Endpoints struct {
 	CreatePost       goa.Endpoint
+	DeletePost       goa.Endpoint
 	GetPostPage      goa.Endpoint
 	GetImagesForPost goa.Endpoint
 }
@@ -27,6 +28,7 @@ func NewEndpoints(s Service) *Endpoints {
 	a := s.(Auther)
 	return &Endpoints{
 		CreatePost:       NewCreatePostEndpoint(s, a.JWTAuth),
+		DeletePost:       NewDeletePostEndpoint(s),
 		GetPostPage:      NewGetPostPageEndpoint(s),
 		GetImagesForPost: NewGetImagesForPostEndpoint(s),
 	}
@@ -35,6 +37,7 @@ func NewEndpoints(s Service) *Endpoints {
 // Use applies the given middleware to all the "postings" service endpoints.
 func (e *Endpoints) Use(m func(goa.Endpoint) goa.Endpoint) {
 	e.CreatePost = m(e.CreatePost)
+	e.DeletePost = m(e.DeletePost)
 	e.GetPostPage = m(e.GetPostPage)
 	e.GetImagesForPost = m(e.GetImagesForPost)
 }
@@ -55,6 +58,15 @@ func NewCreatePostEndpoint(s Service, authJWTFn security.AuthJWTFunc) goa.Endpoi
 			return nil, err
 		}
 		return s.CreatePost(ctx, p)
+	}
+}
+
+// NewDeletePostEndpoint returns an endpoint function that calls the method
+// "delete_post" of service "postings".
+func NewDeletePostEndpoint(s Service) goa.Endpoint {
+	return func(ctx context.Context, req interface{}) (interface{}, error) {
+		p := req.(*DeletePostPayload)
+		return nil, s.DeletePost(ctx, p)
 	}
 }
 

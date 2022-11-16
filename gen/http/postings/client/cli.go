@@ -22,7 +22,7 @@ func BuildCreatePostPayload(postingsCreatePostBody string, postingsCreatePostTok
 	{
 		err = json.Unmarshal([]byte(postingsCreatePostBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"content\": \"Aut et atque.\",\n      \"description\": \"Quae autem quia nemo iste similique veritatis.\",\n      \"price\": \"At ad.\",\n      \"title\": \"Ut molestiae nihil ipsam voluptatem explicabo qui.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"content\": \"Aut et atque.\",\n      \"description\": \"Quae autem quia nemo iste similique veritatis.\",\n      \"medium\": \"Aut animi et deserunt est.\",\n      \"price\": \"At ad.\",\n      \"title\": \"Ut molestiae nihil ipsam voluptatem explicabo qui.\"\n   }'")
 		}
 	}
 	var token string
@@ -34,6 +34,7 @@ func BuildCreatePostPayload(postingsCreatePostBody string, postingsCreatePostTok
 		Description: body.Description,
 		Price:       body.Price,
 		Content:     body.Content,
+		Medium:      body.Medium,
 	}
 	res := &postings.CreatePostPayload{
 		Post: v,
@@ -41,6 +42,19 @@ func BuildCreatePostPayload(postingsCreatePostBody string, postingsCreatePostTok
 	res.Token = token
 
 	return res, nil
+}
+
+// BuildDeletePostPayload builds the payload for the postings delete_post
+// endpoint from CLI flags.
+func BuildDeletePostPayload(postingsDeletePostPostID string) (*postings.DeletePostPayload, error) {
+	var postID string
+	{
+		postID = postingsDeletePostPostID
+	}
+	v := &postings.DeletePostPayload{}
+	v.PostID = postID
+
+	return v, nil
 }
 
 // BuildGetPostPagePayload builds the payload for the postings get_post_page

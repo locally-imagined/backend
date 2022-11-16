@@ -27,25 +27,26 @@ import (
 func UsageCommands() string {
 	return `login login
 signup signup
-postings (create-post|get-post-page|get-images-for-post)
+postings (create-post|delete-post|get-post-page|get-images-for-post)
 `
 }
 
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
-	return os.Args[0] + ` login login --username "Aut aut impedit." --password "Odio tempora commodi officiis numquam molestiae."` + "\n" +
+	return os.Args[0] + ` login login --username "Tempora commodi officiis numquam molestiae blanditiis." --password "Doloribus dolor."` + "\n" +
 		os.Args[0] + ` signup signup --body '{
       "email": "Magnam non voluptas aut vero pariatur.",
-      "firstName": "Earum quia aut.",
-      "lastName": "Aut id placeat voluptate expedita sunt culpa.",
-      "phone": "Voluptatibus cupiditate ea cum ut beatae."
+      "firstName": "Quas aut id placeat.",
+      "lastName": "Expedita sunt culpa non voluptatibus cupiditate ea.",
+      "phone": "Ut beatae."
    }' --username "Ut in sapiente illo explicabo aut." --password "Autem quia veritatis dolorem."` + "\n" +
 		os.Args[0] + ` postings create-post --body '{
       "content": "Aut et atque.",
       "description": "Quae autem quia nemo iste similique veritatis.",
+      "medium": "Aut animi et deserunt est.",
       "price": "At ad.",
       "title": "Ut molestiae nihil ipsam voluptatem explicabo qui."
-   }' --token "Aut animi et deserunt est."` + "\n" +
+   }' --token "Doloremque ut vel."` + "\n" +
 		""
 }
 
@@ -78,6 +79,9 @@ func ParseEndpoint(
 		postingsCreatePostBodyFlag  = postingsCreatePostFlags.String("body", "REQUIRED", "")
 		postingsCreatePostTokenFlag = postingsCreatePostFlags.String("token", "REQUIRED", "")
 
+		postingsDeletePostFlags      = flag.NewFlagSet("delete-post", flag.ExitOnError)
+		postingsDeletePostPostIDFlag = postingsDeletePostFlags.String("post-id", "REQUIRED", "Post to delete")
+
 		postingsGetPostPageFlags    = flag.NewFlagSet("get-post-page", flag.ExitOnError)
 		postingsGetPostPagePageFlag = postingsGetPostPageFlags.String("page", "REQUIRED", "Page to get posts for")
 
@@ -92,6 +96,7 @@ func ParseEndpoint(
 
 	postingsFlags.Usage = postingsUsage
 	postingsCreatePostFlags.Usage = postingsCreatePostUsage
+	postingsDeletePostFlags.Usage = postingsDeletePostUsage
 	postingsGetPostPageFlags.Usage = postingsGetPostPageUsage
 	postingsGetImagesForPostFlags.Usage = postingsGetImagesForPostUsage
 
@@ -150,6 +155,9 @@ func ParseEndpoint(
 			case "create-post":
 				epf = postingsCreatePostFlags
 
+			case "delete-post":
+				epf = postingsDeletePostFlags
+
 			case "get-post-page":
 				epf = postingsGetPostPageFlags
 
@@ -198,6 +206,9 @@ func ParseEndpoint(
 			case "create-post":
 				endpoint = c.CreatePost()
 				data, err = postingsc.BuildCreatePostPayload(*postingsCreatePostBodyFlag, *postingsCreatePostTokenFlag)
+			case "delete-post":
+				endpoint = c.DeletePost()
+				data, err = postingsc.BuildDeletePostPayload(*postingsDeletePostPostIDFlag)
 			case "get-post-page":
 				endpoint = c.GetPostPage()
 				data, err = postingsc.BuildGetPostPagePayload(*postingsGetPostPagePageFlag)
@@ -235,7 +246,7 @@ Login implements Login.
     -password STRING: User password
 
 Example:
-    %[1]s login login --username "Aut aut impedit." --password "Odio tempora commodi officiis numquam molestiae."
+    %[1]s login login --username "Tempora commodi officiis numquam molestiae blanditiis." --password "Doloribus dolor."
 `, os.Args[0])
 }
 
@@ -263,9 +274,9 @@ Signup implements Signup.
 Example:
     %[1]s signup signup --body '{
       "email": "Magnam non voluptas aut vero pariatur.",
-      "firstName": "Earum quia aut.",
-      "lastName": "Aut id placeat voluptate expedita sunt culpa.",
-      "phone": "Voluptatibus cupiditate ea cum ut beatae."
+      "firstName": "Quas aut id placeat.",
+      "lastName": "Expedita sunt culpa non voluptatibus cupiditate ea.",
+      "phone": "Ut beatae."
    }' --username "Ut in sapiente illo explicabo aut." --password "Autem quia veritatis dolorem."
 `, os.Args[0])
 }
@@ -278,6 +289,7 @@ Usage:
 
 COMMAND:
     create-post: CreatePost implements create_post.
+    delete-post: DeletePost implements delete_post.
     get-post-page: GetPostPage implements get_post_page.
     get-images-for-post: GetImagesForPost implements get_images_for_post.
 
@@ -296,9 +308,21 @@ Example:
     %[1]s postings create-post --body '{
       "content": "Aut et atque.",
       "description": "Quae autem quia nemo iste similique veritatis.",
+      "medium": "Aut animi et deserunt est.",
       "price": "At ad.",
       "title": "Ut molestiae nihil ipsam voluptatem explicabo qui."
-   }' --token "Aut animi et deserunt est."
+   }' --token "Doloremque ut vel."
+`, os.Args[0])
+}
+
+func postingsDeletePostUsage() {
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] postings delete-post -post-id STRING
+
+DeletePost implements delete_post.
+    -post-id STRING: Post to delete
+
+Example:
+    %[1]s postings delete-post --post-id "Nulla voluptas."
 `, os.Args[0])
 }
 
@@ -309,7 +333,7 @@ GetPostPage implements get_post_page.
     -page INT: Page to get posts for
 
 Example:
-    %[1]s postings get-post-page --page 1713403309615228382
+    %[1]s postings get-post-page --page 8290163988297749793
 `, os.Args[0])
 }
 
@@ -320,6 +344,6 @@ GetImagesForPost implements get_images_for_post.
     -post-id STRING: Post to get images for
 
 Example:
-    %[1]s postings get-images-for-post --post-id "Qui autem eveniet."
+    %[1]s postings get-images-for-post --post-id "Laborum eum repudiandae tempore molestiae."
 `, os.Args[0])
 }

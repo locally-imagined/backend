@@ -16,14 +16,16 @@ import (
 // Client is the "postings" service client.
 type Client struct {
 	CreatePostEndpoint       goa.Endpoint
+	DeletePostEndpoint       goa.Endpoint
 	GetPostPageEndpoint      goa.Endpoint
 	GetImagesForPostEndpoint goa.Endpoint
 }
 
 // NewClient initializes a "postings" service client given the endpoints.
-func NewClient(createPost, getPostPage, getImagesForPost goa.Endpoint) *Client {
+func NewClient(createPost, deletePost, getPostPage, getImagesForPost goa.Endpoint) *Client {
 	return &Client{
 		CreatePostEndpoint:       createPost,
+		DeletePostEndpoint:       deletePost,
 		GetPostPageEndpoint:      getPostPage,
 		GetImagesForPostEndpoint: getImagesForPost,
 	}
@@ -40,6 +42,15 @@ func (c *Client) CreatePost(ctx context.Context, p *CreatePostPayload) (res *Cre
 		return
 	}
 	return ires.(*CreatePostResult), nil
+}
+
+// DeletePost calls the "delete_post" endpoint of the "postings" service.
+// DeletePost may return the following errors:
+//	- "unauthorized" (type Unauthorized)
+//	- error: internal error
+func (c *Client) DeletePost(ctx context.Context, p *DeletePostPayload) (err error) {
+	_, err = c.DeletePostEndpoint(ctx, p)
+	return
 }
 
 // GetPostPage calls the "get_post_page" endpoint of the "postings" service.

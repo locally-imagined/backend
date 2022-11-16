@@ -17,6 +17,8 @@ import (
 type Service interface {
 	// CreatePost implements create_post.
 	CreatePost(context.Context, *CreatePostPayload) (res *CreatePostResult, err error)
+	// DeletePost implements delete_post.
+	DeletePost(context.Context, *DeletePostPayload) (err error)
 	// GetPostPage implements get_post_page.
 	GetPostPage(context.Context, *GetPostPagePayload) (res *GetPostPageResult, err error)
 	// GetImagesForPost implements get_images_for_post.
@@ -37,7 +39,7 @@ const ServiceName = "postings"
 // MethodNames lists the service method names as defined in the design. These
 // are the same values that are set in the endpoint request contexts under the
 // MethodKey key.
-var MethodNames = [3]string{"create_post", "get_post_page", "get_images_for_post"}
+var MethodNames = [4]string{"create_post", "delete_post", "get_post_page", "get_images_for_post"}
 
 // CreatePostPayload is the payload type of the postings service create_post
 // method.
@@ -52,6 +54,13 @@ type CreatePostPayload struct {
 // method.
 type CreatePostResult struct {
 	Posted *PostResponse
+}
+
+// DeletePostPayload is the payload type of the postings service delete_post
+// method.
+type DeletePostPayload struct {
+	// Post to delete
+	PostID string
 }
 
 // GetImagesForPostPayload is the payload type of the postings service
@@ -90,6 +99,8 @@ type Post struct {
 	Price string
 	// Post content
 	Content string
+	// Art type
+	Medium string
 }
 
 // Describes a post
@@ -104,8 +115,12 @@ type PostResponse struct {
 	ImageID string
 	// Post ID
 	PostID string
+	// Art type
+	Medium string
 	// Upload Date
 	UploadDate string
+	// is sold
+	Sold bool
 }
 
 // Credentials are invalid

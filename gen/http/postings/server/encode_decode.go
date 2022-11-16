@@ -72,6 +72,31 @@ func DecodeCreatePostRequest(mux goahttp.Muxer, decoder func(*http.Request) goah
 	}
 }
 
+// EncodeDeletePostResponse returns an encoder for responses returned by the
+// postings delete_post endpoint.
+func EncodeDeletePostResponse(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder) func(context.Context, http.ResponseWriter, interface{}) error {
+	return func(ctx context.Context, w http.ResponseWriter, v interface{}) error {
+		w.WriteHeader(http.StatusNoContent)
+		return nil
+	}
+}
+
+// DecodeDeletePostRequest returns a decoder for requests sent to the postings
+// delete_post endpoint.
+func DecodeDeletePostRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (interface{}, error) {
+	return func(r *http.Request) (interface{}, error) {
+		var (
+			postID string
+
+			params = mux.Vars(r)
+		)
+		postID = params["postID"]
+		payload := NewDeletePostPayload(postID)
+
+		return payload, nil
+	}
+}
+
 // EncodeGetPostPageResponse returns an encoder for responses returned by the
 // postings get_post_page endpoint.
 func EncodeGetPostPageResponse(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder) func(context.Context, http.ResponseWriter, interface{}) error {
@@ -148,7 +173,9 @@ func marshalPostingsPostResponseToPostResponse(v *postings.PostResponse) *PostRe
 		Price:       v.Price,
 		ImageID:     v.ImageID,
 		PostID:      v.PostID,
+		Medium:      v.Medium,
 		UploadDate:  v.UploadDate,
+		Sold:        v.Sold,
 	}
 
 	return res

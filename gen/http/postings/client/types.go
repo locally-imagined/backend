@@ -24,6 +24,8 @@ type CreatePostRequestBody struct {
 	Price string `form:"price" json:"price" xml:"price"`
 	// Post content
 	Content string `form:"content" json:"content" xml:"content"`
+	// Art type
+	Medium string `form:"medium" json:"medium" xml:"medium"`
 }
 
 // CreatePostResponseBody is the type of the "postings" service "create_post"
@@ -46,8 +48,12 @@ type PostResponseResponseBody struct {
 	ImageID *string `form:"imageID,omitempty" json:"imageID,omitempty" xml:"imageID,omitempty"`
 	// Post ID
 	PostID *string `form:"postID,omitempty" json:"postID,omitempty" xml:"postID,omitempty"`
+	// Art type
+	Medium *string `form:"medium,omitempty" json:"medium,omitempty" xml:"medium,omitempty"`
 	// Upload Date
 	UploadDate *string `form:"uploadDate,omitempty" json:"uploadDate,omitempty" xml:"uploadDate,omitempty"`
+	// is sold
+	Sold *bool `form:"sold,omitempty" json:"sold,omitempty" xml:"sold,omitempty"`
 }
 
 // PostResponse is used to define fields on response body types.
@@ -62,8 +68,12 @@ type PostResponse struct {
 	ImageID *string `form:"imageID,omitempty" json:"imageID,omitempty" xml:"imageID,omitempty"`
 	// Post ID
 	PostID *string `form:"postID,omitempty" json:"postID,omitempty" xml:"postID,omitempty"`
+	// Art type
+	Medium *string `form:"medium,omitempty" json:"medium,omitempty" xml:"medium,omitempty"`
 	// Upload Date
 	UploadDate *string `form:"uploadDate,omitempty" json:"uploadDate,omitempty" xml:"uploadDate,omitempty"`
+	// is sold
+	Sold *bool `form:"sold,omitempty" json:"sold,omitempty" xml:"sold,omitempty"`
 }
 
 // NewCreatePostRequestBody builds the HTTP request body from the payload of
@@ -74,6 +84,7 @@ func NewCreatePostRequestBody(p *postings.CreatePostPayload) *CreatePostRequestB
 		Description: p.Post.Description,
 		Price:       p.Post.Price,
 		Content:     p.Post.Content,
+		Medium:      p.Post.Medium,
 	}
 	return body
 }
@@ -87,7 +98,9 @@ func NewCreatePostResultOK(body *CreatePostResponseBody) *postings.CreatePostRes
 		Price:       *body.Price,
 		ImageID:     *body.ImageID,
 		PostID:      *body.PostID,
+		Medium:      *body.Medium,
 		UploadDate:  *body.UploadDate,
+		Sold:        *body.Sold,
 	}
 	res := &postings.CreatePostResult{
 		Posted: v,
@@ -142,8 +155,14 @@ func ValidateCreatePostResponseBody(body *CreatePostResponseBody) (err error) {
 	if body.PostID == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("postID", "body"))
 	}
+	if body.Medium == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("medium", "body"))
+	}
 	if body.UploadDate == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("uploadDate", "body"))
+	}
+	if body.Sold == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("sold", "body"))
 	}
 	return
 }
@@ -166,8 +185,14 @@ func ValidatePostResponseResponseBody(body *PostResponseResponseBody) (err error
 	if body.PostID == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("postID", "body"))
 	}
+	if body.Medium == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("medium", "body"))
+	}
 	if body.UploadDate == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("uploadDate", "body"))
+	}
+	if body.Sold == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("sold", "body"))
 	}
 	return
 }
@@ -189,8 +214,14 @@ func ValidatePostResponse(body *PostResponse) (err error) {
 	if body.PostID == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("postID", "body"))
 	}
+	if body.Medium == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("medium", "body"))
+	}
 	if body.UploadDate == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("uploadDate", "body"))
+	}
+	if body.Sold == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("sold", "body"))
 	}
 	return
 }

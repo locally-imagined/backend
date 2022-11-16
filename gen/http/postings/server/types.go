@@ -24,6 +24,8 @@ type CreatePostRequestBody struct {
 	Price *string `form:"price,omitempty" json:"price,omitempty" xml:"price,omitempty"`
 	// Post content
 	Content *string `form:"content,omitempty" json:"content,omitempty" xml:"content,omitempty"`
+	// Art type
+	Medium *string `form:"medium,omitempty" json:"medium,omitempty" xml:"medium,omitempty"`
 }
 
 // CreatePostResponseBody is the type of the "postings" service "create_post"
@@ -46,8 +48,12 @@ type PostResponseResponseBody struct {
 	ImageID string `form:"imageID" json:"imageID" xml:"imageID"`
 	// Post ID
 	PostID string `form:"postID" json:"postID" xml:"postID"`
+	// Art type
+	Medium string `form:"medium" json:"medium" xml:"medium"`
 	// Upload Date
 	UploadDate string `form:"uploadDate" json:"uploadDate" xml:"uploadDate"`
+	// is sold
+	Sold bool `form:"sold" json:"sold" xml:"sold"`
 }
 
 // PostResponse is used to define fields on response body types.
@@ -62,8 +68,12 @@ type PostResponse struct {
 	ImageID string `form:"imageID" json:"imageID" xml:"imageID"`
 	// Post ID
 	PostID string `form:"postID" json:"postID" xml:"postID"`
+	// Art type
+	Medium string `form:"medium" json:"medium" xml:"medium"`
 	// Upload Date
 	UploadDate string `form:"uploadDate" json:"uploadDate" xml:"uploadDate"`
+	// is sold
+	Sold bool `form:"sold" json:"sold" xml:"sold"`
 }
 
 // NewCreatePostResponseBody builds the HTTP response body from the result of
@@ -75,7 +85,9 @@ func NewCreatePostResponseBody(res *postings.CreatePostResult) *CreatePostRespon
 		Price:       res.Posted.Price,
 		ImageID:     res.Posted.ImageID,
 		PostID:      res.Posted.PostID,
+		Medium:      res.Posted.Medium,
 		UploadDate:  res.Posted.UploadDate,
+		Sold:        res.Posted.Sold,
 	}
 	return body
 }
@@ -97,6 +109,7 @@ func NewCreatePostPayload(body *CreatePostRequestBody, token string) *postings.C
 		Description: *body.Description,
 		Price:       *body.Price,
 		Content:     *body.Content,
+		Medium:      *body.Medium,
 	}
 	res := &postings.CreatePostPayload{
 		Post: v,
@@ -104,6 +117,14 @@ func NewCreatePostPayload(body *CreatePostRequestBody, token string) *postings.C
 	res.Token = token
 
 	return res
+}
+
+// NewDeletePostPayload builds a postings service delete_post endpoint payload.
+func NewDeletePostPayload(postID string) *postings.DeletePostPayload {
+	v := &postings.DeletePostPayload{}
+	v.PostID = postID
+
+	return v
 }
 
 // NewGetPostPagePayload builds a postings service get_post_page endpoint
@@ -138,6 +159,9 @@ func ValidateCreatePostRequestBody(body *CreatePostRequestBody) (err error) {
 	}
 	if body.Content == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("content", "body"))
+	}
+	if body.Medium == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("medium", "body"))
 	}
 	return
 }

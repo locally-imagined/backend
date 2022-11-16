@@ -16,6 +16,11 @@ func CreatePostPostingsPath() string {
 	return "/create"
 }
 
+// DeletePostPostingsPath returns the URL path to the postings service delete_post HTTP endpoint.
+func DeletePostPostingsPath(postID string) string {
+	return fmt.Sprintf("/posts/delete/%v", postID)
+}
+
 // GetPostPagePostingsPath returns the URL path to the postings service get_post_page HTTP endpoint.
 func GetPostPagePostingsPath(page int) string {
 	return fmt.Sprintf("/posts/getpage/%v", page)

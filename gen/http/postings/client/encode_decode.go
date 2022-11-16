@@ -99,6 +99,58 @@ func DecodeCreatePostResponse(decoder func(*http.Response) goahttp.Decoder, rest
 	}
 }
 
+// BuildDeletePostRequest instantiates a HTTP request object with method and
+// path set to call the "postings" service "delete_post" endpoint
+func (c *Client) BuildDeletePostRequest(ctx context.Context, v interface{}) (*http.Request, error) {
+	var (
+		postID string
+	)
+	{
+		p, ok := v.(*postings.DeletePostPayload)
+		if !ok {
+			return nil, goahttp.ErrInvalidType("postings", "delete_post", "*postings.DeletePostPayload", v)
+		}
+		postID = p.PostID
+	}
+	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: DeletePostPostingsPath(postID)}
+	req, err := http.NewRequest("DELETE", u.String(), nil)
+	if err != nil {
+		return nil, goahttp.ErrInvalidURL("postings", "delete_post", u.String(), err)
+	}
+	if ctx != nil {
+		req = req.WithContext(ctx)
+	}
+
+	return req, nil
+}
+
+// DecodeDeletePostResponse returns a decoder for responses returned by the
+// postings delete_post endpoint. restoreBody controls whether the response
+// body should be restored after having been read.
+func DecodeDeletePostResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
+	return func(resp *http.Response) (interface{}, error) {
+		if restoreBody {
+			b, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return nil, err
+			}
+			resp.Body = io.NopCloser(bytes.NewBuffer(b))
+			defer func() {
+				resp.Body = io.NopCloser(bytes.NewBuffer(b))
+			}()
+		} else {
+			defer resp.Body.Close()
+		}
+		switch resp.StatusCode {
+		case http.StatusNoContent:
+			return nil, nil
+		default:
+			body, _ := io.ReadAll(resp.Body)
+			return nil, goahttp.ErrInvalidResponse("postings", "delete_post", resp.StatusCode, string(body))
+		}
+	}
+}
+
 // BuildGetPostPageRequest instantiates a HTTP request object with method and
 // path set to call the "postings" service "get_post_page" endpoint
 func (c *Client) BuildGetPostPageRequest(ctx context.Context, v interface{}) (*http.Request, error) {
@@ -240,7 +292,9 @@ func unmarshalPostResponseToPostingsPostResponse(v *PostResponse) *postings.Post
 		Price:       *v.Price,
 		ImageID:     *v.ImageID,
 		PostID:      *v.PostID,
+		Medium:      *v.Medium,
 		UploadDate:  *v.UploadDate,
+		Sold:        *v.Sold,
 	}
 
 	return res
