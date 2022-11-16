@@ -48,7 +48,6 @@ var Post = Type("Post", func() {
 // 	Attribute("price", String, "Post price")
 // 	Attribute("content", ArrayOf(String), "Post content")
 // 	Attribute("medium", String, "Art type")
-// 	Required("title", "description", "price", "content", "medium")
 // })
 
 var PostResponse = Type("PostResponse", func() {
@@ -180,17 +179,37 @@ var _ = Service("postings", func() {
 			DELETE("/posts/delete/{postID}")
 		})
 	})
-	// Method("edit_post", func() {
-	// 	Security(JWTAuth)
-	// 	Payload(func() {
-	// 		Token("token", String, "jwt used for auth")
-	// 		Attribute("postID", String, "Post to delete")
-	// 		Required("token", "postID")
-	// 	})
-	// 	HTTP(func() {
-	// 		DELETE("/posts/delete/{postID}")
-	// 	})
-	// })
+	Method("edit_post", func() {
+		Security(JWTAuth)
+		Payload(func() {
+			Token("token", String, "jwt used for auth")
+			Attribute("postID", String, "Post ID")
+			Attribute("title", String, "Post title")
+			Attribute("description", String, "Post description")
+			Attribute("price", String, "Post price")
+			Attribute("content", String, "Image content")
+			Attribute("medium", String, "Art type")
+			Attribute("sold", Boolean, "is sold")
+			Attribute("imageID", String, "Image ID")
+			Required("token", "postID")
+		})
+		Result(func() {
+			Attribute("Posted", PostResponse)
+		})
+		HTTP(func() {
+			PUT("/posts/edit/{postID}")
+			Param("title")
+			Param("description")
+			Param("price")
+			Param("content")
+			Param("medium")
+			Param("sold")
+			Param("imageID")
+			Response(func() {
+				Body("Posted")
+			})
+		})
+	})
 	Method("get_post_page", func() {
 		Payload(func() {
 			Attribute("page", Int, "Page to get posts for")

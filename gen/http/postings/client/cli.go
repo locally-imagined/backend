@@ -24,7 +24,7 @@ func BuildCreatePostPayload(postingsCreatePostBody string, postingsCreatePostTok
 	{
 		err = json.Unmarshal([]byte(postingsCreatePostBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"content\": [\n         \"Non qui esse non.\",\n         \"Expedita dolore modi dolores laborum.\"\n      ],\n      \"description\": \"Eveniet incidunt et ut consequatur.\",\n      \"medium\": \"Repudiandae tempore molestiae illo.\",\n      \"price\": \"Voluptas quo.\",\n      \"title\": \"Aut qui cum temporibus asperiores qui.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"content\": [\n         \"Nesciunt impedit.\",\n         \"Rerum qui quo minima.\",\n         \"Numquam expedita excepturi quos ut officia sit.\"\n      ],\n      \"description\": \"Voluptas ipsum rerum iure minima nihil odio.\",\n      \"medium\": \"Quaerat non nobis repudiandae autem iste.\",\n      \"price\": \"Dolorem aut hic dolores est.\",\n      \"title\": \"Neque praesentium distinctio impedit perferendis aut.\"\n   }'")
 		}
 		if body.Content == nil {
 			err = goa.MergeErrors(err, goa.MissingFieldError("content", "body"))
@@ -70,6 +70,79 @@ func BuildDeletePostPayload(postingsDeletePostPostID string, postingsDeletePostT
 	}
 	v := &postings.DeletePostPayload{}
 	v.PostID = postID
+	v.Token = token
+
+	return v, nil
+}
+
+// BuildEditPostPayload builds the payload for the postings edit_post endpoint
+// from CLI flags.
+func BuildEditPostPayload(postingsEditPostPostID string, postingsEditPostTitle string, postingsEditPostDescription string, postingsEditPostPrice string, postingsEditPostContent string, postingsEditPostMedium string, postingsEditPostSold string, postingsEditPostImageID string, postingsEditPostToken string) (*postings.EditPostPayload, error) {
+	var err error
+	var postID string
+	{
+		postID = postingsEditPostPostID
+	}
+	var title *string
+	{
+		if postingsEditPostTitle != "" {
+			title = &postingsEditPostTitle
+		}
+	}
+	var description *string
+	{
+		if postingsEditPostDescription != "" {
+			description = &postingsEditPostDescription
+		}
+	}
+	var price *string
+	{
+		if postingsEditPostPrice != "" {
+			price = &postingsEditPostPrice
+		}
+	}
+	var content *string
+	{
+		if postingsEditPostContent != "" {
+			content = &postingsEditPostContent
+		}
+	}
+	var medium *string
+	{
+		if postingsEditPostMedium != "" {
+			medium = &postingsEditPostMedium
+		}
+	}
+	var sold *bool
+	{
+		if postingsEditPostSold != "" {
+			var val bool
+			val, err = strconv.ParseBool(postingsEditPostSold)
+			sold = &val
+			if err != nil {
+				return nil, fmt.Errorf("invalid value for sold, must be BOOL")
+			}
+		}
+	}
+	var imageID *string
+	{
+		if postingsEditPostImageID != "" {
+			imageID = &postingsEditPostImageID
+		}
+	}
+	var token string
+	{
+		token = postingsEditPostToken
+	}
+	v := &postings.EditPostPayload{}
+	v.PostID = postID
+	v.Title = title
+	v.Description = description
+	v.Price = price
+	v.Content = content
+	v.Medium = medium
+	v.Sold = sold
+	v.ImageID = imageID
 	v.Token = token
 
 	return v, nil

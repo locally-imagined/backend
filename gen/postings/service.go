@@ -19,6 +19,8 @@ type Service interface {
 	CreatePost(context.Context, *CreatePostPayload) (res *CreatePostResult, err error)
 	// DeletePost implements delete_post.
 	DeletePost(context.Context, *DeletePostPayload) (err error)
+	// EditPost implements edit_post.
+	EditPost(context.Context, *EditPostPayload) (res *EditPostResult, err error)
 	// GetPostPage implements get_post_page.
 	GetPostPage(context.Context, *GetPostPagePayload) (res *GetPostPageResult, err error)
 	// GetImagesForPost implements get_images_for_post.
@@ -39,7 +41,7 @@ const ServiceName = "postings"
 // MethodNames lists the service method names as defined in the design. These
 // are the same values that are set in the endpoint request contexts under the
 // MethodKey key.
-var MethodNames = [4]string{"create_post", "delete_post", "get_post_page", "get_images_for_post"}
+var MethodNames = [5]string{"create_post", "delete_post", "edit_post", "get_post_page", "get_images_for_post"}
 
 // CreatePostPayload is the payload type of the postings service create_post
 // method.
@@ -63,6 +65,33 @@ type DeletePostPayload struct {
 	Token string
 	// Post to delete
 	PostID string
+}
+
+// EditPostPayload is the payload type of the postings service edit_post method.
+type EditPostPayload struct {
+	// jwt used for auth
+	Token string
+	// Post ID
+	PostID string
+	// Post title
+	Title *string
+	// Post description
+	Description *string
+	// Post price
+	Price *string
+	// Image content
+	Content *string
+	// Art type
+	Medium *string
+	// is sold
+	Sold *bool
+	// Image ID
+	ImageID *string
+}
+
+// EditPostResult is the result type of the postings service edit_post method.
+type EditPostResult struct {
+	Posted *PostResponse
 }
 
 // GetImagesForPostPayload is the payload type of the postings service

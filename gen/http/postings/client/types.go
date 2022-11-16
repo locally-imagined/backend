@@ -32,6 +32,10 @@ type CreatePostRequestBody struct {
 // endpoint HTTP response body.
 type CreatePostResponseBody PostResponseResponseBody
 
+// EditPostResponseBody is the type of the "postings" service "edit_post"
+// endpoint HTTP response body.
+type EditPostResponseBody PostResponseResponseBody
+
 // GetPostPageResponseBody is the type of the "postings" service
 // "get_post_page" endpoint HTTP response body.
 type GetPostPageResponseBody []*PostResponse
@@ -117,6 +121,29 @@ func NewCreatePostResultOK(body *CreatePostResponseBody) *postings.CreatePostRes
 	return res
 }
 
+// NewEditPostResultOK builds a "postings" service "edit_post" endpoint result
+// from a HTTP "OK" response.
+func NewEditPostResultOK(body *EditPostResponseBody) *postings.EditPostResult {
+	v := &postings.PostResponse{
+		Title:       *body.Title,
+		Description: *body.Description,
+		Price:       *body.Price,
+		PostID:      *body.PostID,
+		Medium:      *body.Medium,
+		UploadDate:  *body.UploadDate,
+		Sold:        *body.Sold,
+	}
+	v.ImageIDs = make([]string, len(body.ImageIDs))
+	for i, val := range body.ImageIDs {
+		v.ImageIDs[i] = val
+	}
+	res := &postings.EditPostResult{
+		Posted: v,
+	}
+
+	return res
+}
+
 // NewGetPostPageResultOK builds a "postings" service "get_post_page" endpoint
 // result from a HTTP "OK" response.
 func NewGetPostPageResultOK(body []*PostResponse) *postings.GetPostPageResult {
@@ -148,6 +175,36 @@ func NewGetImagesForPostResultOK(body []string) *postings.GetImagesForPostResult
 // ValidateCreatePostResponseBody runs the validations defined on
 // create_post_response_body
 func ValidateCreatePostResponseBody(body *CreatePostResponseBody) (err error) {
+	if body.Title == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("title", "body"))
+	}
+	if body.Description == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("description", "body"))
+	}
+	if body.Price == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("price", "body"))
+	}
+	if body.ImageIDs == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("imageIDs", "body"))
+	}
+	if body.PostID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("postID", "body"))
+	}
+	if body.Medium == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("medium", "body"))
+	}
+	if body.UploadDate == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("uploadDate", "body"))
+	}
+	if body.Sold == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("sold", "body"))
+	}
+	return
+}
+
+// ValidateEditPostResponseBody runs the validations defined on
+// edit_post_response_body
+func ValidateEditPostResponseBody(body *EditPostResponseBody) (err error) {
 	if body.Title == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("title", "body"))
 	}

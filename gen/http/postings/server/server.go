@@ -22,6 +22,7 @@ type Server struct {
 	Mounts           []*MountPoint
 	CreatePost       http.Handler
 	DeletePost       http.Handler
+	EditPost         http.Handler
 	GetPostPage      http.Handler
 	GetImagesForPost http.Handler
 	CORS             http.Handler
@@ -56,15 +57,18 @@ func New(
 		Mounts: []*MountPoint{
 			{"CreatePost", "POST", "/create"},
 			{"DeletePost", "DELETE", "/posts/delete/{postID}"},
+			{"EditPost", "PUT", "/posts/edit/{postID}"},
 			{"GetPostPage", "GET", "/posts/getpage/{page}"},
 			{"GetImagesForPost", "GET", "/posts/getimages/{postID}"},
 			{"CORS", "OPTIONS", "/create"},
 			{"CORS", "OPTIONS", "/posts/delete/{postID}"},
+			{"CORS", "OPTIONS", "/posts/edit/{postID}"},
 			{"CORS", "OPTIONS", "/posts/getpage/{page}"},
 			{"CORS", "OPTIONS", "/posts/getimages/{postID}"},
 		},
 		CreatePost:       NewCreatePostHandler(e.CreatePost, mux, decoder, encoder, errhandler, formatter),
 		DeletePost:       NewDeletePostHandler(e.DeletePost, mux, decoder, encoder, errhandler, formatter),
+		EditPost:         NewEditPostHandler(e.EditPost, mux, decoder, encoder, errhandler, formatter),
 		GetPostPage:      NewGetPostPageHandler(e.GetPostPage, mux, decoder, encoder, errhandler, formatter),
 		GetImagesForPost: NewGetImagesForPostHandler(e.GetImagesForPost, mux, decoder, encoder, errhandler, formatter),
 		CORS:             NewCORSHandler(),
@@ -78,6 +82,7 @@ func (s *Server) Service() string { return "postings" }
 func (s *Server) Use(m func(http.Handler) http.Handler) {
 	s.CreatePost = m(s.CreatePost)
 	s.DeletePost = m(s.DeletePost)
+	s.EditPost = m(s.EditPost)
 	s.GetPostPage = m(s.GetPostPage)
 	s.GetImagesForPost = m(s.GetImagesForPost)
 	s.CORS = m(s.CORS)
@@ -90,6 +95,7 @@ func (s *Server) MethodNames() []string { return postings.MethodNames[:] }
 func Mount(mux goahttp.Muxer, h *Server) {
 	MountCreatePostHandler(mux, h.CreatePost)
 	MountDeletePostHandler(mux, h.DeletePost)
+	MountEditPostHandler(mux, h.EditPost)
 	MountGetPostPageHandler(mux, h.GetPostPage)
 	MountGetImagesForPostHandler(mux, h.GetImagesForPost)
 	MountCORSHandler(mux, h.CORS)
@@ -181,6 +187,57 @@ func NewDeletePostHandler(
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
 		ctx = context.WithValue(ctx, goa.MethodKey, "delete_post")
+		ctx = context.WithValue(ctx, goa.ServiceKey, "postings")
+		payload, err := decodeRequest(r)
+		if err != nil {
+			if err := encodeError(ctx, w, err); err != nil {
+				errhandler(ctx, w, err)
+			}
+			return
+		}
+		res, err := endpoint(ctx, payload)
+		if err != nil {
+			if err := encodeError(ctx, w, err); err != nil {
+				errhandler(ctx, w, err)
+			}
+			return
+		}
+		if err := encodeResponse(ctx, w, res); err != nil {
+			errhandler(ctx, w, err)
+		}
+	})
+}
+
+// MountEditPostHandler configures the mux to serve the "postings" service
+// "edit_post" endpoint.
+func MountEditPostHandler(mux goahttp.Muxer, h http.Handler) {
+	f, ok := HandlePostingsOrigin(h).(http.HandlerFunc)
+	if !ok {
+		f = func(w http.ResponseWriter, r *http.Request) {
+			h.ServeHTTP(w, r)
+		}
+	}
+	mux.Handle("PUT", "/posts/edit/{postID}", f)
+}
+
+// NewEditPostHandler creates a HTTP handler which loads the HTTP request and
+// calls the "postings" service "edit_post" endpoint.
+func NewEditPostHandler(
+	endpoint goa.Endpoint,
+	mux goahttp.Muxer,
+	decoder func(*http.Request) goahttp.Decoder,
+	encoder func(context.Context, http.ResponseWriter) goahttp.Encoder,
+	errhandler func(context.Context, http.ResponseWriter, error),
+	formatter func(ctx context.Context, err error) goahttp.Statuser,
+) http.Handler {
+	var (
+		decodeRequest  = DecodeEditPostRequest(mux, decoder)
+		encodeResponse = EncodeEditPostResponse(encoder)
+		encodeError    = goahttp.ErrorEncoder(encoder, formatter)
+	)
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
+		ctx = context.WithValue(ctx, goa.MethodKey, "edit_post")
 		ctx = context.WithValue(ctx, goa.ServiceKey, "postings")
 		payload, err := decodeRequest(r)
 		if err != nil {
@@ -310,6 +367,7 @@ func MountCORSHandler(mux goahttp.Muxer, h http.Handler) {
 	h = HandlePostingsOrigin(h)
 	mux.Handle("OPTIONS", "/create", h.ServeHTTP)
 	mux.Handle("OPTIONS", "/posts/delete/{postID}", h.ServeHTTP)
+	mux.Handle("OPTIONS", "/posts/edit/{postID}", h.ServeHTTP)
 	mux.Handle("OPTIONS", "/posts/getpage/{page}", h.ServeHTTP)
 	mux.Handle("OPTIONS", "/posts/getimages/{postID}", h.ServeHTTP)
 }

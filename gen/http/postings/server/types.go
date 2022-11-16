@@ -32,6 +32,10 @@ type CreatePostRequestBody struct {
 // endpoint HTTP response body.
 type CreatePostResponseBody PostResponseResponseBody
 
+// EditPostResponseBody is the type of the "postings" service "edit_post"
+// endpoint HTTP response body.
+type EditPostResponseBody PostResponseResponseBody
+
 // GetPostPageResponseBody is the type of the "postings" service
 // "get_post_page" endpoint HTTP response body.
 type GetPostPageResponseBody []*PostResponse
@@ -97,6 +101,27 @@ func NewCreatePostResponseBody(res *postings.CreatePostResult) *CreatePostRespon
 	return body
 }
 
+// NewEditPostResponseBody builds the HTTP response body from the result of the
+// "edit_post" endpoint of the "postings" service.
+func NewEditPostResponseBody(res *postings.EditPostResult) *EditPostResponseBody {
+	body := &EditPostResponseBody{
+		Title:       res.Posted.Title,
+		Description: res.Posted.Description,
+		Price:       res.Posted.Price,
+		PostID:      res.Posted.PostID,
+		Medium:      res.Posted.Medium,
+		UploadDate:  res.Posted.UploadDate,
+		Sold:        res.Posted.Sold,
+	}
+	if res.Posted.ImageIDs != nil {
+		body.ImageIDs = make([]string, len(res.Posted.ImageIDs))
+		for i, val := range res.Posted.ImageIDs {
+			body.ImageIDs[i] = val
+		}
+	}
+	return body
+}
+
 // NewGetPostPageResponseBody builds the HTTP response body from the result of
 // the "get_post_page" endpoint of the "postings" service.
 func NewGetPostPageResponseBody(res *postings.GetPostPageResult) GetPostPageResponseBody {
@@ -131,6 +156,22 @@ func NewCreatePostPayload(body *CreatePostRequestBody, token string) *postings.C
 func NewDeletePostPayload(postID string, token string) *postings.DeletePostPayload {
 	v := &postings.DeletePostPayload{}
 	v.PostID = postID
+	v.Token = token
+
+	return v
+}
+
+// NewEditPostPayload builds a postings service edit_post endpoint payload.
+func NewEditPostPayload(postID string, title *string, description *string, price *string, content *string, medium *string, sold *bool, imageID *string, token string) *postings.EditPostPayload {
+	v := &postings.EditPostPayload{}
+	v.PostID = postID
+	v.Title = title
+	v.Description = description
+	v.Price = price
+	v.Content = content
+	v.Medium = medium
+	v.Sold = sold
+	v.ImageID = imageID
 	v.Token = token
 
 	return v

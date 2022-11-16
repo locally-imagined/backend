@@ -120,8 +120,6 @@ func (s *Service) CreatePost(ctx context.Context, p *postings.CreatePostPayload)
 
 type image struct {
 	imageID string
-	postID  string
-	index   int
 }
 
 type post struct {
@@ -155,6 +153,7 @@ func (s *Service) GetPostPage(ctx context.Context, p *postings.GetPostPagePayloa
 		var row post
 		if err := rows.Scan(&row.postID, &row.userID, &row.postTitle, &row.postDesc, &row.price, &row.medium, &row.sold, &row.uploadDate, &row.imageID); err != nil {
 			log.Fatal(err)
+			return nil, err
 		}
 		imageID := make([]string, 0)
 		imageID = append(imageID, row.imageID)
@@ -168,7 +167,7 @@ func (s *Service) GetImagesForPost(ctx context.Context, p *postings.GetImagesFor
 	if err != nil {
 		return nil, err
 	}
-	rows, err := dbPool.Query("SELECT * from images where postid=$1 ORDER BY index", p.PostID)
+	rows, err := dbPool.Query("SELECT imgid from images where postid=$1 ORDER BY index", p.PostID)
 
 	defer dbPool.Close()
 
@@ -179,7 +178,7 @@ func (s *Service) GetImagesForPost(ctx context.Context, p *postings.GetImagesFor
 	res := make([]string, 0)
 	for rows.Next() {
 		var row image
-		if err := rows.Scan(&row.imageID, &row.postID, &row.index); err != nil {
+		if err := rows.Scan(&row.imageID); err != nil {
 			log.Fatal(err)
 		}
 		res = append(res, row.imageID)
@@ -251,4 +250,128 @@ func (s *Service) DeletePost(ctx context.Context, p *postings.DeletePostPayload)
 		}
 	}
 	return nil
+}
+
+func (s *Service) EditPost(ctx context.Context, p *postings.EditPostPayload) (*postings.EditPostResult, error) {
+
+	dbPool, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
+	if err != nil {
+		return nil, err
+	}
+	rows, err := dbPool.Query("SELECT userID from Posts where postID=$1", p.PostID)
+	if err != nil {
+		return nil, err
+	}
+	var userID string
+	for rows.Next() {
+		if err := rows.Scan(&userID); err != nil {
+			log.Fatal(err)
+			return nil, err
+		}
+	}
+	if userID != ctx.Value("UserID").(string) {
+		return nil, err
+	}
+
+	if p.Title != nil {
+		_, err = dbPool.Query("UPDATE posts SET title=$1 WHERE postID=$2", *p.Title, p.PostID)
+		if err != nil {
+			return nil, err
+		}
+	}
+	if p.Description != nil {
+		_, err = dbPool.Query("UPDATE posts SET description=$1 WHERE postID=$2", *p.Description, p.PostID)
+		if err != nil {
+			return nil, err
+		}
+	}
+	if p.Price != nil {
+		_, err = dbPool.Query("UPDATE posts SET price=$1 WHERE postID=$2", *p.Price, p.PostID)
+		if err != nil {
+			return nil, err
+		}
+	}
+	if p.Medium != nil {
+		_, err = dbPool.Query("UPDATE posts SET medium=$1 WHERE postID=$2", *p.Medium, p.PostID)
+		if err != nil {
+			return nil, err
+		}
+	}
+	if p.Sold != nil {
+		_, err = dbPool.Query("UPDATE posts SET sold=$1 WHERE postID=$2", *p.Sold, p.PostID)
+		if err != nil {
+			return nil, err
+		}
+	}
+	if p.ImageID != nil {
+		_, err = dbPool.Query("UPDATE images SET index = index - 1 WHERE (postid=$1 AND index>(SELECT index FROM images WHERE imgid=$2))", p.PostID, *p.ImageID)
+		if err != nil {
+			return nil, err
+		}
+	}
+	if p.Content != nil {
+		imageID := uuid.New().String()
+		awsAccessKey := os.Getenv("BUCKETEER_AWS_ACCESS_KEY_ID")
+		awsSecretKey := os.Getenv("BUCKETEER_AWS_SECRET_ACCESS_KEY")
+		awsRegion := os.Getenv("BUCKETEER_AWS_REGION")
+		awsBucketName := os.Getenv("BUCKETEER_BUCKET_NAME")
+		sess := session.Must(session.NewSession(&aws.Config{
+			Region:      aws.String(awsRegion),
+			Credentials: credentials.NewStaticCredentials(awsAccessKey, awsSecretKey, ""),
+		}))
+		svc := s3.New(sess)
+		reader := strings.NewReader(string(*p.Content))
+		// put the object in the bucket
+		_, err := svc.PutObjectWithContext(ctx, &s3.PutObjectInput{
+			Bucket: aws.String(awsBucketName),
+			Key:    aws.String("public/" + imageID),
+			Body:   reader,
+		})
+		if err != nil {
+			return nil, err
+		}
+		_, err = dbPool.Query("INSERT INTO images VALUES($1, $2, (SELECT MAX(index) FROM images where postID=$3) + 1)", imageID, p.PostID, p.PostID)
+		if err != nil {
+			return nil, err
+		}
+	}
+	_, err = dbPool.Query("SELECT title, description, price, medium, sold, uploaddate FROM posts where postID=$1", p.PostID)
+	if err != nil {
+		return nil, err
+	}
+	var row post
+	for rows.Next() {
+		if err := rows.Scan(&row.postTitle, &row.postDesc, &row.price, &row.medium, &row.sold, &row.uploadDate); err != nil {
+			log.Fatal(err)
+			return nil, err
+		}
+	}
+	rows, err = dbPool.Query("SELECT imgid from images where postID=$1", p.PostID)
+	if err != nil {
+		return nil, err
+	}
+	imageIDs := make([]string, 0)
+	for rows.Next() {
+		var imageID string
+		if err := rows.Scan(&imageID); err != nil {
+			log.Fatal(err)
+			return nil, err
+		}
+		imageIDs = append(imageIDs, imageID)
+	}
+	posted := &postings.PostResponse{
+		Title:       row.postTitle,
+		Description: row.postDesc,
+		Price:       row.price,
+		ImageIDs:    imageIDs,
+		PostID:      p.PostID,
+		Medium:      row.medium,
+		Sold:        row.sold,
+		UploadDate:  row.uploadDate,
+	}
+	res := &postings.EditPostResult{
+		Posted: posted,
+	}
+	return res, nil
+
 }

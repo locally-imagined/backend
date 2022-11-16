@@ -25,6 +25,10 @@ type Client struct {
 	// endpoint.
 	DeletePostDoer goahttp.Doer
 
+	// EditPost Doer is the HTTP client used to make requests to the edit_post
+	// endpoint.
+	EditPostDoer goahttp.Doer
+
 	// GetPostPage Doer is the HTTP client used to make requests to the
 	// get_post_page endpoint.
 	GetPostPageDoer goahttp.Doer
@@ -58,6 +62,7 @@ func NewClient(
 	return &Client{
 		CreatePostDoer:       doer,
 		DeletePostDoer:       doer,
+		EditPostDoer:         doer,
 		GetPostPageDoer:      doer,
 		GetImagesForPostDoer: doer,
 		CORSDoer:             doer,
@@ -112,6 +117,30 @@ func (c *Client) DeletePost() goa.Endpoint {
 		resp, err := c.DeletePostDoer.Do(req)
 		if err != nil {
 			return nil, goahttp.ErrRequestError("postings", "delete_post", err)
+		}
+		return decodeResponse(resp)
+	}
+}
+
+// EditPost returns an endpoint that makes HTTP requests to the postings
+// service edit_post server.
+func (c *Client) EditPost() goa.Endpoint {
+	var (
+		encodeRequest  = EncodeEditPostRequest(c.encoder)
+		decodeResponse = DecodeEditPostResponse(c.decoder, c.RestoreResponseBody)
+	)
+	return func(ctx context.Context, v interface{}) (interface{}, error) {
+		req, err := c.BuildEditPostRequest(ctx, v)
+		if err != nil {
+			return nil, err
+		}
+		err = encodeRequest(req, v)
+		if err != nil {
+			return nil, err
+		}
+		resp, err := c.EditPostDoer.Do(req)
+		if err != nil {
+			return nil, goahttp.ErrRequestError("postings", "edit_post", err)
 		}
 		return decodeResponse(resp)
 	}

@@ -111,6 +111,89 @@ func DecodeDeletePostRequest(mux goahttp.Muxer, decoder func(*http.Request) goah
 	}
 }
 
+// EncodeEditPostResponse returns an encoder for responses returned by the
+// postings edit_post endpoint.
+func EncodeEditPostResponse(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder) func(context.Context, http.ResponseWriter, interface{}) error {
+	return func(ctx context.Context, w http.ResponseWriter, v interface{}) error {
+		res, _ := v.(*postings.EditPostResult)
+		enc := encoder(ctx, w)
+		body := NewEditPostResponseBody(res)
+		w.WriteHeader(http.StatusOK)
+		return enc.Encode(body)
+	}
+}
+
+// DecodeEditPostRequest returns a decoder for requests sent to the postings
+// edit_post endpoint.
+func DecodeEditPostRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (interface{}, error) {
+	return func(r *http.Request) (interface{}, error) {
+		var (
+			postID      string
+			title       *string
+			description *string
+			price       *string
+			content     *string
+			medium      *string
+			sold        *bool
+			imageID     *string
+			token       string
+			err         error
+
+			params = mux.Vars(r)
+		)
+		postID = params["postID"]
+		titleRaw := r.URL.Query().Get("title")
+		if titleRaw != "" {
+			title = &titleRaw
+		}
+		descriptionRaw := r.URL.Query().Get("description")
+		if descriptionRaw != "" {
+			description = &descriptionRaw
+		}
+		priceRaw := r.URL.Query().Get("price")
+		if priceRaw != "" {
+			price = &priceRaw
+		}
+		contentRaw := r.URL.Query().Get("content")
+		if contentRaw != "" {
+			content = &contentRaw
+		}
+		mediumRaw := r.URL.Query().Get("medium")
+		if mediumRaw != "" {
+			medium = &mediumRaw
+		}
+		{
+			soldRaw := r.URL.Query().Get("sold")
+			if soldRaw != "" {
+				v, err2 := strconv.ParseBool(soldRaw)
+				if err2 != nil {
+					err = goa.MergeErrors(err, goa.InvalidFieldTypeError("sold", soldRaw, "boolean"))
+				}
+				sold = &v
+			}
+		}
+		imageIDRaw := r.URL.Query().Get("imageID")
+		if imageIDRaw != "" {
+			imageID = &imageIDRaw
+		}
+		token = r.Header.Get("Authorization")
+		if token == "" {
+			err = goa.MergeErrors(err, goa.MissingFieldError("Authorization", "header"))
+		}
+		if err != nil {
+			return nil, err
+		}
+		payload := NewEditPostPayload(postID, title, description, price, content, medium, sold, imageID, token)
+		if strings.Contains(payload.Token, " ") {
+			// Remove authorization scheme prefix (e.g. "Bearer")
+			cred := strings.SplitN(payload.Token, " ", 2)[1]
+			payload.Token = cred
+		}
+
+		return payload, nil
+	}
+}
+
 // EncodeGetPostPageResponse returns an encoder for responses returned by the
 // postings get_post_page endpoint.
 func EncodeGetPostPageResponse(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder) func(context.Context, http.ResponseWriter, interface{}) error {

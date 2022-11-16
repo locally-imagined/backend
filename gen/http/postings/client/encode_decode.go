@@ -11,6 +11,7 @@ import (
 	postings "backend/gen/postings"
 	"bytes"
 	"context"
+	"fmt"
 	"io"
 	"net/http"
 	"net/url"
@@ -167,6 +168,114 @@ func DecodeDeletePostResponse(decoder func(*http.Response) goahttp.Decoder, rest
 		default:
 			body, _ := io.ReadAll(resp.Body)
 			return nil, goahttp.ErrInvalidResponse("postings", "delete_post", resp.StatusCode, string(body))
+		}
+	}
+}
+
+// BuildEditPostRequest instantiates a HTTP request object with method and path
+// set to call the "postings" service "edit_post" endpoint
+func (c *Client) BuildEditPostRequest(ctx context.Context, v interface{}) (*http.Request, error) {
+	var (
+		postID string
+	)
+	{
+		p, ok := v.(*postings.EditPostPayload)
+		if !ok {
+			return nil, goahttp.ErrInvalidType("postings", "edit_post", "*postings.EditPostPayload", v)
+		}
+		postID = p.PostID
+	}
+	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: EditPostPostingsPath(postID)}
+	req, err := http.NewRequest("PUT", u.String(), nil)
+	if err != nil {
+		return nil, goahttp.ErrInvalidURL("postings", "edit_post", u.String(), err)
+	}
+	if ctx != nil {
+		req = req.WithContext(ctx)
+	}
+
+	return req, nil
+}
+
+// EncodeEditPostRequest returns an encoder for requests sent to the postings
+// edit_post server.
+func EncodeEditPostRequest(encoder func(*http.Request) goahttp.Encoder) func(*http.Request, interface{}) error {
+	return func(req *http.Request, v interface{}) error {
+		p, ok := v.(*postings.EditPostPayload)
+		if !ok {
+			return goahttp.ErrInvalidType("postings", "edit_post", "*postings.EditPostPayload", v)
+		}
+		{
+			head := p.Token
+			if !strings.Contains(head, " ") {
+				req.Header.Set("Authorization", "Bearer "+head)
+			} else {
+				req.Header.Set("Authorization", head)
+			}
+		}
+		values := req.URL.Query()
+		if p.Title != nil {
+			values.Add("title", *p.Title)
+		}
+		if p.Description != nil {
+			values.Add("description", *p.Description)
+		}
+		if p.Price != nil {
+			values.Add("price", *p.Price)
+		}
+		if p.Content != nil {
+			values.Add("content", *p.Content)
+		}
+		if p.Medium != nil {
+			values.Add("medium", *p.Medium)
+		}
+		if p.Sold != nil {
+			values.Add("sold", fmt.Sprintf("%v", *p.Sold))
+		}
+		if p.ImageID != nil {
+			values.Add("imageID", *p.ImageID)
+		}
+		req.URL.RawQuery = values.Encode()
+		return nil
+	}
+}
+
+// DecodeEditPostResponse returns a decoder for responses returned by the
+// postings edit_post endpoint. restoreBody controls whether the response body
+// should be restored after having been read.
+func DecodeEditPostResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
+	return func(resp *http.Response) (interface{}, error) {
+		if restoreBody {
+			b, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return nil, err
+			}
+			resp.Body = io.NopCloser(bytes.NewBuffer(b))
+			defer func() {
+				resp.Body = io.NopCloser(bytes.NewBuffer(b))
+			}()
+		} else {
+			defer resp.Body.Close()
+		}
+		switch resp.StatusCode {
+		case http.StatusOK:
+			var (
+				body EditPostResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("postings", "edit_post", err)
+			}
+			err = ValidateEditPostResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("postings", "edit_post", err)
+			}
+			res := NewEditPostResultOK(&body)
+			return res, nil
+		default:
+			body, _ := io.ReadAll(resp.Body)
+			return nil, goahttp.ErrInvalidResponse("postings", "edit_post", resp.StatusCode, string(body))
 		}
 	}
 }
