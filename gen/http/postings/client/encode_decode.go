@@ -310,11 +310,14 @@ func unmarshalPostResponseToPostingsPostResponse(v *PostResponse) *postings.Post
 		Title:       *v.Title,
 		Description: *v.Description,
 		Price:       *v.Price,
-		ImageID:     *v.ImageID,
 		PostID:      *v.PostID,
 		Medium:      *v.Medium,
 		UploadDate:  *v.UploadDate,
 		Sold:        *v.Sold,
+	}
+	res.ImageIDs = make([]string, len(v.ImageIDs))
+	for i, val := range v.ImageIDs {
+		res.ImageIDs[i] = val
 	}
 
 	return res

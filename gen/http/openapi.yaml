@@ -39,7 +39,7 @@ paths:
                             - title
                             - description
                             - price
-                            - imageID
+                            - imageIDs
                             - postID
                             - medium
                             - uploadDate
@@ -112,7 +112,7 @@ paths:
                         type: array
                         items:
                             type: string
-                            example: Animi molestiae non quaerat ipsa.
+                            example: Eos velit assumenda non.
             schemes:
                 - http
     /posts/getpage/{page}:
@@ -170,50 +170,60 @@ definitions:
             description:
                 type: string
                 description: Post description
-                example: Dolores praesentium vel blanditiis nihil blanditiis porro.
-            imageID:
-                type: string
+                example: Repudiandae consequatur voluptatibus.
+            imageIDs:
+                type: array
+                items:
+                    type: string
+                    example: Harum cum.
                 description: Image ID
-                example: Sit distinctio est corrupti suscipit aperiam aut.
+                example:
+                    - Deleniti aspernatur voluptates vel.
+                    - Officiis qui provident nam voluptatem.
+                    - In velit pariatur culpa odio adipisci maiores.
+                    - Animi recusandae magni necessitatibus.
             medium:
                 type: string
                 description: Art type
-                example: Odit quia culpa vero sed.
+                example: Dolorem minima est maxime.
             postID:
                 type: string
                 description: Post ID
-                example: Aut sunt ut.
+                example: Corrupti sequi nesciunt.
             price:
                 type: string
                 description: Post price
-                example: In vero voluptatem saepe tempore eius ducimus.
+                example: Qui omnis eum enim voluptate est.
             sold:
                 type: boolean
                 description: is sold
-                example: false
+                example: true
             title:
                 type: string
                 description: Post title
-                example: Vel culpa ut expedita consequatur facilis non.
+                example: Et vel ipsam suscipit earum.
             uploadDate:
                 type: string
                 description: Upload Date
-                example: Cumque mollitia et minus.
+                example: Iure vel adipisci.
         description: Describes a post
         example:
-            description: Cum dolor totam sint saepe aperiam non.
-            imageID: Nemo numquam iste.
-            medium: Qui unde natus.
-            postID: Ad voluptatem id dolor autem iusto.
-            price: Id ex qui occaecati consectetur ratione.
+            description: Eum nihil inventore voluptatibus maxime in sunt.
+            imageIDs:
+                - Non occaecati architecto et.
+                - Ratione neque quidem.
+                - Dolorem iure dolor exercitationem nisi.
+            medium: Voluptatem necessitatibus iste qui sit.
+            postID: Sunt cum quibusdam sed repellendus.
+            price: Quidem eos maxime veniam voluptatem.
             sold: false
-            title: Delectus eaque.
-            uploadDate: Porro qui vel sed et tenetur.
+            title: Labore quia hic non.
+            uploadDate: Odio ipsum distinctio error.
         required:
             - title
             - description
             - price
-            - imageID
+            - imageIDs
             - postID
             - medium
             - uploadDate
@@ -225,50 +235,59 @@ definitions:
             description:
                 type: string
                 description: Post description
-                example: Odit deleniti non praesentium molestiae consequuntur.
-            imageID:
-                type: string
+                example: Dolores blanditiis ut culpa.
+            imageIDs:
+                type: array
+                items:
+                    type: string
+                    example: Et voluptatem quia quidem recusandae qui.
                 description: Image ID
-                example: Minus quia labore recusandae quae omnis et.
+                example:
+                    - A consequatur enim quasi qui.
+                    - Doloremque ut non.
             medium:
                 type: string
                 description: Art type
-                example: Est et aut doloribus nobis dolorem.
+                example: Voluptates ut.
             postID:
                 type: string
                 description: Post ID
-                example: Voluptas commodi.
+                example: Enim quo.
             price:
                 type: string
                 description: Post price
-                example: Eum molestiae ut deleniti laborum.
+                example: Omnis odio molestiae nesciunt natus vitae.
             sold:
                 type: boolean
                 description: is sold
-                example: true
+                example: false
             title:
                 type: string
                 description: Post title
-                example: Architecto et expedita eum voluptatibus tenetur non.
+                example: Cumque dolores aut excepturi atque ut quidem.
             uploadDate:
                 type: string
                 description: Upload Date
-                example: Facere voluptatum quis dolores qui.
+                example: Id ut et.
         description: Describes a post
         example:
-            description: Illo aut libero a id aut aut.
-            imageID: Rerum consequatur dignissimos explicabo.
-            medium: Qui praesentium autem dolor vitae laudantium quo.
-            postID: Modi et quod voluptas et.
-            price: Magni fugit aperiam eum voluptas dolores nostrum.
+            description: Facilis non.
+            imageIDs:
+                - Vero voluptatem saepe tempore eius.
+                - Quis sit.
+                - Est corrupti suscipit aperiam aut non aut.
+                - Ut corporis odit.
+            medium: Et minus mollitia.
+            postID: Culpa vero sed nobis cumque.
+            price: Dolores praesentium vel blanditiis nihil blanditiis porro.
             sold: false
-            title: Perferendis enim ut blanditiis.
-            uploadDate: Totam ad.
+            title: Culpa ut expedita.
+            uploadDate: Delectus eaque.
         required:
             - title
             - description
             - price
-            - imageID
+            - imageIDs
             - postID
             - medium
             - uploadDate
@@ -278,32 +297,41 @@ definitions:
         type: object
         properties:
             content:
-                type: string
+                type: array
+                items:
+                    type: string
+                    example: Ratione asperiores nemo numquam iste sed ad.
                 description: Post content
-                example: Omnis odio molestiae nesciunt natus vitae.
+                example:
+                    - Dolor autem iusto est qui.
+                    - Natus asperiores porro.
+                    - Vel sed et tenetur placeat delectus.
             description:
                 type: string
                 description: Post description
-                example: Cumque dolores aut excepturi atque ut quidem.
+                example: Saepe aperiam.
             medium:
                 type: string
                 description: Art type
-                example: Et voluptatem quia quidem recusandae qui.
+                example: Molestiae non quaerat ipsa.
             price:
                 type: string
                 description: Post price
-                example: Dolores blanditiis ut culpa.
+                example: Voluptas id ex qui occaecati.
             title:
                 type: string
                 description: Post title
-                example: Nesciunt enim optio quia debitis totam temporibus.
+                example: Dolor totam.
         description: Describes a post
         example:
-            content: Voluptates ut.
-            description: Doloremque ut non.
-            medium: Id ut et.
-            price: Enim quo.
-            title: Ab a consequatur enim quasi qui.
+            content:
+                - Doloremque eos repellendus.
+                - Aut ullam eius.
+                - Beatae iure consequatur.
+            description: Minus et magnam ea omnis.
+            medium: Incidunt neque et.
+            price: Enim voluptatem.
+            title: Eos corporis minima qui sit sed.
         required:
             - title
             - description
@@ -320,25 +348,25 @@ definitions:
             email:
                 type: string
                 description: Email
-                example: Cupiditate voluptatem a eaque odit.
+                example: Dolores nostrum suscipit rerum consequatur.
             firstName:
                 type: string
                 description: First name
-                example: Tempora vero.
+                example: Ut blanditiis deleniti illo.
             lastName:
                 type: string
                 description: Last name
-                example: Provident ipsa dignissimos sed.
+                example: Libero a id aut.
             phone:
                 type: string
                 description: Phone number
-                example: Est inventore.
+                example: Ea magni fugit aperiam eum.
         description: Describes a user
         example:
-            email: Dignissimos repellendus quia.
-            firstName: Atque voluptates at perferendis.
-            lastName: Provident dignissimos.
-            phone: Distinctio ut laboriosam nam hic vel vel.
+            email: Nesciunt enim optio quia debitis totam temporibus.
+            firstName: Explicabo repellendus modi et.
+            lastName: Voluptas et impedit qui praesentium autem.
+            phone: Vitae laudantium quo laboriosam totam ad quia.
         required:
             - firstName
             - lastName

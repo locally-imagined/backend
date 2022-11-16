@@ -23,7 +23,7 @@ type CreatePostRequestBody struct {
 	// Post price
 	Price *string `form:"price,omitempty" json:"price,omitempty" xml:"price,omitempty"`
 	// Post content
-	Content *string `form:"content,omitempty" json:"content,omitempty" xml:"content,omitempty"`
+	Content []string `form:"content,omitempty" json:"content,omitempty" xml:"content,omitempty"`
 	// Art type
 	Medium *string `form:"medium,omitempty" json:"medium,omitempty" xml:"medium,omitempty"`
 }
@@ -45,7 +45,7 @@ type PostResponseResponseBody struct {
 	// Post price
 	Price string `form:"price" json:"price" xml:"price"`
 	// Image ID
-	ImageID string `form:"imageID" json:"imageID" xml:"imageID"`
+	ImageIDs []string `form:"imageIDs" json:"imageIDs" xml:"imageIDs"`
 	// Post ID
 	PostID string `form:"postID" json:"postID" xml:"postID"`
 	// Art type
@@ -65,7 +65,7 @@ type PostResponse struct {
 	// Post price
 	Price string `form:"price" json:"price" xml:"price"`
 	// Image ID
-	ImageID string `form:"imageID" json:"imageID" xml:"imageID"`
+	ImageIDs []string `form:"imageIDs" json:"imageIDs" xml:"imageIDs"`
 	// Post ID
 	PostID string `form:"postID" json:"postID" xml:"postID"`
 	// Art type
@@ -83,11 +83,16 @@ func NewCreatePostResponseBody(res *postings.CreatePostResult) *CreatePostRespon
 		Title:       res.Posted.Title,
 		Description: res.Posted.Description,
 		Price:       res.Posted.Price,
-		ImageID:     res.Posted.ImageID,
 		PostID:      res.Posted.PostID,
 		Medium:      res.Posted.Medium,
 		UploadDate:  res.Posted.UploadDate,
 		Sold:        res.Posted.Sold,
+	}
+	if res.Posted.ImageIDs != nil {
+		body.ImageIDs = make([]string, len(res.Posted.ImageIDs))
+		for i, val := range res.Posted.ImageIDs {
+			body.ImageIDs[i] = val
+		}
 	}
 	return body
 }
@@ -108,8 +113,11 @@ func NewCreatePostPayload(body *CreatePostRequestBody, token string) *postings.C
 		Title:       *body.Title,
 		Description: *body.Description,
 		Price:       *body.Price,
-		Content:     *body.Content,
 		Medium:      *body.Medium,
+	}
+	v.Content = make([]string, len(body.Content))
+	for i, val := range body.Content {
+		v.Content[i] = val
 	}
 	res := &postings.CreatePostPayload{
 		Post: v,

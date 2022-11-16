@@ -70,19 +70,6 @@ func (s *Service) CreatePost(ctx context.Context, p *postings.CreatePostPayload)
 	}))
 	// create a new instance of the service's client iwth a session.
 	svc := s3.New(sess)
-	// put the bytes into a reader, bytes must be in base 64 for this to work
-	reader := strings.NewReader(string(p.Post.Content))
-
-	imageID := uuid.New().String()
-	// put the object in the bucket
-	_, err := svc.PutObjectWithContext(ctx, &s3.PutObjectInput{
-		Bucket: aws.String(awsBucketName),
-		Key:    aws.String("public/" + imageID),
-		Body:   reader,
-	})
-	if err != nil {
-		return nil, err
-	}
 
 	postID := uuid.New().String()
 	dbPool, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
@@ -94,15 +81,32 @@ func (s *Service) CreatePost(ctx context.Context, p *postings.CreatePostPayload)
 	if err != nil {
 		return nil, err
 	}
-	_, err = dbPool.Query("INSERT INTO Images Values ($1, $2, $3)", imageID, postID, 0)
-	if err != nil {
-		return nil, err
+	imageIDs := make([]string, 0)
+	for index, content := range p.Post.Content {
+
+		imageID := uuid.New().String()
+		imageIDs = append(imageIDs, imageID)
+		reader := strings.NewReader(string(content))
+		// put the object in the bucket
+		_, err := svc.PutObjectWithContext(ctx, &s3.PutObjectInput{
+			Bucket: aws.String(awsBucketName),
+			Key:    aws.String("public/" + imageID),
+			Body:   reader,
+		})
+		if err != nil {
+			return nil, err
+		}
+		_, err = dbPool.Query("INSERT INTO Images Values ($1, $2, $3)", imageID, postID, index)
+		if err != nil {
+			return nil, err
+		}
 	}
+
 	posted := &postings.PostResponse{
 		Title:       p.Post.Title,
 		Description: p.Post.Description,
 		Price:       p.Post.Price,
-		ImageID:     imageID,
+		ImageIDs:    imageIDs,
 		PostID:      postID,
 		Medium:      p.Post.Medium,
 		Sold:        false,
@@ -152,7 +156,9 @@ func (s *Service) GetPostPage(ctx context.Context, p *postings.GetPostPagePayloa
 		if err := rows.Scan(&row.postID, &row.userID, &row.postTitle, &row.postDesc, &row.price, &row.medium, &row.sold, &row.uploadDate, &row.imageID); err != nil {
 			log.Fatal(err)
 		}
-		res = append(res, &postings.PostResponse{Title: row.postTitle, Description: row.postDesc, Price: row.price, ImageID: row.imageID, PostID: row.postID, UploadDate: row.uploadDate, Medium: row.medium, Sold: row.sold})
+		imageID := make([]string, 1)
+		imageID = append(imageID, row.imageID)
+		res = append(res, &postings.PostResponse{Title: row.postTitle, Description: row.postDesc, Price: row.price, ImageIDs: imageID, PostID: row.postID, UploadDate: row.uploadDate, Medium: row.medium, Sold: row.sold})
 	}
 	return &postings.GetPostPageResult{Posts: res}, err
 }

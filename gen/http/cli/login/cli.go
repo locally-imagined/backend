@@ -33,20 +33,23 @@ postings (create-post|delete-post|get-post-page|get-images-for-post)
 
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
-	return os.Args[0] + ` login login --username "Earum quia aut." --password "Aut id placeat voluptate expedita sunt culpa."` + "\n" +
+	return os.Args[0] + ` login login --username "Ut molestiae nihil ipsam voluptatem explicabo qui." --password "Quae autem quia nemo iste similique veritatis."` + "\n" +
 		os.Args[0] + ` signup signup --body '{
-      "email": "Ut ut omnis.",
-      "firstName": "Ut in sapiente illo explicabo aut.",
-      "lastName": "Autem quia veritatis dolorem.",
-      "phone": "Minima nisi."
-   }' --username "Ut molestiae nihil ipsam voluptatem explicabo qui." --password "Quae autem quia nemo iste similique veritatis."` + "\n" +
+      "email": "Officiis est optio voluptates qui recusandae sit.",
+      "firstName": "Aut animi et deserunt est.",
+      "lastName": "Doloremque ut vel.",
+      "phone": "Ab enim aut et quas quo."
+   }' --username "Dolorem eligendi aut consequatur minima rem tempora." --password "Excepturi ut voluptatum."` + "\n" +
 		os.Args[0] + ` postings create-post --body '{
-      "content": "Officiis est optio voluptates qui recusandae sit.",
-      "description": "Doloremque ut vel.",
-      "medium": "Dolorem eligendi aut consequatur minima rem tempora.",
-      "price": "Ab enim aut et quas quo.",
-      "title": "Aut animi et deserunt est."
-   }' --token "Excepturi ut voluptatum."` + "\n" +
+      "content": [
+         "Non qui esse non.",
+         "Expedita dolore modi dolores laborum."
+      ],
+      "description": "Eveniet incidunt et ut consequatur.",
+      "medium": "Repudiandae tempore molestiae illo.",
+      "price": "Voluptas quo.",
+      "title": "Aut qui cum temporibus asperiores qui."
+   }' --token "Incidunt et ipsum facilis."` + "\n" +
 		""
 }
 
@@ -247,7 +250,7 @@ Login implements Login.
     -password STRING: User password
 
 Example:
-    %[1]s login login --username "Earum quia aut." --password "Aut id placeat voluptate expedita sunt culpa."
+    %[1]s login login --username "Ut molestiae nihil ipsam voluptatem explicabo qui." --password "Quae autem quia nemo iste similique veritatis."
 `, os.Args[0])
 }
 
@@ -274,11 +277,11 @@ Signup implements Signup.
 
 Example:
     %[1]s signup signup --body '{
-      "email": "Ut ut omnis.",
-      "firstName": "Ut in sapiente illo explicabo aut.",
-      "lastName": "Autem quia veritatis dolorem.",
-      "phone": "Minima nisi."
-   }' --username "Ut molestiae nihil ipsam voluptatem explicabo qui." --password "Quae autem quia nemo iste similique veritatis."
+      "email": "Officiis est optio voluptates qui recusandae sit.",
+      "firstName": "Aut animi et deserunt est.",
+      "lastName": "Doloremque ut vel.",
+      "phone": "Ab enim aut et quas quo."
+   }' --username "Dolorem eligendi aut consequatur minima rem tempora." --password "Excepturi ut voluptatum."
 `, os.Args[0])
 }
 
@@ -307,12 +310,15 @@ CreatePost implements create_post.
 
 Example:
     %[1]s postings create-post --body '{
-      "content": "Officiis est optio voluptates qui recusandae sit.",
-      "description": "Doloremque ut vel.",
-      "medium": "Dolorem eligendi aut consequatur minima rem tempora.",
-      "price": "Ab enim aut et quas quo.",
-      "title": "Aut animi et deserunt est."
-   }' --token "Excepturi ut voluptatum."
+      "content": [
+         "Non qui esse non.",
+         "Expedita dolore modi dolores laborum."
+      ],
+      "description": "Eveniet incidunt et ut consequatur.",
+      "medium": "Repudiandae tempore molestiae illo.",
+      "price": "Voluptas quo.",
+      "title": "Aut qui cum temporibus asperiores qui."
+   }' --token "Incidunt et ipsum facilis."
 `, os.Args[0])
 }
 
@@ -324,7 +330,7 @@ DeletePost implements delete_post.
     -token STRING: 
 
 Example:
-    %[1]s postings delete-post --post-id "Et ipsum facilis qui neque." --token "Distinctio impedit."
+    %[1]s postings delete-post --post-id "In provident." --token "Ullam distinctio ut laboriosam nam hic vel."
 `, os.Args[0])
 }
 
@@ -335,7 +341,7 @@ GetPostPage implements get_post_page.
     -page INT: Page to get posts for
 
 Example:
-    %[1]s postings get-post-page --page 741805888831824408
+    %[1]s postings get-post-page --page 7278501185577765352
 `, os.Args[0])
 }
 
@@ -346,6 +352,6 @@ GetImagesForPost implements get_images_for_post.
     -post-id STRING: Post to get images for
 
 Example:
-    %[1]s postings get-images-for-post --post-id "Nihil odio est dolorem aut."
+    %[1]s postings get-images-for-post --post-id "Tenetur non consequatur odit deleniti non."
 `, os.Args[0])
 }

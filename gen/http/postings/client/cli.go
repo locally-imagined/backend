@@ -12,6 +12,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"strconv"
+
+	goa "goa.design/goa/v3/pkg"
 )
 
 // BuildCreatePostPayload builds the payload for the postings create_post
@@ -22,7 +24,13 @@ func BuildCreatePostPayload(postingsCreatePostBody string, postingsCreatePostTok
 	{
 		err = json.Unmarshal([]byte(postingsCreatePostBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"content\": \"Officiis est optio voluptates qui recusandae sit.\",\n      \"description\": \"Doloremque ut vel.\",\n      \"medium\": \"Dolorem eligendi aut consequatur minima rem tempora.\",\n      \"price\": \"Ab enim aut et quas quo.\",\n      \"title\": \"Aut animi et deserunt est.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"content\": [\n         \"Non qui esse non.\",\n         \"Expedita dolore modi dolores laborum.\"\n      ],\n      \"description\": \"Eveniet incidunt et ut consequatur.\",\n      \"medium\": \"Repudiandae tempore molestiae illo.\",\n      \"price\": \"Voluptas quo.\",\n      \"title\": \"Aut qui cum temporibus asperiores qui.\"\n   }'")
+		}
+		if body.Content == nil {
+			err = goa.MergeErrors(err, goa.MissingFieldError("content", "body"))
+		}
+		if err != nil {
+			return nil, err
 		}
 	}
 	var token string
@@ -33,8 +41,13 @@ func BuildCreatePostPayload(postingsCreatePostBody string, postingsCreatePostTok
 		Title:       body.Title,
 		Description: body.Description,
 		Price:       body.Price,
-		Content:     body.Content,
 		Medium:      body.Medium,
+	}
+	if body.Content != nil {
+		v.Content = make([]string, len(body.Content))
+		for i, val := range body.Content {
+			v.Content[i] = val
+		}
 	}
 	res := &postings.CreatePostPayload{
 		Post: v,

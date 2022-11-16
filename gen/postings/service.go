@@ -100,7 +100,7 @@ type Post struct {
 	// Post price
 	Price string
 	// Post content
-	Content string
+	Content []string
 	// Art type
 	Medium string
 }
@@ -114,7 +114,7 @@ type PostResponse struct {
 	// Post price
 	Price string
 	// Image ID
-	ImageID string
+	ImageIDs []string
 	// Post ID
 	PostID string
 	// Art type

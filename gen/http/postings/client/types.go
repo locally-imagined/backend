@@ -23,7 +23,7 @@ type CreatePostRequestBody struct {
 	// Post price
 	Price string `form:"price" json:"price" xml:"price"`
 	// Post content
-	Content string `form:"content" json:"content" xml:"content"`
+	Content []string `form:"content" json:"content" xml:"content"`
 	// Art type
 	Medium string `form:"medium" json:"medium" xml:"medium"`
 }
@@ -45,7 +45,7 @@ type PostResponseResponseBody struct {
 	// Post price
 	Price *string `form:"price,omitempty" json:"price,omitempty" xml:"price,omitempty"`
 	// Image ID
-	ImageID *string `form:"imageID,omitempty" json:"imageID,omitempty" xml:"imageID,omitempty"`
+	ImageIDs []string `form:"imageIDs,omitempty" json:"imageIDs,omitempty" xml:"imageIDs,omitempty"`
 	// Post ID
 	PostID *string `form:"postID,omitempty" json:"postID,omitempty" xml:"postID,omitempty"`
 	// Art type
@@ -65,7 +65,7 @@ type PostResponse struct {
 	// Post price
 	Price *string `form:"price,omitempty" json:"price,omitempty" xml:"price,omitempty"`
 	// Image ID
-	ImageID *string `form:"imageID,omitempty" json:"imageID,omitempty" xml:"imageID,omitempty"`
+	ImageIDs []string `form:"imageIDs,omitempty" json:"imageIDs,omitempty" xml:"imageIDs,omitempty"`
 	// Post ID
 	PostID *string `form:"postID,omitempty" json:"postID,omitempty" xml:"postID,omitempty"`
 	// Art type
@@ -83,8 +83,13 @@ func NewCreatePostRequestBody(p *postings.CreatePostPayload) *CreatePostRequestB
 		Title:       p.Post.Title,
 		Description: p.Post.Description,
 		Price:       p.Post.Price,
-		Content:     p.Post.Content,
 		Medium:      p.Post.Medium,
+	}
+	if p.Post.Content != nil {
+		body.Content = make([]string, len(p.Post.Content))
+		for i, val := range p.Post.Content {
+			body.Content[i] = val
+		}
 	}
 	return body
 }
@@ -96,11 +101,14 @@ func NewCreatePostResultOK(body *CreatePostResponseBody) *postings.CreatePostRes
 		Title:       *body.Title,
 		Description: *body.Description,
 		Price:       *body.Price,
-		ImageID:     *body.ImageID,
 		PostID:      *body.PostID,
 		Medium:      *body.Medium,
 		UploadDate:  *body.UploadDate,
 		Sold:        *body.Sold,
+	}
+	v.ImageIDs = make([]string, len(body.ImageIDs))
+	for i, val := range body.ImageIDs {
+		v.ImageIDs[i] = val
 	}
 	res := &postings.CreatePostResult{
 		Posted: v,
@@ -149,8 +157,8 @@ func ValidateCreatePostResponseBody(body *CreatePostResponseBody) (err error) {
 	if body.Price == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("price", "body"))
 	}
-	if body.ImageID == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("imageID", "body"))
+	if body.ImageIDs == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("imageIDs", "body"))
 	}
 	if body.PostID == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("postID", "body"))
@@ -179,8 +187,8 @@ func ValidatePostResponseResponseBody(body *PostResponseResponseBody) (err error
 	if body.Price == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("price", "body"))
 	}
-	if body.ImageID == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("imageID", "body"))
+	if body.ImageIDs == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("imageIDs", "body"))
 	}
 	if body.PostID == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("postID", "body"))
@@ -208,8 +216,8 @@ func ValidatePostResponse(body *PostResponse) (err error) {
 	if body.Price == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("price", "body"))
 	}
-	if body.ImageID == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("imageID", "body"))
+	if body.ImageIDs == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("imageIDs", "body"))
 	}
 	if body.PostID == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("postID", "body"))

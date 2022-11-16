@@ -36,7 +36,7 @@ var Post = Type("Post", func() {
 	Attribute("title", String, "Post title")
 	Attribute("description", String, "Post description")
 	Attribute("price", String, "Post price")
-	Attribute("content", String, "Post content")
+	Attribute("content", ArrayOf(String), "Post content")
 	Attribute("medium", String, "Art type")
 	Required("title", "description", "price", "content", "medium")
 })
@@ -46,12 +46,12 @@ var PostResponse = Type("PostResponse", func() {
 	Attribute("title", String, "Post title")
 	Attribute("description", String, "Post description")
 	Attribute("price", String, "Post price")
-	Attribute("imageID", String, "Image ID")
+	Attribute("imageIDs", ArrayOf(String), "Image ID")
 	Attribute("postID", String, "Post ID")
 	Attribute("medium", String, "Art type")
 	Attribute("uploadDate", String, "Upload Date")
 	Attribute("sold", Boolean, "is sold")
-	Required("title", "description", "price", "imageID", "postID", "medium", "uploadDate", "sold")
+	Required("title", "description", "price", "imageIDs", "postID", "medium", "uploadDate", "sold")
 })
 
 var _ = Service("login", func() {
