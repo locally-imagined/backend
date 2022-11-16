@@ -335,7 +335,7 @@ func (s *Service) EditPost(ctx context.Context, p *postings.EditPostPayload) (*p
 			return nil, err
 		}
 	}
-	_, err = dbPool.Query("SELECT title, description, price, medium, sold, uploaddate FROM posts where postID=$1", p.PostID)
+	rows, err = dbPool.Query("SELECT title, description, price, medium, sold, uploaddate FROM posts where postID=$1", p.PostID)
 	if err != nil {
 		return nil, err
 	}
