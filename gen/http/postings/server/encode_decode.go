@@ -87,11 +87,25 @@ func DecodeDeletePostRequest(mux goahttp.Muxer, decoder func(*http.Request) goah
 	return func(r *http.Request) (interface{}, error) {
 		var (
 			postID string
+			token  string
+			err    error
 
 			params = mux.Vars(r)
 		)
 		postID = params["postID"]
-		payload := NewDeletePostPayload(postID)
+		token = r.Header.Get("Authorization")
+		if token == "" {
+			err = goa.MergeErrors(err, goa.MissingFieldError("Authorization", "header"))
+		}
+		if err != nil {
+			return nil, err
+		}
+		payload := NewDeletePostPayload(postID, token)
+		if strings.Contains(payload.Token, " ") {
+			// Remove authorization scheme prefix (e.g. "Bearer")
+			cred := strings.SplitN(payload.Token, " ", 2)[1]
+			payload.Token = cred
+		}
 
 		return payload, nil
 	}

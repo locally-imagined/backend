@@ -124,6 +124,26 @@ func (c *Client) BuildDeletePostRequest(ctx context.Context, v interface{}) (*ht
 	return req, nil
 }
 
+// EncodeDeletePostRequest returns an encoder for requests sent to the postings
+// delete_post server.
+func EncodeDeletePostRequest(encoder func(*http.Request) goahttp.Encoder) func(*http.Request, interface{}) error {
+	return func(req *http.Request, v interface{}) error {
+		p, ok := v.(*postings.DeletePostPayload)
+		if !ok {
+			return goahttp.ErrInvalidType("postings", "delete_post", "*postings.DeletePostPayload", v)
+		}
+		{
+			head := p.Token
+			if !strings.Contains(head, " ") {
+				req.Header.Set("Authorization", "Bearer "+head)
+			} else {
+				req.Header.Set("Authorization", head)
+			}
+		}
+		return nil
+	}
+}
+
 // DecodeDeletePostResponse returns a decoder for responses returned by the
 // postings delete_post endpoint. restoreBody controls whether the response
 // body should be restored after having been read.

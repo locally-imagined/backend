@@ -59,6 +59,8 @@ type CreatePostResult struct {
 // DeletePostPayload is the payload type of the postings service delete_post
 // method.
 type DeletePostPayload struct {
+	// jwt used for auth
+	Token string
 	// Post to delete
 	PostID string
 }

@@ -28,7 +28,7 @@ func NewEndpoints(s Service) *Endpoints {
 	a := s.(Auther)
 	return &Endpoints{
 		CreatePost:       NewCreatePostEndpoint(s, a.JWTAuth),
-		DeletePost:       NewDeletePostEndpoint(s),
+		DeletePost:       NewDeletePostEndpoint(s, a.JWTAuth),
 		GetPostPage:      NewGetPostPageEndpoint(s),
 		GetImagesForPost: NewGetImagesForPostEndpoint(s),
 	}
@@ -63,9 +63,19 @@ func NewCreatePostEndpoint(s Service, authJWTFn security.AuthJWTFunc) goa.Endpoi
 
 // NewDeletePostEndpoint returns an endpoint function that calls the method
 // "delete_post" of service "postings".
-func NewDeletePostEndpoint(s Service) goa.Endpoint {
+func NewDeletePostEndpoint(s Service, authJWTFn security.AuthJWTFunc) goa.Endpoint {
 	return func(ctx context.Context, req interface{}) (interface{}, error) {
 		p := req.(*DeletePostPayload)
+		var err error
+		sc := security.JWTScheme{
+			Name:           "jwt",
+			Scopes:         []string{},
+			RequiredScopes: []string{},
+		}
+		ctx, err = authJWTFn(ctx, p.Token, &sc)
+		if err != nil {
+			return nil, err
+		}
 		return nil, s.DeletePost(ctx, p)
 	}
 }

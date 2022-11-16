@@ -120,9 +120,10 @@ func NewCreatePostPayload(body *CreatePostRequestBody, token string) *postings.C
 }
 
 // NewDeletePostPayload builds a postings service delete_post endpoint payload.
-func NewDeletePostPayload(postID string) *postings.DeletePostPayload {
+func NewDeletePostPayload(postID string, token string) *postings.DeletePostPayload {
 	v := &postings.DeletePostPayload{}
 	v.PostID = postID
+	v.Token = token
 
 	return v
 }

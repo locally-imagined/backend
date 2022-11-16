@@ -162,8 +162,9 @@ var _ = Service("postings", func() {
 	Method("delete_post", func() {
 		Security(JWTAuth)
 		Payload(func() {
+			Token("token", String, "jwt used for auth")
 			Attribute("postID", String, "Post to delete")
-			Required("postID")
+			Required("token", "postID")
 		})
 		HTTP(func() {
 			DELETE("/posts/delete/{postID}")

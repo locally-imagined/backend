@@ -22,7 +22,7 @@ func BuildCreatePostPayload(postingsCreatePostBody string, postingsCreatePostTok
 	{
 		err = json.Unmarshal([]byte(postingsCreatePostBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"content\": \"Aut et atque.\",\n      \"description\": \"Quae autem quia nemo iste similique veritatis.\",\n      \"medium\": \"Aut animi et deserunt est.\",\n      \"price\": \"At ad.\",\n      \"title\": \"Ut molestiae nihil ipsam voluptatem explicabo qui.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"content\": \"Officiis est optio voluptates qui recusandae sit.\",\n      \"description\": \"Doloremque ut vel.\",\n      \"medium\": \"Dolorem eligendi aut consequatur minima rem tempora.\",\n      \"price\": \"Ab enim aut et quas quo.\",\n      \"title\": \"Aut animi et deserunt est.\"\n   }'")
 		}
 	}
 	var token string
@@ -46,13 +46,18 @@ func BuildCreatePostPayload(postingsCreatePostBody string, postingsCreatePostTok
 
 // BuildDeletePostPayload builds the payload for the postings delete_post
 // endpoint from CLI flags.
-func BuildDeletePostPayload(postingsDeletePostPostID string) (*postings.DeletePostPayload, error) {
+func BuildDeletePostPayload(postingsDeletePostPostID string, postingsDeletePostToken string) (*postings.DeletePostPayload, error) {
 	var postID string
 	{
 		postID = postingsDeletePostPostID
 	}
+	var token string
+	{
+		token = postingsDeletePostToken
+	}
 	v := &postings.DeletePostPayload{}
 	v.PostID = postID
+	v.Token = token
 
 	return v, nil
 }

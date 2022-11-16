@@ -97,10 +97,15 @@ func (c *Client) CreatePost() goa.Endpoint {
 // service delete_post server.
 func (c *Client) DeletePost() goa.Endpoint {
 	var (
+		encodeRequest  = EncodeDeletePostRequest(c.encoder)
 		decodeResponse = DecodeDeletePostResponse(c.decoder, c.RestoreResponseBody)
 	)
 	return func(ctx context.Context, v interface{}) (interface{}, error) {
 		req, err := c.BuildDeletePostRequest(ctx, v)
+		if err != nil {
+			return nil, err
+		}
+		err = encodeRequest(req, v)
 		if err != nil {
 			return nil, err
 		}
