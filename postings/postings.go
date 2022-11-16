@@ -303,8 +303,14 @@ func (s *Service) EditPost(ctx context.Context, p *postings.EditPostPayload) (*p
 			return nil, err
 		}
 	}
+
+	// what if image is the last pic? dont let user delete last pic?
 	if p.ImageID != nil {
 		_, err = dbPool.Query("UPDATE images SET index = index - 1 WHERE (postid=$1 AND index>(SELECT index FROM images WHERE imgid=$2))", p.PostID, *p.ImageID)
+		if err != nil {
+			return nil, err
+		}
+		_, err = dbPool.Query("DELETE FROM where imgid=$1", *p.ImageID)
 		if err != nil {
 			return nil, err
 		}
