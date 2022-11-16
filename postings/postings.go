@@ -53,15 +53,23 @@ func (s *Service) JWTAuth(ctx context.Context, token string, scheme *security.JW
 
 	return ctx, nil
 }
+func GetS3Creds() (string, string, string, string) {
+	awsAccessKey := os.Getenv("BUCKETEER_AWS_ACCESS_KEY_ID")
+	awsSecretKey := os.Getenv("BUCKETEER_AWS_SECRET_ACCESS_KEY")
+	awsRegion := os.Getenv("BUCKETEER_AWS_REGION")
+	awsBucketName := os.Getenv("BUCKETEER_BUCKET_NAME")
+	return awsAccessKey, awsSecretKey, awsRegion, awsBucketName
+}
 
 func (s *Service) CreatePost(ctx context.Context, p *postings.CreatePostPayload) (*postings.CreatePostResult, error) {
 	// this is really CreatePost now
 	// create a different endpoint UploadPhoto that takes in a postID
 	// get info from os variables
-	awsAccessKey := os.Getenv("BUCKETEER_AWS_ACCESS_KEY_ID")
-	awsSecretKey := os.Getenv("BUCKETEER_AWS_SECRET_ACCESS_KEY")
-	awsRegion := os.Getenv("BUCKETEER_AWS_REGION")
-	awsBucketName := os.Getenv("BUCKETEER_BUCKET_NAME")
+	// awsAccessKey := os.Getenv("BUCKETEER_AWS_ACCESS_KEY_ID")
+	// awsSecretKey := os.Getenv("BUCKETEER_AWS_SECRET_ACCESS_KEY")
+	// awsRegion := os.Getenv("BUCKETEER_AWS_REGION")
+	// awsBucketName := os.Getenv("BUCKETEER_BUCKET_NAME")
+	awsAccessKey, awsSecretKey, awsRegion, awsBucketName := GetS3Creds()
 
 	// create new s3 session
 	sess := session.Must(session.NewSession(&aws.Config{
