@@ -160,6 +160,7 @@ var _ = Service("postings", func() {
 		})
 	})
 	Method("delete_post", func() {
+		Security(JWTAuth)
 		Payload(func() {
 			Attribute("postID", String, "Post to delete")
 			Required("postID")
