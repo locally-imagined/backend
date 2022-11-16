@@ -202,7 +202,7 @@ func (s *Service) DeletePost(ctx context.Context, p *postings.DeletePostPayload)
 		return err
 	}
 
-	rows, err = dbPool.Query("SELECT imageID from images where postID=$1", p.PostID)
+	rows, err = dbPool.Query("SELECT imgid from images where postID=$1", p.PostID)
 	if err != nil {
 		return err
 	}
