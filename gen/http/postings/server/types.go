@@ -28,6 +28,25 @@ type CreatePostRequestBody struct {
 	Medium *string `form:"medium,omitempty" json:"medium,omitempty" xml:"medium,omitempty"`
 }
 
+// EditPostRequestBody is the type of the "postings" service "edit_post"
+// endpoint HTTP request body.
+type EditPostRequestBody struct {
+	// Post title
+	Title *string `form:"title,omitempty" json:"title,omitempty" xml:"title,omitempty"`
+	// Post description
+	Description *string `form:"description,omitempty" json:"description,omitempty" xml:"description,omitempty"`
+	// Post price
+	Price *string `form:"price,omitempty" json:"price,omitempty" xml:"price,omitempty"`
+	// Image content
+	Content *string `form:"content,omitempty" json:"content,omitempty" xml:"content,omitempty"`
+	// Art type
+	Medium *string `form:"medium,omitempty" json:"medium,omitempty" xml:"medium,omitempty"`
+	// is sold
+	Sold *bool `form:"sold,omitempty" json:"sold,omitempty" xml:"sold,omitempty"`
+	// Image ID
+	ImageID *string `form:"imageID,omitempty" json:"imageID,omitempty" xml:"imageID,omitempty"`
+}
+
 // CreatePostResponseBody is the type of the "postings" service "create_post"
 // endpoint HTTP response body.
 type CreatePostResponseBody PostResponseResponseBody
@@ -162,16 +181,17 @@ func NewDeletePostPayload(postID string, token string) *postings.DeletePostPaylo
 }
 
 // NewEditPostPayload builds a postings service edit_post endpoint payload.
-func NewEditPostPayload(postID string, title *string, description *string, price *string, content *string, medium *string, sold *bool, imageID *string, token string) *postings.EditPostPayload {
-	v := &postings.EditPostPayload{}
+func NewEditPostPayload(body *EditPostRequestBody, postID string, token string) *postings.EditPostPayload {
+	v := &postings.EditPostPayload{
+		Title:       body.Title,
+		Description: body.Description,
+		Price:       body.Price,
+		Content:     body.Content,
+		Medium:      body.Medium,
+		Sold:        body.Sold,
+		ImageID:     body.ImageID,
+	}
 	v.PostID = postID
-	v.Title = title
-	v.Description = description
-	v.Price = price
-	v.Content = content
-	v.Medium = medium
-	v.Sold = sold
-	v.ImageID = imageID
 	v.Token = token
 
 	return v
