@@ -57,7 +57,7 @@ func New(
 		Mounts: []*MountPoint{
 			{"CreatePost", "POST", "/create"},
 			{"DeletePost", "DELETE", "/posts/delete/{postID}"},
-			{"EditPost", "PUT", "/posts/edit/{postID}"},
+			{"EditPost", "GET", "/posts/edit/{postID}"},
 			{"GetPostPage", "GET", "/posts/getpage/{page}"},
 			{"GetImagesForPost", "GET", "/posts/getimages/{postID}"},
 			{"CORS", "OPTIONS", "/create"},
@@ -217,7 +217,7 @@ func MountEditPostHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("PUT", "/posts/edit/{postID}", f)
+	mux.Handle("GET", "/posts/edit/{postID}", f)
 }
 
 // NewEditPostHandler creates a HTTP handler which loads the HTTP request and

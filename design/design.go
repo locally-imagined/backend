@@ -197,7 +197,7 @@ var _ = Service("postings", func() {
 			Attribute("Posted", PostResponse)
 		})
 		HTTP(func() {
-			PUT("/posts/edit/{postID}")
+			GET("/posts/edit/{postID}")
 			Param("title")
 			Param("description")
 			Param("price")

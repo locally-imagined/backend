@@ -186,7 +186,7 @@ func (c *Client) BuildEditPostRequest(ctx context.Context, v interface{}) (*http
 		postID = p.PostID
 	}
 	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: EditPostPostingsPath(postID)}
-	req, err := http.NewRequest("PUT", u.String(), nil)
+	req, err := http.NewRequest("GET", u.String(), nil)
 	if err != nil {
 		return nil, goahttp.ErrInvalidURL("postings", "edit_post", u.String(), err)
 	}
