@@ -35,8 +35,8 @@ func NewClient(createPost, deletePost, editPost, getPostPage, getImagesForPost g
 
 // CreatePost calls the "create_post" endpoint of the "postings" service.
 // CreatePost may return the following errors:
-//	- "unauthorized" (type Unauthorized)
-//	- error: internal error
+//   - "unauthorized" (type Unauthorized)
+//   - error: internal error
 func (c *Client) CreatePost(ctx context.Context, p *CreatePostPayload) (res *CreatePostResult, err error) {
 	var ires interface{}
 	ires, err = c.CreatePostEndpoint(ctx, p)
@@ -48,8 +48,8 @@ func (c *Client) CreatePost(ctx context.Context, p *CreatePostPayload) (res *Cre
 
 // DeletePost calls the "delete_post" endpoint of the "postings" service.
 // DeletePost may return the following errors:
-//	- "unauthorized" (type Unauthorized)
-//	- error: internal error
+//   - "unauthorized" (type Unauthorized)
+//   - error: internal error
 func (c *Client) DeletePost(ctx context.Context, p *DeletePostPayload) (err error) {
 	_, err = c.DeletePostEndpoint(ctx, p)
 	return
@@ -57,8 +57,8 @@ func (c *Client) DeletePost(ctx context.Context, p *DeletePostPayload) (err erro
 
 // EditPost calls the "edit_post" endpoint of the "postings" service.
 // EditPost may return the following errors:
-//	- "unauthorized" (type Unauthorized)
-//	- error: internal error
+//   - "unauthorized" (type Unauthorized)
+//   - error: internal error
 func (c *Client) EditPost(ctx context.Context, p *EditPostPayload) (res *EditPostResult, err error) {
 	var ires interface{}
 	ires, err = c.EditPostEndpoint(ctx, p)
@@ -70,8 +70,8 @@ func (c *Client) EditPost(ctx context.Context, p *EditPostPayload) (res *EditPos
 
 // GetPostPage calls the "get_post_page" endpoint of the "postings" service.
 // GetPostPage may return the following errors:
-//	- "unauthorized" (type Unauthorized)
-//	- error: internal error
+//   - "unauthorized" (type Unauthorized)
+//   - error: internal error
 func (c *Client) GetPostPage(ctx context.Context, p *GetPostPagePayload) (res *GetPostPageResult, err error) {
 	var ires interface{}
 	ires, err = c.GetPostPageEndpoint(ctx, p)
@@ -84,8 +84,8 @@ func (c *Client) GetPostPage(ctx context.Context, p *GetPostPagePayload) (res *G
 // GetImagesForPost calls the "get_images_for_post" endpoint of the "postings"
 // service.
 // GetImagesForPost may return the following errors:
-//	- "unauthorized" (type Unauthorized)
-//	- error: internal error
+//   - "unauthorized" (type Unauthorized)
+//   - error: internal error
 func (c *Client) GetImagesForPost(ctx context.Context, p *GetImagesForPostPayload) (res *GetImagesForPostResult, err error) {
 	var ires interface{}
 	ires, err = c.GetImagesForPostEndpoint(ctx, p)
