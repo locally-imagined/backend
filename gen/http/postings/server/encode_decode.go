@@ -128,24 +128,54 @@ func EncodeEditPostResponse(encoder func(context.Context, http.ResponseWriter) g
 func DecodeEditPostRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (interface{}, error) {
 	return func(r *http.Request) (interface{}, error) {
 		var (
-			body EditPostRequestBody
-			err  error
-		)
-		err = decoder(r).Decode(&body)
-		if err != nil {
-			if err == io.EOF {
-				return nil, goa.MissingPayloadError()
-			}
-			return nil, goa.DecodePayloadError(err.Error())
-		}
-
-		var (
-			postID string
-			token  string
+			postID      string
+			title       *string
+			description *string
+			price       *string
+			content     *string
+			medium      *string
+			sold        *bool
+			imageID     *string
+			token       string
+			err         error
 
 			params = mux.Vars(r)
 		)
 		postID = params["postID"]
+		titleRaw := r.URL.Query().Get("title")
+		if titleRaw != "" {
+			title = &titleRaw
+		}
+		descriptionRaw := r.URL.Query().Get("description")
+		if descriptionRaw != "" {
+			description = &descriptionRaw
+		}
+		priceRaw := r.URL.Query().Get("price")
+		if priceRaw != "" {
+			price = &priceRaw
+		}
+		contentRaw := r.URL.Query().Get("content")
+		if contentRaw != "" {
+			content = &contentRaw
+		}
+		mediumRaw := r.URL.Query().Get("medium")
+		if mediumRaw != "" {
+			medium = &mediumRaw
+		}
+		{
+			soldRaw := r.URL.Query().Get("sold")
+			if soldRaw != "" {
+				v, err2 := strconv.ParseBool(soldRaw)
+				if err2 != nil {
+					err = goa.MergeErrors(err, goa.InvalidFieldTypeError("sold", soldRaw, "boolean"))
+				}
+				sold = &v
+			}
+		}
+		imageIDRaw := r.URL.Query().Get("imageID")
+		if imageIDRaw != "" {
+			imageID = &imageIDRaw
+		}
 		token = r.Header.Get("Authorization")
 		if token == "" {
 			err = goa.MergeErrors(err, goa.MissingFieldError("Authorization", "header"))
@@ -153,7 +183,7 @@ func DecodeEditPostRequest(mux goahttp.Muxer, decoder func(*http.Request) goahtt
 		if err != nil {
 			return nil, err
 		}
-		payload := NewEditPostPayload(&body, postID, token)
+		payload := NewEditPostPayload(postID, title, description, price, content, medium, sold, imageID, token)
 		if strings.Contains(payload.Token, " ") {
 			// Remove authorization scheme prefix (e.g. "Bearer")
 			cred := strings.SplitN(payload.Token, " ", 2)[1]

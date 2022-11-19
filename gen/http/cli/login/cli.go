@@ -86,10 +86,16 @@ func ParseEndpoint(
 		postingsDeletePostPostIDFlag = postingsDeletePostFlags.String("post-id", "REQUIRED", "Post to delete")
 		postingsDeletePostTokenFlag  = postingsDeletePostFlags.String("token", "REQUIRED", "")
 
-		postingsEditPostFlags      = flag.NewFlagSet("edit-post", flag.ExitOnError)
-		postingsEditPostBodyFlag   = postingsEditPostFlags.String("body", "REQUIRED", "")
-		postingsEditPostPostIDFlag = postingsEditPostFlags.String("post-id", "REQUIRED", "Post ID")
-		postingsEditPostTokenFlag  = postingsEditPostFlags.String("token", "REQUIRED", "")
+		postingsEditPostFlags           = flag.NewFlagSet("edit-post", flag.ExitOnError)
+		postingsEditPostPostIDFlag      = postingsEditPostFlags.String("post-id", "REQUIRED", "Post ID")
+		postingsEditPostTitleFlag       = postingsEditPostFlags.String("title", "", "")
+		postingsEditPostDescriptionFlag = postingsEditPostFlags.String("description", "", "")
+		postingsEditPostPriceFlag       = postingsEditPostFlags.String("price", "", "")
+		postingsEditPostContentFlag     = postingsEditPostFlags.String("content", "", "")
+		postingsEditPostMediumFlag      = postingsEditPostFlags.String("medium", "", "")
+		postingsEditPostSoldFlag        = postingsEditPostFlags.String("sold", "", "")
+		postingsEditPostImageIDFlag     = postingsEditPostFlags.String("image-id", "", "")
+		postingsEditPostTokenFlag       = postingsEditPostFlags.String("token", "REQUIRED", "")
 
 		postingsGetPostPageFlags    = flag.NewFlagSet("get-post-page", flag.ExitOnError)
 		postingsGetPostPagePageFlag = postingsGetPostPageFlags.String("page", "REQUIRED", "Page to get posts for")
@@ -224,7 +230,7 @@ func ParseEndpoint(
 				data, err = postingsc.BuildDeletePostPayload(*postingsDeletePostPostIDFlag, *postingsDeletePostTokenFlag)
 			case "edit-post":
 				endpoint = c.EditPost()
-				data, err = postingsc.BuildEditPostPayload(*postingsEditPostBodyFlag, *postingsEditPostPostIDFlag, *postingsEditPostTokenFlag)
+				data, err = postingsc.BuildEditPostPayload(*postingsEditPostPostIDFlag, *postingsEditPostTitleFlag, *postingsEditPostDescriptionFlag, *postingsEditPostPriceFlag, *postingsEditPostContentFlag, *postingsEditPostMediumFlag, *postingsEditPostSoldFlag, *postingsEditPostImageIDFlag, *postingsEditPostTokenFlag)
 			case "get-post-page":
 				endpoint = c.GetPostPage()
 				data, err = postingsc.BuildGetPostPagePayload(*postingsGetPostPagePageFlag)
@@ -349,23 +355,21 @@ Example:
 }
 
 func postingsEditPostUsage() {
-	fmt.Fprintf(os.Stderr, `%[1]s [flags] postings edit-post -body JSON -post-id STRING -token STRING
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] postings edit-post -post-id STRING -title STRING -description STRING -price STRING -content STRING -medium STRING -sold BOOL -image-id STRING -token STRING
 
 EditPost implements edit_post.
-    -body JSON: 
     -post-id STRING: Post ID
+    -title STRING: 
+    -description STRING: 
+    -price STRING: 
+    -content STRING: 
+    -medium STRING: 
+    -sold BOOL: 
+    -image-id STRING: 
     -token STRING: 
 
 Example:
-    %[1]s postings edit-post --body '{
-      "content": "Ea magni fugit aperiam eum.",
-      "description": "Ut blanditiis deleniti illo.",
-      "imageID": "Repellendus modi et quod.",
-      "medium": "Dolores nostrum suscipit rerum consequatur.",
-      "price": "Libero a id aut.",
-      "sold": false,
-      "title": "Ullam perferendis."
-   }' --post-id "Et impedit qui praesentium autem dolor vitae." --token "Quo laboriosam totam ad quia aperiam."
+    %[1]s postings edit-post --post-id "Ullam perferendis." --title "Ut blanditiis deleniti illo." --description "Libero a id aut." --price "Ea magni fugit aperiam eum." --content "Dolores nostrum suscipit rerum consequatur." --medium "Explicabo repellendus modi et." --sold true --image-id "Et impedit qui praesentium autem dolor vitae." --token "Quo laboriosam totam ad quia aperiam."
 `, os.Args[0])
 }
 

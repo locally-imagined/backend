@@ -100,6 +100,41 @@ paths:
             summary: edit_post postings
             operationId: postings#edit_post
             parameters:
+                - name: title
+                  in: query
+                  description: Post title
+                  required: false
+                  type: string
+                - name: description
+                  in: query
+                  description: Post description
+                  required: false
+                  type: string
+                - name: price
+                  in: query
+                  description: Post price
+                  required: false
+                  type: string
+                - name: content
+                  in: query
+                  description: Image content
+                  required: false
+                  type: string
+                - name: medium
+                  in: query
+                  description: Art type
+                  required: false
+                  type: string
+                - name: sold
+                  in: query
+                  description: is sold
+                  required: false
+                  type: boolean
+                - name: imageID
+                  in: query
+                  description: Image ID
+                  required: false
+                  type: string
                 - name: postID
                   in: path
                   description: Post ID
@@ -110,11 +145,6 @@ paths:
                   description: jwt used for auth
                   required: true
                   type: string
-                - name: edit_post_request_body
-                  in: body
-                  required: true
-                  schema:
-                    $ref: '#/definitions/PostingsEditPostRequestBody'
             responses:
                 "200":
                     description: OK response.
@@ -152,7 +182,7 @@ paths:
                         type: array
                         items:
                             type: string
-                            example: Consequatur et qui.
+                            example: Sed adipisci ducimus ut.
             schemes:
                 - http
     /posts/getpage/{page}:
@@ -210,54 +240,53 @@ definitions:
             description:
                 type: string
                 description: Post description
-                example: Dolorum dignissimos.
+                example: Nisi similique sunt.
             imageIDs:
                 type: array
                 items:
                     type: string
-                    example: Ex rem rerum numquam veniam.
+                    example: Iste qui sit ut.
                 description: Image ID
                 example:
-                    - Quo rerum porro eius.
-                    - Aut doloremque dolorem autem provident vel accusamus.
+                    - Distinctio error est sint eos.
+                    - Assumenda non.
+                    - Eaque aut cupiditate ut aut dolor.
             medium:
                 type: string
                 description: Art type
-                example: Sed adipisci ducimus ut.
+                example: Aut est non ad eum modi.
             postID:
                 type: string
                 description: Post ID
-                example: Hic ut.
+                example: Qui omnis maiores quod accusamus.
             price:
                 type: string
                 description: Post price
-                example: Distinctio fuga vel earum perspiciatis odit.
+                example: Quibusdam sed repellendus aliquam voluptatem.
             sold:
                 type: boolean
                 description: is sold
-                example: true
+                example: false
             title:
                 type: string
                 description: Post title
-                example: Nam minus in.
+                example: Dicta dolorem iure dolor.
             uploadDate:
                 type: string
                 description: Upload Date
-                example: Itaque sed commodi aspernatur aliquam.
+                example: Et sit quia omnis nemo.
         description: Describes a post
         example:
-            description: Ullam voluptatem est dolorum.
+            description: Qui velit voluptatibus nam minus in ratione.
             imageIDs:
-                - Amet illo ab qui deleniti.
-                - Illo cupiditate quae magnam.
-                - Debitis veritatis consequatur error perspiciatis quas ut.
-                - Rem magni.
-            medium: Voluptatem facilis quisquam quam alias amet officiis.
-            postID: Ea dolorum.
-            price: Distinctio sit esse dolorem cupiditate at.
+                - Earum perspiciatis odit.
+                - Ex rem rerum numquam veniam.
+            medium: Doloremque dolorem autem provident.
+            postID: Repudiandae quo rerum porro eius officia.
+            price: Dignissimos et distinctio.
             sold: true
-            title: Qui ea distinctio.
-            uploadDate: Et vitae commodi eos est omnis.
+            title: Tempora velit asperiores qui qui optio tenetur.
+            uploadDate: Accusamus delectus hic.
         required:
             - title
             - description
@@ -380,46 +409,6 @@ definitions:
     PostingsCreatePostResponseBody:
         title: PostingsCreatePostResponseBody
         $ref: '#/definitions/PostResponseResponseBody'
-    PostingsEditPostRequestBody:
-        title: PostingsEditPostRequestBody
-        type: object
-        properties:
-            content:
-                type: string
-                description: Image content
-                example: Iste qui sit ut.
-            description:
-                type: string
-                description: Post description
-                example: Nisi similique sunt.
-            imageID:
-                type: string
-                description: Image ID
-                example: Eos velit assumenda non.
-            medium:
-                type: string
-                description: Art type
-                example: Ipsum distinctio error.
-            price:
-                type: string
-                description: Post price
-                example: Quibusdam sed repellendus aliquam voluptatem.
-            sold:
-                type: boolean
-                description: is sold
-                example: false
-            title:
-                type: string
-                description: Post title
-                example: Dicta dolorem iure dolor.
-        example:
-            content: Et sit quia omnis nemo.
-            description: Qui omnis maiores quod accusamus.
-            imageID: Tenetur assumenda qui velit.
-            medium: Voluptatem tempora velit asperiores qui.
-            price: Aut est non ad eum modi.
-            sold: false
-            title: Eaque aut cupiditate ut aut dolor.
     PostingsEditPostResponseBody:
         title: PostingsEditPostResponseBody
         $ref: '#/definitions/PostResponseResponseBody'

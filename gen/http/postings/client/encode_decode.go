@@ -11,6 +11,7 @@ import (
 	postings "backend/gen/postings"
 	"bytes"
 	"context"
+	"fmt"
 	"io"
 	"net/http"
 	"net/url"
@@ -212,10 +213,29 @@ func EncodeEditPostRequest(encoder func(*http.Request) goahttp.Encoder) func(*ht
 				req.Header.Set("Authorization", head)
 			}
 		}
-		body := NewEditPostRequestBody(p)
-		if err := encoder(req).Encode(&body); err != nil {
-			return goahttp.ErrEncodingError("postings", "edit_post", err)
+		values := req.URL.Query()
+		if p.Title != nil {
+			values.Add("title", *p.Title)
 		}
+		if p.Description != nil {
+			values.Add("description", *p.Description)
+		}
+		if p.Price != nil {
+			values.Add("price", *p.Price)
+		}
+		if p.Content != nil {
+			values.Add("content", *p.Content)
+		}
+		if p.Medium != nil {
+			values.Add("medium", *p.Medium)
+		}
+		if p.Sold != nil {
+			values.Add("sold", fmt.Sprintf("%v", *p.Sold))
+		}
+		if p.ImageID != nil {
+			values.Add("imageID", *p.ImageID)
+		}
+		req.URL.RawQuery = values.Encode()
 		return nil
 	}
 }

@@ -28,25 +28,6 @@ type CreatePostRequestBody struct {
 	Medium string `form:"medium" json:"medium" xml:"medium"`
 }
 
-// EditPostRequestBody is the type of the "postings" service "edit_post"
-// endpoint HTTP request body.
-type EditPostRequestBody struct {
-	// Post title
-	Title *string `form:"title,omitempty" json:"title,omitempty" xml:"title,omitempty"`
-	// Post description
-	Description *string `form:"description,omitempty" json:"description,omitempty" xml:"description,omitempty"`
-	// Post price
-	Price *string `form:"price,omitempty" json:"price,omitempty" xml:"price,omitempty"`
-	// Image content
-	Content *string `form:"content,omitempty" json:"content,omitempty" xml:"content,omitempty"`
-	// Art type
-	Medium *string `form:"medium,omitempty" json:"medium,omitempty" xml:"medium,omitempty"`
-	// is sold
-	Sold *bool `form:"sold,omitempty" json:"sold,omitempty" xml:"sold,omitempty"`
-	// Image ID
-	ImageID *string `form:"imageID,omitempty" json:"imageID,omitempty" xml:"imageID,omitempty"`
-}
-
 // CreatePostResponseBody is the type of the "postings" service "create_post"
 // endpoint HTTP response body.
 type CreatePostResponseBody PostResponseResponseBody
@@ -113,21 +94,6 @@ func NewCreatePostRequestBody(p *postings.CreatePostPayload) *CreatePostRequestB
 		for i, val := range p.Post.Content {
 			body.Content[i] = val
 		}
-	}
-	return body
-}
-
-// NewEditPostRequestBody builds the HTTP request body from the payload of the
-// "edit_post" endpoint of the "postings" service.
-func NewEditPostRequestBody(p *postings.EditPostPayload) *EditPostRequestBody {
-	body := &EditPostRequestBody{
-		Title:       p.Title,
-		Description: p.Description,
-		Price:       p.Price,
-		Content:     p.Content,
-		Medium:      p.Medium,
-		Sold:        p.Sold,
-		ImageID:     p.ImageID,
 	}
 	return body
 }

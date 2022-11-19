@@ -77,33 +77,72 @@ func BuildDeletePostPayload(postingsDeletePostPostID string, postingsDeletePostT
 
 // BuildEditPostPayload builds the payload for the postings edit_post endpoint
 // from CLI flags.
-func BuildEditPostPayload(postingsEditPostBody string, postingsEditPostPostID string, postingsEditPostToken string) (*postings.EditPostPayload, error) {
+func BuildEditPostPayload(postingsEditPostPostID string, postingsEditPostTitle string, postingsEditPostDescription string, postingsEditPostPrice string, postingsEditPostContent string, postingsEditPostMedium string, postingsEditPostSold string, postingsEditPostImageID string, postingsEditPostToken string) (*postings.EditPostPayload, error) {
 	var err error
-	var body EditPostRequestBody
-	{
-		err = json.Unmarshal([]byte(postingsEditPostBody), &body)
-		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"content\": \"Ea magni fugit aperiam eum.\",\n      \"description\": \"Ut blanditiis deleniti illo.\",\n      \"imageID\": \"Repellendus modi et quod.\",\n      \"medium\": \"Dolores nostrum suscipit rerum consequatur.\",\n      \"price\": \"Libero a id aut.\",\n      \"sold\": false,\n      \"title\": \"Ullam perferendis.\"\n   }'")
-		}
-	}
 	var postID string
 	{
 		postID = postingsEditPostPostID
+	}
+	var title *string
+	{
+		if postingsEditPostTitle != "" {
+			title = &postingsEditPostTitle
+		}
+	}
+	var description *string
+	{
+		if postingsEditPostDescription != "" {
+			description = &postingsEditPostDescription
+		}
+	}
+	var price *string
+	{
+		if postingsEditPostPrice != "" {
+			price = &postingsEditPostPrice
+		}
+	}
+	var content *string
+	{
+		if postingsEditPostContent != "" {
+			content = &postingsEditPostContent
+		}
+	}
+	var medium *string
+	{
+		if postingsEditPostMedium != "" {
+			medium = &postingsEditPostMedium
+		}
+	}
+	var sold *bool
+	{
+		if postingsEditPostSold != "" {
+			var val bool
+			val, err = strconv.ParseBool(postingsEditPostSold)
+			sold = &val
+			if err != nil {
+				return nil, fmt.Errorf("invalid value for sold, must be BOOL")
+			}
+		}
+	}
+	var imageID *string
+	{
+		if postingsEditPostImageID != "" {
+			imageID = &postingsEditPostImageID
+		}
 	}
 	var token string
 	{
 		token = postingsEditPostToken
 	}
-	v := &postings.EditPostPayload{
-		Title:       body.Title,
-		Description: body.Description,
-		Price:       body.Price,
-		Content:     body.Content,
-		Medium:      body.Medium,
-		Sold:        body.Sold,
-		ImageID:     body.ImageID,
-	}
+	v := &postings.EditPostPayload{}
 	v.PostID = postID
+	v.Title = title
+	v.Description = description
+	v.Price = price
+	v.Content = content
+	v.Medium = medium
+	v.Sold = sold
+	v.ImageID = imageID
 	v.Token = token
 
 	return v, nil
