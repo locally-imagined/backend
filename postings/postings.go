@@ -28,7 +28,20 @@ type Service struct{}
 var (
 	// ErrUnauthorized is the error returned by Login when the request credentials
 	// are invalid.
-	ErrUnauthorized error = postings.Unauthorized("invalid jwt")
+	INSERTPOST      string = "INSERT INTO Posts Values ($1, $2, $3, $4, $5, $6)"
+	INSERTIMAGES    string = "INSERT INTO Images Values ($1, $2, $3)"
+	GETPOSTPAGE     string = "SELECT p.postid, p.userid, p.title, p.description, p.price, p.medium, p.sold, p.uploaddate, i.imgid FROM posts AS p LEFT JOIN images AS i ON p.postid=i.postid WHERE i.index=0 ORDER BY p.uploaddate OFFSET $1 ROWS FETCH NEXT 25 ROWS ONLY"
+	SELECTIMAGES    string = "SELECT imgid from images where postid=$1 ORDER BY index"
+	SELECTUSERID    string = "SELECT userID from Posts where postID=$1"
+	DELETEIMAGES    string = "DELETE FROM images WHERE postID=$1"
+	DELETEPOST      string = "DELETE FROM posts WHERE postID=$1"
+	DELETEIMAGE     string = "DELETE FROM images where imgid=$1"
+	EDITPOST        string = "UPDATE posts SET $1=$2 WHERE postID=$3"
+	UPDATEINDEX     string = "UPDATE images SET index = index - 1 WHERE (postid=$1 AND index>(SELECT index FROM images WHERE imgid=$2))"
+	ADDIMAGE        string = "INSERT INTO images VALUES($1, $2, (SELECT MAX(index) FROM images where postID=$3) + 1)"
+	GETEDITEDINFO   string = "SELECT title, description, price, medium, sold, uploaddate FROM posts where postID=$1"
+	IMAGESPERPAGE   int    = 25
+	ErrUnauthorized error  = postings.Unauthorized("invalid jwt")
 )
 
 func (s *Service) JWTAuth(ctx context.Context, token string, scheme *security.JWTScheme) (context.Context, error) {
@@ -37,7 +50,6 @@ func (s *Service) JWTAuth(ctx context.Context, token string, scheme *security.JW
 		return ctx, ErrUnauthorized
 	}
 	// 3. add authInfo to context
-
 	claims := tok.Claims.(jwt.MapClaims)
 	ctx = context.WithValue(ctx, "Username", claims["Username"])
 	ctx = context.WithValue(ctx, "UserID", claims["UserID"])
@@ -53,63 +65,70 @@ func (s *Service) JWTAuth(ctx context.Context, token string, scheme *security.JW
 
 	return ctx, nil
 }
-func GetS3Creds() (string, string, string, string) {
+
+func getS3Session() (string, *s3.S3) {
 	awsAccessKey := os.Getenv("BUCKETEER_AWS_ACCESS_KEY_ID")
 	awsSecretKey := os.Getenv("BUCKETEER_AWS_SECRET_ACCESS_KEY")
 	awsRegion := os.Getenv("BUCKETEER_AWS_REGION")
 	awsBucketName := os.Getenv("BUCKETEER_BUCKET_NAME")
-	return awsAccessKey, awsSecretKey, awsRegion, awsBucketName
-}
-
-func (s *Service) CreatePost(ctx context.Context, p *postings.CreatePostPayload) (*postings.CreatePostResult, error) {
-	// this is really CreatePost now
-	// create a different endpoint UploadPhoto that takes in a postID
-	// get info from os variables
-	// awsAccessKey := os.Getenv("BUCKETEER_AWS_ACCESS_KEY_ID")
-	// awsSecretKey := os.Getenv("BUCKETEER_AWS_SECRET_ACCESS_KEY")
-	// awsRegion := os.Getenv("BUCKETEER_AWS_REGION")
-	// awsBucketName := os.Getenv("BUCKETEER_BUCKET_NAME")
-	awsAccessKey, awsSecretKey, awsRegion, awsBucketName := GetS3Creds()
-
-	// create new s3 session
 	sess := session.Must(session.NewSession(&aws.Config{
 		Region:      aws.String(awsRegion),
 		Credentials: credentials.NewStaticCredentials(awsAccessKey, awsSecretKey, ""),
 	}))
-	// create a new instance of the service's client iwth a session.
+	// create a new instance of the service's client with a session.
 	svc := s3.New(sess)
+	return awsBucketName, svc
+}
 
+func putImageToS3(ctx context.Context, svc *s3.S3, awsBucketName, imageID string, reader *strings.Reader) error {
+	_, err := svc.PutObjectWithContext(ctx, &s3.PutObjectInput{
+		Bucket: aws.String(awsBucketName),
+		Key:    aws.String("public/" + imageID),
+		Body:   reader,
+	})
+	return err
+}
+
+func deleteImageFromS3(ctx context.Context, svc *s3.S3, awsBucketName, imageID string) error {
+	_, err := svc.DeleteObjectWithContext(ctx, &s3.DeleteObjectInput{
+		Bucket: aws.String(awsBucketName),
+		Key:    aws.String("public/" + imageID),
+	})
+	return err
+}
+
+func openDB() (*sql.DB, error) {
+	return sql.Open("postgres", os.Getenv("DATABASE_URL"))
+}
+
+func (s *Service) CreatePost(ctx context.Context, p *postings.CreatePostPayload) (*postings.CreatePostResult, error) {
+	awsBucketName, svc := getS3Session()
 	postID := uuid.New().String()
-	dbPool, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
+	dbPool, err := openDB()
 	if err != nil {
 		return nil, err
 	}
+	defer dbPool.Close()
 	now := time.Now().Format(time.RFC3339)
-	_, err = dbPool.Query("INSERT INTO Posts Values ($1, $2, $3, $4, $5, $6)", postID, ctx.Value("UserID").(string), p.Post.Title, p.Post.Description, p.Post.Price, p.Post.Medium)
+	_, err = dbPool.Query(INSERTPOST, postID, ctx.Value("UserID").(string), p.Post.Title, p.Post.Description, p.Post.Price, p.Post.Medium)
 	if err != nil {
 		return nil, err
 	}
 	imageIDs := make([]string, 0)
 	for index, content := range p.Post.Content {
-
 		imageID := uuid.New().String()
 		imageIDs = append(imageIDs, imageID)
 		reader := strings.NewReader(string(content))
 		// put the object in the bucket
-		_, err := svc.PutObjectWithContext(ctx, &s3.PutObjectInput{
-			Bucket: aws.String(awsBucketName),
-			Key:    aws.String("public/" + imageID),
-			Body:   reader,
-		})
+		err := putImageToS3(ctx, svc, awsBucketName, imageID, reader)
 		if err != nil {
 			return nil, err
 		}
-		_, err = dbPool.Query("INSERT INTO Images Values ($1, $2, $3)", imageID, postID, index)
+		_, err = dbPool.Query(INSERTIMAGES, imageID, postID, index)
 		if err != nil {
 			return nil, err
 		}
 	}
-
 	posted := &postings.PostResponse{
 		Title:       p.Post.Title,
 		Description: p.Post.Description,
@@ -143,12 +162,12 @@ type post struct {
 }
 
 func (s *Service) GetPostPage(ctx context.Context, p *postings.GetPostPagePayload) (*postings.GetPostPageResult, error) {
-	dbPool, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
+	dbPool, err := openDB()
 	if err != nil {
 		return nil, err
 	}
 	offset := p.Page * 25
-	rows, err := dbPool.Query("SELECT p.postid, p.userid, p.title, p.description, p.price, p.medium, p.sold, p.uploaddate, i.imgid FROM posts AS p LEFT JOIN images AS i ON p.postid=i.postid WHERE i.index=0 ORDER BY p.uploaddate OFFSET $1 ROWS FETCH NEXT 25 ROWS ONLY", offset)
+	rows, err := dbPool.Query(GETPOSTPAGE, offset)
 
 	defer dbPool.Close()
 
@@ -171,11 +190,11 @@ func (s *Service) GetPostPage(ctx context.Context, p *postings.GetPostPagePayloa
 }
 
 func (s *Service) GetImagesForPost(ctx context.Context, p *postings.GetImagesForPostPayload) (*postings.GetImagesForPostResult, error) {
-	dbPool, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
+	dbPool, err := openDB()
 	if err != nil {
 		return nil, err
 	}
-	rows, err := dbPool.Query("SELECT imgid from images where postid=$1 ORDER BY index", p.PostID)
+	rows, err := dbPool.Query(SELECTIMAGES, p.PostID)
 
 	defer dbPool.Close()
 
@@ -188,6 +207,7 @@ func (s *Service) GetImagesForPost(ctx context.Context, p *postings.GetImagesFor
 		var row image
 		if err := rows.Scan(&row.imageID); err != nil {
 			log.Fatal(err)
+			return nil, err
 		}
 		res = append(res, row.imageID)
 	}
@@ -195,12 +215,12 @@ func (s *Service) GetImagesForPost(ctx context.Context, p *postings.GetImagesFor
 }
 
 func (s *Service) DeletePost(ctx context.Context, p *postings.DeletePostPayload) error {
-
-	dbPool, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
+	dbPool, err := openDB()
 	if err != nil {
 		return err
 	}
-	rows, err := dbPool.Query("SELECT userID from Posts where postID=$1", p.PostID)
+	defer dbPool.Close()
+	rows, err := dbPool.Query(SELECTUSERID, p.PostID)
 	if err != nil {
 		return err
 	}
@@ -215,7 +235,7 @@ func (s *Service) DeletePost(ctx context.Context, p *postings.DeletePostPayload)
 		return err
 	}
 
-	rows, err = dbPool.Query("SELECT imgid from images where postID=$1", p.PostID)
+	rows, err = dbPool.Query(SELECTIMAGES, p.PostID)
 	if err != nil {
 		return err
 	}
@@ -229,30 +249,18 @@ func (s *Service) DeletePost(ctx context.Context, p *postings.DeletePostPayload)
 		imageIDs = append(imageIDs, imageID)
 	}
 
-	_, err = dbPool.Query("DELETE FROM images WHERE postID=$1", p.PostID)
+	_, err = dbPool.Query(DELETEIMAGES, p.PostID)
 	if err != nil {
 		return err
 	}
-	_, err = dbPool.Query("DELETE FROM posts WHERE postID=$1", p.PostID)
+	_, err = dbPool.Query(DELETEPOST, p.PostID)
 	if err != nil {
 		return err
 	}
-	awsAccessKey := os.Getenv("BUCKETEER_AWS_ACCESS_KEY_ID")
-	awsSecretKey := os.Getenv("BUCKETEER_AWS_SECRET_ACCESS_KEY")
-	awsRegion := os.Getenv("BUCKETEER_AWS_REGION")
-	awsBucketName := os.Getenv("BUCKETEER_BUCKET_NAME")
-	sess := session.Must(session.NewSession(&aws.Config{
-		Region:      aws.String(awsRegion),
-		Credentials: credentials.NewStaticCredentials(awsAccessKey, awsSecretKey, ""),
-	}))
-	svc := s3.New(sess)
-
+	awsBucketName, svc := getS3Session()
 	// delete the images in the bucket
 	for _, imageID := range imageIDs {
-		_, err = svc.DeleteObjectWithContext(ctx, &s3.DeleteObjectInput{
-			Bucket: aws.String(awsBucketName),
-			Key:    aws.String("public/" + imageID),
-		})
+		err = deleteImageFromS3(ctx, svc, awsBucketName, imageID)
 		if err != nil {
 			return err
 		}
@@ -261,12 +269,12 @@ func (s *Service) DeletePost(ctx context.Context, p *postings.DeletePostPayload)
 }
 
 func (s *Service) EditPost(ctx context.Context, p *postings.EditPostPayload) (*postings.EditPostResult, error) {
-
-	dbPool, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
+	dbPool, err := openDB()
 	if err != nil {
 		return nil, err
 	}
-	rows, err := dbPool.Query("SELECT userID from Posts where postID=$1", p.PostID)
+	defer dbPool.Close()
+	rows, err := dbPool.Query(SELECTUSERID, p.PostID)
 	if err != nil {
 		return nil, err
 	}
@@ -282,31 +290,31 @@ func (s *Service) EditPost(ctx context.Context, p *postings.EditPostPayload) (*p
 	}
 
 	if p.Title != nil {
-		_, err = dbPool.Query("UPDATE posts SET title=$1 WHERE postID=$2", *p.Title, p.PostID)
+		_, err = dbPool.Query(EDITPOST, "title", *p.Title, p.PostID)
 		if err != nil {
 			return nil, err
 		}
 	}
 	if p.Description != nil {
-		_, err = dbPool.Query("UPDATE posts SET description=$1 WHERE postID=$2", *p.Description, p.PostID)
+		_, err = dbPool.Query(EDITPOST, "description", *p.Description, p.PostID)
 		if err != nil {
 			return nil, err
 		}
 	}
 	if p.Price != nil {
-		_, err = dbPool.Query("UPDATE posts SET price=$1 WHERE postID=$2", *p.Price, p.PostID)
+		_, err = dbPool.Query(EDITPOST, "price", *p.Price, p.PostID)
 		if err != nil {
 			return nil, err
 		}
 	}
 	if p.Medium != nil {
-		_, err = dbPool.Query("UPDATE posts SET medium=$1 WHERE postID=$2", *p.Medium, p.PostID)
+		_, err = dbPool.Query(EDITPOST, "medium", *p.Medium, p.PostID)
 		if err != nil {
 			return nil, err
 		}
 	}
 	if p.Sold != nil {
-		_, err = dbPool.Query("UPDATE posts SET sold=$1 WHERE postID=$2", *p.Sold, p.PostID)
+		_, err = dbPool.Query(EDITPOST, "sold", *p.Sold, p.PostID)
 		if err != nil {
 			return nil, err
 		}
@@ -314,42 +322,36 @@ func (s *Service) EditPost(ctx context.Context, p *postings.EditPostPayload) (*p
 
 	// what if image is the last pic? dont let user delete last pic?
 	if p.ImageID != nil {
-		_, err = dbPool.Query("UPDATE images SET index = index - 1 WHERE (postid=$1 AND index>(SELECT index FROM images WHERE imgid=$2))", p.PostID, *p.ImageID)
+		_, err = dbPool.Query(UPDATEINDEX, p.PostID, *p.ImageID)
 		if err != nil {
 			return nil, err
 		}
-		_, err = dbPool.Query("DELETE FROM where imgid=$1", *p.ImageID)
+		_, err = dbPool.Query(DELETEIMAGE, *p.ImageID)
+		if err != nil {
+			return nil, err
+		}
+		awsBucketName, svc := getS3Session()
+		// delete the images in the bucket
+		err = deleteImageFromS3(ctx, svc, awsBucketName, *p.ImageID)
 		if err != nil {
 			return nil, err
 		}
 	}
 	if p.Content != nil {
 		imageID := uuid.New().String()
-		awsAccessKey := os.Getenv("BUCKETEER_AWS_ACCESS_KEY_ID")
-		awsSecretKey := os.Getenv("BUCKETEER_AWS_SECRET_ACCESS_KEY")
-		awsRegion := os.Getenv("BUCKETEER_AWS_REGION")
-		awsBucketName := os.Getenv("BUCKETEER_BUCKET_NAME")
-		sess := session.Must(session.NewSession(&aws.Config{
-			Region:      aws.String(awsRegion),
-			Credentials: credentials.NewStaticCredentials(awsAccessKey, awsSecretKey, ""),
-		}))
-		svc := s3.New(sess)
+		awsBucketName, svc := getS3Session()
 		reader := strings.NewReader(string(*p.Content))
 		// put the object in the bucket
-		_, err := svc.PutObjectWithContext(ctx, &s3.PutObjectInput{
-			Bucket: aws.String(awsBucketName),
-			Key:    aws.String("public/" + imageID),
-			Body:   reader,
-		})
+		err := putImageToS3(ctx, svc, awsBucketName, imageID, reader)
 		if err != nil {
 			return nil, err
 		}
-		_, err = dbPool.Query("INSERT INTO images VALUES($1, $2, (SELECT MAX(index) FROM images where postID=$3) + 1)", imageID, p.PostID, p.PostID)
+		_, err = dbPool.Query(ADDIMAGE, imageID, p.PostID, p.PostID)
 		if err != nil {
 			return nil, err
 		}
 	}
-	rows, err = dbPool.Query("SELECT title, description, price, medium, sold, uploaddate FROM posts where postID=$1", p.PostID)
+	rows, err = dbPool.Query(GETEDITEDINFO, p.PostID)
 	if err != nil {
 		return nil, err
 	}
@@ -360,7 +362,8 @@ func (s *Service) EditPost(ctx context.Context, p *postings.EditPostPayload) (*p
 			return nil, err
 		}
 	}
-	rows, err = dbPool.Query("SELECT imgid from images where postID=$1", p.PostID)
+
+	rows, err = dbPool.Query(SELECTIMAGES, p.PostID)
 	if err != nil {
 		return nil, err
 	}

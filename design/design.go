@@ -5,64 +5,6 @@ import (
 	cors "goa.design/plugins/v3/cors/dsl"
 )
 
-// BasicAuth defines a security scheme using basic authentication. The scheme
-// protects the "login" action used to create JWTs.
-var LoginBasicAuth = BasicAuthSecurity("login", func() {
-	Description("Basic authentication used to authenticate security principal during signin")
-})
-
-// BasicAuth defines a security scheme using basic authentication. The scheme
-// protects the "signup" action used to create JWTs.
-var SignupBasicAuth = BasicAuthSecurity("signup", func() {
-	Description("Basic authentication used to authenticate security principal during signin")
-})
-
-// JWTAuth defines a security scheme that uses JWT tokens.
-var JWTAuth = JWTSecurity("jwt", func() {
-	Description(`Secures endpoint by requiring a valid JWT token retrieved via the signin endpoint.`)
-})
-
-var User = Type("User", func() {
-	Description("Describes a user")
-	Attribute("firstName", String, "First name")
-	Attribute("lastName", String, "Last name")
-	Attribute("phone", String, "Phone number")
-	Attribute("email", String, "Email")
-	Required("firstName", "lastName", "phone", "email")
-})
-
-var Post = Type("Post", func() {
-	Description("Describes a post")
-	Attribute("title", String, "Post title")
-	Attribute("description", String, "Post description")
-	Attribute("price", String, "Post price")
-	Attribute("content", ArrayOf(String), "Post content")
-	Attribute("medium", String, "Art type")
-	Required("title", "description", "price", "content", "medium")
-})
-
-// var EditPost = Type("EditPost", func() {
-// 	Description("Describes a post")
-// 	Attribute("title", String, "Post title")
-// 	Attribute("description", String, "Post description")
-// 	Attribute("price", String, "Post price")
-// 	Attribute("content", ArrayOf(String), "Post content")
-// 	Attribute("medium", String, "Art type")
-// })
-
-var PostResponse = Type("PostResponse", func() {
-	Description("Describes a post")
-	Attribute("title", String, "Post title")
-	Attribute("description", String, "Post description")
-	Attribute("price", String, "Post price")
-	Attribute("imageIDs", ArrayOf(String), "Image ID")
-	Attribute("postID", String, "Post ID")
-	Attribute("medium", String, "Art type")
-	Attribute("uploadDate", String, "Upload Date")
-	Attribute("sold", Boolean, "is sold")
-	Required("title", "description", "price", "imageIDs", "postID", "medium", "uploadDate", "sold")
-})
-
 var _ = Service("login", func() {
 	cors.Origin("http://localhost:3000", func() { // Define CORS policy, may be prefixed with "*" wildcard
 		cors.Headers("*")                      // One or more authorized headers, use "*" to authorize all
@@ -136,18 +78,18 @@ var _ = Service("signup", func() {
 
 var _ = Service("postings", func() {
 	cors.Origin("http://localhost:3000", func() { // Define CORS policy, may be prefixed with "*" wildcard
-		cors.Headers("*")                      // One or more authorized headers, use "*" to authorize all
-		cors.Methods("GET", "POST", "OPTIONS") // One or more authorized HTTP methods
-		cors.Expose("*")                       // One or more headers exposed to clients
-		cors.MaxAge(600)                       // How long to cache a preflight request response
-		cors.Credentials()                     // Sets Access-Control-Allow-Credentials header
+		cors.Headers("*")                                       // One or more authorized headers, use "*" to authorize all
+		cors.Methods("GET", "POST", "DELETE", "PUT", "OPTIONS") // One or more authorized HTTP methods
+		cors.Expose("*")                                        // One or more headers exposed to clients
+		cors.MaxAge(600)                                        // How long to cache a preflight request response
+		cors.Credentials()                                      // Sets Access-Control-Allow-Credentials header
 	})
 	cors.Origin("http://localhost:3001", func() { // Define CORS policy, may be prefixed with "*" wildcard
-		cors.Headers("*")                      // One or more authorized headers, use "*" to authorize all
-		cors.Methods("GET", "POST", "OPTIONS") // One or more authorized HTTP methods
-		cors.Expose("*")                       // One or more headers exposed to clients
-		cors.MaxAge(600)                       // How long to cache a preflight request response
-		cors.Credentials()                     // Sets Access-Control-Allow-Credentials header
+		cors.Headers("*")                                       // One or more authorized headers, use "*" to authorize all
+		cors.Methods("GET", "POST", "DELETE", "PUT", "OPTIONS") // One or more authorized HTTP methods
+		cors.Expose("*")                                        // One or more headers exposed to clients
+		cors.MaxAge(600)                                        // How long to cache a preflight request response
+		cors.Credentials()                                      // Sets Access-Control-Allow-Credentials header
 	})
 	Error("unauthorized", String, "Credentials are invalid")
 	Method("create_post", func() {
@@ -160,6 +102,7 @@ var _ = Service("postings", func() {
 		Result(func() {
 			Attribute("Posted", PostResponse)
 		})
+		// should be posts/create
 		HTTP(func() {
 			POST("/create")
 			Body("post")
@@ -240,4 +183,54 @@ var _ = Service("postings", func() {
 			})
 		})
 	})
+})
+
+// BasicAuth defines a security scheme using basic authentication. The scheme
+// protects the "login" action used to create JWTs.
+var LoginBasicAuth = BasicAuthSecurity("login", func() {
+	Description("Basic authentication used to authenticate security principal during login")
+})
+
+// BasicAuth defines a security scheme using basic authentication. The scheme
+// protects the "signup" action used to create JWTs.
+var SignupBasicAuth = BasicAuthSecurity("signup", func() {
+	Description("Basic authentication used to authenticate security principal during signup")
+})
+
+// JWTAuth defines a security scheme that uses JWT tokens.
+var JWTAuth = JWTSecurity("jwt", func() {
+	Description(`Secures endpoint by requiring a valid JWT token retrieved via the login endpoint.`)
+})
+
+var User = Type("User", func() {
+	Description("Describes a user")
+	Attribute("firstName", String, "First name")
+	Attribute("lastName", String, "Last name")
+	Attribute("phone", String, "Phone number")
+	Attribute("email", String, "Email")
+	Required("firstName", "lastName", "phone", "email")
+})
+
+// we probably dont need this, change createpost to return postresponse
+var Post = Type("Post", func() {
+	Description("Describes a post payload")
+	Attribute("title", String, "Post title")
+	Attribute("description", String, "Post description")
+	Attribute("price", String, "Post price")
+	Attribute("content", ArrayOf(String), "Post content")
+	Attribute("medium", String, "Art type")
+	Required("title", "description", "price", "content", "medium")
+})
+
+var PostResponse = Type("PostResponse", func() {
+	Description("Describes a post response")
+	Attribute("title", String, "Post title")
+	Attribute("description", String, "Post description")
+	Attribute("price", String, "Post price")
+	Attribute("imageIDs", ArrayOf(String), "Image ID")
+	Attribute("postID", String, "Post ID")
+	Attribute("medium", String, "Art type")
+	Attribute("uploadDate", String, "Upload Date")
+	Attribute("sold", Boolean, "is sold")
+	Required("title", "description", "price", "imageIDs", "postID", "medium", "uploadDate", "sold")
 })

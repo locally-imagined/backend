@@ -368,7 +368,7 @@ components:
                     type: string
                     description: Post title
                     example: Voluptatem facilis quisquam quam alias amet officiis.
-            description: Describes a post
+            description: Describes a post payload
             example:
                 content:
                     - Omnis ea ullam sed eligendi.
@@ -425,7 +425,7 @@ components:
                     type: string
                     description: Upload Date
                     example: Alias veritatis ea aut sed fugit sequi.
-            description: Describes a post
+            description: Describes a post response
             example:
                 description: Sunt dolorem quae est dolorum.
                 imageIDs:
@@ -481,15 +481,15 @@ components:
     securitySchemes:
         jwt_header_Authorization:
             type: http
-            description: Secures endpoint by requiring a valid JWT token retrieved via the signin endpoint.
+            description: Secures endpoint by requiring a valid JWT token retrieved via the login endpoint.
             scheme: bearer
         login_header_Authorization:
             type: http
-            description: Basic authentication used to authenticate security principal during signin
+            description: Basic authentication used to authenticate security principal during login
             scheme: basic
         signup_header_Authorization:
             type: http
-            description: Basic authentication used to authenticate security principal during signin
+            description: Basic authentication used to authenticate security principal during signup
             scheme: basic
 tags:
     - name: login
