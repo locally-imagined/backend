@@ -94,7 +94,7 @@ paths:
             security:
                 - jwt_header_Authorization: []
     /posts/edit/{postID}:
-        get:
+        put:
             tags:
                 - postings
             summary: edit_post postings
