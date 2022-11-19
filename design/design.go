@@ -136,14 +136,14 @@ var _ = Service("signup", func() {
 
 var _ = Service("postings", func() {
 	cors.Origin("http://localhost:3000", func() { // Define CORS policy, may be prefixed with "*" wildcard
-		cors.Headers("Authorization")                           // One or more authorized headers, use "*" to authorize all
+		cors.Headers("*")                                       // One or more authorized headers, use "*" to authorize all
 		cors.Methods("GET", "POST", "OPTIONS", "DELETE", "PUT") // One or more authorized HTTP methods
 		cors.Expose("*")                                        // One or more headers exposed to clients
 		cors.MaxAge(600)                                        // How long to cache a preflight request response
 		cors.Credentials()                                      // Sets Access-Control-Allow-Credentials header
 	})
 	cors.Origin("http://localhost:3001", func() { // Define CORS policy, may be prefixed with "*" wildcard
-		cors.Headers("Authorization")                           // One or more authorized headers, use "*" to authorize all
+		cors.Headers("*")                                       // One or more authorized headers, use "*" to authorize all
 		cors.Methods("GET", "POST", "OPTIONS", "DELETE", "PUT") // One or more authorized HTTP methods
 		cors.Expose("*")                                        // One or more headers exposed to clients
 		cors.MaxAge(600)                                        // How long to cache a preflight request response

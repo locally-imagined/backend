@@ -398,7 +398,7 @@ func HandlePostingsOrigin(h http.Handler) http.Handler {
 			if acrm := r.Header.Get("Access-Control-Request-Method"); acrm != "" {
 				// We are handling a preflight request
 				w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS, DELETE, PUT")
-				w.Header().Set("Access-Control-Allow-Headers", "Authorization")
+				w.Header().Set("Access-Control-Allow-Headers", "*")
 			}
 			h.ServeHTTP(w, r)
 			return
@@ -412,7 +412,7 @@ func HandlePostingsOrigin(h http.Handler) http.Handler {
 			if acrm := r.Header.Get("Access-Control-Request-Method"); acrm != "" {
 				// We are handling a preflight request
 				w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS, DELETE, PUT")
-				w.Header().Set("Access-Control-Allow-Headers", "Authorization")
+				w.Header().Set("Access-Control-Allow-Headers", "*")
 			}
 			h.ServeHTTP(w, r)
 			return
