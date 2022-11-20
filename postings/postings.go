@@ -288,10 +288,11 @@ func (s *Service) EditPost(ctx context.Context, p *postings.EditPostPayload) (*p
 	if userID != ctx.Value("UserID").(string) {
 		return nil, err
 	}
-
+	query1 := "UPDATE posts SET "
+	query2 := "=$1 WHERE postID=$2"
 	if p.Title != nil {
-		var title string = "title"
-		_, err = dbPool.Query(EDITPOST, title, *p.Title, p.PostID)
+		query := query1 + "title" + query2
+		_, err = dbPool.Query(query, *p.Title, p.PostID)
 		if err != nil {
 			return nil, err
 		}
