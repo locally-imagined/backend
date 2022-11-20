@@ -291,7 +291,7 @@ func (s *Service) EditPost(ctx context.Context, p *postings.EditPostPayload) (*p
 
 	if p.Title != nil {
 		var title string = "title"
-		_, err = dbPool.Query(EDITPOST, &title, *p.Title, p.PostID)
+		_, err = dbPool.Query(EDITPOST, title, *p.Title, p.PostID)
 		if err != nil {
 			return nil, err
 		}
