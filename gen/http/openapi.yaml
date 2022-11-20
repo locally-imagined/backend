@@ -12,7 +12,28 @@ produces:
     - application/xml
     - application/gob
 paths:
-    /create:
+    /login:
+        post:
+            tags:
+                - login
+            summary: Login login
+            operationId: login#Login
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: Basic Auth security using Basic scheme (https://tools.ietf.org/html/rfc7617)
+                  required: true
+                  type: string
+            responses:
+                "200":
+                    description: OK response.
+                    schema:
+                        type: string
+            schemes:
+                - http
+            security:
+                - login_header_Authorization: []
+    /posts/create:
         post:
             tags:
                 - postings
@@ -48,27 +69,6 @@ paths:
                 - http
             security:
                 - jwt_header_Authorization: []
-    /login:
-        post:
-            tags:
-                - login
-            summary: Login login
-            operationId: login#Login
-            parameters:
-                - name: Authorization
-                  in: header
-                  description: Basic Auth security using Basic scheme (https://tools.ietf.org/html/rfc7617)
-                  required: true
-                  type: string
-            responses:
-                "200":
-                    description: OK response.
-                    schema:
-                        type: string
-            schemes:
-                - http
-            security:
-                - login_header_Authorization: []
     /posts/delete/{postID}:
         delete:
             tags:
@@ -275,7 +275,7 @@ definitions:
                 type: string
                 description: Upload Date
                 example: Et sit quia omnis nemo.
-        description: Describes a post
+        description: Describes a post response
         example:
             description: Qui velit voluptatibus nam minus in ratione.
             imageIDs:
@@ -339,7 +339,7 @@ definitions:
                 type: string
                 description: Upload Date
                 example: Delectus animi.
-        description: Describes a post
+        description: Describes a post response
         example:
             description: Corporis minima qui sit sed voluptas.
             imageIDs:
@@ -391,7 +391,7 @@ definitions:
                 type: string
                 description: Post title
                 example: Omnis eum enim.
-        description: Describes a post
+        description: Describes a post payload
         example:
             content:
                 - Non quidem eos.
@@ -446,12 +446,12 @@ definitions:
 securityDefinitions:
     jwt_header_Authorization:
         type: apiKey
-        description: Secures endpoint by requiring a valid JWT token retrieved via the signin endpoint.
+        description: Secures endpoint by requiring a valid JWT token retrieved via the login endpoint.
         name: Authorization
         in: header
     login_header_Authorization:
         type: basic
-        description: Basic authentication used to authenticate security principal during signin
+        description: Basic authentication used to authenticate security principal during login
     signup_header_Authorization:
         type: basic
-        description: Basic authentication used to authenticate security principal during signin
+        description: Basic authentication used to authenticate security principal during signup

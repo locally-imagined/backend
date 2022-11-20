@@ -120,7 +120,7 @@ type GetPostPageResult struct {
 	Posts []*PostResponse
 }
 
-// Describes a post
+// Describes a post payload
 type Post struct {
 	// Post title
 	Title string
@@ -134,7 +134,7 @@ type Post struct {
 	Medium string
 }
 
-// Describes a post
+// Describes a post response
 type PostResponse struct {
 	// Post title
 	Title string

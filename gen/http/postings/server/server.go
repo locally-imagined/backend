@@ -55,12 +55,12 @@ func New(
 ) *Server {
 	return &Server{
 		Mounts: []*MountPoint{
-			{"CreatePost", "POST", "/create"},
+			{"CreatePost", "POST", "/posts/create"},
 			{"DeletePost", "DELETE", "/posts/delete/{postID}"},
 			{"EditPost", "PUT", "/posts/edit/{postID}"},
 			{"GetPostPage", "GET", "/posts/getpage/{page}"},
 			{"GetImagesForPost", "GET", "/posts/getimages/{postID}"},
-			{"CORS", "OPTIONS", "/create"},
+			{"CORS", "OPTIONS", "/posts/create"},
 			{"CORS", "OPTIONS", "/posts/delete/{postID}"},
 			{"CORS", "OPTIONS", "/posts/edit/{postID}"},
 			{"CORS", "OPTIONS", "/posts/getpage/{page}"},
@@ -115,7 +115,7 @@ func MountCreatePostHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("POST", "/create", f)
+	mux.Handle("POST", "/posts/create", f)
 }
 
 // NewCreatePostHandler creates a HTTP handler which loads the HTTP request and
@@ -365,7 +365,7 @@ func NewGetImagesForPostHandler(
 // service postings.
 func MountCORSHandler(mux goahttp.Muxer, h http.Handler) {
 	h = HandlePostingsOrigin(h)
-	mux.Handle("OPTIONS", "/create", h.ServeHTTP)
+	mux.Handle("OPTIONS", "/posts/create", h.ServeHTTP)
 	mux.Handle("OPTIONS", "/posts/delete/{postID}", h.ServeHTTP)
 	mux.Handle("OPTIONS", "/posts/edit/{postID}", h.ServeHTTP)
 	mux.Handle("OPTIONS", "/posts/getpage/{page}", h.ServeHTTP)
@@ -397,7 +397,7 @@ func HandlePostingsOrigin(h http.Handler) http.Handler {
 			w.Header().Set("Access-Control-Allow-Credentials", "true")
 			if acrm := r.Header.Get("Access-Control-Request-Method"); acrm != "" {
 				// We are handling a preflight request
-				w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS, DELETE, PUT")
+				w.Header().Set("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, OPTIONS")
 				w.Header().Set("Access-Control-Allow-Headers", "*")
 			}
 			h.ServeHTTP(w, r)
@@ -411,7 +411,7 @@ func HandlePostingsOrigin(h http.Handler) http.Handler {
 			w.Header().Set("Access-Control-Allow-Credentials", "true")
 			if acrm := r.Header.Get("Access-Control-Request-Method"); acrm != "" {
 				// We are handling a preflight request
-				w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS, DELETE, PUT")
+				w.Header().Set("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, OPTIONS")
 				w.Header().Set("Access-Control-Allow-Headers", "*")
 			}
 			h.ServeHTTP(w, r)

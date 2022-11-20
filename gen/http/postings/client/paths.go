@@ -13,7 +13,7 @@ import (
 
 // CreatePostPostingsPath returns the URL path to the postings service create_post HTTP endpoint.
 func CreatePostPostingsPath() string {
-	return "/create"
+	return "/posts/create"
 }
 
 // DeletePostPostingsPath returns the URL path to the postings service delete_post HTTP endpoint.
