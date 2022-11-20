@@ -55,12 +55,12 @@ func New(
 ) *Server {
 	return &Server{
 		Mounts: []*MountPoint{
-			{"CreatePost", "POST", "/create"},
+			{"CreatePost", "POST", "/posts/create"},
 			{"DeletePost", "DELETE", "/posts/delete/{postID}"},
 			{"EditPost", "PUT", "/posts/edit/{postID}"},
 			{"GetPostPage", "GET", "/posts/getpage/{page}"},
 			{"GetImagesForPost", "GET", "/posts/getimages/{postID}"},
-			{"CORS", "OPTIONS", "/create"},
+			{"CORS", "OPTIONS", "/posts/create"},
 			{"CORS", "OPTIONS", "/posts/delete/{postID}"},
 			{"CORS", "OPTIONS", "/posts/edit/{postID}"},
 			{"CORS", "OPTIONS", "/posts/getpage/{page}"},
@@ -115,7 +115,7 @@ func MountCreatePostHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("POST", "/create", f)
+	mux.Handle("POST", "/posts/create", f)
 }
 
 // NewCreatePostHandler creates a HTTP handler which loads the HTTP request and
@@ -365,7 +365,7 @@ func NewGetImagesForPostHandler(
 // service postings.
 func MountCORSHandler(mux goahttp.Muxer, h http.Handler) {
 	h = HandlePostingsOrigin(h)
-	mux.Handle("OPTIONS", "/create", h.ServeHTTP)
+	mux.Handle("OPTIONS", "/posts/create", h.ServeHTTP)
 	mux.Handle("OPTIONS", "/posts/delete/{postID}", h.ServeHTTP)
 	mux.Handle("OPTIONS", "/posts/edit/{postID}", h.ServeHTTP)
 	mux.Handle("OPTIONS", "/posts/getpage/{page}", h.ServeHTTP)

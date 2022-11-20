@@ -12,7 +12,28 @@ produces:
     - application/xml
     - application/gob
 paths:
-    /create:
+    /login:
+        post:
+            tags:
+                - login
+            summary: Login login
+            operationId: login#Login
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: Basic Auth security using Basic scheme (https://tools.ietf.org/html/rfc7617)
+                  required: true
+                  type: string
+            responses:
+                "200":
+                    description: OK response.
+                    schema:
+                        type: string
+            schemes:
+                - http
+            security:
+                - login_header_Authorization: []
+    /posts/create:
         post:
             tags:
                 - postings
@@ -48,27 +69,6 @@ paths:
                 - http
             security:
                 - jwt_header_Authorization: []
-    /login:
-        post:
-            tags:
-                - login
-            summary: Login login
-            operationId: login#Login
-            parameters:
-                - name: Authorization
-                  in: header
-                  description: Basic Auth security using Basic scheme (https://tools.ietf.org/html/rfc7617)
-                  required: true
-                  type: string
-            responses:
-                "200":
-                    description: OK response.
-                    schema:
-                        type: string
-            schemes:
-                - http
-            security:
-                - login_header_Authorization: []
     /posts/delete/{postID}:
         delete:
             tags:

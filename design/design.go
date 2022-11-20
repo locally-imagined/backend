@@ -104,7 +104,7 @@ var _ = Service("postings", func() {
 		})
 		// should be posts/create
 		HTTP(func() {
-			POST("/create")
+			POST("/posts/create")
 			Body("post")
 			Response(func() {
 				Body("Posted")

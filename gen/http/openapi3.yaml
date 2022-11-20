@@ -6,7 +6,24 @@ servers:
     - url: http://localhost:80
       description: Default server for login
 paths:
-    /create:
+    /login:
+        post:
+            tags:
+                - login
+            summary: Login login
+            operationId: login#Login
+            responses:
+                "200":
+                    description: OK response.
+                    content:
+                        application/json:
+                            schema:
+                                type: string
+                                example: Itaque sed commodi aspernatur aliquam.
+                            example: Ut vel quia ratione magni et.
+            security:
+                - login_header_Authorization: []
+    /posts/create:
         post:
             tags:
                 - postings
@@ -48,23 +65,6 @@ paths:
                                 uploadDate: Eum molestiae ut deleniti laborum.
             security:
                 - jwt_header_Authorization: []
-    /login:
-        post:
-            tags:
-                - login
-            summary: Login login
-            operationId: login#Login
-            responses:
-                "200":
-                    description: OK response.
-                    content:
-                        application/json:
-                            schema:
-                                type: string
-                                example: Itaque sed commodi aspernatur aliquam.
-                            example: Ut vel quia ratione magni et.
-            security:
-                - login_header_Authorization: []
     /posts/delete/{postID}:
         delete:
             tags:
