@@ -84,6 +84,7 @@ func (s *Service) CreatePost(ctx context.Context, p *postings.CreatePostPayload)
 	if err != nil {
 		return nil, err
 	}
+	defer dbPool.Close()
 	now := time.Now().Format(time.RFC3339)
 	_, err = dbPool.Query("INSERT INTO Posts Values ($1, $2, $3, $4, $5, $6)", postID, ctx.Value("UserID").(string), p.Post.Title, p.Post.Description, p.Post.Price, p.Post.Medium)
 	if err != nil {
@@ -147,10 +148,9 @@ func (s *Service) GetPostPage(ctx context.Context, p *postings.GetPostPagePayloa
 	if err != nil {
 		return nil, err
 	}
+	defer dbPool.Close()
 	offset := p.Page * 25
 	rows, err := dbPool.Query("SELECT p.postid, p.userid, p.title, p.description, p.price, p.medium, p.sold, p.uploaddate, i.imgid FROM posts AS p LEFT JOIN images AS i ON p.postid=i.postid WHERE i.index=0 ORDER BY p.uploaddate OFFSET $1 ROWS FETCH NEXT 25 ROWS ONLY", offset)
-
-	defer dbPool.Close()
 
 	if err != nil {
 		return nil, err
@@ -175,9 +175,8 @@ func (s *Service) GetImagesForPost(ctx context.Context, p *postings.GetImagesFor
 	if err != nil {
 		return nil, err
 	}
-	rows, err := dbPool.Query("SELECT imgid from images where postid=$1 ORDER BY index", p.PostID)
-
 	defer dbPool.Close()
+	rows, err := dbPool.Query("SELECT imgid from images where postid=$1 ORDER BY index", p.PostID)
 
 	if err != nil {
 		return nil, err
@@ -200,6 +199,7 @@ func (s *Service) DeletePost(ctx context.Context, p *postings.DeletePostPayload)
 	if err != nil {
 		return err
 	}
+	defer dbPool.Close()
 	rows, err := dbPool.Query("SELECT userID from Posts where postID=$1", p.PostID)
 	if err != nil {
 		return err
@@ -261,11 +261,11 @@ func (s *Service) DeletePost(ctx context.Context, p *postings.DeletePostPayload)
 }
 
 func (s *Service) EditPost(ctx context.Context, p *postings.EditPostPayload) (*postings.EditPostResult, error) {
-
 	dbPool, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
 	if err != nil {
 		return nil, err
 	}
+	defer dbPool.Close()
 	rows, err := dbPool.Query("SELECT userID from Posts where postID=$1", p.PostID)
 	if err != nil {
 		return nil, err
