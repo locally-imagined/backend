@@ -179,7 +179,7 @@ func (s *Service) GetImagesForPost(ctx context.Context, p *postings.GetImagesFor
 
 	defer dbPool.Close()
 
-	if err == sql.ErrNoRows {
+	if err != nil {
 		return nil, err
 	}
 
