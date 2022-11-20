@@ -36,7 +36,6 @@ var (
 	DELETEIMAGES    string = "DELETE FROM images WHERE postID=$1"
 	DELETEPOST      string = "DELETE FROM posts WHERE postID=$1"
 	DELETEIMAGE     string = "DELETE FROM images where imgid=$1"
-	EDITPOST        string = "UPDATE posts SET $1=$2 WHERE postID=$3"
 	UPDATEINDEX     string = "UPDATE images SET index = index - 1 WHERE (postid=$1 AND index>(SELECT index FROM images WHERE imgid=$2))"
 	ADDIMAGE        string = "INSERT INTO images VALUES($1, $2, (SELECT MAX(index) FROM images where postID=$3) + 1)"
 	GETEDITEDINFO   string = "SELECT title, description, price, medium, sold, uploaddate FROM posts where postID=$1"
@@ -298,25 +297,29 @@ func (s *Service) EditPost(ctx context.Context, p *postings.EditPostPayload) (*p
 		}
 	}
 	if p.Description != nil {
-		_, err = dbPool.Query(EDITPOST, "description", *p.Description, p.PostID)
+		query := query1 + "description" + query2
+		_, err = dbPool.Query(query, *p.Description, p.PostID)
 		if err != nil {
 			return nil, err
 		}
 	}
 	if p.Price != nil {
-		_, err = dbPool.Query(EDITPOST, "price", *p.Price, p.PostID)
+		query := query1 + "price" + query2
+		_, err = dbPool.Query(query, *p.Price, p.PostID)
 		if err != nil {
 			return nil, err
 		}
 	}
 	if p.Medium != nil {
-		_, err = dbPool.Query(EDITPOST, "medium", *p.Medium, p.PostID)
+		query := query1 + "medium" + query2
+		_, err = dbPool.Query(query, *p.Medium, p.PostID)
 		if err != nil {
 			return nil, err
 		}
 	}
 	if p.Sold != nil {
-		_, err = dbPool.Query(EDITPOST, "sold", *p.Sold, p.PostID)
+		query := query1 + "sold" + query2
+		_, err = dbPool.Query(query, *p.Sold, p.PostID)
 		if err != nil {
 			return nil, err
 		}
@@ -333,7 +336,6 @@ func (s *Service) EditPost(ctx context.Context, p *postings.EditPostPayload) (*p
 			return nil, err
 		}
 		awsBucketName, svc := getS3Session()
-		// delete the images in the bucket
 		err = deleteImageFromS3(ctx, svc, awsBucketName, *p.ImageID)
 		if err != nil {
 			return nil, err
@@ -364,7 +366,6 @@ func (s *Service) EditPost(ctx context.Context, p *postings.EditPostPayload) (*p
 			return nil, err
 		}
 	}
-
 	rows, err = dbPool.Query(SELECTIMAGES, p.PostID)
 	if err != nil {
 		return nil, err
