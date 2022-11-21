@@ -102,7 +102,6 @@ var _ = Service("postings", func() {
 		Result(func() {
 			Attribute("Posted", PostResponse)
 		})
-		// should be posts/create
 		HTTP(func() {
 			POST("/posts/create")
 			Body("post")
@@ -156,6 +155,7 @@ var _ = Service("postings", func() {
 	Method("get_post_page", func() {
 		Payload(func() {
 			Attribute("page", Int, "Page to get posts for")
+			Attribute("keyword", String, "Search bar keyword to search for in title and description")
 			Required("page")
 		})
 		Result(func() {
@@ -163,6 +163,7 @@ var _ = Service("postings", func() {
 		})
 		HTTP(func() {
 			GET("/posts/getpage/{page}")
+			Param("keyword")
 			Response(func() {
 				Body("Posts")
 			})

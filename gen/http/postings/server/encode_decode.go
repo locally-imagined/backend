@@ -211,8 +211,9 @@ func EncodeGetPostPageResponse(encoder func(context.Context, http.ResponseWriter
 func DecodeGetPostPageRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (interface{}, error) {
 	return func(r *http.Request) (interface{}, error) {
 		var (
-			page int
-			err  error
+			page    int
+			keyword *string
+			err     error
 
 			params = mux.Vars(r)
 		)
@@ -224,10 +225,14 @@ func DecodeGetPostPageRequest(mux goahttp.Muxer, decoder func(*http.Request) goa
 			}
 			page = int(v)
 		}
+		keywordRaw := r.URL.Query().Get("keyword")
+		if keywordRaw != "" {
+			keyword = &keywordRaw
+		}
 		if err != nil {
 			return nil, err
 		}
-		payload := NewGetPostPagePayload(page)
+		payload := NewGetPostPagePayload(page, keyword)
 
 		return payload, nil
 	}

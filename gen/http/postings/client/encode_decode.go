@@ -305,6 +305,23 @@ func (c *Client) BuildGetPostPageRequest(ctx context.Context, v interface{}) (*h
 	return req, nil
 }
 
+// EncodeGetPostPageRequest returns an encoder for requests sent to the
+// postings get_post_page server.
+func EncodeGetPostPageRequest(encoder func(*http.Request) goahttp.Encoder) func(*http.Request, interface{}) error {
+	return func(req *http.Request, v interface{}) error {
+		p, ok := v.(*postings.GetPostPagePayload)
+		if !ok {
+			return goahttp.ErrInvalidType("postings", "get_post_page", "*postings.GetPostPagePayload", v)
+		}
+		values := req.URL.Query()
+		if p.Keyword != nil {
+			values.Add("keyword", *p.Keyword)
+		}
+		req.URL.RawQuery = values.Encode()
+		return nil
+	}
+}
+
 // DecodeGetPostPageResponse returns a decoder for responses returned by the
 // postings get_post_page endpoint. restoreBody controls whether the response
 // body should be restored after having been read.

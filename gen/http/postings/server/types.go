@@ -179,9 +179,10 @@ func NewEditPostPayload(postID string, title *string, description *string, price
 
 // NewGetPostPagePayload builds a postings service get_post_page endpoint
 // payload.
-func NewGetPostPagePayload(page int) *postings.GetPostPagePayload {
+func NewGetPostPagePayload(page int, keyword *string) *postings.GetPostPagePayload {
 	v := &postings.GetPostPagePayload{}
 	v.Page = page
+	v.Keyword = keyword
 
 	return v
 }

@@ -150,10 +150,15 @@ func (c *Client) EditPost() goa.Endpoint {
 // service get_post_page server.
 func (c *Client) GetPostPage() goa.Endpoint {
 	var (
+		encodeRequest  = EncodeGetPostPageRequest(c.encoder)
 		decodeResponse = DecodeGetPostPageResponse(c.decoder, c.RestoreResponseBody)
 	)
 	return func(ctx context.Context, v interface{}) (interface{}, error) {
 		req, err := c.BuildGetPostPageRequest(ctx, v)
+		if err != nil {
+			return nil, err
+		}
+		err = encodeRequest(req, v)
 		if err != nil {
 			return nil, err
 		}

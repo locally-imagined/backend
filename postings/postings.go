@@ -1,4 +1,4 @@
-package upload
+package postings
 
 // should be package postings
 import (
@@ -28,19 +28,20 @@ type Service struct{}
 var (
 	// ErrUnauthorized is the error returned by Login when the request credentials
 	// are invalid.
-	INSERTPOST      string = "INSERT INTO Posts Values ($1, $2, $3, $4, $5, $6)"
-	INSERTIMAGES    string = "INSERT INTO Images Values ($1, $2, $3)"
-	GETPOSTPAGE     string = "SELECT p.postid, p.userid, p.title, p.description, p.price, p.medium, p.sold, p.uploaddate, i.imgid FROM posts AS p LEFT JOIN images AS i ON p.postid=i.postid WHERE i.index=0 ORDER BY p.uploaddate OFFSET $1 ROWS FETCH NEXT 25 ROWS ONLY"
-	SELECTIMAGES    string = "SELECT imgid from images where postid=$1 ORDER BY index"
-	SELECTUSERID    string = "SELECT userID from Posts where postID=$1"
-	DELETEIMAGES    string = "DELETE FROM images WHERE postID=$1"
-	DELETEPOST      string = "DELETE FROM posts WHERE postID=$1"
-	DELETEIMAGE     string = "DELETE FROM images where imgid=$1"
-	UPDATEINDEX     string = "UPDATE images SET index = index - 1 WHERE (postid=$1 AND index>(SELECT index FROM images WHERE imgid=$2))"
-	ADDIMAGE        string = "INSERT INTO images VALUES($1, $2, (SELECT MAX(index) FROM images where postID=$3) + 1)"
-	GETEDITEDINFO   string = "SELECT title, description, price, medium, sold, uploaddate FROM posts where postID=$1"
-	IMAGESPERPAGE   int    = 25
-	ErrUnauthorized error  = postings.Unauthorized("invalid jwt")
+	INSERTPOST             string = "INSERT INTO Posts Values ($1, $2, $3, $4, $5, $6)"
+	INSERTIMAGES           string = "INSERT INTO Images Values ($1, $2, $3)"
+	GETPOSTPAGE            string = "SELECT p.postid, p.userid, p.title, p.description, p.price, p.medium, p.sold, p.uploaddate, i.imgid FROM posts AS p LEFT JOIN images AS i ON p.postid=i.postid WHERE i.index=0 ORDER BY p.uploaddate OFFSET $1 ROWS FETCH NEXT 25 ROWS ONLY"
+	GETPOSTPAGEWITHKEYWORD string = "SELECT p.postid, p.userid, p.title, p.description, p.price, p.medium, p.sold, p.uploaddate, i.imgid FROM posts AS p LEFT JOIN images AS i ON p.postid = i.postid WHERE i.index=0 AND ((LOWER(p.title) LIKE '%$1%') OR (LOWER(p.description) LIKE '%$1%')) ORDER BY p.uploaddate OFFSET $2 ROWS FETCH NEXT 25 ROWS ONLY"
+	SELECTIMAGES           string = "SELECT imgid from images where postid=$1 ORDER BY index"
+	SELECTUSERID           string = "SELECT userID from Posts where postID=$1"
+	DELETEIMAGES           string = "DELETE FROM images WHERE postID=$1"
+	DELETEPOST             string = "DELETE FROM posts WHERE postID=$1"
+	DELETEIMAGE            string = "DELETE FROM images where imgid=$1"
+	UPDATEINDEX            string = "UPDATE images SET index = index - 1 WHERE (postid=$1 AND index>(SELECT index FROM images WHERE imgid=$2))"
+	ADDIMAGE               string = "INSERT INTO images VALUES($1, $2, (SELECT MAX(index) FROM images where postID=$3) + 1)"
+	GETEDITEDINFO          string = "SELECT title, description, price, medium, sold, uploaddate FROM posts where postID=$1"
+	IMAGESPERPAGE          int    = 25
+	ErrUnauthorized        error  = postings.Unauthorized("invalid jwt")
 )
 
 func (s *Service) JWTAuth(ctx context.Context, token string, scheme *security.JWTScheme) (context.Context, error) {
@@ -167,12 +168,15 @@ func (s *Service) GetPostPage(ctx context.Context, p *postings.GetPostPagePayloa
 	}
 	defer dbPool.Close()
 	offset := p.Page * 25
-	rows, err := dbPool.Query(GETPOSTPAGE, offset)
-
+	var rows *sql.Rows
+	if p.Keyword != nil {
+		rows, err = dbPool.Query(GETPOSTPAGEWITHKEYWORD, *p.Keyword, offset)
+	} else {
+		rows, err = dbPool.Query(GETPOSTPAGE, offset)
+	}
 	if err != nil {
 		return nil, err
 	}
-
 	res := make([]*postings.PostResponse, 0)
 	for rows.Next() {
 		var row post

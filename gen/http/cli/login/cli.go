@@ -32,24 +32,24 @@ postings (create-post|delete-post|edit-post|get-post-page|get-images-for-post)
 
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
-	return os.Args[0] + ` login login --username "Optio voluptates qui recusandae sit magni." --password "Eligendi aut consequatur minima rem tempora qui."` + "\n" +
+	return os.Args[0] + ` login login --username "Ut voluptatum quasi." --password "Sed eius odio commodi eos consequatur quo."` + "\n" +
 		os.Args[0] + ` signup signup --body '{
-      "email": "Et ut consequatur nulla voluptas.",
-      "firstName": "Aut alias optio.",
-      "lastName": "Ducimus aut aut qui.",
-      "phone": "Temporibus asperiores qui autem eveniet."
-   }' --username "Dolorem quasi non qui esse." --password "Praesentium expedita dolore modi dolores laborum."` + "\n" +
+      "email": "Praesentium expedita dolore modi dolores laborum.",
+      "firstName": "Temporibus asperiores qui autem eveniet.",
+      "lastName": "Et ut consequatur nulla voluptas.",
+      "phone": "Dolorem quasi non qui esse."
+   }' --username "Repudiandae tempore molestiae illo." --password "Incidunt et ipsum facilis."` + "\n" +
 		os.Args[0] + ` postings create-post --body '{
       "content": [
-         "Nesciunt impedit.",
-         "Rerum qui quo minima.",
-         "Numquam expedita excepturi quos ut officia sit."
+         "Quos ut officia sit et quaerat.",
+         "Nobis repudiandae autem iste tempora.",
+         "Aut provident ipsa dignissimos sed."
       ],
-      "description": "Voluptas ipsum rerum iure minima nihil odio.",
-      "medium": "Quaerat non nobis repudiandae autem iste.",
-      "price": "Dolorem aut hic dolores est.",
-      "title": "Neque praesentium distinctio impedit perferendis aut."
-   }' --token "Vero aut provident ipsa."` + "\n" +
+      "description": "Eaque nesciunt impedit aut rerum qui.",
+      "medium": "Est inventore.",
+      "price": "Minima quis numquam.",
+      "title": "Dolorem aut hic dolores est."
+   }' --token "Cupiditate voluptatem a eaque odit."` + "\n" +
 		""
 }
 
@@ -97,8 +97,9 @@ func ParseEndpoint(
 		postingsEditPostImageIDFlag     = postingsEditPostFlags.String("image-id", "", "")
 		postingsEditPostTokenFlag       = postingsEditPostFlags.String("token", "REQUIRED", "")
 
-		postingsGetPostPageFlags    = flag.NewFlagSet("get-post-page", flag.ExitOnError)
-		postingsGetPostPagePageFlag = postingsGetPostPageFlags.String("page", "REQUIRED", "Page to get posts for")
+		postingsGetPostPageFlags       = flag.NewFlagSet("get-post-page", flag.ExitOnError)
+		postingsGetPostPagePageFlag    = postingsGetPostPageFlags.String("page", "REQUIRED", "Page to get posts for")
+		postingsGetPostPageKeywordFlag = postingsGetPostPageFlags.String("keyword", "", "")
 
 		postingsGetImagesForPostFlags      = flag.NewFlagSet("get-images-for-post", flag.ExitOnError)
 		postingsGetImagesForPostPostIDFlag = postingsGetImagesForPostFlags.String("post-id", "REQUIRED", "Post to get images for")
@@ -233,7 +234,7 @@ func ParseEndpoint(
 				data, err = postingsc.BuildEditPostPayload(*postingsEditPostPostIDFlag, *postingsEditPostTitleFlag, *postingsEditPostDescriptionFlag, *postingsEditPostPriceFlag, *postingsEditPostContentFlag, *postingsEditPostMediumFlag, *postingsEditPostSoldFlag, *postingsEditPostImageIDFlag, *postingsEditPostTokenFlag)
 			case "get-post-page":
 				endpoint = c.GetPostPage()
-				data, err = postingsc.BuildGetPostPagePayload(*postingsGetPostPagePageFlag)
+				data, err = postingsc.BuildGetPostPagePayload(*postingsGetPostPagePageFlag, *postingsGetPostPageKeywordFlag)
 			case "get-images-for-post":
 				endpoint = c.GetImagesForPost()
 				data, err = postingsc.BuildGetImagesForPostPayload(*postingsGetImagesForPostPostIDFlag)
@@ -268,7 +269,7 @@ Login implements Login.
     -password STRING: User password
 
 Example:
-    %[1]s login login --username "Optio voluptates qui recusandae sit magni." --password "Eligendi aut consequatur minima rem tempora qui."
+    %[1]s login login --username "Ut voluptatum quasi." --password "Sed eius odio commodi eos consequatur quo."
 `, os.Args[0])
 }
 
@@ -295,11 +296,11 @@ Signup implements Signup.
 
 Example:
     %[1]s signup signup --body '{
-      "email": "Et ut consequatur nulla voluptas.",
-      "firstName": "Aut alias optio.",
-      "lastName": "Ducimus aut aut qui.",
-      "phone": "Temporibus asperiores qui autem eveniet."
-   }' --username "Dolorem quasi non qui esse." --password "Praesentium expedita dolore modi dolores laborum."
+      "email": "Praesentium expedita dolore modi dolores laborum.",
+      "firstName": "Temporibus asperiores qui autem eveniet.",
+      "lastName": "Et ut consequatur nulla voluptas.",
+      "phone": "Dolorem quasi non qui esse."
+   }' --username "Repudiandae tempore molestiae illo." --password "Incidunt et ipsum facilis."
 `, os.Args[0])
 }
 
@@ -330,15 +331,15 @@ CreatePost implements create_post.
 Example:
     %[1]s postings create-post --body '{
       "content": [
-         "Nesciunt impedit.",
-         "Rerum qui quo minima.",
-         "Numquam expedita excepturi quos ut officia sit."
+         "Quos ut officia sit et quaerat.",
+         "Nobis repudiandae autem iste tempora.",
+         "Aut provident ipsa dignissimos sed."
       ],
-      "description": "Voluptas ipsum rerum iure minima nihil odio.",
-      "medium": "Quaerat non nobis repudiandae autem iste.",
-      "price": "Dolorem aut hic dolores est.",
-      "title": "Neque praesentium distinctio impedit perferendis aut."
-   }' --token "Vero aut provident ipsa."
+      "description": "Eaque nesciunt impedit aut rerum qui.",
+      "medium": "Est inventore.",
+      "price": "Minima quis numquam.",
+      "title": "Dolorem aut hic dolores est."
+   }' --token "Cupiditate voluptatem a eaque odit."
 `, os.Args[0])
 }
 
@@ -350,7 +351,7 @@ DeletePost implements delete_post.
     -token STRING: 
 
 Example:
-    %[1]s postings delete-post --post-id "Commodi quia est et aut." --token "Nobis dolorem."
+    %[1]s postings delete-post --post-id "Et facere voluptatum quis dolores qui." --token "Ullam perferendis."
 `, os.Args[0])
 }
 
@@ -369,18 +370,19 @@ EditPost implements edit_post.
     -token STRING: 
 
 Example:
-    %[1]s postings edit-post --post-id "Ullam perferendis." --title "Ut blanditiis deleniti illo." --description "Libero a id aut." --price "Ea magni fugit aperiam eum." --content "Dolores nostrum suscipit rerum consequatur." --medium "Explicabo repellendus modi et." --sold true --image-id "Et impedit qui praesentium autem dolor vitae." --token "Quo laboriosam totam ad quia aperiam."
+    %[1]s postings edit-post --post-id "Libero a id aut." --title "Ea magni fugit aperiam eum." --description "Dolores nostrum suscipit rerum consequatur." --price "Explicabo repellendus modi et." --content "Voluptas et impedit qui praesentium autem." --medium "Vitae laudantium quo laboriosam totam ad quia." --sold false --image-id "Enim optio quia debitis totam." --token "Odit cumque dolores aut excepturi atque."
 `, os.Args[0])
 }
 
 func postingsGetPostPageUsage() {
-	fmt.Fprintf(os.Stderr, `%[1]s [flags] postings get-post-page -page INT
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] postings get-post-page -page INT -keyword STRING
 
 GetPostPage implements get_post_page.
     -page INT: Page to get posts for
+    -keyword STRING: 
 
 Example:
-    %[1]s postings get-post-page --page 7215418136611026075
+    %[1]s postings get-post-page --page 751669960849156737 --keyword "Dolores blanditiis ut culpa."
 `, os.Args[0])
 }
 
@@ -391,6 +393,6 @@ GetImagesForPost implements get_images_for_post.
     -post-id STRING: Post to get images for
 
 Example:
-    %[1]s postings get-images-for-post --post-id "Aut excepturi."
+    %[1]s postings get-images-for-post --post-id "Eligendi et voluptatem quia."
 `, os.Args[0])
 }
