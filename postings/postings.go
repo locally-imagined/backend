@@ -28,6 +28,9 @@ type Service struct{}
 var (
 	// ErrUnauthorized is the error returned by Login when the request credentials
 	// are invalid.
+
+	// add prepares before queries
+	//
 	INSERTPOST   string = "INSERT INTO Posts Values ($1, $2, $3, $4, $5, $6)"
 	INSERTIMAGES string = "INSERT INTO Images Values ($1, $2, $3)"
 	GETPOSTPAGE  string = `SELECT p.postid, p.userid, p.title, p.description, 
@@ -37,7 +40,7 @@ var (
 	GETPOSTPAGEWITHKEYWORD string = `SELECT p.postid, p.userid, p.title, p.description, 
 					p.price, p.medium, p.sold, p.uploaddate, i.imgid FROM posts AS p LEFT 
 					JOIN images AS i ON p.postid = i.postid WHERE i.index=0 AND 
-					((LOWER(p.title) LIKE '%|| $1 ||%') OR (LOWER(p.description) LIKE '%$2%')) 
+					((LOWER(p.title) LIKE '%$1%') OR (LOWER(p.description) LIKE '%$2%')) 
 					ORDER BY p.uploaddate OFFSET $3 ROWS FETCH NEXT 25 ROWS ONLY`
 	SELECTIMAGES    string = "SELECT imgid from images where postid=$1 ORDER BY index"
 	SELECTUSERID    string = "SELECT userID from Posts where postID=$1"
@@ -176,10 +179,19 @@ func (s *Service) GetPostPage(ctx context.Context, p *postings.GetPostPagePayloa
 	defer dbPool.Close()
 	offset := p.Page * 25
 	var rows *sql.Rows
+	var stmt *sql.Stmt
 	if p.Keyword != nil {
-		rows, err = dbPool.Query(GETPOSTPAGEWITHKEYWORD, string(*p.Keyword), *p.Keyword, offset)
+		stmt, err = dbPool.Prepare(GETPOSTPAGEWITHKEYWORD)
+		if err != nil {
+			return nil, err
+		}
+		rows, err = stmt.Query(string(*p.Keyword), *p.Keyword, offset)
 	} else {
-		rows, err = dbPool.Query(GETPOSTPAGE, offset)
+		stmt, err = dbPool.Prepare(GETPOSTPAGE)
+		if err != nil {
+			return nil, err
+		}
+		rows, err = stmt.Query(offset)
 	}
 	if err != nil {
 		return nil, err
