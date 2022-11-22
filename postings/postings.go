@@ -45,7 +45,7 @@ var (
 	GETPOSTPAGEFORARTIST string = `SELECT p.postid, p.userid, p.title, p.description, 
 					p.price, p.medium, p.sold, p.uploaddate, i.imgid FROM posts AS p LEFT 
 					JOIN images AS i ON p.postid = i.postid WHERE i.index=0 AND 
-					p.userid = $2
+					p.userid = $1
 					ORDER BY p.uploaddate OFFSET $2 ROWS FETCH NEXT 25 ROWS ONLY`
 	SELECTIMAGES    string = "SELECT imgid from images where postid=$1 ORDER BY index"
 	SELECTUSERID    string = "SELECT userID from Posts where postID=$1"
