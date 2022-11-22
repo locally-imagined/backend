@@ -42,6 +42,11 @@ var (
 					JOIN images AS i ON p.postid = i.postid WHERE i.index=0 AND 
 					((LOWER(p.title) LIKE $1) OR (LOWER(p.description) LIKE $2))
 					ORDER BY p.uploaddate OFFSET $3 ROWS FETCH NEXT 25 ROWS ONLY`
+	GETPOSTPAGEFORARTIST string = `SELECT p.postid, p.userid, p.title, p.description, 
+					p.price, p.medium, p.sold, p.uploaddate, i.imgid FROM posts AS p LEFT 
+					JOIN images AS i ON p.postid = i.postid WHERE i.index=0 AND 
+					p.userid = $2
+					ORDER BY p.uploaddate OFFSET $2 ROWS FETCH NEXT 25 ROWS ONLY`
 	SELECTIMAGES    string = "SELECT imgid from images where postid=$1 ORDER BY index"
 	SELECTUSERID    string = "SELECT userID from Posts where postID=$1"
 	DELETEIMAGES    string = "DELETE FROM images WHERE postID=$1"
@@ -200,6 +205,32 @@ func (s *Service) GetPostPage(ctx context.Context, p *postings.GetPostPagePayloa
 		res = append(res, &postings.PostResponse{Title: row.postTitle, Description: row.postDesc, Price: row.price, ImageIDs: imageID, PostID: row.postID, UploadDate: row.uploadDate, Medium: row.medium, Sold: row.sold})
 	}
 	return &postings.GetPostPageResult{Posts: res}, err
+}
+
+func (s *Service) GetArtistPostPage(ctx context.Context, p *postings.GetArtistPostPagePayload) (*postings.GetArtistPostPageResult, error) {
+	dbPool, err := openDB()
+	if err != nil {
+		return nil, err
+	}
+	defer dbPool.Close()
+	offset := p.Page * 25
+
+	rows, err := dbPool.Query(GETPOSTPAGEFORARTIST, ctx.Value("UserID").(string), offset)
+	if err != nil {
+		return nil, err
+	}
+	res := make([]*postings.PostResponse, 0)
+	for rows.Next() {
+		var row post
+		if err := rows.Scan(&row.postID, &row.userID, &row.postTitle, &row.postDesc, &row.price, &row.medium, &row.sold, &row.uploadDate, &row.imageID); err != nil {
+			log.Fatal(err)
+			return nil, err
+		}
+		imageID := make([]string, 0)
+		imageID = append(imageID, row.imageID)
+		res = append(res, &postings.PostResponse{Title: row.postTitle, Description: row.postDesc, Price: row.price, ImageIDs: imageID, PostID: row.postID, UploadDate: row.uploadDate, Medium: row.medium, Sold: row.sold})
+	}
+	return &postings.GetArtistPostPageResult{Posts: res}, err
 }
 
 func (s *Service) GetImagesForPost(ctx context.Context, p *postings.GetImagesForPostPayload) (*postings.GetImagesForPostResult, error) {

@@ -16,11 +16,12 @@ import (
 
 // Endpoints wraps the "postings" service endpoints.
 type Endpoints struct {
-	CreatePost       goa.Endpoint
-	DeletePost       goa.Endpoint
-	EditPost         goa.Endpoint
-	GetPostPage      goa.Endpoint
-	GetImagesForPost goa.Endpoint
+	CreatePost        goa.Endpoint
+	DeletePost        goa.Endpoint
+	EditPost          goa.Endpoint
+	GetPostPage       goa.Endpoint
+	GetArtistPostPage goa.Endpoint
+	GetImagesForPost  goa.Endpoint
 }
 
 // NewEndpoints wraps the methods of the "postings" service with endpoints.
@@ -28,11 +29,12 @@ func NewEndpoints(s Service) *Endpoints {
 	// Casting service to Auther interface
 	a := s.(Auther)
 	return &Endpoints{
-		CreatePost:       NewCreatePostEndpoint(s, a.JWTAuth),
-		DeletePost:       NewDeletePostEndpoint(s, a.JWTAuth),
-		EditPost:         NewEditPostEndpoint(s, a.JWTAuth),
-		GetPostPage:      NewGetPostPageEndpoint(s),
-		GetImagesForPost: NewGetImagesForPostEndpoint(s),
+		CreatePost:        NewCreatePostEndpoint(s, a.JWTAuth),
+		DeletePost:        NewDeletePostEndpoint(s, a.JWTAuth),
+		EditPost:          NewEditPostEndpoint(s, a.JWTAuth),
+		GetPostPage:       NewGetPostPageEndpoint(s),
+		GetArtistPostPage: NewGetArtistPostPageEndpoint(s, a.JWTAuth),
+		GetImagesForPost:  NewGetImagesForPostEndpoint(s),
 	}
 }
 
@@ -42,6 +44,7 @@ func (e *Endpoints) Use(m func(goa.Endpoint) goa.Endpoint) {
 	e.DeletePost = m(e.DeletePost)
 	e.EditPost = m(e.EditPost)
 	e.GetPostPage = m(e.GetPostPage)
+	e.GetArtistPostPage = m(e.GetArtistPostPage)
 	e.GetImagesForPost = m(e.GetImagesForPost)
 }
 
@@ -108,6 +111,25 @@ func NewGetPostPageEndpoint(s Service) goa.Endpoint {
 	return func(ctx context.Context, req interface{}) (interface{}, error) {
 		p := req.(*GetPostPagePayload)
 		return s.GetPostPage(ctx, p)
+	}
+}
+
+// NewGetArtistPostPageEndpoint returns an endpoint function that calls the
+// method "get_artist_post_page" of service "postings".
+func NewGetArtistPostPageEndpoint(s Service, authJWTFn security.AuthJWTFunc) goa.Endpoint {
+	return func(ctx context.Context, req interface{}) (interface{}, error) {
+		p := req.(*GetArtistPostPagePayload)
+		var err error
+		sc := security.JWTScheme{
+			Name:           "jwt",
+			Scopes:         []string{},
+			RequiredScopes: []string{},
+		}
+		ctx, err = authJWTFn(ctx, p.Token, &sc)
+		if err != nil {
+			return nil, err
+		}
+		return s.GetArtistPostPage(ctx, p)
 	}
 }
 

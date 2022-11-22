@@ -40,6 +40,10 @@ type EditPostResponseBody PostResponseResponseBody
 // "get_post_page" endpoint HTTP response body.
 type GetPostPageResponseBody []*PostResponse
 
+// GetArtistPostPageResponseBody is the type of the "postings" service
+// "get_artist_post_page" endpoint HTTP response body.
+type GetArtistPostPageResponseBody []*PostResponse
+
 // PostResponseResponseBody is used to define fields on response body types.
 type PostResponseResponseBody struct {
 	// Post title
@@ -132,6 +136,16 @@ func NewGetPostPageResponseBody(res *postings.GetPostPageResult) GetPostPageResp
 	return body
 }
 
+// NewGetArtistPostPageResponseBody builds the HTTP response body from the
+// result of the "get_artist_post_page" endpoint of the "postings" service.
+func NewGetArtistPostPageResponseBody(res *postings.GetArtistPostPageResult) GetArtistPostPageResponseBody {
+	body := make([]*PostResponse, len(res.Posts))
+	for i, val := range res.Posts {
+		body[i] = marshalPostingsPostResponseToPostResponse(val)
+	}
+	return body
+}
+
 // NewCreatePostPayload builds a postings service create_post endpoint payload.
 func NewCreatePostPayload(body *CreatePostRequestBody, token string) *postings.CreatePostPayload {
 	v := &postings.Post{
@@ -183,6 +197,16 @@ func NewGetPostPagePayload(page int, keyword *string) *postings.GetPostPagePaylo
 	v := &postings.GetPostPagePayload{}
 	v.Page = page
 	v.Keyword = keyword
+
+	return v
+}
+
+// NewGetArtistPostPagePayload builds a postings service get_artist_post_page
+// endpoint payload.
+func NewGetArtistPostPagePayload(page int, token string) *postings.GetArtistPostPagePayload {
+	v := &postings.GetArtistPostPagePayload{}
+	v.Page = page
+	v.Token = token
 
 	return v
 }

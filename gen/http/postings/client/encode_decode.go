@@ -368,6 +368,97 @@ func DecodeGetPostPageResponse(decoder func(*http.Response) goahttp.Decoder, res
 	}
 }
 
+// BuildGetArtistPostPageRequest instantiates a HTTP request object with method
+// and path set to call the "postings" service "get_artist_post_page" endpoint
+func (c *Client) BuildGetArtistPostPageRequest(ctx context.Context, v interface{}) (*http.Request, error) {
+	var (
+		page int
+	)
+	{
+		p, ok := v.(*postings.GetArtistPostPagePayload)
+		if !ok {
+			return nil, goahttp.ErrInvalidType("postings", "get_artist_post_page", "*postings.GetArtistPostPagePayload", v)
+		}
+		page = p.Page
+	}
+	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: GetArtistPostPagePostingsPath(page)}
+	req, err := http.NewRequest("GET", u.String(), nil)
+	if err != nil {
+		return nil, goahttp.ErrInvalidURL("postings", "get_artist_post_page", u.String(), err)
+	}
+	if ctx != nil {
+		req = req.WithContext(ctx)
+	}
+
+	return req, nil
+}
+
+// EncodeGetArtistPostPageRequest returns an encoder for requests sent to the
+// postings get_artist_post_page server.
+func EncodeGetArtistPostPageRequest(encoder func(*http.Request) goahttp.Encoder) func(*http.Request, interface{}) error {
+	return func(req *http.Request, v interface{}) error {
+		p, ok := v.(*postings.GetArtistPostPagePayload)
+		if !ok {
+			return goahttp.ErrInvalidType("postings", "get_artist_post_page", "*postings.GetArtistPostPagePayload", v)
+		}
+		{
+			head := p.Token
+			if !strings.Contains(head, " ") {
+				req.Header.Set("Authorization", "Bearer "+head)
+			} else {
+				req.Header.Set("Authorization", head)
+			}
+		}
+		return nil
+	}
+}
+
+// DecodeGetArtistPostPageResponse returns a decoder for responses returned by
+// the postings get_artist_post_page endpoint. restoreBody controls whether the
+// response body should be restored after having been read.
+func DecodeGetArtistPostPageResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
+	return func(resp *http.Response) (interface{}, error) {
+		if restoreBody {
+			b, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return nil, err
+			}
+			resp.Body = io.NopCloser(bytes.NewBuffer(b))
+			defer func() {
+				resp.Body = io.NopCloser(bytes.NewBuffer(b))
+			}()
+		} else {
+			defer resp.Body.Close()
+		}
+		switch resp.StatusCode {
+		case http.StatusOK:
+			var (
+				body GetArtistPostPageResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("postings", "get_artist_post_page", err)
+			}
+			for _, e := range body {
+				if e != nil {
+					if err2 := ValidatePostResponse(e); err2 != nil {
+						err = goa.MergeErrors(err, err2)
+					}
+				}
+			}
+			if err != nil {
+				return nil, goahttp.ErrValidationError("postings", "get_artist_post_page", err)
+			}
+			res := NewGetArtistPostPageResultOK(body)
+			return res, nil
+		default:
+			body, _ := io.ReadAll(resp.Body)
+			return nil, goahttp.ErrInvalidResponse("postings", "get_artist_post_page", resp.StatusCode, string(body))
+		}
+	}
+}
+
 // BuildGetImagesForPostRequest instantiates a HTTP request object with method
 // and path set to call the "postings" service "get_images_for_post" endpoint
 func (c *Client) BuildGetImagesForPostRequest(ctx context.Context, v interface{}) (*http.Request, error) {

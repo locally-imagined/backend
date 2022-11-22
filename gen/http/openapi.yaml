@@ -211,6 +211,34 @@ paths:
                             $ref: '#/definitions/PostResponse'
             schemes:
                 - http
+    /posts/myposts/{page}:
+        get:
+            tags:
+                - postings
+            summary: get_artist_post_page postings
+            operationId: postings#get_artist_post_page
+            parameters:
+                - name: page
+                  in: path
+                  description: Page to get posts for
+                  required: true
+                  type: integer
+                - name: Authorization
+                  in: header
+                  description: jwt used for auth
+                  required: true
+                  type: string
+            responses:
+                "200":
+                    description: OK response.
+                    schema:
+                        type: array
+                        items:
+                            $ref: '#/definitions/PostResponse'
+            schemes:
+                - http
+            security:
+                - jwt_header_Authorization: []
     /signup:
         post:
             tags:

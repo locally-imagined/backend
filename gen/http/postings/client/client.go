@@ -33,6 +33,10 @@ type Client struct {
 	// get_post_page endpoint.
 	GetPostPageDoer goahttp.Doer
 
+	// GetArtistPostPage Doer is the HTTP client used to make requests to the
+	// get_artist_post_page endpoint.
+	GetArtistPostPageDoer goahttp.Doer
+
 	// GetImagesForPost Doer is the HTTP client used to make requests to the
 	// get_images_for_post endpoint.
 	GetImagesForPostDoer goahttp.Doer
@@ -60,17 +64,18 @@ func NewClient(
 	restoreBody bool,
 ) *Client {
 	return &Client{
-		CreatePostDoer:       doer,
-		DeletePostDoer:       doer,
-		EditPostDoer:         doer,
-		GetPostPageDoer:      doer,
-		GetImagesForPostDoer: doer,
-		CORSDoer:             doer,
-		RestoreResponseBody:  restoreBody,
-		scheme:               scheme,
-		host:                 host,
-		decoder:              dec,
-		encoder:              enc,
+		CreatePostDoer:        doer,
+		DeletePostDoer:        doer,
+		EditPostDoer:          doer,
+		GetPostPageDoer:       doer,
+		GetArtistPostPageDoer: doer,
+		GetImagesForPostDoer:  doer,
+		CORSDoer:              doer,
+		RestoreResponseBody:   restoreBody,
+		scheme:                scheme,
+		host:                  host,
+		decoder:               dec,
+		encoder:               enc,
 	}
 }
 
@@ -165,6 +170,30 @@ func (c *Client) GetPostPage() goa.Endpoint {
 		resp, err := c.GetPostPageDoer.Do(req)
 		if err != nil {
 			return nil, goahttp.ErrRequestError("postings", "get_post_page", err)
+		}
+		return decodeResponse(resp)
+	}
+}
+
+// GetArtistPostPage returns an endpoint that makes HTTP requests to the
+// postings service get_artist_post_page server.
+func (c *Client) GetArtistPostPage() goa.Endpoint {
+	var (
+		encodeRequest  = EncodeGetArtistPostPageRequest(c.encoder)
+		decodeResponse = DecodeGetArtistPostPageResponse(c.decoder, c.RestoreResponseBody)
+	)
+	return func(ctx context.Context, v interface{}) (interface{}, error) {
+		req, err := c.BuildGetArtistPostPageRequest(ctx, v)
+		if err != nil {
+			return nil, err
+		}
+		err = encodeRequest(req, v)
+		if err != nil {
+			return nil, err
+		}
+		resp, err := c.GetArtistPostPageDoer.Do(req)
+		if err != nil {
+			return nil, goahttp.ErrRequestError("postings", "get_artist_post_page", err)
 		}
 		return decodeResponse(resp)
 	}

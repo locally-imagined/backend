@@ -174,6 +174,30 @@ func BuildGetPostPagePayload(postingsGetPostPagePage string, postingsGetPostPage
 	return v, nil
 }
 
+// BuildGetArtistPostPagePayload builds the payload for the postings
+// get_artist_post_page endpoint from CLI flags.
+func BuildGetArtistPostPagePayload(postingsGetArtistPostPagePage string, postingsGetArtistPostPageToken string) (*postings.GetArtistPostPagePayload, error) {
+	var err error
+	var page int
+	{
+		var v int64
+		v, err = strconv.ParseInt(postingsGetArtistPostPagePage, 10, strconv.IntSize)
+		page = int(v)
+		if err != nil {
+			return nil, fmt.Errorf("invalid value for page, must be INT")
+		}
+	}
+	var token string
+	{
+		token = postingsGetArtistPostPageToken
+	}
+	v := &postings.GetArtistPostPagePayload{}
+	v.Page = page
+	v.Token = token
+
+	return v, nil
+}
+
 // BuildGetImagesForPostPayload builds the payload for the postings
 // get_images_for_post endpoint from CLI flags.
 func BuildGetImagesForPostPayload(postingsGetImagesForPostPostID string) (*postings.GetImagesForPostPayload, error) {

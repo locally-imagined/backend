@@ -169,6 +169,23 @@ var _ = Service("postings", func() {
 			})
 		})
 	})
+	Method("get_artist_post_page", func() {
+		Security(JWTAuth)
+		Payload(func() {
+			Token("token", String, "jwt used for auth")
+			Attribute("page", Int, "Page to get posts for")
+			Required("token", "page")
+		})
+		Result(func() {
+			Attribute("Posts", ArrayOf(PostResponse))
+		})
+		HTTP(func() {
+			GET("/posts/myposts/{page}")
+			Response(func() {
+				Body("Posts")
+			})
+		})
+	})
 	Method("get_images_for_post", func() {
 		Payload(func() {
 			Attribute("postID", String, "Post to get images for")

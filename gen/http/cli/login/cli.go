@@ -22,11 +22,12 @@ import (
 
 // UsageCommands returns the set of commands and sub-commands using the format
 //
-//	command (subcommand1|subcommand2|...)
+//    command (subcommand1|subcommand2|...)
+//
 func UsageCommands() string {
 	return `login login
 signup signup
-postings (create-post|delete-post|edit-post|get-post-page|get-images-for-post)
+postings (create-post|delete-post|edit-post|get-post-page|get-artist-post-page|get-images-for-post)
 `
 }
 
@@ -101,6 +102,10 @@ func ParseEndpoint(
 		postingsGetPostPagePageFlag    = postingsGetPostPageFlags.String("page", "REQUIRED", "Page to get posts for")
 		postingsGetPostPageKeywordFlag = postingsGetPostPageFlags.String("keyword", "", "")
 
+		postingsGetArtistPostPageFlags     = flag.NewFlagSet("get-artist-post-page", flag.ExitOnError)
+		postingsGetArtistPostPagePageFlag  = postingsGetArtistPostPageFlags.String("page", "REQUIRED", "Page to get posts for")
+		postingsGetArtistPostPageTokenFlag = postingsGetArtistPostPageFlags.String("token", "REQUIRED", "")
+
 		postingsGetImagesForPostFlags      = flag.NewFlagSet("get-images-for-post", flag.ExitOnError)
 		postingsGetImagesForPostPostIDFlag = postingsGetImagesForPostFlags.String("post-id", "REQUIRED", "Post to get images for")
 	)
@@ -115,6 +120,7 @@ func ParseEndpoint(
 	postingsDeletePostFlags.Usage = postingsDeletePostUsage
 	postingsEditPostFlags.Usage = postingsEditPostUsage
 	postingsGetPostPageFlags.Usage = postingsGetPostPageUsage
+	postingsGetArtistPostPageFlags.Usage = postingsGetArtistPostPageUsage
 	postingsGetImagesForPostFlags.Usage = postingsGetImagesForPostUsage
 
 	if err := flag.CommandLine.Parse(os.Args[1:]); err != nil {
@@ -181,6 +187,9 @@ func ParseEndpoint(
 			case "get-post-page":
 				epf = postingsGetPostPageFlags
 
+			case "get-artist-post-page":
+				epf = postingsGetArtistPostPageFlags
+
 			case "get-images-for-post":
 				epf = postingsGetImagesForPostFlags
 
@@ -235,6 +244,9 @@ func ParseEndpoint(
 			case "get-post-page":
 				endpoint = c.GetPostPage()
 				data, err = postingsc.BuildGetPostPagePayload(*postingsGetPostPagePageFlag, *postingsGetPostPageKeywordFlag)
+			case "get-artist-post-page":
+				endpoint = c.GetArtistPostPage()
+				data, err = postingsc.BuildGetArtistPostPagePayload(*postingsGetArtistPostPagePageFlag, *postingsGetArtistPostPageTokenFlag)
 			case "get-images-for-post":
 				endpoint = c.GetImagesForPost()
 				data, err = postingsc.BuildGetImagesForPostPayload(*postingsGetImagesForPostPostIDFlag)
@@ -315,6 +327,7 @@ COMMAND:
     delete-post: DeletePost implements delete_post.
     edit-post: EditPost implements edit_post.
     get-post-page: GetPostPage implements get_post_page.
+    get-artist-post-page: GetArtistPostPage implements get_artist_post_page.
     get-images-for-post: GetImagesForPost implements get_images_for_post.
 
 Additional help:
@@ -386,6 +399,18 @@ Example:
 `, os.Args[0])
 }
 
+func postingsGetArtistPostPageUsage() {
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] postings get-artist-post-page -page INT -token STRING
+
+GetArtistPostPage implements get_artist_post_page.
+    -page INT: Page to get posts for
+    -token STRING: 
+
+Example:
+    %[1]s postings get-artist-post-page --page 5741191689338332085 --token "Natus vitae."
+`, os.Args[0])
+}
+
 func postingsGetImagesForPostUsage() {
 	fmt.Fprintf(os.Stderr, `%[1]s [flags] postings get-images-for-post -post-id STRING
 
@@ -393,6 +418,6 @@ GetImagesForPost implements get_images_for_post.
     -post-id STRING: Post to get images for
 
 Example:
-    %[1]s postings get-images-for-post --post-id "Eligendi et voluptatem quia."
+    %[1]s postings get-images-for-post --post-id "Enim quasi."
 `, os.Args[0])
 }
