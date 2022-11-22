@@ -179,21 +179,11 @@ func (s *Service) GetPostPage(ctx context.Context, p *postings.GetPostPagePayloa
 	defer dbPool.Close()
 	offset := p.Page * 25
 	var rows *sql.Rows
-	var stmt *sql.Stmt
 	if p.Keyword != nil {
-		stmt, err = dbPool.Prepare(GETPOSTPAGEWITHKEYWORD)
-		if err != nil {
-			return nil, err
-		}
-		defer stmt.Close()
-		rows, err = stmt.Query((*p.Keyword), *p.Keyword, offset)
+		keyword := "%" + *p.Keyword + "%"
+		rows, err = dbPool.Query(GETPOSTPAGEWITHKEYWORD, keyword, keyword, offset)
 	} else {
-		stmt, err = dbPool.Prepare(GETPOSTPAGE)
-		if err != nil {
-			return nil, err
-		}
-		defer stmt.Close()
-		rows, err = stmt.Query(offset)
+		rows, err = dbPool.Query(GETPOSTPAGE, offset)
 	}
 	if err != nil {
 		return nil, err
