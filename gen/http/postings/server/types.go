@@ -26,6 +26,8 @@ type CreatePostRequestBody struct {
 	Content []string `form:"content,omitempty" json:"content,omitempty" xml:"content,omitempty"`
 	// Art type
 	Medium *string `form:"medium,omitempty" json:"medium,omitempty" xml:"medium,omitempty"`
+	// Delivery type
+	Deliverytype *string `form:"deliverytype,omitempty" json:"deliverytype,omitempty" xml:"deliverytype,omitempty"`
 }
 
 // CreatePostResponseBody is the type of the "postings" service "create_post"
@@ -62,6 +64,8 @@ type PostResponseResponseBody struct {
 	UploadDate string `form:"uploadDate" json:"uploadDate" xml:"uploadDate"`
 	// is sold
 	Sold bool `form:"sold" json:"sold" xml:"sold"`
+	// Delivery type
+	Deliverytype string `form:"deliverytype" json:"deliverytype" xml:"deliverytype"`
 }
 
 // PostResponse is used to define fields on response body types.
@@ -82,19 +86,22 @@ type PostResponse struct {
 	UploadDate string `form:"uploadDate" json:"uploadDate" xml:"uploadDate"`
 	// is sold
 	Sold bool `form:"sold" json:"sold" xml:"sold"`
+	// Delivery type
+	Deliverytype string `form:"deliverytype" json:"deliverytype" xml:"deliverytype"`
 }
 
 // NewCreatePostResponseBody builds the HTTP response body from the result of
 // the "create_post" endpoint of the "postings" service.
 func NewCreatePostResponseBody(res *postings.CreatePostResult) *CreatePostResponseBody {
 	body := &CreatePostResponseBody{
-		Title:       res.Posted.Title,
-		Description: res.Posted.Description,
-		Price:       res.Posted.Price,
-		PostID:      res.Posted.PostID,
-		Medium:      res.Posted.Medium,
-		UploadDate:  res.Posted.UploadDate,
-		Sold:        res.Posted.Sold,
+		Title:        res.Posted.Title,
+		Description:  res.Posted.Description,
+		Price:        res.Posted.Price,
+		PostID:       res.Posted.PostID,
+		Medium:       res.Posted.Medium,
+		UploadDate:   res.Posted.UploadDate,
+		Sold:         res.Posted.Sold,
+		Deliverytype: res.Posted.Deliverytype,
 	}
 	if res.Posted.ImageIDs != nil {
 		body.ImageIDs = make([]string, len(res.Posted.ImageIDs))
@@ -109,13 +116,14 @@ func NewCreatePostResponseBody(res *postings.CreatePostResult) *CreatePostRespon
 // "edit_post" endpoint of the "postings" service.
 func NewEditPostResponseBody(res *postings.EditPostResult) *EditPostResponseBody {
 	body := &EditPostResponseBody{
-		Title:       res.Posted.Title,
-		Description: res.Posted.Description,
-		Price:       res.Posted.Price,
-		PostID:      res.Posted.PostID,
-		Medium:      res.Posted.Medium,
-		UploadDate:  res.Posted.UploadDate,
-		Sold:        res.Posted.Sold,
+		Title:        res.Posted.Title,
+		Description:  res.Posted.Description,
+		Price:        res.Posted.Price,
+		PostID:       res.Posted.PostID,
+		Medium:       res.Posted.Medium,
+		UploadDate:   res.Posted.UploadDate,
+		Sold:         res.Posted.Sold,
+		Deliverytype: res.Posted.Deliverytype,
 	}
 	if res.Posted.ImageIDs != nil {
 		body.ImageIDs = make([]string, len(res.Posted.ImageIDs))
@@ -149,10 +157,11 @@ func NewGetArtistPostPageResponseBody(res *postings.GetArtistPostPageResult) Get
 // NewCreatePostPayload builds a postings service create_post endpoint payload.
 func NewCreatePostPayload(body *CreatePostRequestBody, token string) *postings.CreatePostPayload {
 	v := &postings.Post{
-		Title:       *body.Title,
-		Description: *body.Description,
-		Price:       *body.Price,
-		Medium:      *body.Medium,
+		Title:        *body.Title,
+		Description:  *body.Description,
+		Price:        *body.Price,
+		Medium:       *body.Medium,
+		Deliverytype: *body.Deliverytype,
 	}
 	v.Content = make([]string, len(body.Content))
 	for i, val := range body.Content {
@@ -237,6 +246,9 @@ func ValidateCreatePostRequestBody(body *CreatePostRequestBody) (err error) {
 	}
 	if body.Medium == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("medium", "body"))
+	}
+	if body.Deliverytype == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("deliverytype", "body"))
 	}
 	return
 }

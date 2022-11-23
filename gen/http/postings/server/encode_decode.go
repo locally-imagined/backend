@@ -319,13 +319,14 @@ func DecodeGetImagesForPostRequest(mux goahttp.Muxer, decoder func(*http.Request
 // *PostResponse from a value of type *postings.PostResponse.
 func marshalPostingsPostResponseToPostResponse(v *postings.PostResponse) *PostResponse {
 	res := &PostResponse{
-		Title:       v.Title,
-		Description: v.Description,
-		Price:       v.Price,
-		PostID:      v.PostID,
-		Medium:      v.Medium,
-		UploadDate:  v.UploadDate,
-		Sold:        v.Sold,
+		Title:        v.Title,
+		Description:  v.Description,
+		Price:        v.Price,
+		PostID:       v.PostID,
+		Medium:       v.Medium,
+		UploadDate:   v.UploadDate,
+		Sold:         v.Sold,
+		Deliverytype: v.Deliverytype,
 	}
 	if v.ImageIDs != nil {
 		res.ImageIDs = make([]string, len(v.ImageIDs))

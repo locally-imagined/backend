@@ -151,6 +151,8 @@ type Post struct {
 	Content []string
 	// Art type
 	Medium string
+	// Delivery type
+	Deliverytype string
 }
 
 // Describes a post response
@@ -171,6 +173,8 @@ type PostResponse struct {
 	UploadDate string
 	// is sold
 	Sold bool
+	// Delivery type
+	Deliverytype string
 }
 
 // Credentials are invalid

@@ -524,13 +524,14 @@ func DecodeGetImagesForPostResponse(decoder func(*http.Response) goahttp.Decoder
 // *postings.PostResponse from a value of type *PostResponse.
 func unmarshalPostResponseToPostingsPostResponse(v *PostResponse) *postings.PostResponse {
 	res := &postings.PostResponse{
-		Title:       *v.Title,
-		Description: *v.Description,
-		Price:       *v.Price,
-		PostID:      *v.PostID,
-		Medium:      *v.Medium,
-		UploadDate:  *v.UploadDate,
-		Sold:        *v.Sold,
+		Title:        *v.Title,
+		Description:  *v.Description,
+		Price:        *v.Price,
+		PostID:       *v.PostID,
+		Medium:       *v.Medium,
+		UploadDate:   *v.UploadDate,
+		Sold:         *v.Sold,
+		Deliverytype: *v.Deliverytype,
 	}
 	res.ImageIDs = make([]string, len(v.ImageIDs))
 	for i, val := range v.ImageIDs {

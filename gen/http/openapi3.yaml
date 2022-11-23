@@ -19,8 +19,8 @@ paths:
                         application/json:
                             schema:
                                 type: string
-                                example: Facilis quisquam quam alias amet officiis qui.
-                            example: Ab quia dolorem consequuntur omnis.
+                                example: Error doloribus id nisi consectetur corporis ut.
+                            example: Est voluptas quia libero dolorem.
             security:
                 - login_header_Authorization: []
     /posts/create:
@@ -38,13 +38,15 @@ paths:
                             $ref: '#/components/schemas/Post'
                         example:
                             content:
-                                - Quos ut officia sit et quaerat.
-                                - Nobis repudiandae autem iste tempora.
-                                - Aut provident ipsa dignissimos sed.
-                            description: Eaque nesciunt impedit aut rerum qui.
-                            medium: Est inventore.
-                            price: Minima quis numquam.
-                            title: Dolorem aut hic dolores est.
+                                - Et quaerat non.
+                                - Repudiandae autem iste tempora vero aut provident.
+                                - Dignissimos sed sint est inventore et.
+                                - Voluptatem a eaque.
+                            deliverytype: In provident.
+                            description: Minima quis numquam.
+                            medium: Debitis atque voluptates at.
+                            price: Excepturi quos ut.
+                            title: Eaque nesciunt impedit aut rerum qui.
             responses:
                 "200":
                     description: OK response.
@@ -53,17 +55,19 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/PostingscreatePostResponseBody'
                             example:
-                                description: Provident dignissimos.
+                                deliverytype: A id aut.
+                                description: Expedita eum voluptatibus tenetur non.
                                 imageIDs:
-                                    - Repellendus quia voluptas architecto.
-                                    - Expedita eum voluptatibus tenetur non.
-                                    - Odit deleniti non praesentium molestiae consequuntur.
-                                medium: Minus quia labore recusandae quae omnis et.
-                                postID: Eum molestiae ut deleniti laborum.
-                                price: Distinctio ut laboriosam nam hic vel vel.
-                                sold: false
-                                title: Atque voluptates at perferendis.
-                                uploadDate: Voluptas commodi.
+                                    - Molestiae ut deleniti laborum.
+                                    - Minus quia labore recusandae quae omnis et.
+                                    - Voluptas commodi.
+                                    - Est et aut doloribus nobis dolorem.
+                                medium: Ullam perferendis.
+                                postID: Facere voluptatum quis dolores qui.
+                                price: Odit deleniti non praesentium molestiae consequuntur.
+                                sold: true
+                                title: Rerum dignissimos repellendus quia voluptas architecto.
+                                uploadDate: Ut blanditiis deleniti illo.
             security:
                 - jwt_header_Authorization: []
     /posts/delete/{postID}:
@@ -80,8 +84,8 @@ paths:
                   schema:
                     type: string
                     description: Post to delete
-                    example: Sapiente nostrum.
-                  example: Vel adipisci quia quo natus aut.
+                    example: Et consequatur sed voluptas autem commodi.
+                  example: Maiores laboriosam aliquam dolor in quod accusantium.
             responses:
                 "204":
                     description: No Content response.
@@ -101,8 +105,8 @@ paths:
                   schema:
                     type: string
                     description: Post title
-                    example: Excepturi magnam.
-                  example: Totam et non sint recusandae.
+                    example: Eveniet debitis voluptatibus qui numquam aliquid velit.
+                  example: Possimus dolor porro nihil ea illum.
                 - name: description
                   in: query
                   description: Post description
@@ -110,8 +114,8 @@ paths:
                   schema:
                     type: string
                     description: Post description
-                    example: Natus consequuntur.
-                  example: Assumenda sint pariatur.
+                    example: Minima sunt at doloremque aliquam et consequatur.
+                  example: Recusandae enim incidunt distinctio aut ducimus nesciunt.
                 - name: price
                   in: query
                   description: Post price
@@ -119,8 +123,8 @@ paths:
                   schema:
                     type: string
                     description: Post price
-                    example: Rerum sequi impedit vel dolorem ipsam atque.
-                  example: Minus autem fugiat molestiae ad quo.
+                    example: Necessitatibus sit distinctio magnam molestiae enim sunt.
+                  example: Et aliquam eos ad et.
                 - name: content
                   in: query
                   description: Image content
@@ -128,8 +132,8 @@ paths:
                   schema:
                     type: string
                     description: Image content
-                    example: Esse et modi vel mollitia.
-                  example: Esse eos ut eum.
+                    example: Quibusdam vel rerum quam sint dicta sint.
+                  example: Quisquam itaque.
                 - name: medium
                   in: query
                   description: Art type
@@ -137,8 +141,8 @@ paths:
                   schema:
                     type: string
                     description: Art type
-                    example: Quisquam nobis consectetur ut.
-                  example: Labore sint autem asperiores aspernatur dolorum.
+                    example: Eveniet quia.
+                  example: Aperiam numquam voluptatibus qui quidem cupiditate quas.
                 - name: sold
                   in: query
                   description: is sold
@@ -146,8 +150,8 @@ paths:
                   schema:
                     type: boolean
                     description: is sold
-                    example: false
-                  example: false
+                    example: true
+                  example: true
                 - name: imageID
                   in: query
                   description: Image ID
@@ -155,8 +159,8 @@ paths:
                   schema:
                     type: string
                     description: Image ID
-                    example: Et sit illum quae facere.
-                  example: Dolorem quia eveniet totam doloribus.
+                    example: Incidunt consectetur vero.
+                  example: Iusto voluptas et autem sed voluptas.
                 - name: postID
                   in: path
                   description: Post ID
@@ -164,8 +168,8 @@ paths:
                   schema:
                     type: string
                     description: Post ID
-                    example: Est libero optio hic eos ut.
-                  example: Rerum ipsum.
+                    example: Quis earum.
+                  example: Quasi sunt quisquam optio repellendus incidunt ab.
             responses:
                 "200":
                     description: OK response.
@@ -174,17 +178,19 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/PostResponse'
                             example:
-                                description: Provident dignissimos.
+                                deliverytype: A id aut.
+                                description: Expedita eum voluptatibus tenetur non.
                                 imageIDs:
-                                    - Repellendus quia voluptas architecto.
-                                    - Expedita eum voluptatibus tenetur non.
-                                    - Odit deleniti non praesentium molestiae consequuntur.
-                                medium: Minus quia labore recusandae quae omnis et.
-                                postID: Eum molestiae ut deleniti laborum.
-                                price: Distinctio ut laboriosam nam hic vel vel.
-                                sold: false
-                                title: Atque voluptates at perferendis.
-                                uploadDate: Voluptas commodi.
+                                    - Molestiae ut deleniti laborum.
+                                    - Minus quia labore recusandae quae omnis et.
+                                    - Voluptas commodi.
+                                    - Est et aut doloribus nobis dolorem.
+                                medium: Ullam perferendis.
+                                postID: Facere voluptatum quis dolores qui.
+                                price: Odit deleniti non praesentium molestiae consequuntur.
+                                sold: true
+                                title: Rerum dignissimos repellendus quia voluptas architecto.
+                                uploadDate: Ut blanditiis deleniti illo.
             security:
                 - jwt_header_Authorization: []
     /posts/getimages/{postID}:
@@ -201,8 +207,8 @@ paths:
                   schema:
                     type: string
                     description: Post to get images for
-                    example: Iusto non.
-                  example: Quas ut velit ipsum.
+                    example: Animi voluptatem dicta.
+                  example: Enim excepturi.
             responses:
                 "200":
                     description: OK response.
@@ -212,14 +218,15 @@ paths:
                                 type: array
                                 items:
                                     type: string
-                                    example: Reiciendis sed.
+                                    example: Quia ab.
                                 example:
-                                    - Ut voluptas nihil optio quasi sint rem.
-                                    - Necessitatibus et reprehenderit illum reprehenderit voluptatem.
-                                    - Illum in odit voluptates et velit expedita.
+                                    - Ipsam voluptas quibusdam.
+                                    - Non quisquam quas ut velit.
+                                    - Voluptatem dolor exercitationem sunt ipsum.
+                                    - Error vel autem nihil quia sit et.
                             example:
-                                - Exercitationem sunt ipsum autem error vel autem.
-                                - Quia sit.
+                                - Aut aliquam porro perspiciatis neque.
+                                - Atque consectetur inventore earum error ratione commodi.
     /posts/getpage/{page}:
         get:
             tags:
@@ -234,8 +241,8 @@ paths:
                   schema:
                     type: string
                     description: Search bar keyword to search for in title and description
-                    example: Ducimus voluptatem sint quam.
-                  example: Enim asperiores illum dolor corporis.
+                    example: Fugit qui ut nam sit eos accusantium.
+                  example: Omnis molestiae est ratione consequatur.
                 - name: page
                   in: path
                   description: Page to get posts for
@@ -243,9 +250,9 @@ paths:
                   schema:
                     type: integer
                     description: Page to get posts for
-                    example: 3171402005708145453
+                    example: 5791292400128630635
                     format: int64
-                  example: 4666262982777560247
+                  example: 1643287729518302051
             responses:
                 "200":
                     description: OK response.
@@ -256,78 +263,90 @@ paths:
                                 items:
                                     $ref: '#/components/schemas/PostResponse'
                                 example:
-                                    - description: Unde quod.
+                                    - deliverytype: Quia aut quas aut id.
+                                      description: Autem neque numquam.
                                       imageIDs:
-                                        - Tempora delectus architecto non odit nesciunt.
-                                        - Tempore fugiat dignissimos velit rerum.
+                                        - Nesciunt dicta tempore fugiat dignissimos velit rerum.
                                         - Quia velit voluptate quod quia.
                                         - Aut aut impedit.
                                       medium: Nam doloribus dolor commodi consequuntur perferendis ea.
                                       postID: Odio tempora commodi officiis numquam molestiae.
-                                      price: Autem neque numquam.
+                                      price: Nisi tempora delectus architecto.
                                       sold: false
-                                      title: Laborum ut iste et harum.
+                                      title: Unde quod.
                                       uploadDate: Qui unde et mollitia modi.
-                                    - description: Unde quod.
+                                    - deliverytype: Quia aut quas aut id.
+                                      description: Autem neque numquam.
                                       imageIDs:
-                                        - Tempora delectus architecto non odit nesciunt.
-                                        - Tempore fugiat dignissimos velit rerum.
+                                        - Nesciunt dicta tempore fugiat dignissimos velit rerum.
                                         - Quia velit voluptate quod quia.
                                         - Aut aut impedit.
                                       medium: Nam doloribus dolor commodi consequuntur perferendis ea.
                                       postID: Odio tempora commodi officiis numquam molestiae.
-                                      price: Autem neque numquam.
+                                      price: Nisi tempora delectus architecto.
                                       sold: false
-                                      title: Laborum ut iste et harum.
+                                      title: Unde quod.
+                                      uploadDate: Qui unde et mollitia modi.
+                                    - deliverytype: Quia aut quas aut id.
+                                      description: Autem neque numquam.
+                                      imageIDs:
+                                        - Nesciunt dicta tempore fugiat dignissimos velit rerum.
+                                        - Quia velit voluptate quod quia.
+                                        - Aut aut impedit.
+                                      medium: Nam doloribus dolor commodi consequuntur perferendis ea.
+                                      postID: Odio tempora commodi officiis numquam molestiae.
+                                      price: Nisi tempora delectus architecto.
+                                      sold: false
+                                      title: Unde quod.
                                       uploadDate: Qui unde et mollitia modi.
                             example:
-                                - description: Unde quod.
+                                - deliverytype: Quia aut quas aut id.
+                                  description: Autem neque numquam.
                                   imageIDs:
-                                    - Tempora delectus architecto non odit nesciunt.
-                                    - Tempore fugiat dignissimos velit rerum.
+                                    - Nesciunt dicta tempore fugiat dignissimos velit rerum.
                                     - Quia velit voluptate quod quia.
                                     - Aut aut impedit.
                                   medium: Nam doloribus dolor commodi consequuntur perferendis ea.
                                   postID: Odio tempora commodi officiis numquam molestiae.
-                                  price: Autem neque numquam.
+                                  price: Nisi tempora delectus architecto.
                                   sold: false
-                                  title: Laborum ut iste et harum.
+                                  title: Unde quod.
                                   uploadDate: Qui unde et mollitia modi.
-                                - description: Unde quod.
+                                - deliverytype: Quia aut quas aut id.
+                                  description: Autem neque numquam.
                                   imageIDs:
-                                    - Tempora delectus architecto non odit nesciunt.
-                                    - Tempore fugiat dignissimos velit rerum.
+                                    - Nesciunt dicta tempore fugiat dignissimos velit rerum.
                                     - Quia velit voluptate quod quia.
                                     - Aut aut impedit.
                                   medium: Nam doloribus dolor commodi consequuntur perferendis ea.
                                   postID: Odio tempora commodi officiis numquam molestiae.
-                                  price: Autem neque numquam.
+                                  price: Nisi tempora delectus architecto.
                                   sold: false
-                                  title: Laborum ut iste et harum.
+                                  title: Unde quod.
                                   uploadDate: Qui unde et mollitia modi.
-                                - description: Unde quod.
+                                - deliverytype: Quia aut quas aut id.
+                                  description: Autem neque numquam.
                                   imageIDs:
-                                    - Tempora delectus architecto non odit nesciunt.
-                                    - Tempore fugiat dignissimos velit rerum.
+                                    - Nesciunt dicta tempore fugiat dignissimos velit rerum.
                                     - Quia velit voluptate quod quia.
                                     - Aut aut impedit.
                                   medium: Nam doloribus dolor commodi consequuntur perferendis ea.
                                   postID: Odio tempora commodi officiis numquam molestiae.
-                                  price: Autem neque numquam.
+                                  price: Nisi tempora delectus architecto.
                                   sold: false
-                                  title: Laborum ut iste et harum.
+                                  title: Unde quod.
                                   uploadDate: Qui unde et mollitia modi.
-                                - description: Unde quod.
+                                - deliverytype: Quia aut quas aut id.
+                                  description: Autem neque numquam.
                                   imageIDs:
-                                    - Tempora delectus architecto non odit nesciunt.
-                                    - Tempore fugiat dignissimos velit rerum.
+                                    - Nesciunt dicta tempore fugiat dignissimos velit rerum.
                                     - Quia velit voluptate quod quia.
                                     - Aut aut impedit.
                                   medium: Nam doloribus dolor commodi consequuntur perferendis ea.
                                   postID: Odio tempora commodi officiis numquam molestiae.
-                                  price: Autem neque numquam.
+                                  price: Nisi tempora delectus architecto.
                                   sold: false
-                                  title: Laborum ut iste et harum.
+                                  title: Unde quod.
                                   uploadDate: Qui unde et mollitia modi.
     /posts/myposts/{page}:
         get:
@@ -343,9 +362,9 @@ paths:
                   schema:
                     type: integer
                     description: Page to get posts for
-                    example: 8007844407609306162
+                    example: 6444196570370607190
                     format: int64
-                  example: 3614864391747638906
+                  example: 3051335969403476335
             responses:
                 "200":
                     description: OK response.
@@ -356,66 +375,78 @@ paths:
                                 items:
                                     $ref: '#/components/schemas/PostResponse'
                                 example:
-                                    - description: Unde quod.
+                                    - deliverytype: Quia aut quas aut id.
+                                      description: Autem neque numquam.
                                       imageIDs:
-                                        - Tempora delectus architecto non odit nesciunt.
-                                        - Tempore fugiat dignissimos velit rerum.
+                                        - Nesciunt dicta tempore fugiat dignissimos velit rerum.
                                         - Quia velit voluptate quod quia.
                                         - Aut aut impedit.
                                       medium: Nam doloribus dolor commodi consequuntur perferendis ea.
                                       postID: Odio tempora commodi officiis numquam molestiae.
-                                      price: Autem neque numquam.
+                                      price: Nisi tempora delectus architecto.
                                       sold: false
-                                      title: Laborum ut iste et harum.
+                                      title: Unde quod.
                                       uploadDate: Qui unde et mollitia modi.
-                                    - description: Unde quod.
+                                    - deliverytype: Quia aut quas aut id.
+                                      description: Autem neque numquam.
                                       imageIDs:
-                                        - Tempora delectus architecto non odit nesciunt.
-                                        - Tempore fugiat dignissimos velit rerum.
+                                        - Nesciunt dicta tempore fugiat dignissimos velit rerum.
                                         - Quia velit voluptate quod quia.
                                         - Aut aut impedit.
                                       medium: Nam doloribus dolor commodi consequuntur perferendis ea.
                                       postID: Odio tempora commodi officiis numquam molestiae.
-                                      price: Autem neque numquam.
+                                      price: Nisi tempora delectus architecto.
                                       sold: false
-                                      title: Laborum ut iste et harum.
+                                      title: Unde quod.
                                       uploadDate: Qui unde et mollitia modi.
-                                    - description: Unde quod.
+                                    - deliverytype: Quia aut quas aut id.
+                                      description: Autem neque numquam.
                                       imageIDs:
-                                        - Tempora delectus architecto non odit nesciunt.
-                                        - Tempore fugiat dignissimos velit rerum.
+                                        - Nesciunt dicta tempore fugiat dignissimos velit rerum.
                                         - Quia velit voluptate quod quia.
                                         - Aut aut impedit.
                                       medium: Nam doloribus dolor commodi consequuntur perferendis ea.
                                       postID: Odio tempora commodi officiis numquam molestiae.
-                                      price: Autem neque numquam.
+                                      price: Nisi tempora delectus architecto.
                                       sold: false
-                                      title: Laborum ut iste et harum.
+                                      title: Unde quod.
                                       uploadDate: Qui unde et mollitia modi.
                             example:
-                                - description: Unde quod.
+                                - deliverytype: Quia aut quas aut id.
+                                  description: Autem neque numquam.
                                   imageIDs:
-                                    - Tempora delectus architecto non odit nesciunt.
-                                    - Tempore fugiat dignissimos velit rerum.
+                                    - Nesciunt dicta tempore fugiat dignissimos velit rerum.
                                     - Quia velit voluptate quod quia.
                                     - Aut aut impedit.
                                   medium: Nam doloribus dolor commodi consequuntur perferendis ea.
                                   postID: Odio tempora commodi officiis numquam molestiae.
-                                  price: Autem neque numquam.
+                                  price: Nisi tempora delectus architecto.
                                   sold: false
-                                  title: Laborum ut iste et harum.
+                                  title: Unde quod.
                                   uploadDate: Qui unde et mollitia modi.
-                                - description: Unde quod.
+                                - deliverytype: Quia aut quas aut id.
+                                  description: Autem neque numquam.
                                   imageIDs:
-                                    - Tempora delectus architecto non odit nesciunt.
-                                    - Tempore fugiat dignissimos velit rerum.
+                                    - Nesciunt dicta tempore fugiat dignissimos velit rerum.
                                     - Quia velit voluptate quod quia.
                                     - Aut aut impedit.
                                   medium: Nam doloribus dolor commodi consequuntur perferendis ea.
                                   postID: Odio tempora commodi officiis numquam molestiae.
-                                  price: Autem neque numquam.
+                                  price: Nisi tempora delectus architecto.
                                   sold: false
-                                  title: Laborum ut iste et harum.
+                                  title: Unde quod.
+                                  uploadDate: Qui unde et mollitia modi.
+                                - deliverytype: Quia aut quas aut id.
+                                  description: Autem neque numquam.
+                                  imageIDs:
+                                    - Nesciunt dicta tempore fugiat dignissimos velit rerum.
+                                    - Quia velit voluptate quod quia.
+                                    - Aut aut impedit.
+                                  medium: Nam doloribus dolor commodi consequuntur perferendis ea.
+                                  postID: Odio tempora commodi officiis numquam molestiae.
+                                  price: Nisi tempora delectus architecto.
+                                  sold: false
+                                  title: Unde quod.
                                   uploadDate: Qui unde et mollitia modi.
             security:
                 - jwt_header_Authorization: []
@@ -432,10 +463,10 @@ paths:
                         schema:
                             $ref: '#/components/schemas/User'
                         example:
-                            email: Praesentium expedita dolore modi dolores laborum.
-                            firstName: Temporibus asperiores qui autem eveniet.
-                            lastName: Et ut consequatur nulla voluptas.
-                            phone: Dolorem quasi non qui esse.
+                            email: Repudiandae tempore molestiae illo.
+                            firstName: Et ut consequatur nulla voluptas.
+                            lastName: Dolorem quasi non qui esse.
+                            phone: Praesentium expedita dolore modi dolores laborum.
             responses:
                 "200":
                     description: OK response.
@@ -443,8 +474,8 @@ paths:
                         application/json:
                             schema:
                                 type: string
-                                example: Dolores reiciendis accusamus earum numquam praesentium.
-                            example: Labore dolorum.
+                                example: Aut maxime unde qui voluptatem.
+                            example: Dicta amet.
             security:
                 - signup_header_Authorization: []
 components:
@@ -456,97 +487,112 @@ components:
                     type: array
                     items:
                         type: string
-                        example: Debitis vel ipsam vel nulla omnis.
+                        example: Explicabo aliquam ratione cupiditate qui cumque soluta.
                     description: Post content
                     example:
-                        - Sit sed.
-                        - Illo enim accusantium provident id aut.
-                        - Error doloribus id nisi consectetur corporis ut.
-                        - Aut aut dolore asperiores beatae quia sunt.
+                        - Laborum eaque sed expedita non.
+                        - Voluptatum voluptatum suscipit saepe deleniti impedit dignissimos.
+                        - Maiores ducimus quaerat ducimus ex sint cumque.
+                        - Nesciunt dolore voluptas vel accusamus.
+                deliverytype:
+                    type: string
+                    description: Delivery type
+                    example: Sit omnis in vero.
                 description:
                     type: string
                     description: Post description
-                    example: Tenetur vitae occaecati nam ut quos optio.
+                    example: Laudantium ut aliquam velit temporibus quisquam assumenda.
                 medium:
                     type: string
                     description: Art type
-                    example: Ducimus qui eius ratione tempore ab.
+                    example: Est adipisci tenetur cum.
                 price:
                     type: string
                     description: Post price
-                    example: Dolores omnis ea ullam sed eligendi.
+                    example: Vero consequatur sed molestias nulla.
                 title:
                     type: string
                     description: Post title
-                    example: Ab velit qui incidunt.
+                    example: Sunt dolorem quae est dolorum.
             description: Describes a post payload
             example:
                 content:
-                    - Vitae voluptate dolores.
-                    - Ratione ratione et suscipit quae nulla eaque.
-                description: Iusto consequatur quam dolor eligendi enim.
-                medium: Minus alias.
-                price: Quia dolores nesciunt non optio recusandae.
-                title: Libero nesciunt.
+                    - Et sit quaerat modi est.
+                    - Ratione animi ut porro placeat quia.
+                    - Aut reiciendis.
+                    - Sed autem ut voluptas.
+                deliverytype: Rem excepturi necessitatibus et reprehenderit.
+                description: Dolorem sequi iste voluptatem voluptatibus ut vel.
+                medium: Optio quasi.
+                price: Ratione magni et est autem.
+                title: Cupiditate est corrupti quia ut.
             required:
                 - title
                 - description
                 - price
                 - content
                 - medium
+                - deliverytype
         PostResponse:
             type: object
             properties:
+                deliverytype:
+                    type: string
+                    description: Delivery type
+                    example: Sequi impedit vel.
                 description:
                     type: string
                     description: Post description
-                    example: Aut maxime unde qui voluptatem.
+                    example: Odit voluptates.
                 imageIDs:
                     type: array
                     items:
                         type: string
-                        example: Laudantium ut aliquam velit temporibus quisquam assumenda.
+                        example: Omnis est labore.
                     description: Image ID
                     example:
-                        - Consequatur sed molestias nulla et.
-                        - Aliquam ratione cupiditate qui.
+                        - Sapiente nostrum.
+                        - Vel adipisci quia quo natus aut.
+                        - Excepturi magnam.
                 medium:
                     type: string
                     description: Art type
-                    example: Expedita non dolorem voluptatum.
+                    example: Natus consequuntur.
                 postID:
                     type: string
                     description: Post ID
-                    example: Soluta et delectus laborum eaque.
+                    example: Totam et non sint recusandae.
                 price:
                     type: string
                     description: Post price
-                    example: Sunt dolorem quae est dolorum.
+                    example: Velit expedita ratione ab quia dolorem.
                 sold:
                     type: boolean
                     description: is sold
-                    example: false
+                    example: true
                 title:
                     type: string
                     description: Post title
-                    example: Ea aut sed fugit sequi.
+                    example: Reprehenderit voluptatem tempora illum.
                 uploadDate:
                     type: string
                     description: Upload Date
-                    example: Suscipit saepe deleniti.
+                    example: Assumenda sint pariatur.
             description: Describes a post response
             example:
-                description: Ex sint cumque commodi nesciunt.
+                deliverytype: Quam ratione enim asperiores.
+                description: Autem fugiat molestiae ad.
                 imageIDs:
-                    - Adipisci tenetur cum molestiae sit omnis in.
-                    - Eaque cupiditate est corrupti quia.
-                    - Omnis dolorem sequi iste voluptatem.
-                medium: Autem ut tenetur et sit quaerat.
-                postID: Ut vel quia ratione magni et.
-                price: Voluptas vel accusamus.
+                    - Mollitia suscipit esse eos ut eum.
+                    - Quisquam nobis consectetur ut.
+                    - Labore sint autem asperiores aspernatur dolorum.
+                    - Porro rem et.
+                medium: Totam doloribus qui est libero optio.
+                postID: Illum quae facere delectus dolorem quia.
+                price: Est esse et.
                 sold: false
-                title: Sapiente maiores ducimus quaerat.
-                uploadDate: Est unde ratione animi ut porro.
+                title: Ipsam atque qui.
+                uploadDate: Eos ut non rerum ipsum voluptas ducimus.
             required:
                 - title
                 - description
@@ -556,6 +602,7 @@ components:
                 - medium
                 - uploadDate
                 - sold
+                - deliverytype
         PostingscreatePostResponseBody:
             $ref: '#/components/schemas/PostResponse'
         User:
@@ -564,25 +611,25 @@ components:
                 email:
                     type: string
                     description: Email
-                    example: Fugiat fuga vero exercitationem fugiat eos.
+                    example: Iusto consequatur quam dolor eligendi enim.
                 firstName:
                     type: string
                     description: First name
-                    example: Vitae commodi eos.
+                    example: Aut aut dolore asperiores beatae quia sunt.
                 lastName:
                     type: string
                     description: Last name
-                    example: Omnis enim et.
+                    example: Ducimus qui eius ratione tempore ab.
                 phone:
                     type: string
                     description: Phone number
-                    example: Et qui adipisci.
+                    example: Libero nesciunt.
             description: Describes a user
             example:
-                email: Hic et eos aliquid et.
-                firstName: Eius voluptatem nisi necessitatibus modi et.
-                lastName: Ut et eum nostrum.
-                phone: Non repellat repellendus odio saepe quis tenetur.
+                email: Alias veritatis ea aut sed fugit sequi.
+                firstName: Quia dolores nesciunt non optio recusandae.
+                lastName: Rerum vitae voluptate dolores ea ratione ratione.
+                phone: Suscipit quae nulla eaque ipsam.
             required:
                 - firstName
                 - lastName

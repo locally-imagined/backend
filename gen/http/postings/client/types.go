@@ -26,6 +26,8 @@ type CreatePostRequestBody struct {
 	Content []string `form:"content" json:"content" xml:"content"`
 	// Art type
 	Medium string `form:"medium" json:"medium" xml:"medium"`
+	// Delivery type
+	Deliverytype string `form:"deliverytype" json:"deliverytype" xml:"deliverytype"`
 }
 
 // CreatePostResponseBody is the type of the "postings" service "create_post"
@@ -62,6 +64,8 @@ type PostResponseResponseBody struct {
 	UploadDate *string `form:"uploadDate,omitempty" json:"uploadDate,omitempty" xml:"uploadDate,omitempty"`
 	// is sold
 	Sold *bool `form:"sold,omitempty" json:"sold,omitempty" xml:"sold,omitempty"`
+	// Delivery type
+	Deliverytype *string `form:"deliverytype,omitempty" json:"deliverytype,omitempty" xml:"deliverytype,omitempty"`
 }
 
 // PostResponse is used to define fields on response body types.
@@ -82,16 +86,19 @@ type PostResponse struct {
 	UploadDate *string `form:"uploadDate,omitempty" json:"uploadDate,omitempty" xml:"uploadDate,omitempty"`
 	// is sold
 	Sold *bool `form:"sold,omitempty" json:"sold,omitempty" xml:"sold,omitempty"`
+	// Delivery type
+	Deliverytype *string `form:"deliverytype,omitempty" json:"deliverytype,omitempty" xml:"deliverytype,omitempty"`
 }
 
 // NewCreatePostRequestBody builds the HTTP request body from the payload of
 // the "create_post" endpoint of the "postings" service.
 func NewCreatePostRequestBody(p *postings.CreatePostPayload) *CreatePostRequestBody {
 	body := &CreatePostRequestBody{
-		Title:       p.Post.Title,
-		Description: p.Post.Description,
-		Price:       p.Post.Price,
-		Medium:      p.Post.Medium,
+		Title:        p.Post.Title,
+		Description:  p.Post.Description,
+		Price:        p.Post.Price,
+		Medium:       p.Post.Medium,
+		Deliverytype: p.Post.Deliverytype,
 	}
 	if p.Post.Content != nil {
 		body.Content = make([]string, len(p.Post.Content))
@@ -106,13 +113,14 @@ func NewCreatePostRequestBody(p *postings.CreatePostPayload) *CreatePostRequestB
 // result from a HTTP "OK" response.
 func NewCreatePostResultOK(body *CreatePostResponseBody) *postings.CreatePostResult {
 	v := &postings.PostResponse{
-		Title:       *body.Title,
-		Description: *body.Description,
-		Price:       *body.Price,
-		PostID:      *body.PostID,
-		Medium:      *body.Medium,
-		UploadDate:  *body.UploadDate,
-		Sold:        *body.Sold,
+		Title:        *body.Title,
+		Description:  *body.Description,
+		Price:        *body.Price,
+		PostID:       *body.PostID,
+		Medium:       *body.Medium,
+		UploadDate:   *body.UploadDate,
+		Sold:         *body.Sold,
+		Deliverytype: *body.Deliverytype,
 	}
 	v.ImageIDs = make([]string, len(body.ImageIDs))
 	for i, val := range body.ImageIDs {
@@ -129,13 +137,14 @@ func NewCreatePostResultOK(body *CreatePostResponseBody) *postings.CreatePostRes
 // from a HTTP "OK" response.
 func NewEditPostResultOK(body *EditPostResponseBody) *postings.EditPostResult {
 	v := &postings.PostResponse{
-		Title:       *body.Title,
-		Description: *body.Description,
-		Price:       *body.Price,
-		PostID:      *body.PostID,
-		Medium:      *body.Medium,
-		UploadDate:  *body.UploadDate,
-		Sold:        *body.Sold,
+		Title:        *body.Title,
+		Description:  *body.Description,
+		Price:        *body.Price,
+		PostID:       *body.PostID,
+		Medium:       *body.Medium,
+		UploadDate:   *body.UploadDate,
+		Sold:         *body.Sold,
+		Deliverytype: *body.Deliverytype,
 	}
 	v.ImageIDs = make([]string, len(body.ImageIDs))
 	for i, val := range body.ImageIDs {
@@ -217,6 +226,9 @@ func ValidateCreatePostResponseBody(body *CreatePostResponseBody) (err error) {
 	if body.Sold == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("sold", "body"))
 	}
+	if body.Deliverytype == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("deliverytype", "body"))
+	}
 	return
 }
 
@@ -246,6 +258,9 @@ func ValidateEditPostResponseBody(body *EditPostResponseBody) (err error) {
 	}
 	if body.Sold == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("sold", "body"))
+	}
+	if body.Deliverytype == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("deliverytype", "body"))
 	}
 	return
 }
@@ -277,6 +292,9 @@ func ValidatePostResponseResponseBody(body *PostResponseResponseBody) (err error
 	if body.Sold == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("sold", "body"))
 	}
+	if body.Deliverytype == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("deliverytype", "body"))
+	}
 	return
 }
 
@@ -305,6 +323,9 @@ func ValidatePostResponse(body *PostResponse) (err error) {
 	}
 	if body.Sold == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("sold", "body"))
+	}
+	if body.Deliverytype == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("deliverytype", "body"))
 	}
 	return
 }

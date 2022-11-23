@@ -237,7 +237,8 @@ var Post = Type("Post", func() {
 	Attribute("price", String, "Post price")
 	Attribute("content", ArrayOf(String), "Post content")
 	Attribute("medium", String, "Art type")
-	Required("title", "description", "price", "content", "medium")
+	Attribute("deliverytype", String, "Delivery type")
+	Required("title", "description", "price", "content", "medium", "deliverytype")
 })
 
 var PostResponse = Type("PostResponse", func() {
@@ -250,5 +251,6 @@ var PostResponse = Type("PostResponse", func() {
 	Attribute("medium", String, "Art type")
 	Attribute("uploadDate", String, "Upload Date")
 	Attribute("sold", Boolean, "is sold")
-	Required("title", "description", "price", "imageIDs", "postID", "medium", "uploadDate", "sold")
+	Attribute("deliverytype", String, "Delivery type")
+	Required("title", "description", "price", "imageIDs", "postID", "medium", "uploadDate", "sold", "deliverytype")
 })

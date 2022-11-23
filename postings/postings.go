@@ -1,5 +1,11 @@
 package postings
 
+// TODO
+// add delivery type column to db and add support for it in createpost and editpost endpoints
+// add mark as sold option to ui and change editpost endpoint to support it
+// add artist bio column to users default empty and create endpoint to set user bio
+// decide on filters: art type, price, sold?
+
 // should be package postings
 import (
 	"backend/auth"
@@ -31,19 +37,20 @@ var (
 
 	// add prepares before queries
 	//
-	INSERTPOST   string = "INSERT INTO Posts Values ($1, $2, $3, $4, $5, $6)"
+	INSERTPOST   string = "INSERT INTO Posts (userid, title, description, price, medium, deliverytype) Values ($1, $2, $3, $4, $5, $6, $7)"
 	INSERTIMAGES string = "INSERT INTO Images Values ($1, $2, $3)"
+	GETUSERNAME  string = "SELECT username FROM users WHERE userid=$1"
 	GETPOSTPAGE  string = `SELECT p.postid, p.userid, p.title, p.description, 
-					p.price, p.medium, p.sold, p.uploaddate, i.imgid FROM posts AS p LEFT 
+					p.price, p.medium, p.sold, p.uploaddate, p.deliverytype, i.imgid FROM posts AS p LEFT 
 					JOIN images AS i ON p.postid=i.postid WHERE i.index=0 ORDER BY 
 					p.uploaddate OFFSET $1 ROWS FETCH NEXT 25 ROWS ONLY`
 	GETPOSTPAGEWITHKEYWORD string = `SELECT p.postid, p.userid, p.title, p.description, 
-					p.price, p.medium, p.sold, p.uploaddate, i.imgid FROM posts AS p LEFT 
+					p.price, p.medium, p.sold, p.uploaddate, p.deliverytype, i.imgid FROM posts AS p LEFT 
 					JOIN images AS i ON p.postid = i.postid WHERE i.index=0 AND 
 					((LOWER(p.title) LIKE $1) OR (LOWER(p.description) LIKE $2))
 					ORDER BY p.uploaddate OFFSET $3 ROWS FETCH NEXT 25 ROWS ONLY`
 	GETPOSTPAGEFORARTIST string = `SELECT p.postid, p.userid, p.title, p.description, 
-					p.price, p.medium, p.sold, p.uploaddate, i.imgid FROM posts AS p LEFT 
+					p.price, p.medium, p.sold, p.uploaddate, p.deliverytype, i.imgid FROM posts AS p LEFT 
 					JOIN images AS i ON p.postid = i.postid WHERE i.index=0 AND 
 					p.userid = $1
 					ORDER BY p.uploaddate OFFSET $2 ROWS FETCH NEXT 25 ROWS ONLY`
@@ -125,7 +132,7 @@ func (s *Service) CreatePost(ctx context.Context, p *postings.CreatePostPayload)
 	}
 	defer dbPool.Close()
 	now := time.Now().Format(time.RFC3339)
-	_, err = dbPool.Query(INSERTPOST, postID, ctx.Value("UserID").(string), p.Post.Title, p.Post.Description, p.Post.Price, p.Post.Medium)
+	_, err = dbPool.Query(INSERTPOST, postID, ctx.Value("UserID").(string), p.Post.Title, p.Post.Description, p.Post.Price, p.Post.Medium, p.Post.Deliverytype)
 	if err != nil {
 		return nil, err
 	}
@@ -145,14 +152,15 @@ func (s *Service) CreatePost(ctx context.Context, p *postings.CreatePostPayload)
 		}
 	}
 	posted := &postings.PostResponse{
-		Title:       p.Post.Title,
-		Description: p.Post.Description,
-		Price:       p.Post.Price,
-		ImageIDs:    imageIDs,
-		PostID:      postID,
-		Medium:      p.Post.Medium,
-		Sold:        false,
-		UploadDate:  now,
+		Title:        p.Post.Title,
+		Description:  p.Post.Description,
+		Price:        p.Post.Price,
+		ImageIDs:     imageIDs,
+		PostID:       postID,
+		Medium:       p.Post.Medium,
+		Sold:         false,
+		UploadDate:   now,
+		Deliverytype: p.Post.Deliverytype,
 	}
 	res := &postings.CreatePostResult{
 		Posted: posted,
@@ -165,15 +173,16 @@ type image struct {
 }
 
 type post struct {
-	postID     string
-	userID     string
-	postTitle  string
-	postDesc   string
-	price      string
-	uploadDate string
-	imageID    string
-	medium     string
-	sold       bool
+	postID       string
+	userID       string
+	postTitle    string
+	postDesc     string
+	price        string
+	uploadDate   string
+	imageID      string
+	medium       string
+	sold         bool
+	deliverytype string
 }
 
 func (s *Service) GetPostPage(ctx context.Context, p *postings.GetPostPagePayload) (*postings.GetPostPageResult, error) {
@@ -196,13 +205,13 @@ func (s *Service) GetPostPage(ctx context.Context, p *postings.GetPostPagePayloa
 	res := make([]*postings.PostResponse, 0)
 	for rows.Next() {
 		var row post
-		if err := rows.Scan(&row.postID, &row.userID, &row.postTitle, &row.postDesc, &row.price, &row.medium, &row.sold, &row.uploadDate, &row.imageID); err != nil {
+		if err := rows.Scan(&row.postID, &row.userID, &row.postTitle, &row.postDesc, &row.price, &row.medium, &row.sold, &row.uploadDate, &row.deliverytype, &row.imageID); err != nil {
 			log.Fatal(err)
 			return nil, err
 		}
 		imageID := make([]string, 0)
 		imageID = append(imageID, row.imageID)
-		res = append(res, &postings.PostResponse{Title: row.postTitle, Description: row.postDesc, Price: row.price, ImageIDs: imageID, PostID: row.postID, UploadDate: row.uploadDate, Medium: row.medium, Sold: row.sold})
+		res = append(res, &postings.PostResponse{Title: row.postTitle, Description: row.postDesc, Price: row.price, ImageIDs: imageID, PostID: row.postID, UploadDate: row.uploadDate, Medium: row.medium, Sold: row.sold, Deliverytype: row.deliverytype})
 	}
 	return &postings.GetPostPageResult{Posts: res}, err
 }
@@ -222,13 +231,13 @@ func (s *Service) GetArtistPostPage(ctx context.Context, p *postings.GetArtistPo
 	res := make([]*postings.PostResponse, 0)
 	for rows.Next() {
 		var row post
-		if err := rows.Scan(&row.postID, &row.userID, &row.postTitle, &row.postDesc, &row.price, &row.medium, &row.sold, &row.uploadDate, &row.imageID); err != nil {
+		if err := rows.Scan(&row.postID, &row.userID, &row.postTitle, &row.postDesc, &row.price, &row.medium, &row.sold, &row.uploadDate, &row.deliverytype, &row.imageID); err != nil {
 			log.Fatal(err)
 			return nil, err
 		}
 		imageID := make([]string, 0)
 		imageID = append(imageID, row.imageID)
-		res = append(res, &postings.PostResponse{Title: row.postTitle, Description: row.postDesc, Price: row.price, ImageIDs: imageID, PostID: row.postID, UploadDate: row.uploadDate, Medium: row.medium, Sold: row.sold})
+		res = append(res, &postings.PostResponse{Title: row.postTitle, Description: row.postDesc, Price: row.price, ImageIDs: imageID, PostID: row.postID, UploadDate: row.uploadDate, Medium: row.medium, Sold: row.sold, Deliverytype: row.deliverytype})
 	}
 	return &postings.GetArtistPostPageResult{Posts: res}, err
 }
