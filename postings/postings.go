@@ -37,7 +37,7 @@ var (
 
 	// add prepares before queries
 	//
-	INSERTPOST   string = "INSERT INTO Posts (userid, title, description, price, medium, deliverytype) Values ($1, $2, $3, $4, $5, $6, $7)"
+	INSERTPOST   string = "INSERT INTO Posts (postid, userid, title, description, price, medium, deliverytype) Values ($1, $2, $3, $4, $5, $6, $7)"
 	INSERTIMAGES string = "INSERT INTO Images Values ($1, $2, $3)"
 	GETUSERNAME  string = "SELECT username FROM users WHERE userid=$1"
 	GETPOSTPAGE  string = `SELECT p.postid, p.userid, p.title, p.description, 
