@@ -62,13 +62,14 @@ func New(
 			{"EditPost", "PUT", "/posts/edit/{postID}"},
 			{"GetPostPage", "GET", "/posts/getpage/{page}"},
 			{"GetArtistPostPage", "GET", "/posts/myposts/{page}"},
-			{"GetPostPageFiltered", "GET", "/posts/getpage/{page}"},
+			{"GetPostPageFiltered", "GET", "/posts/getpagefiltered/{page}"},
 			{"GetImagesForPost", "GET", "/posts/getimages/{postID}"},
 			{"CORS", "OPTIONS", "/posts/create"},
 			{"CORS", "OPTIONS", "/posts/delete/{postID}"},
 			{"CORS", "OPTIONS", "/posts/edit/{postID}"},
 			{"CORS", "OPTIONS", "/posts/getpage/{page}"},
 			{"CORS", "OPTIONS", "/posts/myposts/{page}"},
+			{"CORS", "OPTIONS", "/posts/getpagefiltered/{page}"},
 			{"CORS", "OPTIONS", "/posts/getimages/{postID}"},
 		},
 		CreatePost:          NewCreatePostHandler(e.CreatePost, mux, decoder, encoder, errhandler, formatter),
@@ -381,7 +382,7 @@ func MountGetPostPageFilteredHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("GET", "/posts/getpage/{page}", f)
+	mux.Handle("GET", "/posts/getpagefiltered/{page}", f)
 }
 
 // NewGetPostPageFilteredHandler creates a HTTP handler which loads the HTTP
@@ -483,6 +484,7 @@ func MountCORSHandler(mux goahttp.Muxer, h http.Handler) {
 	mux.Handle("OPTIONS", "/posts/edit/{postID}", h.ServeHTTP)
 	mux.Handle("OPTIONS", "/posts/getpage/{page}", h.ServeHTTP)
 	mux.Handle("OPTIONS", "/posts/myposts/{page}", h.ServeHTTP)
+	mux.Handle("OPTIONS", "/posts/getpagefiltered/{page}", h.ServeHTTP)
 	mux.Handle("OPTIONS", "/posts/getimages/{postID}", h.ServeHTTP)
 }
 

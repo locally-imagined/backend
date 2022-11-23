@@ -38,7 +38,7 @@ func GetArtistPostPagePostingsPath(page int) string {
 
 // GetPostPageFilteredPostingsPath returns the URL path to the postings service get_post_page_filtered HTTP endpoint.
 func GetPostPageFilteredPostingsPath(page int) string {
-	return fmt.Sprintf("/posts/getpage/%v", page)
+	return fmt.Sprintf("/posts/getpagefiltered/%v", page)
 }
 
 // GetImagesForPostPostingsPath returns the URL path to the postings service get_images_for_post HTTP endpoint.

@@ -189,6 +189,32 @@ paths:
         get:
             tags:
                 - postings
+            summary: get_post_page postings
+            operationId: postings#get_post_page
+            parameters:
+                - name: keyword
+                  in: query
+                  description: Search bar keyword to search for in title and description
+                  required: false
+                  type: string
+                - name: page
+                  in: path
+                  description: Page to get posts for
+                  required: true
+                  type: integer
+            responses:
+                "200":
+                    description: OK response.
+                    schema:
+                        type: array
+                        items:
+                            $ref: '#/definitions/PostResponse'
+            schemes:
+                - http
+    /posts/getpagefiltered/{page}:
+        get:
+            tags:
+                - postings
             summary: get_post_page_filtered postings
             operationId: postings#get_post_page_filtered
             parameters:
