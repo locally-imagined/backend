@@ -19,14 +19,15 @@ import (
 
 // Server lists the postings service endpoint HTTP handlers.
 type Server struct {
-	Mounts            []*MountPoint
-	CreatePost        http.Handler
-	DeletePost        http.Handler
-	EditPost          http.Handler
-	GetPostPage       http.Handler
-	GetArtistPostPage http.Handler
-	GetImagesForPost  http.Handler
-	CORS              http.Handler
+	Mounts              []*MountPoint
+	CreatePost          http.Handler
+	DeletePost          http.Handler
+	EditPost            http.Handler
+	GetPostPage         http.Handler
+	GetArtistPostPage   http.Handler
+	GetPostPageFiltered http.Handler
+	GetImagesForPost    http.Handler
+	CORS                http.Handler
 }
 
 // MountPoint holds information about the mounted endpoints.
@@ -61,21 +62,24 @@ func New(
 			{"EditPost", "PUT", "/posts/edit/{postID}"},
 			{"GetPostPage", "GET", "/posts/getpage/{page}"},
 			{"GetArtistPostPage", "GET", "/posts/myposts/{page}"},
+			{"GetPostPageFiltered", "GET", "/posts/getpagefiltered/{page}"},
 			{"GetImagesForPost", "GET", "/posts/getimages/{postID}"},
 			{"CORS", "OPTIONS", "/posts/create"},
 			{"CORS", "OPTIONS", "/posts/delete/{postID}"},
 			{"CORS", "OPTIONS", "/posts/edit/{postID}"},
 			{"CORS", "OPTIONS", "/posts/getpage/{page}"},
 			{"CORS", "OPTIONS", "/posts/myposts/{page}"},
+			{"CORS", "OPTIONS", "/posts/getpagefiltered/{page}"},
 			{"CORS", "OPTIONS", "/posts/getimages/{postID}"},
 		},
-		CreatePost:        NewCreatePostHandler(e.CreatePost, mux, decoder, encoder, errhandler, formatter),
-		DeletePost:        NewDeletePostHandler(e.DeletePost, mux, decoder, encoder, errhandler, formatter),
-		EditPost:          NewEditPostHandler(e.EditPost, mux, decoder, encoder, errhandler, formatter),
-		GetPostPage:       NewGetPostPageHandler(e.GetPostPage, mux, decoder, encoder, errhandler, formatter),
-		GetArtistPostPage: NewGetArtistPostPageHandler(e.GetArtistPostPage, mux, decoder, encoder, errhandler, formatter),
-		GetImagesForPost:  NewGetImagesForPostHandler(e.GetImagesForPost, mux, decoder, encoder, errhandler, formatter),
-		CORS:              NewCORSHandler(),
+		CreatePost:          NewCreatePostHandler(e.CreatePost, mux, decoder, encoder, errhandler, formatter),
+		DeletePost:          NewDeletePostHandler(e.DeletePost, mux, decoder, encoder, errhandler, formatter),
+		EditPost:            NewEditPostHandler(e.EditPost, mux, decoder, encoder, errhandler, formatter),
+		GetPostPage:         NewGetPostPageHandler(e.GetPostPage, mux, decoder, encoder, errhandler, formatter),
+		GetArtistPostPage:   NewGetArtistPostPageHandler(e.GetArtistPostPage, mux, decoder, encoder, errhandler, formatter),
+		GetPostPageFiltered: NewGetPostPageFilteredHandler(e.GetPostPageFiltered, mux, decoder, encoder, errhandler, formatter),
+		GetImagesForPost:    NewGetImagesForPostHandler(e.GetImagesForPost, mux, decoder, encoder, errhandler, formatter),
+		CORS:                NewCORSHandler(),
 	}
 }
 
@@ -89,6 +93,7 @@ func (s *Server) Use(m func(http.Handler) http.Handler) {
 	s.EditPost = m(s.EditPost)
 	s.GetPostPage = m(s.GetPostPage)
 	s.GetArtistPostPage = m(s.GetArtistPostPage)
+	s.GetPostPageFiltered = m(s.GetPostPageFiltered)
 	s.GetImagesForPost = m(s.GetImagesForPost)
 	s.CORS = m(s.CORS)
 }
@@ -103,6 +108,7 @@ func Mount(mux goahttp.Muxer, h *Server) {
 	MountEditPostHandler(mux, h.EditPost)
 	MountGetPostPageHandler(mux, h.GetPostPage)
 	MountGetArtistPostPageHandler(mux, h.GetArtistPostPage)
+	MountGetPostPageFilteredHandler(mux, h.GetPostPageFiltered)
 	MountGetImagesForPostHandler(mux, h.GetImagesForPost)
 	MountCORSHandler(mux, h.CORS)
 }
@@ -367,6 +373,57 @@ func NewGetArtistPostPageHandler(
 	})
 }
 
+// MountGetPostPageFilteredHandler configures the mux to serve the "postings"
+// service "get_post_page_filtered" endpoint.
+func MountGetPostPageFilteredHandler(mux goahttp.Muxer, h http.Handler) {
+	f, ok := HandlePostingsOrigin(h).(http.HandlerFunc)
+	if !ok {
+		f = func(w http.ResponseWriter, r *http.Request) {
+			h.ServeHTTP(w, r)
+		}
+	}
+	mux.Handle("GET", "/posts/getpagefiltered/{page}", f)
+}
+
+// NewGetPostPageFilteredHandler creates a HTTP handler which loads the HTTP
+// request and calls the "postings" service "get_post_page_filtered" endpoint.
+func NewGetPostPageFilteredHandler(
+	endpoint goa.Endpoint,
+	mux goahttp.Muxer,
+	decoder func(*http.Request) goahttp.Decoder,
+	encoder func(context.Context, http.ResponseWriter) goahttp.Encoder,
+	errhandler func(context.Context, http.ResponseWriter, error),
+	formatter func(ctx context.Context, err error) goahttp.Statuser,
+) http.Handler {
+	var (
+		decodeRequest  = DecodeGetPostPageFilteredRequest(mux, decoder)
+		encodeResponse = EncodeGetPostPageFilteredResponse(encoder)
+		encodeError    = goahttp.ErrorEncoder(encoder, formatter)
+	)
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
+		ctx = context.WithValue(ctx, goa.MethodKey, "get_post_page_filtered")
+		ctx = context.WithValue(ctx, goa.ServiceKey, "postings")
+		payload, err := decodeRequest(r)
+		if err != nil {
+			if err := encodeError(ctx, w, err); err != nil {
+				errhandler(ctx, w, err)
+			}
+			return
+		}
+		res, err := endpoint(ctx, payload)
+		if err != nil {
+			if err := encodeError(ctx, w, err); err != nil {
+				errhandler(ctx, w, err)
+			}
+			return
+		}
+		if err := encodeResponse(ctx, w, res); err != nil {
+			errhandler(ctx, w, err)
+		}
+	})
+}
+
 // MountGetImagesForPostHandler configures the mux to serve the "postings"
 // service "get_images_for_post" endpoint.
 func MountGetImagesForPostHandler(mux goahttp.Muxer, h http.Handler) {
@@ -427,6 +484,7 @@ func MountCORSHandler(mux goahttp.Muxer, h http.Handler) {
 	mux.Handle("OPTIONS", "/posts/edit/{postID}", h.ServeHTTP)
 	mux.Handle("OPTIONS", "/posts/getpage/{page}", h.ServeHTTP)
 	mux.Handle("OPTIONS", "/posts/myposts/{page}", h.ServeHTTP)
+	mux.Handle("OPTIONS", "/posts/getpagefiltered/{page}", h.ServeHTTP)
 	mux.Handle("OPTIONS", "/posts/getimages/{postID}", h.ServeHTTP)
 }
 

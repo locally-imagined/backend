@@ -27,31 +27,30 @@ import (
 func UsageCommands() string {
 	return `login login
 signup signup
-postings (create-post|delete-post|edit-post|get-post-page|get-artist-post-page|get-images-for-post)
+postings (create-post|delete-post|edit-post|get-post-page|get-artist-post-page|get-post-page-filtered|get-images-for-post)
 `
 }
 
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
-	return os.Args[0] + ` login login --username "Aut qui cum temporibus asperiores qui." --password "Eveniet incidunt et ut consequatur."` + "\n" +
+	return os.Args[0] + ` login login --username "Voluptas ipsum rerum iure minima nihil odio." --password "Dolorem aut hic dolores est."` + "\n" +
 		os.Args[0] + ` signup signup --body '{
-      "email": "Neque praesentium distinctio impedit perferendis aut.",
-      "firstName": "Modi dolores laborum.",
-      "lastName": "Repudiandae tempore molestiae illo.",
-      "phone": "Incidunt et ipsum facilis."
-   }' --username "Voluptas ipsum rerum iure minima nihil odio." --password "Dolorem aut hic dolores est."` + "\n" +
+      "email": "Provident ipsa dignissimos sed.",
+      "firstName": "Excepturi quos ut.",
+      "lastName": "Sit et quaerat non nobis repudiandae autem.",
+      "phone": "Tempora vero."
+   }' --username "Est inventore." --password "Cupiditate voluptatem a eaque odit."` + "\n" +
 		os.Args[0] + ` postings create-post --body '{
       "content": [
-         "Ipsa dignissimos.",
-         "Sint est inventore et.",
-         "Voluptatem a eaque."
+         "Deleniti non praesentium molestiae consequuntur ipsam eum.",
+         "Ut deleniti laborum ea."
       ],
-      "deliverytype": "In provident.",
-      "description": "Sit et quaerat non nobis repudiandae autem.",
-      "medium": "Debitis atque voluptates at.",
-      "price": "Tempora vero.",
-      "title": "Excepturi quos ut."
-   }' --token "Ullam distinctio ut laboriosam nam hic vel."` + "\n" +
+      "deliverytype": "Commodi quia est et aut.",
+      "description": "Dignissimos repellendus quia.",
+      "medium": "Quia labore recusandae quae omnis et id.",
+      "price": "Architecto et expedita eum voluptatibus tenetur non.",
+      "title": "Distinctio ut laboriosam nam hic vel vel."
+   }' --token "Nobis dolorem."` + "\n" +
 		""
 }
 
@@ -108,6 +107,13 @@ func ParseEndpoint(
 		postingsGetArtistPostPagePageFlag  = postingsGetArtistPostPageFlags.String("page", "REQUIRED", "Page to get posts for")
 		postingsGetArtistPostPageTokenFlag = postingsGetArtistPostPageFlags.String("token", "REQUIRED", "")
 
+		postingsGetPostPageFilteredFlags         = flag.NewFlagSet("get-post-page-filtered", flag.ExitOnError)
+		postingsGetPostPageFilteredPageFlag      = postingsGetPostPageFilteredFlags.String("page", "REQUIRED", "Page to get posts for")
+		postingsGetPostPageFilteredKeywordFlag   = postingsGetPostPageFilteredFlags.String("keyword", "", "")
+		postingsGetPostPageFilteredStartDateFlag = postingsGetPostPageFilteredFlags.String("start-date", "", "")
+		postingsGetPostPageFilteredEndDateFlag   = postingsGetPostPageFilteredFlags.String("end-date", "", "")
+		postingsGetPostPageFilteredMediumFlag    = postingsGetPostPageFilteredFlags.String("medium", "", "")
+
 		postingsGetImagesForPostFlags      = flag.NewFlagSet("get-images-for-post", flag.ExitOnError)
 		postingsGetImagesForPostPostIDFlag = postingsGetImagesForPostFlags.String("post-id", "REQUIRED", "Post to get images for")
 	)
@@ -123,6 +129,7 @@ func ParseEndpoint(
 	postingsEditPostFlags.Usage = postingsEditPostUsage
 	postingsGetPostPageFlags.Usage = postingsGetPostPageUsage
 	postingsGetArtistPostPageFlags.Usage = postingsGetArtistPostPageUsage
+	postingsGetPostPageFilteredFlags.Usage = postingsGetPostPageFilteredUsage
 	postingsGetImagesForPostFlags.Usage = postingsGetImagesForPostUsage
 
 	if err := flag.CommandLine.Parse(os.Args[1:]); err != nil {
@@ -192,6 +199,9 @@ func ParseEndpoint(
 			case "get-artist-post-page":
 				epf = postingsGetArtistPostPageFlags
 
+			case "get-post-page-filtered":
+				epf = postingsGetPostPageFilteredFlags
+
 			case "get-images-for-post":
 				epf = postingsGetImagesForPostFlags
 
@@ -249,6 +259,9 @@ func ParseEndpoint(
 			case "get-artist-post-page":
 				endpoint = c.GetArtistPostPage()
 				data, err = postingsc.BuildGetArtistPostPagePayload(*postingsGetArtistPostPagePageFlag, *postingsGetArtistPostPageTokenFlag)
+			case "get-post-page-filtered":
+				endpoint = c.GetPostPageFiltered()
+				data, err = postingsc.BuildGetPostPageFilteredPayload(*postingsGetPostPageFilteredPageFlag, *postingsGetPostPageFilteredKeywordFlag, *postingsGetPostPageFilteredStartDateFlag, *postingsGetPostPageFilteredEndDateFlag, *postingsGetPostPageFilteredMediumFlag)
 			case "get-images-for-post":
 				endpoint = c.GetImagesForPost()
 				data, err = postingsc.BuildGetImagesForPostPayload(*postingsGetImagesForPostPostIDFlag)
@@ -283,7 +296,7 @@ Login implements Login.
     -password STRING: User password
 
 Example:
-    %[1]s login login --username "Aut qui cum temporibus asperiores qui." --password "Eveniet incidunt et ut consequatur."
+    %[1]s login login --username "Voluptas ipsum rerum iure minima nihil odio." --password "Dolorem aut hic dolores est."
 `, os.Args[0])
 }
 
@@ -310,11 +323,11 @@ Signup implements Signup.
 
 Example:
     %[1]s signup signup --body '{
-      "email": "Neque praesentium distinctio impedit perferendis aut.",
-      "firstName": "Modi dolores laborum.",
-      "lastName": "Repudiandae tempore molestiae illo.",
-      "phone": "Incidunt et ipsum facilis."
-   }' --username "Voluptas ipsum rerum iure minima nihil odio." --password "Dolorem aut hic dolores est."
+      "email": "Provident ipsa dignissimos sed.",
+      "firstName": "Excepturi quos ut.",
+      "lastName": "Sit et quaerat non nobis repudiandae autem.",
+      "phone": "Tempora vero."
+   }' --username "Est inventore." --password "Cupiditate voluptatem a eaque odit."
 `, os.Args[0])
 }
 
@@ -330,6 +343,7 @@ COMMAND:
     edit-post: EditPost implements edit_post.
     get-post-page: GetPostPage implements get_post_page.
     get-artist-post-page: GetArtistPostPage implements get_artist_post_page.
+    get-post-page-filtered: GetPostPageFiltered implements get_post_page_filtered.
     get-images-for-post: GetImagesForPost implements get_images_for_post.
 
 Additional help:
@@ -346,16 +360,15 @@ CreatePost implements create_post.
 Example:
     %[1]s postings create-post --body '{
       "content": [
-         "Ipsa dignissimos.",
-         "Sint est inventore et.",
-         "Voluptatem a eaque."
+         "Deleniti non praesentium molestiae consequuntur ipsam eum.",
+         "Ut deleniti laborum ea."
       ],
-      "deliverytype": "In provident.",
-      "description": "Sit et quaerat non nobis repudiandae autem.",
-      "medium": "Debitis atque voluptates at.",
-      "price": "Tempora vero.",
-      "title": "Excepturi quos ut."
-   }' --token "Ullam distinctio ut laboriosam nam hic vel."
+      "deliverytype": "Commodi quia est et aut.",
+      "description": "Dignissimos repellendus quia.",
+      "medium": "Quia labore recusandae quae omnis et id.",
+      "price": "Architecto et expedita eum voluptatibus tenetur non.",
+      "title": "Distinctio ut laboriosam nam hic vel vel."
+   }' --token "Nobis dolorem."
 `, os.Args[0])
 }
 
@@ -367,7 +380,7 @@ DeletePost implements delete_post.
     -token STRING: 
 
 Example:
-    %[1]s postings delete-post --post-id "Voluptas et impedit qui praesentium autem." --token "Vitae laudantium quo laboriosam totam ad quia."
+    %[1]s postings delete-post --post-id "Molestiae nesciunt natus." --token "Eligendi et voluptatem quia."
 `, os.Args[0])
 }
 
@@ -387,7 +400,7 @@ EditPost implements edit_post.
     -token STRING: 
 
 Example:
-    %[1]s postings edit-post --post-id "Cumque dolores aut excepturi atque ut quidem." --title "Dolores blanditiis ut culpa." --description "Omnis odio molestiae nesciunt natus vitae." --price "Et voluptatem quia quidem recusandae qui." --content "Ab a consequatur enim quasi qui." --medium "Doloremque ut non." --sold true --deliverytype "Quo reiciendis voluptates ut libero id ut." --image-id "Blanditiis vel culpa ut." --token "Consequatur facilis non."
+    %[1]s postings edit-post --post-id "Qui veniam doloremque ut." --title "Et enim." --description "Reiciendis voluptates." --price "Libero id ut et." --content "Vel culpa ut expedita consequatur facilis non." --medium "Dolores praesentium vel blanditiis nihil blanditiis porro." --sold false --deliverytype "Vero voluptatem saepe tempore eius." --image-id "Quis sit." --token "Est corrupti suscipit aperiam aut non aut."
 `, os.Args[0])
 }
 
@@ -399,7 +412,7 @@ GetPostPage implements get_post_page.
     -keyword STRING: 
 
 Example:
-    %[1]s postings get-post-page --page 1467164663108927574 --keyword "Vel blanditiis nihil blanditiis porro."
+    %[1]s postings get-post-page --page 1516191541563505166 --keyword "Odit quia culpa vero sed."
 `, os.Args[0])
 }
 
@@ -411,7 +424,22 @@ GetArtistPostPage implements get_artist_post_page.
     -token STRING: 
 
 Example:
-    %[1]s postings get-artist-post-page --page 288952800863219785 --token "Tempore eius."
+    %[1]s postings get-artist-post-page --page 952206678845216916 --token "Mollitia veritatis delectus eaque."
+`, os.Args[0])
+}
+
+func postingsGetPostPageFilteredUsage() {
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] postings get-post-page-filtered -page INT -keyword STRING -start-date STRING -end-date STRING -medium STRING
+
+GetPostPageFiltered implements get_post_page_filtered.
+    -page INT: Page to get posts for
+    -keyword STRING: 
+    -start-date STRING: 
+    -end-date STRING: 
+    -medium STRING: 
+
+Example:
+    %[1]s postings get-post-page-filtered --page 6778696889188512609 --keyword "Saepe aperiam." --start-date "Voluptas id ex qui occaecati." --end-date "Ratione asperiores nemo numquam iste sed ad." --medium "Id dolor autem."
 `, os.Args[0])
 }
 
@@ -422,6 +450,6 @@ GetImagesForPost implements get_images_for_post.
     -post-id STRING: Post to get images for
 
 Example:
-    %[1]s postings get-images-for-post --post-id "Aut sunt ut."
+    %[1]s postings get-images-for-post --post-id "Porro qui vel sed et tenetur."
 `, os.Args[0])
 }

@@ -13,10 +13,9 @@ import (
 	"context"
 	"database/sql"
 	"log"
-	"time"
-
 	"os"
 	"strings"
+	"time"
 
 	"github.com/golang-jwt/jwt/v4"
 
@@ -240,6 +239,53 @@ func (s *Service) GetArtistPostPage(ctx context.Context, p *postings.GetArtistPo
 		res = append(res, &postings.PostResponse{Title: row.postTitle, Description: row.postDesc, Price: row.price, ImageIDs: imageID, PostID: row.postID, UploadDate: row.uploadDate, Medium: row.medium, Sold: row.sold, Deliverytype: row.deliverytype})
 	}
 	return &postings.GetArtistPostPageResult{Posts: res}, err
+}
+
+func (s *Service) GetPostPageFiltered(ctx context.Context, p *postings.GetPostPageFilteredPayload) (*postings.GetPostPageFilteredResult, error) {
+	dbPool, err := openDB()
+	if err != nil {
+		return nil, err
+	}
+	defer dbPool.Close()
+	// offset := p.Page * 25
+
+	querystring := `SELECT p.postid, p.userid, p.title, p.description, 
+	p.price, p.medium, p.sold, p.uploaddate, i.imgid FROM posts AS p LEFT 
+	JOIN images AS i ON p.postid=i.postid WHERE (i.index=0) AND ((LOWER(p.title) LIKE $1) OR 
+	(LOWER(p.description) LIKE $1)) AND (p.uploaddate > $2) AND (p.uploaddate < $3) AND (p.medium LIKE $4) 
+	ORDER BY p.uploaddate OFFSET $1 ROWS FETCH NEXT 25 ROWS ONLY`
+	keyword := "%%"
+	start := "2000-01-01"
+	end := "2025-01-01"
+	medium := "%%"
+	if p.Keyword != nil {
+		keyword = "%" + *p.Keyword + "%"
+	}
+	if p.StartDate != nil {
+		start = *p.StartDate
+	}
+	if p.EndDate != nil {
+		end = *p.EndDate
+	}
+	if p.Medium != nil {
+		medium = "%" + *p.Medium + "%"
+	}
+	rows, err := dbPool.Query(querystring, keyword, start, end, medium)
+	if err != nil {
+		return nil, err
+	}
+	res := make([]*postings.PostResponse, 0)
+	for rows.Next() {
+		var row post
+		if err := rows.Scan(&row.postID, &row.userID, &row.postTitle, &row.postDesc, &row.price, &row.medium, &row.sold, &row.uploadDate, &row.imageID); err != nil {
+			log.Fatal(err)
+			return nil, err
+		}
+		imageID := make([]string, 0)
+		imageID = append(imageID, row.imageID)
+		res = append(res, &postings.PostResponse{Title: row.postTitle, Description: row.postDesc, Price: row.price, ImageIDs: imageID, PostID: row.postID, UploadDate: row.uploadDate, Medium: row.medium, Sold: row.sold})
+	}
+	return &postings.GetPostPageFilteredResult{Posts: res}, err
 }
 
 func (s *Service) GetImagesForPost(ctx context.Context, p *postings.GetImagesForPostPayload) (*postings.GetImagesForPostResult, error) {

@@ -15,23 +15,25 @@ import (
 
 // Client is the "postings" service client.
 type Client struct {
-	CreatePostEndpoint        goa.Endpoint
-	DeletePostEndpoint        goa.Endpoint
-	EditPostEndpoint          goa.Endpoint
-	GetPostPageEndpoint       goa.Endpoint
-	GetArtistPostPageEndpoint goa.Endpoint
-	GetImagesForPostEndpoint  goa.Endpoint
+	CreatePostEndpoint          goa.Endpoint
+	DeletePostEndpoint          goa.Endpoint
+	EditPostEndpoint            goa.Endpoint
+	GetPostPageEndpoint         goa.Endpoint
+	GetArtistPostPageEndpoint   goa.Endpoint
+	GetPostPageFilteredEndpoint goa.Endpoint
+	GetImagesForPostEndpoint    goa.Endpoint
 }
 
 // NewClient initializes a "postings" service client given the endpoints.
-func NewClient(createPost, deletePost, editPost, getPostPage, getArtistPostPage, getImagesForPost goa.Endpoint) *Client {
+func NewClient(createPost, deletePost, editPost, getPostPage, getArtistPostPage, getPostPageFiltered, getImagesForPost goa.Endpoint) *Client {
 	return &Client{
-		CreatePostEndpoint:        createPost,
-		DeletePostEndpoint:        deletePost,
-		EditPostEndpoint:          editPost,
-		GetPostPageEndpoint:       getPostPage,
-		GetArtistPostPageEndpoint: getArtistPostPage,
-		GetImagesForPostEndpoint:  getImagesForPost,
+		CreatePostEndpoint:          createPost,
+		DeletePostEndpoint:          deletePost,
+		EditPostEndpoint:            editPost,
+		GetPostPageEndpoint:         getPostPage,
+		GetArtistPostPageEndpoint:   getArtistPostPage,
+		GetPostPageFilteredEndpoint: getPostPageFiltered,
+		GetImagesForPostEndpoint:    getImagesForPost,
 	}
 }
 
@@ -95,6 +97,20 @@ func (c *Client) GetArtistPostPage(ctx context.Context, p *GetArtistPostPagePayl
 		return
 	}
 	return ires.(*GetArtistPostPageResult), nil
+}
+
+// GetPostPageFiltered calls the "get_post_page_filtered" endpoint of the
+// "postings" service.
+// GetPostPageFiltered may return the following errors:
+//	- "unauthorized" (type Unauthorized)
+//	- error: internal error
+func (c *Client) GetPostPageFiltered(ctx context.Context, p *GetPostPageFilteredPayload) (res *GetPostPageFilteredResult, err error) {
+	var ires interface{}
+	ires, err = c.GetPostPageFilteredEndpoint(ctx, p)
+	if err != nil {
+		return
+	}
+	return ires.(*GetPostPageFilteredResult), nil
 }
 
 // GetImagesForPost calls the "get_images_for_post" endpoint of the "postings"

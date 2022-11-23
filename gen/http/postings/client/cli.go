@@ -24,7 +24,7 @@ func BuildCreatePostPayload(postingsCreatePostBody string, postingsCreatePostTok
 	{
 		err = json.Unmarshal([]byte(postingsCreatePostBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"content\": [\n         \"Ipsa dignissimos.\",\n         \"Sint est inventore et.\",\n         \"Voluptatem a eaque.\"\n      ],\n      \"deliverytype\": \"In provident.\",\n      \"description\": \"Sit et quaerat non nobis repudiandae autem.\",\n      \"medium\": \"Debitis atque voluptates at.\",\n      \"price\": \"Tempora vero.\",\n      \"title\": \"Excepturi quos ut.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"content\": [\n         \"Deleniti non praesentium molestiae consequuntur ipsam eum.\",\n         \"Ut deleniti laborum ea.\"\n      ],\n      \"deliverytype\": \"Commodi quia est et aut.\",\n      \"description\": \"Dignissimos repellendus quia.\",\n      \"medium\": \"Quia labore recusandae quae omnis et id.\",\n      \"price\": \"Architecto et expedita eum voluptatibus tenetur non.\",\n      \"title\": \"Distinctio ut laboriosam nam hic vel vel.\"\n   }'")
 		}
 		if body.Content == nil {
 			err = goa.MergeErrors(err, goa.MissingFieldError("content", "body"))
@@ -202,6 +202,53 @@ func BuildGetArtistPostPagePayload(postingsGetArtistPostPagePage string, posting
 	v := &postings.GetArtistPostPagePayload{}
 	v.Page = page
 	v.Token = token
+
+	return v, nil
+}
+
+// BuildGetPostPageFilteredPayload builds the payload for the postings
+// get_post_page_filtered endpoint from CLI flags.
+func BuildGetPostPageFilteredPayload(postingsGetPostPageFilteredPage string, postingsGetPostPageFilteredKeyword string, postingsGetPostPageFilteredStartDate string, postingsGetPostPageFilteredEndDate string, postingsGetPostPageFilteredMedium string) (*postings.GetPostPageFilteredPayload, error) {
+	var err error
+	var page int
+	{
+		var v int64
+		v, err = strconv.ParseInt(postingsGetPostPageFilteredPage, 10, strconv.IntSize)
+		page = int(v)
+		if err != nil {
+			return nil, fmt.Errorf("invalid value for page, must be INT")
+		}
+	}
+	var keyword *string
+	{
+		if postingsGetPostPageFilteredKeyword != "" {
+			keyword = &postingsGetPostPageFilteredKeyword
+		}
+	}
+	var startDate *string
+	{
+		if postingsGetPostPageFilteredStartDate != "" {
+			startDate = &postingsGetPostPageFilteredStartDate
+		}
+	}
+	var endDate *string
+	{
+		if postingsGetPostPageFilteredEndDate != "" {
+			endDate = &postingsGetPostPageFilteredEndDate
+		}
+	}
+	var medium *string
+	{
+		if postingsGetPostPageFilteredMedium != "" {
+			medium = &postingsGetPostPageFilteredMedium
+		}
+	}
+	v := &postings.GetPostPageFilteredPayload{}
+	v.Page = page
+	v.Keyword = keyword
+	v.StartDate = startDate
+	v.EndDate = endDate
+	v.Medium = medium
 
 	return v, nil
 }

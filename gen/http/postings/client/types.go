@@ -46,6 +46,10 @@ type GetPostPageResponseBody []*PostResponse
 // "get_artist_post_page" endpoint HTTP response body.
 type GetArtistPostPageResponseBody []*PostResponse
 
+// GetPostPageFilteredResponseBody is the type of the "postings" service
+// "get_post_page_filtered" endpoint HTTP response body.
+type GetPostPageFilteredResponseBody []*PostResponse
+
 // PostResponseResponseBody is used to define fields on response body types.
 type PostResponseResponseBody struct {
 	// Post title
@@ -187,6 +191,20 @@ func NewGetArtistPostPageResultOK(body []*PostResponse) *postings.GetArtistPostP
 		v[i] = unmarshalPostResponseToPostingsPostResponse(val)
 	}
 	res := &postings.GetArtistPostPageResult{
+		Posts: v,
+	}
+
+	return res
+}
+
+// NewGetPostPageFilteredResultOK builds a "postings" service
+// "get_post_page_filtered" endpoint result from a HTTP "OK" response.
+func NewGetPostPageFilteredResultOK(body []*PostResponse) *postings.GetPostPageFilteredResult {
+	v := make([]*postings.PostResponse, len(body))
+	for i, val := range body {
+		v[i] = unmarshalPostResponseToPostingsPostResponse(val)
+	}
+	res := &postings.GetPostPageFilteredResult{
 		Posts: v,
 	}
 
