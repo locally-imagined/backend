@@ -459,6 +459,104 @@ func DecodeGetArtistPostPageResponse(decoder func(*http.Response) goahttp.Decode
 	}
 }
 
+// BuildGetPostPageFilteredRequest instantiates a HTTP request object with
+// method and path set to call the "postings" service "get_post_page_filtered"
+// endpoint
+func (c *Client) BuildGetPostPageFilteredRequest(ctx context.Context, v interface{}) (*http.Request, error) {
+	var (
+		page int
+	)
+	{
+		p, ok := v.(*postings.GetPostPageFilteredPayload)
+		if !ok {
+			return nil, goahttp.ErrInvalidType("postings", "get_post_page_filtered", "*postings.GetPostPageFilteredPayload", v)
+		}
+		page = p.Page
+	}
+	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: GetPostPageFilteredPostingsPath(page)}
+	req, err := http.NewRequest("GET", u.String(), nil)
+	if err != nil {
+		return nil, goahttp.ErrInvalidURL("postings", "get_post_page_filtered", u.String(), err)
+	}
+	if ctx != nil {
+		req = req.WithContext(ctx)
+	}
+
+	return req, nil
+}
+
+// EncodeGetPostPageFilteredRequest returns an encoder for requests sent to the
+// postings get_post_page_filtered server.
+func EncodeGetPostPageFilteredRequest(encoder func(*http.Request) goahttp.Encoder) func(*http.Request, interface{}) error {
+	return func(req *http.Request, v interface{}) error {
+		p, ok := v.(*postings.GetPostPageFilteredPayload)
+		if !ok {
+			return goahttp.ErrInvalidType("postings", "get_post_page_filtered", "*postings.GetPostPageFilteredPayload", v)
+		}
+		values := req.URL.Query()
+		if p.Keyword != nil {
+			values.Add("keyword", *p.Keyword)
+		}
+		if p.StartDate != nil {
+			values.Add("startDate", *p.StartDate)
+		}
+		if p.EndDate != nil {
+			values.Add("endDate", *p.EndDate)
+		}
+		if p.Medium != nil {
+			values.Add("medium", *p.Medium)
+		}
+		req.URL.RawQuery = values.Encode()
+		return nil
+	}
+}
+
+// DecodeGetPostPageFilteredResponse returns a decoder for responses returned
+// by the postings get_post_page_filtered endpoint. restoreBody controls
+// whether the response body should be restored after having been read.
+func DecodeGetPostPageFilteredResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
+	return func(resp *http.Response) (interface{}, error) {
+		if restoreBody {
+			b, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return nil, err
+			}
+			resp.Body = io.NopCloser(bytes.NewBuffer(b))
+			defer func() {
+				resp.Body = io.NopCloser(bytes.NewBuffer(b))
+			}()
+		} else {
+			defer resp.Body.Close()
+		}
+		switch resp.StatusCode {
+		case http.StatusOK:
+			var (
+				body GetPostPageFilteredResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("postings", "get_post_page_filtered", err)
+			}
+			for _, e := range body {
+				if e != nil {
+					if err2 := ValidatePostResponse(e); err2 != nil {
+						err = goa.MergeErrors(err, err2)
+					}
+				}
+			}
+			if err != nil {
+				return nil, goahttp.ErrValidationError("postings", "get_post_page_filtered", err)
+			}
+			res := NewGetPostPageFilteredResultOK(body)
+			return res, nil
+		default:
+			body, _ := io.ReadAll(resp.Body)
+			return nil, goahttp.ErrInvalidResponse("postings", "get_post_page_filtered", resp.StatusCode, string(body))
+		}
+	}
+}
+
 // BuildGetImagesForPostRequest instantiates a HTTP request object with method
 // and path set to call the "postings" service "get_images_for_post" endpoint
 func (c *Client) BuildGetImagesForPostRequest(ctx context.Context, v interface{}) (*http.Request, error) {

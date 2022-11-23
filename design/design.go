@@ -186,6 +186,29 @@ var _ = Service("postings", func() {
 			})
 		})
 	})
+	Method("get_post_page_filtered", func() {
+		Payload(func() {
+			Attribute("page", Int, "Page to get posts for")
+			Attribute("keyword", String, "Search bar keyword to search for in title and description")
+			Attribute("startDate", String, "Filter attribute to see posts after given date")
+			Attribute("endDate", String, "Filter attribute to see posts before given date")
+			Attribute("medium", String, "Filter attribute to see posts with given medium type")
+			Required("page")
+		})
+		Result(func() {
+			Attribute("Posts", ArrayOf(PostResponse))
+		})
+		HTTP(func() {
+			GET("/posts/getpagefiltered/{page}")
+			Param("keyword")
+			Param("startDate")
+			Param("endDate")
+			Param("medium")
+			Response(func() {
+				Body("Posts")
+			})
+		})
+	})
 	Method("get_images_for_post", func() {
 		Payload(func() {
 			Attribute("postID", String, "Post to get images for")

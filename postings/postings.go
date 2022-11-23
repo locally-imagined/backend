@@ -7,11 +7,11 @@ import (
 	"context"
 	"database/sql"
 	"log"
-	"time"
-
 	"os"
 	"strings"
+	"time"
 
+	//NEED TO HAVE BUT WONT LET ME SAVE: "bytes"
 	"github.com/golang-jwt/jwt/v4"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -231,6 +231,54 @@ func (s *Service) GetArtistPostPage(ctx context.Context, p *postings.GetArtistPo
 		res = append(res, &postings.PostResponse{Title: row.postTitle, Description: row.postDesc, Price: row.price, ImageIDs: imageID, PostID: row.postID, UploadDate: row.uploadDate, Medium: row.medium, Sold: row.sold})
 	}
 	return &postings.GetArtistPostPageResult{Posts: res}, err
+}
+
+func (s *Service) GetPostPageFiltered(ctx context.Context, p *postings.GetPostPageFilteredPayload) (*postings.GetPostPageFilteredResult, error) {
+	dbPool, err := openDB()
+	if err != nil {
+		return nil, err
+	}
+	defer dbPool.Close()
+	offset := p.Page * 25
+
+	var buffer bytes.buffer
+
+	buffer.WriteString(`SELECT p.postid, p.userid, p.title, p.description, 
+	p.price, p.medium, p.sold, p.uploaddate, i.imgid FROM posts AS p LEFT 
+	JOIN images AS i ON p.postid=i.postid WHERE i.index=0`)
+
+	if p.Keyword != nil {
+		keyword := "%" + *p.Keyword + "%"
+		buffer.WriteString(` AND ((LOWER(p.title) LIKE ` + keyword + `) OR (LOWER(p.description) LIKE ` + keyword + `))`)
+	}
+	if p.StartDate != nil {
+		buffer.WriteString(` AND p.uploaddate > ` + *p.StartDate)
+	}
+	if p.EndDate != nil {
+		buffer.WriteString(` AND p.uploaddate < ` + *p.EndDate)
+	}
+	if p.Medium != nil {
+		buffer.WriteString(` AND p.medium = ` + *p.Medium)
+	}
+
+	buffer.WriteString(` ORDER BY p.uploaddate OFFSET $1 ROWS FETCH NEXT 25 ROWS ONLY`)
+
+	rows, err := dbPool.Query(buffer.String(), offset)
+	if err != nil {
+		return nil, err
+	}
+	res := make([]*postings.PostResponse, 0)
+	for rows.Next() {
+		var row post
+		if err := rows.Scan(&row.postID, &row.userID, &row.postTitle, &row.postDesc, &row.price, &row.medium, &row.sold, &row.uploadDate, &row.imageID); err != nil {
+			log.Fatal(err)
+			return nil, err
+		}
+		imageID := make([]string, 0)
+		imageID = append(imageID, row.imageID)
+		res = append(res, &postings.PostResponse{Title: row.postTitle, Description: row.postDesc, Price: row.price, ImageIDs: imageID, PostID: row.postID, UploadDate: row.uploadDate, Medium: row.medium, Sold: row.sold})
+	}
+	return &postings.GetPostPageFilteredResult{Posts: res}, err
 }
 
 func (s *Service) GetImagesForPost(ctx context.Context, p *postings.GetImagesForPostPayload) (*postings.GetImagesForPostResult, error) {

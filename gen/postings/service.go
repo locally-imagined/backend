@@ -25,6 +25,8 @@ type Service interface {
 	GetPostPage(context.Context, *GetPostPagePayload) (res *GetPostPageResult, err error)
 	// GetArtistPostPage implements get_artist_post_page.
 	GetArtistPostPage(context.Context, *GetArtistPostPagePayload) (res *GetArtistPostPageResult, err error)
+	// GetPostPageFiltered implements get_post_page_filtered.
+	GetPostPageFiltered(context.Context, *GetPostPageFilteredPayload) (res *GetPostPageFilteredResult, err error)
 	// GetImagesForPost implements get_images_for_post.
 	GetImagesForPost(context.Context, *GetImagesForPostPayload) (res *GetImagesForPostResult, err error)
 }
@@ -43,7 +45,7 @@ const ServiceName = "postings"
 // MethodNames lists the service method names as defined in the design. These
 // are the same values that are set in the endpoint request contexts under the
 // MethodKey key.
-var MethodNames = [6]string{"create_post", "delete_post", "edit_post", "get_post_page", "get_artist_post_page", "get_images_for_post"}
+var MethodNames = [7]string{"create_post", "delete_post", "edit_post", "get_post_page", "get_artist_post_page", "get_post_page_filtered", "get_images_for_post"}
 
 // CreatePostPayload is the payload type of the postings service create_post
 // method.
@@ -122,6 +124,27 @@ type GetImagesForPostPayload struct {
 // get_images_for_post method.
 type GetImagesForPostResult struct {
 	Images []string
+}
+
+// GetPostPageFilteredPayload is the payload type of the postings service
+// get_post_page_filtered method.
+type GetPostPageFilteredPayload struct {
+	// Page to get posts for
+	Page int
+	// Search bar keyword to search for in title and description
+	Keyword *string
+	// Filter attribute to see posts after given date
+	StartDate *string
+	// Filter attribute to see posts before given date
+	EndDate *string
+	// Filter attribute to see posts with given medium type
+	Medium *string
+}
+
+// GetPostPageFilteredResult is the result type of the postings service
+// get_post_page_filtered method.
+type GetPostPageFilteredResult struct {
+	Posts []*PostResponse
 }
 
 // GetPostPagePayload is the payload type of the postings service get_post_page

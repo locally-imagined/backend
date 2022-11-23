@@ -44,6 +44,10 @@ type GetPostPageResponseBody []*PostResponse
 // "get_artist_post_page" endpoint HTTP response body.
 type GetArtistPostPageResponseBody []*PostResponse
 
+// GetPostPageFilteredResponseBody is the type of the "postings" service
+// "get_post_page_filtered" endpoint HTTP response body.
+type GetPostPageFilteredResponseBody []*PostResponse
+
 // PostResponseResponseBody is used to define fields on response body types.
 type PostResponseResponseBody struct {
 	// Post title
@@ -146,6 +150,16 @@ func NewGetArtistPostPageResponseBody(res *postings.GetArtistPostPageResult) Get
 	return body
 }
 
+// NewGetPostPageFilteredResponseBody builds the HTTP response body from the
+// result of the "get_post_page_filtered" endpoint of the "postings" service.
+func NewGetPostPageFilteredResponseBody(res *postings.GetPostPageFilteredResult) GetPostPageFilteredResponseBody {
+	body := make([]*PostResponse, len(res.Posts))
+	for i, val := range res.Posts {
+		body[i] = marshalPostingsPostResponseToPostResponse(val)
+	}
+	return body
+}
+
 // NewCreatePostPayload builds a postings service create_post endpoint payload.
 func NewCreatePostPayload(body *CreatePostRequestBody, token string) *postings.CreatePostPayload {
 	v := &postings.Post{
@@ -207,6 +221,19 @@ func NewGetArtistPostPagePayload(page int, token string) *postings.GetArtistPost
 	v := &postings.GetArtistPostPagePayload{}
 	v.Page = page
 	v.Token = token
+
+	return v
+}
+
+// NewGetPostPageFilteredPayload builds a postings service
+// get_post_page_filtered endpoint payload.
+func NewGetPostPageFilteredPayload(page int, keyword *string, startDate *string, endDate *string, medium *string) *postings.GetPostPageFilteredPayload {
+	v := &postings.GetPostPageFilteredPayload{}
+	v.Page = page
+	v.Keyword = keyword
+	v.StartDate = startDate
+	v.EndDate = endDate
+	v.Medium = medium
 
 	return v
 }

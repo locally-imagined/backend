@@ -287,6 +287,65 @@ func DecodeGetArtistPostPageRequest(mux goahttp.Muxer, decoder func(*http.Reques
 	}
 }
 
+// EncodeGetPostPageFilteredResponse returns an encoder for responses returned
+// by the postings get_post_page_filtered endpoint.
+func EncodeGetPostPageFilteredResponse(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder) func(context.Context, http.ResponseWriter, interface{}) error {
+	return func(ctx context.Context, w http.ResponseWriter, v interface{}) error {
+		res, _ := v.(*postings.GetPostPageFilteredResult)
+		enc := encoder(ctx, w)
+		body := NewGetPostPageFilteredResponseBody(res)
+		w.WriteHeader(http.StatusOK)
+		return enc.Encode(body)
+	}
+}
+
+// DecodeGetPostPageFilteredRequest returns a decoder for requests sent to the
+// postings get_post_page_filtered endpoint.
+func DecodeGetPostPageFilteredRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (interface{}, error) {
+	return func(r *http.Request) (interface{}, error) {
+		var (
+			page      int
+			keyword   *string
+			startDate *string
+			endDate   *string
+			medium    *string
+			err       error
+
+			params = mux.Vars(r)
+		)
+		{
+			pageRaw := params["page"]
+			v, err2 := strconv.ParseInt(pageRaw, 10, strconv.IntSize)
+			if err2 != nil {
+				err = goa.MergeErrors(err, goa.InvalidFieldTypeError("page", pageRaw, "integer"))
+			}
+			page = int(v)
+		}
+		keywordRaw := r.URL.Query().Get("keyword")
+		if keywordRaw != "" {
+			keyword = &keywordRaw
+		}
+		startDateRaw := r.URL.Query().Get("startDate")
+		if startDateRaw != "" {
+			startDate = &startDateRaw
+		}
+		endDateRaw := r.URL.Query().Get("endDate")
+		if endDateRaw != "" {
+			endDate = &endDateRaw
+		}
+		mediumRaw := r.URL.Query().Get("medium")
+		if mediumRaw != "" {
+			medium = &mediumRaw
+		}
+		if err != nil {
+			return nil, err
+		}
+		payload := NewGetPostPageFilteredPayload(page, keyword, startDate, endDate, medium)
+
+		return payload, nil
+	}
+}
+
 // EncodeGetImagesForPostResponse returns an encoder for responses returned by
 // the postings get_images_for_post endpoint.
 func EncodeGetImagesForPostResponse(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder) func(context.Context, http.ResponseWriter, interface{}) error {

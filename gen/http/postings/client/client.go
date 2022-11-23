@@ -37,6 +37,10 @@ type Client struct {
 	// get_artist_post_page endpoint.
 	GetArtistPostPageDoer goahttp.Doer
 
+	// GetPostPageFiltered Doer is the HTTP client used to make requests to the
+	// get_post_page_filtered endpoint.
+	GetPostPageFilteredDoer goahttp.Doer
+
 	// GetImagesForPost Doer is the HTTP client used to make requests to the
 	// get_images_for_post endpoint.
 	GetImagesForPostDoer goahttp.Doer
@@ -64,18 +68,19 @@ func NewClient(
 	restoreBody bool,
 ) *Client {
 	return &Client{
-		CreatePostDoer:        doer,
-		DeletePostDoer:        doer,
-		EditPostDoer:          doer,
-		GetPostPageDoer:       doer,
-		GetArtistPostPageDoer: doer,
-		GetImagesForPostDoer:  doer,
-		CORSDoer:              doer,
-		RestoreResponseBody:   restoreBody,
-		scheme:                scheme,
-		host:                  host,
-		decoder:               dec,
-		encoder:               enc,
+		CreatePostDoer:          doer,
+		DeletePostDoer:          doer,
+		EditPostDoer:            doer,
+		GetPostPageDoer:         doer,
+		GetArtistPostPageDoer:   doer,
+		GetPostPageFilteredDoer: doer,
+		GetImagesForPostDoer:    doer,
+		CORSDoer:                doer,
+		RestoreResponseBody:     restoreBody,
+		scheme:                  scheme,
+		host:                    host,
+		decoder:                 dec,
+		encoder:                 enc,
 	}
 }
 
@@ -194,6 +199,30 @@ func (c *Client) GetArtistPostPage() goa.Endpoint {
 		resp, err := c.GetArtistPostPageDoer.Do(req)
 		if err != nil {
 			return nil, goahttp.ErrRequestError("postings", "get_artist_post_page", err)
+		}
+		return decodeResponse(resp)
+	}
+}
+
+// GetPostPageFiltered returns an endpoint that makes HTTP requests to the
+// postings service get_post_page_filtered server.
+func (c *Client) GetPostPageFiltered() goa.Endpoint {
+	var (
+		encodeRequest  = EncodeGetPostPageFilteredRequest(c.encoder)
+		decodeResponse = DecodeGetPostPageFilteredResponse(c.decoder, c.RestoreResponseBody)
+	)
+	return func(ctx context.Context, v interface{}) (interface{}, error) {
+		req, err := c.BuildGetPostPageFilteredRequest(ctx, v)
+		if err != nil {
+			return nil, err
+		}
+		err = encodeRequest(req, v)
+		if err != nil {
+			return nil, err
+		}
+		resp, err := c.GetPostPageFilteredDoer.Do(req)
+		if err != nil {
+			return nil, goahttp.ErrRequestError("postings", "get_post_page_filtered", err)
 		}
 		return decodeResponse(resp)
 	}

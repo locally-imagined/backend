@@ -16,12 +16,13 @@ import (
 
 // Endpoints wraps the "postings" service endpoints.
 type Endpoints struct {
-	CreatePost        goa.Endpoint
-	DeletePost        goa.Endpoint
-	EditPost          goa.Endpoint
-	GetPostPage       goa.Endpoint
-	GetArtistPostPage goa.Endpoint
-	GetImagesForPost  goa.Endpoint
+	CreatePost          goa.Endpoint
+	DeletePost          goa.Endpoint
+	EditPost            goa.Endpoint
+	GetPostPage         goa.Endpoint
+	GetArtistPostPage   goa.Endpoint
+	GetPostPageFiltered goa.Endpoint
+	GetImagesForPost    goa.Endpoint
 }
 
 // NewEndpoints wraps the methods of the "postings" service with endpoints.
@@ -29,12 +30,13 @@ func NewEndpoints(s Service) *Endpoints {
 	// Casting service to Auther interface
 	a := s.(Auther)
 	return &Endpoints{
-		CreatePost:        NewCreatePostEndpoint(s, a.JWTAuth),
-		DeletePost:        NewDeletePostEndpoint(s, a.JWTAuth),
-		EditPost:          NewEditPostEndpoint(s, a.JWTAuth),
-		GetPostPage:       NewGetPostPageEndpoint(s),
-		GetArtistPostPage: NewGetArtistPostPageEndpoint(s, a.JWTAuth),
-		GetImagesForPost:  NewGetImagesForPostEndpoint(s),
+		CreatePost:          NewCreatePostEndpoint(s, a.JWTAuth),
+		DeletePost:          NewDeletePostEndpoint(s, a.JWTAuth),
+		EditPost:            NewEditPostEndpoint(s, a.JWTAuth),
+		GetPostPage:         NewGetPostPageEndpoint(s),
+		GetArtistPostPage:   NewGetArtistPostPageEndpoint(s, a.JWTAuth),
+		GetPostPageFiltered: NewGetPostPageFilteredEndpoint(s),
+		GetImagesForPost:    NewGetImagesForPostEndpoint(s),
 	}
 }
 
@@ -45,6 +47,7 @@ func (e *Endpoints) Use(m func(goa.Endpoint) goa.Endpoint) {
 	e.EditPost = m(e.EditPost)
 	e.GetPostPage = m(e.GetPostPage)
 	e.GetArtistPostPage = m(e.GetArtistPostPage)
+	e.GetPostPageFiltered = m(e.GetPostPageFiltered)
 	e.GetImagesForPost = m(e.GetImagesForPost)
 }
 
@@ -130,6 +133,15 @@ func NewGetArtistPostPageEndpoint(s Service, authJWTFn security.AuthJWTFunc) goa
 			return nil, err
 		}
 		return s.GetArtistPostPage(ctx, p)
+	}
+}
+
+// NewGetPostPageFilteredEndpoint returns an endpoint function that calls the
+// method "get_post_page_filtered" of service "postings".
+func NewGetPostPageFilteredEndpoint(s Service) goa.Endpoint {
+	return func(ctx context.Context, req interface{}) (interface{}, error) {
+		p := req.(*GetPostPageFilteredPayload)
+		return s.GetPostPageFiltered(ctx, p)
 	}
 }
 
