@@ -59,7 +59,7 @@ func (c *Client) DeletePost(ctx context.Context, p *DeletePostPayload) (err erro
 
 // EditPost calls the "edit_post" endpoint of the "postings" service.
 // EditPost may return the following errors:
-//	- "unauthorized" (type *goa.ServiceError)
+//	- "unauthorized" (type Unauthorized)
 //	- error: internal error
 func (c *Client) EditPost(ctx context.Context, p *EditPostPayload) (res *EditPostResult, err error) {
 	var ires interface{}

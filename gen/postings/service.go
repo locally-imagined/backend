@@ -10,7 +10,6 @@ package postings
 import (
 	"context"
 
-	goa "goa.design/goa/v3/pkg"
 	"goa.design/goa/v3/security"
 )
 
@@ -200,9 +199,4 @@ func (e Unauthorized) ErrorName() string {
 // GoaErrorName returns "unauthorized".
 func (e Unauthorized) GoaErrorName() string {
 	return "unauthorized"
-}
-
-// MakeUnauthorized builds a goa.ServiceError from an error.
-func MakeUnauthorized(err error) *goa.ServiceError {
-	return goa.NewServiceError(err, "unauthorized", false, false, false)
 }
