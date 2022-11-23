@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	//NEED TO HAVE BUT WONT LET ME SAVE: "bytes"
+	"bytes"
 	"github.com/golang-jwt/jwt/v4"
 
 	"github.com/aws/aws-sdk-go/aws"
