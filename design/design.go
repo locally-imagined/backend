@@ -139,6 +139,7 @@ var _ = Service("postings", func() {
 		Result(func() {
 			Attribute("Posted", PostResponse)
 		})
+		Error("unauthorized")
 		HTTP(func() {
 			PUT("/posts/edit/{postID}")
 			Param("title")

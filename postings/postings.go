@@ -332,7 +332,7 @@ func (s *Service) EditPost(ctx context.Context, p *postings.EditPostPayload) (*p
 	for rows.Next() {
 		if err := rows.Scan(&userID); err != nil {
 			log.Fatal(err)
-			return nil, err
+			return nil, postings.MakeUnauthorized(err)
 		}
 	}
 	if userID != ctx.Value("UserID").(string) {
