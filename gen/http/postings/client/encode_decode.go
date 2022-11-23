@@ -232,6 +232,9 @@ func EncodeEditPostRequest(encoder func(*http.Request) goahttp.Encoder) func(*ht
 		if p.Sold != nil {
 			values.Add("sold", fmt.Sprintf("%v", *p.Sold))
 		}
+		if p.Deliverytype != nil {
+			values.Add("deliverytype", *p.Deliverytype)
+		}
 		if p.ImageID != nil {
 			values.Add("imageID", *p.ImageID)
 		}
@@ -532,6 +535,8 @@ func unmarshalPostResponseToPostingsPostResponse(v *PostResponse) *postings.Post
 		UploadDate:   *v.UploadDate,
 		Sold:         *v.Sold,
 		Deliverytype: *v.Deliverytype,
+		Userid:       v.Userid,
+		Username:     v.Username,
 	}
 	res.ImageIDs = make([]string, len(v.ImageIDs))
 	for i, val := range v.ImageIDs {

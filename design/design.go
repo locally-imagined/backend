@@ -132,6 +132,7 @@ var _ = Service("postings", func() {
 			Attribute("content", String, "Image content")
 			Attribute("medium", String, "Art type")
 			Attribute("sold", Boolean, "is sold")
+			Attribute("deliverytype", String, "Delivery type")
 			Attribute("imageID", String, "Image ID")
 			Required("token", "postID")
 		})
@@ -146,6 +147,7 @@ var _ = Service("postings", func() {
 			Param("content")
 			Param("medium")
 			Param("sold")
+			Param("deliverytype")
 			Param("imageID")
 			Response(func() {
 				Body("Posted")
@@ -252,5 +254,7 @@ var PostResponse = Type("PostResponse", func() {
 	Attribute("uploadDate", String, "Upload Date")
 	Attribute("sold", Boolean, "is sold")
 	Attribute("deliverytype", String, "Delivery type")
+	Attribute("userid")
+	Attribute("username")
 	Required("title", "description", "price", "imageIDs", "postID", "medium", "uploadDate", "sold", "deliverytype")
 })

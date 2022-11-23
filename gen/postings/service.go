@@ -87,6 +87,8 @@ type EditPostPayload struct {
 	Medium *string
 	// is sold
 	Sold *bool
+	// Delivery type
+	Deliverytype *string
 	// Image ID
 	ImageID *string
 }
@@ -175,6 +177,8 @@ type PostResponse struct {
 	Sold bool
 	// Delivery type
 	Deliverytype string
+	Userid       *string
+	Username     *string
 }
 
 // Credentials are invalid

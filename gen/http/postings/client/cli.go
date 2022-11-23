@@ -24,7 +24,7 @@ func BuildCreatePostPayload(postingsCreatePostBody string, postingsCreatePostTok
 	{
 		err = json.Unmarshal([]byte(postingsCreatePostBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"content\": [\n         \"Et quaerat non.\",\n         \"Repudiandae autem iste tempora vero aut provident.\",\n         \"Dignissimos sed sint est inventore et.\",\n         \"Voluptatem a eaque.\"\n      ],\n      \"deliverytype\": \"In provident.\",\n      \"description\": \"Minima quis numquam.\",\n      \"medium\": \"Debitis atque voluptates at.\",\n      \"price\": \"Excepturi quos ut.\",\n      \"title\": \"Eaque nesciunt impedit aut rerum qui.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"content\": [\n         \"Ipsa dignissimos.\",\n         \"Sint est inventore et.\",\n         \"Voluptatem a eaque.\"\n      ],\n      \"deliverytype\": \"In provident.\",\n      \"description\": \"Sit et quaerat non nobis repudiandae autem.\",\n      \"medium\": \"Debitis atque voluptates at.\",\n      \"price\": \"Tempora vero.\",\n      \"title\": \"Excepturi quos ut.\"\n   }'")
 		}
 		if body.Content == nil {
 			err = goa.MergeErrors(err, goa.MissingFieldError("content", "body"))
@@ -78,7 +78,7 @@ func BuildDeletePostPayload(postingsDeletePostPostID string, postingsDeletePostT
 
 // BuildEditPostPayload builds the payload for the postings edit_post endpoint
 // from CLI flags.
-func BuildEditPostPayload(postingsEditPostPostID string, postingsEditPostTitle string, postingsEditPostDescription string, postingsEditPostPrice string, postingsEditPostContent string, postingsEditPostMedium string, postingsEditPostSold string, postingsEditPostImageID string, postingsEditPostToken string) (*postings.EditPostPayload, error) {
+func BuildEditPostPayload(postingsEditPostPostID string, postingsEditPostTitle string, postingsEditPostDescription string, postingsEditPostPrice string, postingsEditPostContent string, postingsEditPostMedium string, postingsEditPostSold string, postingsEditPostDeliverytype string, postingsEditPostImageID string, postingsEditPostToken string) (*postings.EditPostPayload, error) {
 	var err error
 	var postID string
 	{
@@ -125,6 +125,12 @@ func BuildEditPostPayload(postingsEditPostPostID string, postingsEditPostTitle s
 			}
 		}
 	}
+	var deliverytype *string
+	{
+		if postingsEditPostDeliverytype != "" {
+			deliverytype = &postingsEditPostDeliverytype
+		}
+	}
 	var imageID *string
 	{
 		if postingsEditPostImageID != "" {
@@ -143,6 +149,7 @@ func BuildEditPostPayload(postingsEditPostPostID string, postingsEditPostTitle s
 	v.Content = content
 	v.Medium = medium
 	v.Sold = sold
+	v.Deliverytype = deliverytype
 	v.ImageID = imageID
 	v.Token = token
 

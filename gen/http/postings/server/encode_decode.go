@@ -128,16 +128,17 @@ func EncodeEditPostResponse(encoder func(context.Context, http.ResponseWriter) g
 func DecodeEditPostRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (interface{}, error) {
 	return func(r *http.Request) (interface{}, error) {
 		var (
-			postID      string
-			title       *string
-			description *string
-			price       *string
-			content     *string
-			medium      *string
-			sold        *bool
-			imageID     *string
-			token       string
-			err         error
+			postID       string
+			title        *string
+			description  *string
+			price        *string
+			content      *string
+			medium       *string
+			sold         *bool
+			deliverytype *string
+			imageID      *string
+			token        string
+			err          error
 
 			params = mux.Vars(r)
 		)
@@ -172,6 +173,10 @@ func DecodeEditPostRequest(mux goahttp.Muxer, decoder func(*http.Request) goahtt
 				sold = &v
 			}
 		}
+		deliverytypeRaw := r.URL.Query().Get("deliverytype")
+		if deliverytypeRaw != "" {
+			deliverytype = &deliverytypeRaw
+		}
 		imageIDRaw := r.URL.Query().Get("imageID")
 		if imageIDRaw != "" {
 			imageID = &imageIDRaw
@@ -183,7 +188,7 @@ func DecodeEditPostRequest(mux goahttp.Muxer, decoder func(*http.Request) goahtt
 		if err != nil {
 			return nil, err
 		}
-		payload := NewEditPostPayload(postID, title, description, price, content, medium, sold, imageID, token)
+		payload := NewEditPostPayload(postID, title, description, price, content, medium, sold, deliverytype, imageID, token)
 		if strings.Contains(payload.Token, " ") {
 			// Remove authorization scheme prefix (e.g. "Bearer")
 			cred := strings.SplitN(payload.Token, " ", 2)[1]
@@ -327,6 +332,8 @@ func marshalPostingsPostResponseToPostResponse(v *postings.PostResponse) *PostRe
 		UploadDate:   v.UploadDate,
 		Sold:         v.Sold,
 		Deliverytype: v.Deliverytype,
+		Userid:       v.Userid,
+		Username:     v.Username,
 	}
 	if v.ImageIDs != nil {
 		res.ImageIDs = make([]string, len(v.ImageIDs))

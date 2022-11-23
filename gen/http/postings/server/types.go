@@ -65,7 +65,9 @@ type PostResponseResponseBody struct {
 	// is sold
 	Sold bool `form:"sold" json:"sold" xml:"sold"`
 	// Delivery type
-	Deliverytype string `form:"deliverytype" json:"deliverytype" xml:"deliverytype"`
+	Deliverytype string  `form:"deliverytype" json:"deliverytype" xml:"deliverytype"`
+	Userid       *string `form:"userid,omitempty" json:"userid,omitempty" xml:"userid,omitempty"`
+	Username     *string `form:"username,omitempty" json:"username,omitempty" xml:"username,omitempty"`
 }
 
 // PostResponse is used to define fields on response body types.
@@ -87,7 +89,9 @@ type PostResponse struct {
 	// is sold
 	Sold bool `form:"sold" json:"sold" xml:"sold"`
 	// Delivery type
-	Deliverytype string `form:"deliverytype" json:"deliverytype" xml:"deliverytype"`
+	Deliverytype string  `form:"deliverytype" json:"deliverytype" xml:"deliverytype"`
+	Userid       *string `form:"userid,omitempty" json:"userid,omitempty" xml:"userid,omitempty"`
+	Username     *string `form:"username,omitempty" json:"username,omitempty" xml:"username,omitempty"`
 }
 
 // NewCreatePostResponseBody builds the HTTP response body from the result of
@@ -102,6 +106,8 @@ func NewCreatePostResponseBody(res *postings.CreatePostResult) *CreatePostRespon
 		UploadDate:   res.Posted.UploadDate,
 		Sold:         res.Posted.Sold,
 		Deliverytype: res.Posted.Deliverytype,
+		Userid:       res.Posted.Userid,
+		Username:     res.Posted.Username,
 	}
 	if res.Posted.ImageIDs != nil {
 		body.ImageIDs = make([]string, len(res.Posted.ImageIDs))
@@ -124,6 +130,8 @@ func NewEditPostResponseBody(res *postings.EditPostResult) *EditPostResponseBody
 		UploadDate:   res.Posted.UploadDate,
 		Sold:         res.Posted.Sold,
 		Deliverytype: res.Posted.Deliverytype,
+		Userid:       res.Posted.Userid,
+		Username:     res.Posted.Username,
 	}
 	if res.Posted.ImageIDs != nil {
 		body.ImageIDs = make([]string, len(res.Posted.ImageIDs))
@@ -185,7 +193,7 @@ func NewDeletePostPayload(postID string, token string) *postings.DeletePostPaylo
 }
 
 // NewEditPostPayload builds a postings service edit_post endpoint payload.
-func NewEditPostPayload(postID string, title *string, description *string, price *string, content *string, medium *string, sold *bool, imageID *string, token string) *postings.EditPostPayload {
+func NewEditPostPayload(postID string, title *string, description *string, price *string, content *string, medium *string, sold *bool, deliverytype *string, imageID *string, token string) *postings.EditPostPayload {
 	v := &postings.EditPostPayload{}
 	v.PostID = postID
 	v.Title = title
@@ -194,6 +202,7 @@ func NewEditPostPayload(postID string, title *string, description *string, price
 	v.Content = content
 	v.Medium = medium
 	v.Sold = sold
+	v.Deliverytype = deliverytype
 	v.ImageID = imageID
 	v.Token = token
 

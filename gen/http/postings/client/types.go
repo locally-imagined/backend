@@ -66,6 +66,8 @@ type PostResponseResponseBody struct {
 	Sold *bool `form:"sold,omitempty" json:"sold,omitempty" xml:"sold,omitempty"`
 	// Delivery type
 	Deliverytype *string `form:"deliverytype,omitempty" json:"deliverytype,omitempty" xml:"deliverytype,omitempty"`
+	Userid       *string `form:"userid,omitempty" json:"userid,omitempty" xml:"userid,omitempty"`
+	Username     *string `form:"username,omitempty" json:"username,omitempty" xml:"username,omitempty"`
 }
 
 // PostResponse is used to define fields on response body types.
@@ -88,6 +90,8 @@ type PostResponse struct {
 	Sold *bool `form:"sold,omitempty" json:"sold,omitempty" xml:"sold,omitempty"`
 	// Delivery type
 	Deliverytype *string `form:"deliverytype,omitempty" json:"deliverytype,omitempty" xml:"deliverytype,omitempty"`
+	Userid       *string `form:"userid,omitempty" json:"userid,omitempty" xml:"userid,omitempty"`
+	Username     *string `form:"username,omitempty" json:"username,omitempty" xml:"username,omitempty"`
 }
 
 // NewCreatePostRequestBody builds the HTTP request body from the payload of
@@ -121,6 +125,8 @@ func NewCreatePostResultOK(body *CreatePostResponseBody) *postings.CreatePostRes
 		UploadDate:   *body.UploadDate,
 		Sold:         *body.Sold,
 		Deliverytype: *body.Deliverytype,
+		Userid:       body.Userid,
+		Username:     body.Username,
 	}
 	v.ImageIDs = make([]string, len(body.ImageIDs))
 	for i, val := range body.ImageIDs {
@@ -145,6 +151,8 @@ func NewEditPostResultOK(body *EditPostResponseBody) *postings.EditPostResult {
 		UploadDate:   *body.UploadDate,
 		Sold:         *body.Sold,
 		Deliverytype: *body.Deliverytype,
+		Userid:       body.Userid,
+		Username:     body.Username,
 	}
 	v.ImageIDs = make([]string, len(body.ImageIDs))
 	for i, val := range body.ImageIDs {

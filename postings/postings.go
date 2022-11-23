@@ -61,7 +61,7 @@ var (
 	DELETEIMAGE     string = "DELETE FROM images where imgid=$1"
 	UPDATEINDEX     string = "UPDATE images SET index = index - 1 WHERE (postid=$1 AND index>(SELECT index FROM images WHERE imgid=$2))"
 	ADDIMAGE        string = "INSERT INTO images VALUES($1, $2, (SELECT MAX(index) FROM images where postID=$3) + 1)"
-	GETEDITEDINFO   string = "SELECT title, description, price, medium, sold, uploaddate FROM posts where postID=$1"
+	GETEDITEDINFO   string = "SELECT title, description, price, medium, sold, deliverytype, uploaddate FROM posts where postID=$1"
 	IMAGESPERPAGE   int    = 25
 	ErrUnauthorized error  = postings.Unauthorized("invalid jwt")
 )
@@ -191,7 +191,7 @@ func (s *Service) GetPostPage(ctx context.Context, p *postings.GetPostPagePayloa
 		return nil, err
 	}
 	defer dbPool.Close()
-	offset := p.Page * 25
+	offset := p.Page * IMAGESPERPAGE
 	var rows *sql.Rows
 	if p.Keyword != nil {
 		keyword := "%" + *p.Keyword + "%"
@@ -375,6 +375,13 @@ func (s *Service) EditPost(ctx context.Context, p *postings.EditPostPayload) (*p
 			return nil, err
 		}
 	}
+	if p.Deliverytype != nil {
+		query := query1 + "deliverytype" + query2
+		_, err = dbPool.Query(query, *p.Deliverytype, p.PostID)
+		if err != nil {
+			return nil, err
+		}
+	}
 
 	// what if image is the last pic? dont let user delete last pic?
 	if p.ImageID != nil {
@@ -412,7 +419,7 @@ func (s *Service) EditPost(ctx context.Context, p *postings.EditPostPayload) (*p
 	}
 	var row post
 	for rows.Next() {
-		if err := rows.Scan(&row.postTitle, &row.postDesc, &row.price, &row.medium, &row.sold, &row.uploadDate); err != nil {
+		if err := rows.Scan(&row.postTitle, &row.postDesc, &row.price, &row.medium, &row.sold, &row.deliverytype, &row.uploadDate); err != nil {
 			log.Fatal(err)
 			return nil, err
 		}
@@ -431,14 +438,15 @@ func (s *Service) EditPost(ctx context.Context, p *postings.EditPostPayload) (*p
 		imageIDs = append(imageIDs, imageID)
 	}
 	posted := &postings.PostResponse{
-		Title:       row.postTitle,
-		Description: row.postDesc,
-		Price:       row.price,
-		ImageIDs:    imageIDs,
-		PostID:      p.PostID,
-		Medium:      row.medium,
-		Sold:        row.sold,
-		UploadDate:  row.uploadDate,
+		Title:        row.postTitle,
+		Description:  row.postDesc,
+		Price:        row.price,
+		ImageIDs:     imageIDs,
+		PostID:       p.PostID,
+		Medium:       row.medium,
+		Sold:         row.sold,
+		UploadDate:   row.uploadDate,
+		Deliverytype: row.deliverytype,
 	}
 	res := &postings.EditPostResult{
 		Posted: posted,
