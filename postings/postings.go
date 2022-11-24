@@ -252,7 +252,7 @@ func (s *Service) GetPostPageFiltered(ctx context.Context, p *postings.GetPostPa
 	querystring := `SELECT p.postid, p.userid, p.title, p.description, 
 	p.price, p.medium, p.sold, p.uploaddate, i.imgid FROM posts AS p LEFT 
 	JOIN images AS i ON p.postid=i.postid WHERE (i.index=0) AND ((LOWER(p.title) LIKE $1) OR 
-	(LOWER(p.description) LIKE $1)) AND (p.uploaddate => $2) AND (p.uploaddate <= $3) AND (p.medium LIKE $4) 
+	(LOWER(p.description) LIKE $1)) AND (p.uploaddate >= $2) AND (p.uploaddate <= $3) AND (p.medium LIKE $4) 
 	ORDER BY p.uploaddate OFFSET $1 ROWS FETCH NEXT 25 ROWS ONLY`
 	keyword := "%%"
 	start := "2000-01-01"
