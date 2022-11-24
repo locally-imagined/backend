@@ -270,7 +270,7 @@ func (s *Service) GetPostPageFiltered(ctx context.Context, p *postings.GetPostPa
 	if p.Medium != nil {
 		medium = "%" + *p.Medium + "%"
 	}
-	rows, err := dbPool.Query(querystring, keyword, start, end, medium, p.Page)
+	rows, err := dbPool.Query(querystring, keyword, start, end, medium, p.Page*25)
 	if err != nil {
 		return nil, err
 	}
