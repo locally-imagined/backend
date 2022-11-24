@@ -253,7 +253,7 @@ func (s *Service) GetPostPageFiltered(ctx context.Context, p *postings.GetPostPa
 	p.price, p.medium, p.sold, p.uploaddate, i.imgid FROM posts AS p LEFT 
 	JOIN images AS i ON p.postid=i.postid WHERE (i.index=0) AND ((LOWER(p.title) LIKE $1) OR 
 	(LOWER(p.description) LIKE $1)) AND (p.uploaddate >= $2) AND (p.uploaddate <= $3) AND (p.medium LIKE $4) 
-	ORDER BY p.uploaddate OFFSET $1 ROWS FETCH NEXT 25 ROWS ONLY`
+	ORDER BY p.uploaddate OFFSET $5 ROWS FETCH NEXT 25 ROWS ONLY`
 	keyword := "%%"
 	start := "2000-01-01"
 	end := "CURRENT_DATE"
@@ -270,7 +270,7 @@ func (s *Service) GetPostPageFiltered(ctx context.Context, p *postings.GetPostPa
 	if p.Medium != nil {
 		medium = "%" + *p.Medium + "%"
 	}
-	rows, err := dbPool.Query(querystring, keyword, start, end, medium)
+	rows, err := dbPool.Query(querystring, keyword, start, end, medium, p.Page)
 	if err != nil {
 		return nil, err
 	}
