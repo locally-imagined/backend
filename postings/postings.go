@@ -158,7 +158,7 @@ func (s *Service) CreatePost(ctx context.Context, p *postings.CreatePostPayload)
 		PostID:       postID,
 		Medium:       p.Post.Medium,
 		Sold:         false,
-		UploadDate:   now,
+		UploadDate:   now[0:10],
 		Deliverytype: p.Post.Deliverytype,
 	}
 	res := &postings.CreatePostResult{
