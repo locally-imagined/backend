@@ -256,7 +256,7 @@ func (s *Service) GetPostPageFiltered(ctx context.Context, p *postings.GetPostPa
 	ORDER BY p.uploaddate OFFSET $5 ROWS FETCH NEXT 25 ROWS ONLY`
 	keyword := "%%"
 	start := "2000-01-01"
-	end := "CURRENT_DATE"
+	end := "2025-01-01"
 	medium := "%%"
 	if p.Keyword != nil {
 		keyword = "%" + *p.Keyword + "%"
