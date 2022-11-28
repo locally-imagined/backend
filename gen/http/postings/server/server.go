@@ -61,14 +61,14 @@ func New(
 			{"DeletePost", "DELETE", "/posts/delete/{postID}"},
 			{"EditPost", "PUT", "/posts/edit/{postID}"},
 			{"GetPostPage", "GET", "/posts/getpage/{page}"},
-			{"GetArtistPostPage", "GET", "/posts/myposts/{page}"},
+			{"GetArtistPostPage", "GET", "/posts/artistposts/{page}"},
 			{"GetPostPageFiltered", "GET", "/posts/getpagefiltered/{page}"},
 			{"GetImagesForPost", "GET", "/posts/getimages/{postID}"},
 			{"CORS", "OPTIONS", "/posts/create"},
 			{"CORS", "OPTIONS", "/posts/delete/{postID}"},
 			{"CORS", "OPTIONS", "/posts/edit/{postID}"},
 			{"CORS", "OPTIONS", "/posts/getpage/{page}"},
-			{"CORS", "OPTIONS", "/posts/myposts/{page}"},
+			{"CORS", "OPTIONS", "/posts/artistposts/{page}"},
 			{"CORS", "OPTIONS", "/posts/getpagefiltered/{page}"},
 			{"CORS", "OPTIONS", "/posts/getimages/{postID}"},
 		},
@@ -331,7 +331,7 @@ func MountGetArtistPostPageHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("GET", "/posts/myposts/{page}", f)
+	mux.Handle("GET", "/posts/artistposts/{page}", f)
 }
 
 // NewGetArtistPostPageHandler creates a HTTP handler which loads the HTTP
@@ -483,7 +483,7 @@ func MountCORSHandler(mux goahttp.Muxer, h http.Handler) {
 	mux.Handle("OPTIONS", "/posts/delete/{postID}", h.ServeHTTP)
 	mux.Handle("OPTIONS", "/posts/edit/{postID}", h.ServeHTTP)
 	mux.Handle("OPTIONS", "/posts/getpage/{page}", h.ServeHTTP)
-	mux.Handle("OPTIONS", "/posts/myposts/{page}", h.ServeHTTP)
+	mux.Handle("OPTIONS", "/posts/artistposts/{page}", h.ServeHTTP)
 	mux.Handle("OPTIONS", "/posts/getpagefiltered/{page}", h.ServeHTTP)
 	mux.Handle("OPTIONS", "/posts/getimages/{postID}", h.ServeHTTP)
 }

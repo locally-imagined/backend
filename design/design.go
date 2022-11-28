@@ -181,7 +181,7 @@ var _ = Service("postings", func() {
 			Attribute("Posts", ArrayOf(PostResponse))
 		})
 		HTTP(func() {
-			GET("/posts/myposts/{page}")
+			GET("/posts/artistposts/{page}")
 			Param("userID")
 			Response(func() {
 				Body("Posts")

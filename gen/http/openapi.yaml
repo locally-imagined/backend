@@ -33,6 +33,32 @@ paths:
                 - http
             security:
                 - login_header_Authorization: []
+    /posts/artistposts/{page}:
+        get:
+            tags:
+                - postings
+            summary: get_artist_post_page postings
+            operationId: postings#get_artist_post_page
+            parameters:
+                - name: userID
+                  in: query
+                  description: User ID to get posts for
+                  required: true
+                  type: string
+                - name: page
+                  in: path
+                  description: Page to get posts for
+                  required: true
+                  type: integer
+            responses:
+                "200":
+                    description: OK response.
+                    schema:
+                        type: array
+                        items:
+                            $ref: '#/definitions/PostResponse'
+            schemes:
+                - http
     /posts/create:
         post:
             tags:
@@ -248,32 +274,6 @@ paths:
                   in: query
                   description: Filter attribute to see posts with given medium type
                   required: false
-                  type: string
-                - name: page
-                  in: path
-                  description: Page to get posts for
-                  required: true
-                  type: integer
-            responses:
-                "200":
-                    description: OK response.
-                    schema:
-                        type: array
-                        items:
-                            $ref: '#/definitions/PostResponse'
-            schemes:
-                - http
-    /posts/myposts/{page}:
-        get:
-            tags:
-                - postings
-            summary: get_artist_post_page postings
-            operationId: postings#get_artist_post_page
-            parameters:
-                - name: userID
-                  in: query
-                  description: User ID to get posts for
-                  required: true
                   type: string
                 - name: page
                   in: path
