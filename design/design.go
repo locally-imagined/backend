@@ -182,6 +182,7 @@ var _ = Service("postings", func() {
 		})
 		HTTP(func() {
 			GET("/posts/myposts/{page}")
+			Param("userID")
 			Response(func() {
 				Body("Posts")
 			})

@@ -30,13 +30,6 @@ type CreatePostRequestBody struct {
 	Deliverytype *string `form:"deliverytype,omitempty" json:"deliverytype,omitempty" xml:"deliverytype,omitempty"`
 }
 
-// GetArtistPostPageRequestBody is the type of the "postings" service
-// "get_artist_post_page" endpoint HTTP request body.
-type GetArtistPostPageRequestBody struct {
-	// User ID to get posts for
-	UserID *string `form:"userID,omitempty" json:"userID,omitempty" xml:"userID,omitempty"`
-}
-
 // CreatePostResponseBody is the type of the "postings" service "create_post"
 // endpoint HTTP response body.
 type CreatePostResponseBody PostResponseResponseBody
@@ -246,11 +239,10 @@ func NewGetPostPagePayload(page int, keyword *string) *postings.GetPostPagePaylo
 
 // NewGetArtistPostPagePayload builds a postings service get_artist_post_page
 // endpoint payload.
-func NewGetArtistPostPagePayload(body *GetArtistPostPageRequestBody, page int) *postings.GetArtistPostPagePayload {
-	v := &postings.GetArtistPostPagePayload{
-		UserID: *body.UserID,
-	}
+func NewGetArtistPostPagePayload(page int, userID string) *postings.GetArtistPostPagePayload {
+	v := &postings.GetArtistPostPagePayload{}
 	v.Page = page
+	v.UserID = userID
 
 	return v
 }
@@ -297,15 +289,6 @@ func ValidateCreatePostRequestBody(body *CreatePostRequestBody) (err error) {
 	}
 	if body.Deliverytype == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("deliverytype", "body"))
-	}
-	return
-}
-
-// ValidateGetArtistPostPageRequestBody runs the validations defined on
-// get_artist_post_page_request_body
-func ValidateGetArtistPostPageRequestBody(body *GetArtistPostPageRequestBody) (err error) {
-	if body.UserID == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("userID", "body"))
 	}
 	return
 }

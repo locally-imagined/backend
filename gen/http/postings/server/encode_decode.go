@@ -260,23 +260,9 @@ func EncodeGetArtistPostPageResponse(encoder func(context.Context, http.Response
 func DecodeGetArtistPostPageRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (interface{}, error) {
 	return func(r *http.Request) (interface{}, error) {
 		var (
-			body GetArtistPostPageRequestBody
-			err  error
-		)
-		err = decoder(r).Decode(&body)
-		if err != nil {
-			if err == io.EOF {
-				return nil, goa.MissingPayloadError()
-			}
-			return nil, goa.DecodePayloadError(err.Error())
-		}
-		err = ValidateGetArtistPostPageRequestBody(&body)
-		if err != nil {
-			return nil, err
-		}
-
-		var (
-			page int
+			page   int
+			userID string
+			err    error
 
 			params = mux.Vars(r)
 		)
@@ -288,10 +274,14 @@ func DecodeGetArtistPostPageRequest(mux goahttp.Muxer, decoder func(*http.Reques
 			}
 			page = int(v)
 		}
+		userID = r.URL.Query().Get("userID")
+		if userID == "" {
+			err = goa.MergeErrors(err, goa.MissingFieldError("userID", "query string"))
+		}
 		if err != nil {
 			return nil, err
 		}
-		payload := NewGetArtistPostPagePayload(&body, page)
+		payload := NewGetArtistPostPagePayload(page, userID)
 
 		return payload, nil
 	}

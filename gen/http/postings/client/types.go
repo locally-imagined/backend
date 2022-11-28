@@ -30,13 +30,6 @@ type CreatePostRequestBody struct {
 	Deliverytype string `form:"deliverytype" json:"deliverytype" xml:"deliverytype"`
 }
 
-// GetArtistPostPageRequestBody is the type of the "postings" service
-// "get_artist_post_page" endpoint HTTP request body.
-type GetArtistPostPageRequestBody struct {
-	// User ID to get posts for
-	UserID string `form:"userID" json:"userID" xml:"userID"`
-}
-
 // CreatePostResponseBody is the type of the "postings" service "create_post"
 // endpoint HTTP response body.
 type CreatePostResponseBody PostResponseResponseBody
@@ -124,15 +117,6 @@ func NewCreatePostRequestBody(p *postings.CreatePostPayload) *CreatePostRequestB
 		for i, val := range p.Post.Content {
 			body.Content[i] = val
 		}
-	}
-	return body
-}
-
-// NewGetArtistPostPageRequestBody builds the HTTP request body from the
-// payload of the "get_artist_post_page" endpoint of the "postings" service.
-func NewGetArtistPostPageRequestBody(p *postings.GetArtistPostPagePayload) *GetArtistPostPageRequestBody {
-	body := &GetArtistPostPageRequestBody{
-		UserID: p.UserID,
 	}
 	return body
 }
