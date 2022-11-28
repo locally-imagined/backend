@@ -633,8 +633,8 @@ func unmarshalPostResponseToPostingsPostResponse(v *PostResponse) *postings.Post
 		UploadDate:   *v.UploadDate,
 		Sold:         *v.Sold,
 		Deliverytype: *v.Deliverytype,
-		Userid:       v.Userid,
-		Username:     v.Username,
+		UserID:       *v.UserID,
+		Username:     *v.Username,
 	}
 	res.ImageIDs = make([]string, len(v.ImageIDs))
 	for i, val := range v.ImageIDs {

@@ -69,9 +69,11 @@ type PostResponseResponseBody struct {
 	// is sold
 	Sold bool `form:"sold" json:"sold" xml:"sold"`
 	// Delivery type
-	Deliverytype string  `form:"deliverytype" json:"deliverytype" xml:"deliverytype"`
-	Userid       *string `form:"userid,omitempty" json:"userid,omitempty" xml:"userid,omitempty"`
-	Username     *string `form:"username,omitempty" json:"username,omitempty" xml:"username,omitempty"`
+	Deliverytype string `form:"deliverytype" json:"deliverytype" xml:"deliverytype"`
+	// User id associated with post
+	UserID string `form:"userID" json:"userID" xml:"userID"`
+	// Username associated with post
+	Username string `form:"username" json:"username" xml:"username"`
 }
 
 // PostResponse is used to define fields on response body types.
@@ -93,9 +95,11 @@ type PostResponse struct {
 	// is sold
 	Sold bool `form:"sold" json:"sold" xml:"sold"`
 	// Delivery type
-	Deliverytype string  `form:"deliverytype" json:"deliverytype" xml:"deliverytype"`
-	Userid       *string `form:"userid,omitempty" json:"userid,omitempty" xml:"userid,omitempty"`
-	Username     *string `form:"username,omitempty" json:"username,omitempty" xml:"username,omitempty"`
+	Deliverytype string `form:"deliverytype" json:"deliverytype" xml:"deliverytype"`
+	// User id associated with post
+	UserID string `form:"userID" json:"userID" xml:"userID"`
+	// Username associated with post
+	Username string `form:"username" json:"username" xml:"username"`
 }
 
 // NewCreatePostResponseBody builds the HTTP response body from the result of
@@ -110,7 +114,7 @@ func NewCreatePostResponseBody(res *postings.CreatePostResult) *CreatePostRespon
 		UploadDate:   res.Posted.UploadDate,
 		Sold:         res.Posted.Sold,
 		Deliverytype: res.Posted.Deliverytype,
-		Userid:       res.Posted.Userid,
+		UserID:       res.Posted.UserID,
 		Username:     res.Posted.Username,
 	}
 	if res.Posted.ImageIDs != nil {
@@ -134,7 +138,7 @@ func NewEditPostResponseBody(res *postings.EditPostResult) *EditPostResponseBody
 		UploadDate:   res.Posted.UploadDate,
 		Sold:         res.Posted.Sold,
 		Deliverytype: res.Posted.Deliverytype,
-		Userid:       res.Posted.Userid,
+		UserID:       res.Posted.UserID,
 		Username:     res.Posted.Username,
 	}
 	if res.Posted.ImageIDs != nil {

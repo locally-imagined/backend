@@ -39,10 +39,11 @@ var (
 	INSERTPOST   string = "INSERT INTO Posts (postid, userid, title, description, price, medium, deliverytype) Values ($1, $2, $3, $4, $5, $6, $7)"
 	INSERTIMAGES string = "INSERT INTO Images Values ($1, $2, $3)"
 	GETUSERNAME  string = "SELECT username FROM users WHERE userid=$1"
-	GETPOSTPAGE  string = `SELECT p.postid, p.userid, p.title, p.description, 
-					p.price, p.medium, p.sold, p.uploaddate, p.deliverytype, i.imgid FROM posts AS p LEFT 
-					JOIN images AS i ON p.postid=i.postid WHERE i.index=0 ORDER BY 
-					p.uploaddate OFFSET $1 ROWS FETCH NEXT 25 ROWS ONLY`
+	GETPOSTPAGE  string = `SELECT p.postid, p.userid, u.username, p.title, p.description, 
+					p.price, p.medium, p.sold, p.uploaddate, p.deliverytype, i.imgid FROM posts AS p
+					LEFT JOIN (SELECT imgid, postid FROM images WHERE index=0) AS i ON p.postid=i.postid 
+					LEFT JOIN users AS u ON p.userid = u.userid
+					ORDER BY p.uploaddate OFFSET $1 ROWS FETCH NEXT 25 ROWS ONLY`
 	GETPOSTPAGEWITHKEYWORD string = `SELECT p.postid, p.userid, p.title, p.description, 
 					p.price, p.medium, p.sold, p.uploaddate, p.deliverytype, i.imgid FROM posts AS p LEFT 
 					JOIN images AS i ON p.postid = i.postid WHERE i.index=0 AND 
@@ -182,6 +183,7 @@ type post struct {
 	medium       string
 	sold         bool
 	deliverytype string
+	username     string
 }
 
 func (s *Service) GetPostPage(ctx context.Context, p *postings.GetPostPagePayload) (*postings.GetPostPageResult, error) {
@@ -204,13 +206,13 @@ func (s *Service) GetPostPage(ctx context.Context, p *postings.GetPostPagePayloa
 	res := make([]*postings.PostResponse, 0)
 	for rows.Next() {
 		var row post
-		if err := rows.Scan(&row.postID, &row.userID, &row.postTitle, &row.postDesc, &row.price, &row.medium, &row.sold, &row.uploadDate, &row.deliverytype, &row.imageID); err != nil {
+		if err := rows.Scan(&row.postID, &row.userID, &row.username, &row.postTitle, &row.postDesc, &row.price, &row.medium, &row.sold, &row.uploadDate, &row.deliverytype, &row.imageID); err != nil {
 			log.Fatal(err)
 			return nil, err
 		}
 		imageID := make([]string, 0)
 		imageID = append(imageID, row.imageID)
-		res = append(res, &postings.PostResponse{Title: row.postTitle, Description: row.postDesc, Price: row.price, ImageIDs: imageID, PostID: row.postID, UploadDate: row.uploadDate, Medium: row.medium, Sold: row.sold, Deliverytype: row.deliverytype})
+		res = append(res, &postings.PostResponse{UserID: row.userID, Username: row.username, Title: row.postTitle, Description: row.postDesc, Price: row.price, ImageIDs: imageID, PostID: row.postID, UploadDate: row.uploadDate, Medium: row.medium, Sold: row.sold, Deliverytype: row.deliverytype})
 	}
 	return &postings.GetPostPageResult{Posts: res}, err
 }

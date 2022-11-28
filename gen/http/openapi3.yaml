@@ -65,7 +65,7 @@ paths:
                                 sold: false
                                 title: Facere voluptatum quis dolores qui.
                                 uploadDate: Vitae laudantium quo laboriosam totam ad quia.
-                                userid: Odit cumque dolores aut excepturi atque.
+                                userID: Odit cumque dolores aut excepturi atque.
                                 username: Quidem possimus dolores blanditiis.
             security:
                 - jwt_header_Authorization: []
@@ -198,7 +198,7 @@ paths:
                                 sold: false
                                 title: Facere voluptatum quis dolores qui.
                                 uploadDate: Vitae laudantium quo laboriosam totam ad quia.
-                                userid: Odit cumque dolores aut excepturi atque.
+                                userID: Odit cumque dolores aut excepturi atque.
                                 username: Quidem possimus dolores blanditiis.
             security:
                 - jwt_header_Authorization: []
@@ -283,7 +283,7 @@ paths:
                                       sold: false
                                       title: Unde quod.
                                       uploadDate: Qui unde et mollitia modi.
-                                      userid: Voluptate expedita sunt culpa non.
+                                      userID: Voluptate expedita sunt culpa non.
                                       username: Cupiditate ea cum ut beatae sed.
                                     - deliverytype: Quia aut quas aut id.
                                       description: Autem neque numquam.
@@ -297,7 +297,7 @@ paths:
                                       sold: false
                                       title: Unde quod.
                                       uploadDate: Qui unde et mollitia modi.
-                                      userid: Voluptate expedita sunt culpa non.
+                                      userID: Voluptate expedita sunt culpa non.
                                       username: Cupiditate ea cum ut beatae sed.
                                     - deliverytype: Quia aut quas aut id.
                                       description: Autem neque numquam.
@@ -311,7 +311,7 @@ paths:
                                       sold: false
                                       title: Unde quod.
                                       uploadDate: Qui unde et mollitia modi.
-                                      userid: Voluptate expedita sunt culpa non.
+                                      userID: Voluptate expedita sunt culpa non.
                                       username: Cupiditate ea cum ut beatae sed.
                             example:
                                 - deliverytype: Quia aut quas aut id.
@@ -326,7 +326,7 @@ paths:
                                   sold: false
                                   title: Unde quod.
                                   uploadDate: Qui unde et mollitia modi.
-                                  userid: Voluptate expedita sunt culpa non.
+                                  userID: Voluptate expedita sunt culpa non.
                                   username: Cupiditate ea cum ut beatae sed.
                                 - deliverytype: Quia aut quas aut id.
                                   description: Autem neque numquam.
@@ -340,7 +340,7 @@ paths:
                                   sold: false
                                   title: Unde quod.
                                   uploadDate: Qui unde et mollitia modi.
-                                  userid: Voluptate expedita sunt culpa non.
+                                  userID: Voluptate expedita sunt culpa non.
                                   username: Cupiditate ea cum ut beatae sed.
                                 - deliverytype: Quia aut quas aut id.
                                   description: Autem neque numquam.
@@ -354,7 +354,7 @@ paths:
                                   sold: false
                                   title: Unde quod.
                                   uploadDate: Qui unde et mollitia modi.
-                                  userid: Voluptate expedita sunt culpa non.
+                                  userID: Voluptate expedita sunt culpa non.
                                   username: Cupiditate ea cum ut beatae sed.
     /posts/getpagefiltered/{page}:
         get:
@@ -431,7 +431,7 @@ paths:
                                       sold: false
                                       title: Unde quod.
                                       uploadDate: Qui unde et mollitia modi.
-                                      userid: Voluptate expedita sunt culpa non.
+                                      userID: Voluptate expedita sunt culpa non.
                                       username: Cupiditate ea cum ut beatae sed.
                                     - deliverytype: Quia aut quas aut id.
                                       description: Autem neque numquam.
@@ -445,7 +445,7 @@ paths:
                                       sold: false
                                       title: Unde quod.
                                       uploadDate: Qui unde et mollitia modi.
-                                      userid: Voluptate expedita sunt culpa non.
+                                      userID: Voluptate expedita sunt culpa non.
                                       username: Cupiditate ea cum ut beatae sed.
                             example:
                                 - deliverytype: Quia aut quas aut id.
@@ -460,7 +460,7 @@ paths:
                                   sold: false
                                   title: Unde quod.
                                   uploadDate: Qui unde et mollitia modi.
-                                  userid: Voluptate expedita sunt culpa non.
+                                  userID: Voluptate expedita sunt culpa non.
                                   username: Cupiditate ea cum ut beatae sed.
                                 - deliverytype: Quia aut quas aut id.
                                   description: Autem neque numquam.
@@ -474,7 +474,7 @@ paths:
                                   sold: false
                                   title: Unde quod.
                                   uploadDate: Qui unde et mollitia modi.
-                                  userid: Voluptate expedita sunt culpa non.
+                                  userID: Voluptate expedita sunt culpa non.
                                   username: Cupiditate ea cum ut beatae sed.
                                 - deliverytype: Quia aut quas aut id.
                                   description: Autem neque numquam.
@@ -488,7 +488,7 @@ paths:
                                   sold: false
                                   title: Unde quod.
                                   uploadDate: Qui unde et mollitia modi.
-                                  userid: Voluptate expedita sunt culpa non.
+                                  userID: Voluptate expedita sunt culpa non.
                                   username: Cupiditate ea cum ut beatae sed.
                                 - deliverytype: Quia aut quas aut id.
                                   description: Autem neque numquam.
@@ -502,7 +502,7 @@ paths:
                                   sold: false
                                   title: Unde quod.
                                   uploadDate: Qui unde et mollitia modi.
-                                  userid: Voluptate expedita sunt culpa non.
+                                  userID: Voluptate expedita sunt culpa non.
                                   username: Cupiditate ea cum ut beatae sed.
     /posts/myposts/{page}:
         get:
@@ -543,7 +543,7 @@ paths:
                                       sold: false
                                       title: Unde quod.
                                       uploadDate: Qui unde et mollitia modi.
-                                      userid: Voluptate expedita sunt culpa non.
+                                      userID: Voluptate expedita sunt culpa non.
                                       username: Cupiditate ea cum ut beatae sed.
                                     - deliverytype: Quia aut quas aut id.
                                       description: Autem neque numquam.
@@ -557,7 +557,7 @@ paths:
                                       sold: false
                                       title: Unde quod.
                                       uploadDate: Qui unde et mollitia modi.
-                                      userid: Voluptate expedita sunt culpa non.
+                                      userID: Voluptate expedita sunt culpa non.
                                       username: Cupiditate ea cum ut beatae sed.
                             example:
                                 - deliverytype: Quia aut quas aut id.
@@ -572,7 +572,7 @@ paths:
                                   sold: false
                                   title: Unde quod.
                                   uploadDate: Qui unde et mollitia modi.
-                                  userid: Voluptate expedita sunt culpa non.
+                                  userID: Voluptate expedita sunt culpa non.
                                   username: Cupiditate ea cum ut beatae sed.
                                 - deliverytype: Quia aut quas aut id.
                                   description: Autem neque numquam.
@@ -586,7 +586,7 @@ paths:
                                   sold: false
                                   title: Unde quod.
                                   uploadDate: Qui unde et mollitia modi.
-                                  userid: Voluptate expedita sunt culpa non.
+                                  userID: Voluptate expedita sunt culpa non.
                                   username: Cupiditate ea cum ut beatae sed.
             security:
                 - jwt_header_Authorization: []
@@ -717,11 +717,13 @@ components:
                     type: string
                     description: Upload Date
                     example: Enim asperiores illum dolor corporis.
-                userid:
+                userID:
                     type: string
+                    description: User id associated with post
                     example: Non quisquam quas ut velit.
                 username:
                     type: string
+                    description: Username associated with post
                     example: Voluptatem dolor exercitationem sunt ipsum.
             description: Describes a post response
             example:
@@ -736,7 +738,7 @@ components:
                 sold: true
                 title: Error vel autem nihil quia sit et.
                 uploadDate: Porro nihil ea illum ad minima sunt.
-                userid: Distinctio aut ducimus nesciunt possimus.
+                userID: Distinctio aut ducimus nesciunt possimus.
                 username: Sit distinctio magnam molestiae enim sunt est.
             required:
                 - title
@@ -748,6 +750,8 @@ components:
                 - uploadDate
                 - sold
                 - deliverytype
+                - username
+                - userID
         PostingscreatePostResponseBody:
             $ref: '#/components/schemas/PostResponse'
         User:

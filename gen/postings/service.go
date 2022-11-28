@@ -200,8 +200,10 @@ type PostResponse struct {
 	Sold bool
 	// Delivery type
 	Deliverytype string
-	Userid       *string
-	Username     *string
+	// User id associated with post
+	UserID string
+	// Username associated with post
+	Username string
 }
 
 // Credentials are invalid

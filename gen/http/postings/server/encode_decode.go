@@ -391,7 +391,7 @@ func marshalPostingsPostResponseToPostResponse(v *postings.PostResponse) *PostRe
 		UploadDate:   v.UploadDate,
 		Sold:         v.Sold,
 		Deliverytype: v.Deliverytype,
-		Userid:       v.Userid,
+		UserID:       v.UserID,
 		Username:     v.Username,
 	}
 	if v.ImageIDs != nil {

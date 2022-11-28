@@ -70,8 +70,10 @@ type PostResponseResponseBody struct {
 	Sold *bool `form:"sold,omitempty" json:"sold,omitempty" xml:"sold,omitempty"`
 	// Delivery type
 	Deliverytype *string `form:"deliverytype,omitempty" json:"deliverytype,omitempty" xml:"deliverytype,omitempty"`
-	Userid       *string `form:"userid,omitempty" json:"userid,omitempty" xml:"userid,omitempty"`
-	Username     *string `form:"username,omitempty" json:"username,omitempty" xml:"username,omitempty"`
+	// User id associated with post
+	UserID *string `form:"userID,omitempty" json:"userID,omitempty" xml:"userID,omitempty"`
+	// Username associated with post
+	Username *string `form:"username,omitempty" json:"username,omitempty" xml:"username,omitempty"`
 }
 
 // PostResponse is used to define fields on response body types.
@@ -94,8 +96,10 @@ type PostResponse struct {
 	Sold *bool `form:"sold,omitempty" json:"sold,omitempty" xml:"sold,omitempty"`
 	// Delivery type
 	Deliverytype *string `form:"deliverytype,omitempty" json:"deliverytype,omitempty" xml:"deliverytype,omitempty"`
-	Userid       *string `form:"userid,omitempty" json:"userid,omitempty" xml:"userid,omitempty"`
-	Username     *string `form:"username,omitempty" json:"username,omitempty" xml:"username,omitempty"`
+	// User id associated with post
+	UserID *string `form:"userID,omitempty" json:"userID,omitempty" xml:"userID,omitempty"`
+	// Username associated with post
+	Username *string `form:"username,omitempty" json:"username,omitempty" xml:"username,omitempty"`
 }
 
 // NewCreatePostRequestBody builds the HTTP request body from the payload of
@@ -129,8 +133,8 @@ func NewCreatePostResultOK(body *CreatePostResponseBody) *postings.CreatePostRes
 		UploadDate:   *body.UploadDate,
 		Sold:         *body.Sold,
 		Deliverytype: *body.Deliverytype,
-		Userid:       body.Userid,
-		Username:     body.Username,
+		UserID:       *body.UserID,
+		Username:     *body.Username,
 	}
 	v.ImageIDs = make([]string, len(body.ImageIDs))
 	for i, val := range body.ImageIDs {
@@ -155,8 +159,8 @@ func NewEditPostResultOK(body *EditPostResponseBody) *postings.EditPostResult {
 		UploadDate:   *body.UploadDate,
 		Sold:         *body.Sold,
 		Deliverytype: *body.Deliverytype,
-		Userid:       body.Userid,
-		Username:     body.Username,
+		UserID:       *body.UserID,
+		Username:     *body.Username,
 	}
 	v.ImageIDs = make([]string, len(body.ImageIDs))
 	for i, val := range body.ImageIDs {
@@ -255,6 +259,12 @@ func ValidateCreatePostResponseBody(body *CreatePostResponseBody) (err error) {
 	if body.Deliverytype == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("deliverytype", "body"))
 	}
+	if body.UserID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("userID", "body"))
+	}
+	if body.Username == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("username", "body"))
+	}
 	return
 }
 
@@ -287,6 +297,12 @@ func ValidateEditPostResponseBody(body *EditPostResponseBody) (err error) {
 	}
 	if body.Deliverytype == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("deliverytype", "body"))
+	}
+	if body.UserID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("userID", "body"))
+	}
+	if body.Username == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("username", "body"))
 	}
 	return
 }
@@ -321,6 +337,12 @@ func ValidatePostResponseResponseBody(body *PostResponseResponseBody) (err error
 	if body.Deliverytype == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("deliverytype", "body"))
 	}
+	if body.Username == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("username", "body"))
+	}
+	if body.UserID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("userID", "body"))
+	}
 	return
 }
 
@@ -352,6 +374,12 @@ func ValidatePostResponse(body *PostResponse) (err error) {
 	}
 	if body.Deliverytype == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("deliverytype", "body"))
+	}
+	if body.Username == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("username", "body"))
+	}
+	if body.UserID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("userID", "body"))
 	}
 	return
 }

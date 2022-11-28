@@ -66,6 +66,8 @@ paths:
                             - uploadDate
                             - sold
                             - deliverytype
+                            - userID
+                            - username
             schemes:
                 - http
             security:
@@ -166,6 +168,8 @@ paths:
                             - uploadDate
                             - sold
                             - deliverytype
+                            - userID
+                            - username
             schemes:
                 - http
             security:
@@ -361,11 +365,13 @@ definitions:
                 type: string
                 description: Upload Date
                 example: Illo enim accusantium provident id aut.
-            userid:
+            userID:
                 type: string
+                description: User id associated with post
                 example: Aut dolore asperiores beatae quia.
             username:
                 type: string
+                description: Username associated with post
                 example: Qui ducimus qui.
         description: Describes a post response
         example:
@@ -380,7 +386,7 @@ definitions:
             sold: false
             title: Ratione tempore.
             uploadDate: Alias veritatis ea aut sed fugit sequi.
-            userid: Sunt dolorem quae est dolorum.
+            userID: Sunt dolorem quae est dolorum.
             username: Laudantium ut aliquam velit temporibus quisquam assumenda.
         required:
             - title
@@ -392,6 +398,8 @@ definitions:
             - uploadDate
             - sold
             - deliverytype
+            - username
+            - userID
     PostResponseResponseBody:
         title: PostResponseResponseBody
         type: object
@@ -437,11 +445,13 @@ definitions:
                 type: string
                 description: Upload Date
                 example: Dicta dolorem iure dolor.
-            userid:
+            userID:
                 type: string
+                description: User id associated with post
                 example: Voluptatem necessitatibus iste qui sit.
             username:
                 type: string
+                description: Username associated with post
                 example: Odio ipsum distinctio error.
         description: Describes a post response
         example:
@@ -457,7 +467,7 @@ definitions:
             sold: false
             title: Sint eos velit assumenda non.
             uploadDate: Distinctio fuga vel earum perspiciatis odit.
-            userid: Rerum porro.
+            userID: Rerum porro.
             username: Officia aut doloremque dolorem autem.
         required:
             - title
@@ -469,6 +479,8 @@ definitions:
             - uploadDate
             - sold
             - deliverytype
+            - username
+            - userID
     PostingsCreatePostRequestBody:
         title: PostingsCreatePostRequestBody
         type: object
