@@ -29,12 +29,14 @@ var _ = Service("login", func() {
 			Required("username", "password")
 		})
 		Result(func() {
-			Attribute("jwt", String)
+			Attribute("jwt", String, "jwt used for future authentication")
+			Attribute("userID", String, "userID of user")
 		})
 		HTTP(func() {
 			POST("/login")
 			Response(func() {
 				Body("jwt")
+				Body("userID")
 			})
 		})
 	})

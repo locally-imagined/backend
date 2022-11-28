@@ -19,6 +19,7 @@ paths:
                         application/json:
                             schema:
                                 type: string
+                                description: userID of user
                                 example: Explicabo aliquam ratione cupiditate qui cumque soluta.
                             example: Cupiditate quas enim velit.
             security:
@@ -272,87 +273,93 @@ paths:
                                     $ref: '#/components/schemas/PostResponse'
                                 example:
                                     - deliverytype: Quia aut quas aut id.
-                                      description: Autem neque numquam.
+                                      description: Unde quod.
                                       imageIDs:
-                                        - Nesciunt dicta tempore fugiat dignissimos velit rerum.
+                                        - Tempora delectus architecto non odit nesciunt.
+                                        - Tempore fugiat dignissimos velit rerum.
                                         - Quia velit voluptate quod quia.
                                         - Aut aut impedit.
                                       medium: Nam doloribus dolor commodi consequuntur perferendis ea.
                                       postID: Odio tempora commodi officiis numquam molestiae.
-                                      price: Nisi tempora delectus architecto.
+                                      price: Autem neque numquam.
                                       sold: false
-                                      title: Unde quod.
+                                      title: Laborum ut iste et harum.
                                       uploadDate: Qui unde et mollitia modi.
                                       userID: Voluptate expedita sunt culpa non.
                                       username: Cupiditate ea cum ut beatae sed.
                                     - deliverytype: Quia aut quas aut id.
-                                      description: Autem neque numquam.
+                                      description: Unde quod.
                                       imageIDs:
-                                        - Nesciunt dicta tempore fugiat dignissimos velit rerum.
+                                        - Tempora delectus architecto non odit nesciunt.
+                                        - Tempore fugiat dignissimos velit rerum.
                                         - Quia velit voluptate quod quia.
                                         - Aut aut impedit.
                                       medium: Nam doloribus dolor commodi consequuntur perferendis ea.
                                       postID: Odio tempora commodi officiis numquam molestiae.
-                                      price: Nisi tempora delectus architecto.
+                                      price: Autem neque numquam.
                                       sold: false
-                                      title: Unde quod.
+                                      title: Laborum ut iste et harum.
                                       uploadDate: Qui unde et mollitia modi.
                                       userID: Voluptate expedita sunt culpa non.
                                       username: Cupiditate ea cum ut beatae sed.
                                     - deliverytype: Quia aut quas aut id.
-                                      description: Autem neque numquam.
+                                      description: Unde quod.
                                       imageIDs:
-                                        - Nesciunt dicta tempore fugiat dignissimos velit rerum.
+                                        - Tempora delectus architecto non odit nesciunt.
+                                        - Tempore fugiat dignissimos velit rerum.
                                         - Quia velit voluptate quod quia.
                                         - Aut aut impedit.
                                       medium: Nam doloribus dolor commodi consequuntur perferendis ea.
                                       postID: Odio tempora commodi officiis numquam molestiae.
-                                      price: Nisi tempora delectus architecto.
+                                      price: Autem neque numquam.
                                       sold: false
-                                      title: Unde quod.
+                                      title: Laborum ut iste et harum.
                                       uploadDate: Qui unde et mollitia modi.
                                       userID: Voluptate expedita sunt culpa non.
                                       username: Cupiditate ea cum ut beatae sed.
                             example:
                                 - deliverytype: Quia aut quas aut id.
-                                  description: Autem neque numquam.
+                                  description: Unde quod.
                                   imageIDs:
-                                    - Nesciunt dicta tempore fugiat dignissimos velit rerum.
+                                    - Tempora delectus architecto non odit nesciunt.
+                                    - Tempore fugiat dignissimos velit rerum.
                                     - Quia velit voluptate quod quia.
                                     - Aut aut impedit.
                                   medium: Nam doloribus dolor commodi consequuntur perferendis ea.
                                   postID: Odio tempora commodi officiis numquam molestiae.
-                                  price: Nisi tempora delectus architecto.
+                                  price: Autem neque numquam.
                                   sold: false
-                                  title: Unde quod.
+                                  title: Laborum ut iste et harum.
                                   uploadDate: Qui unde et mollitia modi.
                                   userID: Voluptate expedita sunt culpa non.
                                   username: Cupiditate ea cum ut beatae sed.
                                 - deliverytype: Quia aut quas aut id.
-                                  description: Autem neque numquam.
+                                  description: Unde quod.
                                   imageIDs:
-                                    - Nesciunt dicta tempore fugiat dignissimos velit rerum.
+                                    - Tempora delectus architecto non odit nesciunt.
+                                    - Tempore fugiat dignissimos velit rerum.
                                     - Quia velit voluptate quod quia.
                                     - Aut aut impedit.
                                   medium: Nam doloribus dolor commodi consequuntur perferendis ea.
                                   postID: Odio tempora commodi officiis numquam molestiae.
-                                  price: Nisi tempora delectus architecto.
+                                  price: Autem neque numquam.
                                   sold: false
-                                  title: Unde quod.
+                                  title: Laborum ut iste et harum.
                                   uploadDate: Qui unde et mollitia modi.
                                   userID: Voluptate expedita sunt culpa non.
                                   username: Cupiditate ea cum ut beatae sed.
                                 - deliverytype: Quia aut quas aut id.
-                                  description: Autem neque numquam.
+                                  description: Unde quod.
                                   imageIDs:
-                                    - Nesciunt dicta tempore fugiat dignissimos velit rerum.
+                                    - Tempora delectus architecto non odit nesciunt.
+                                    - Tempore fugiat dignissimos velit rerum.
                                     - Quia velit voluptate quod quia.
                                     - Aut aut impedit.
                                   medium: Nam doloribus dolor commodi consequuntur perferendis ea.
                                   postID: Odio tempora commodi officiis numquam molestiae.
-                                  price: Nisi tempora delectus architecto.
+                                  price: Autem neque numquam.
                                   sold: false
-                                  title: Unde quod.
+                                  title: Laborum ut iste et harum.
                                   uploadDate: Qui unde et mollitia modi.
                                   userID: Voluptate expedita sunt culpa non.
                                   username: Cupiditate ea cum ut beatae sed.
@@ -420,87 +427,93 @@ paths:
                                     $ref: '#/components/schemas/PostResponse'
                                 example:
                                     - deliverytype: Quia aut quas aut id.
-                                      description: Autem neque numquam.
+                                      description: Unde quod.
                                       imageIDs:
-                                        - Nesciunt dicta tempore fugiat dignissimos velit rerum.
+                                        - Tempora delectus architecto non odit nesciunt.
+                                        - Tempore fugiat dignissimos velit rerum.
                                         - Quia velit voluptate quod quia.
                                         - Aut aut impedit.
                                       medium: Nam doloribus dolor commodi consequuntur perferendis ea.
                                       postID: Odio tempora commodi officiis numquam molestiae.
-                                      price: Nisi tempora delectus architecto.
+                                      price: Autem neque numquam.
                                       sold: false
-                                      title: Unde quod.
+                                      title: Laborum ut iste et harum.
                                       uploadDate: Qui unde et mollitia modi.
                                       userID: Voluptate expedita sunt culpa non.
                                       username: Cupiditate ea cum ut beatae sed.
                                     - deliverytype: Quia aut quas aut id.
-                                      description: Autem neque numquam.
+                                      description: Unde quod.
                                       imageIDs:
-                                        - Nesciunt dicta tempore fugiat dignissimos velit rerum.
+                                        - Tempora delectus architecto non odit nesciunt.
+                                        - Tempore fugiat dignissimos velit rerum.
                                         - Quia velit voluptate quod quia.
                                         - Aut aut impedit.
                                       medium: Nam doloribus dolor commodi consequuntur perferendis ea.
                                       postID: Odio tempora commodi officiis numquam molestiae.
-                                      price: Nisi tempora delectus architecto.
+                                      price: Autem neque numquam.
                                       sold: false
-                                      title: Unde quod.
+                                      title: Laborum ut iste et harum.
                                       uploadDate: Qui unde et mollitia modi.
                                       userID: Voluptate expedita sunt culpa non.
                                       username: Cupiditate ea cum ut beatae sed.
                             example:
                                 - deliverytype: Quia aut quas aut id.
-                                  description: Autem neque numquam.
+                                  description: Unde quod.
                                   imageIDs:
-                                    - Nesciunt dicta tempore fugiat dignissimos velit rerum.
+                                    - Tempora delectus architecto non odit nesciunt.
+                                    - Tempore fugiat dignissimos velit rerum.
                                     - Quia velit voluptate quod quia.
                                     - Aut aut impedit.
                                   medium: Nam doloribus dolor commodi consequuntur perferendis ea.
                                   postID: Odio tempora commodi officiis numquam molestiae.
-                                  price: Nisi tempora delectus architecto.
+                                  price: Autem neque numquam.
                                   sold: false
-                                  title: Unde quod.
+                                  title: Laborum ut iste et harum.
                                   uploadDate: Qui unde et mollitia modi.
                                   userID: Voluptate expedita sunt culpa non.
                                   username: Cupiditate ea cum ut beatae sed.
                                 - deliverytype: Quia aut quas aut id.
-                                  description: Autem neque numquam.
+                                  description: Unde quod.
                                   imageIDs:
-                                    - Nesciunt dicta tempore fugiat dignissimos velit rerum.
+                                    - Tempora delectus architecto non odit nesciunt.
+                                    - Tempore fugiat dignissimos velit rerum.
                                     - Quia velit voluptate quod quia.
                                     - Aut aut impedit.
                                   medium: Nam doloribus dolor commodi consequuntur perferendis ea.
                                   postID: Odio tempora commodi officiis numquam molestiae.
-                                  price: Nisi tempora delectus architecto.
+                                  price: Autem neque numquam.
                                   sold: false
-                                  title: Unde quod.
+                                  title: Laborum ut iste et harum.
                                   uploadDate: Qui unde et mollitia modi.
                                   userID: Voluptate expedita sunt culpa non.
                                   username: Cupiditate ea cum ut beatae sed.
                                 - deliverytype: Quia aut quas aut id.
-                                  description: Autem neque numquam.
+                                  description: Unde quod.
                                   imageIDs:
-                                    - Nesciunt dicta tempore fugiat dignissimos velit rerum.
+                                    - Tempora delectus architecto non odit nesciunt.
+                                    - Tempore fugiat dignissimos velit rerum.
                                     - Quia velit voluptate quod quia.
                                     - Aut aut impedit.
                                   medium: Nam doloribus dolor commodi consequuntur perferendis ea.
                                   postID: Odio tempora commodi officiis numquam molestiae.
-                                  price: Nisi tempora delectus architecto.
+                                  price: Autem neque numquam.
                                   sold: false
-                                  title: Unde quod.
+                                  title: Laborum ut iste et harum.
                                   uploadDate: Qui unde et mollitia modi.
                                   userID: Voluptate expedita sunt culpa non.
                                   username: Cupiditate ea cum ut beatae sed.
                                 - deliverytype: Quia aut quas aut id.
-                                  description: Autem neque numquam.
+                                  description: Unde quod.
                                   imageIDs:
-                                    - Nesciunt dicta tempore fugiat dignissimos velit rerum.
+                                    - Tempora delectus architecto non odit nesciunt.
+                                    - Tempore fugiat dignissimos velit rerum.
                                     - Quia velit voluptate quod quia.
                                     - Aut aut impedit.
                                   medium: Nam doloribus dolor commodi consequuntur perferendis ea.
                                   postID: Odio tempora commodi officiis numquam molestiae.
-                                  price: Nisi tempora delectus architecto.
+                                  price: Autem neque numquam.
                                   sold: false
-                                  title: Unde quod.
+                                  title: Laborum ut iste et harum.
                                   uploadDate: Qui unde et mollitia modi.
                                   userID: Voluptate expedita sunt culpa non.
                                   username: Cupiditate ea cum ut beatae sed.
@@ -532,59 +545,63 @@ paths:
                                     $ref: '#/components/schemas/PostResponse'
                                 example:
                                     - deliverytype: Quia aut quas aut id.
-                                      description: Autem neque numquam.
+                                      description: Unde quod.
                                       imageIDs:
-                                        - Nesciunt dicta tempore fugiat dignissimos velit rerum.
+                                        - Tempora delectus architecto non odit nesciunt.
+                                        - Tempore fugiat dignissimos velit rerum.
                                         - Quia velit voluptate quod quia.
                                         - Aut aut impedit.
                                       medium: Nam doloribus dolor commodi consequuntur perferendis ea.
                                       postID: Odio tempora commodi officiis numquam molestiae.
-                                      price: Nisi tempora delectus architecto.
+                                      price: Autem neque numquam.
                                       sold: false
-                                      title: Unde quod.
+                                      title: Laborum ut iste et harum.
                                       uploadDate: Qui unde et mollitia modi.
                                       userID: Voluptate expedita sunt culpa non.
                                       username: Cupiditate ea cum ut beatae sed.
                                     - deliverytype: Quia aut quas aut id.
-                                      description: Autem neque numquam.
+                                      description: Unde quod.
                                       imageIDs:
-                                        - Nesciunt dicta tempore fugiat dignissimos velit rerum.
+                                        - Tempora delectus architecto non odit nesciunt.
+                                        - Tempore fugiat dignissimos velit rerum.
                                         - Quia velit voluptate quod quia.
                                         - Aut aut impedit.
                                       medium: Nam doloribus dolor commodi consequuntur perferendis ea.
                                       postID: Odio tempora commodi officiis numquam molestiae.
-                                      price: Nisi tempora delectus architecto.
+                                      price: Autem neque numquam.
                                       sold: false
-                                      title: Unde quod.
+                                      title: Laborum ut iste et harum.
                                       uploadDate: Qui unde et mollitia modi.
                                       userID: Voluptate expedita sunt culpa non.
                                       username: Cupiditate ea cum ut beatae sed.
                             example:
                                 - deliverytype: Quia aut quas aut id.
-                                  description: Autem neque numquam.
+                                  description: Unde quod.
                                   imageIDs:
-                                    - Nesciunt dicta tempore fugiat dignissimos velit rerum.
+                                    - Tempora delectus architecto non odit nesciunt.
+                                    - Tempore fugiat dignissimos velit rerum.
                                     - Quia velit voluptate quod quia.
                                     - Aut aut impedit.
                                   medium: Nam doloribus dolor commodi consequuntur perferendis ea.
                                   postID: Odio tempora commodi officiis numquam molestiae.
-                                  price: Nisi tempora delectus architecto.
+                                  price: Autem neque numquam.
                                   sold: false
-                                  title: Unde quod.
+                                  title: Laborum ut iste et harum.
                                   uploadDate: Qui unde et mollitia modi.
                                   userID: Voluptate expedita sunt culpa non.
                                   username: Cupiditate ea cum ut beatae sed.
                                 - deliverytype: Quia aut quas aut id.
-                                  description: Autem neque numquam.
+                                  description: Unde quod.
                                   imageIDs:
-                                    - Nesciunt dicta tempore fugiat dignissimos velit rerum.
+                                    - Tempora delectus architecto non odit nesciunt.
+                                    - Tempore fugiat dignissimos velit rerum.
                                     - Quia velit voluptate quod quia.
                                     - Aut aut impedit.
                                   medium: Nam doloribus dolor commodi consequuntur perferendis ea.
                                   postID: Odio tempora commodi officiis numquam molestiae.
-                                  price: Nisi tempora delectus architecto.
+                                  price: Autem neque numquam.
                                   sold: false
-                                  title: Unde quod.
+                                  title: Laborum ut iste et harum.
                                   uploadDate: Qui unde et mollitia modi.
                                   userID: Voluptate expedita sunt culpa non.
                                   username: Cupiditate ea cum ut beatae sed.

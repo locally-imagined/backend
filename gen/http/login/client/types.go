@@ -16,7 +16,7 @@ import (
 func NewLoginResultOK(body string) *login.LoginResult {
 	v := body
 	res := &login.LoginResult{
-		JWT: &v,
+		UserID: &v,
 	}
 
 	return res

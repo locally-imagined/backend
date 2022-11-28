@@ -45,7 +45,10 @@ type LoginPayload struct {
 
 // LoginResult is the result type of the login service Login method.
 type LoginResult struct {
+	// jwt used for future authentication
 	JWT *string
+	// userID of user
+	UserID *string
 }
 
 // Credentials are invalid
