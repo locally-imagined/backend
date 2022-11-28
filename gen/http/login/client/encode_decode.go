@@ -66,14 +66,14 @@ func DecodeLoginResponse(decoder func(*http.Response) goahttp.Decoder, restoreBo
 		switch resp.StatusCode {
 		case http.StatusOK:
 			var (
-				body string
+				body LoginResponseBody
 				err  error
 			)
 			err = decoder(resp).Decode(&body)
 			if err != nil {
 				return nil, goahttp.ErrDecodingError("login", "Login", err)
 			}
-			res := NewLoginResultOK(body)
+			res := NewLoginResultOK(&body)
 			return res, nil
 		default:
 			body, _ := io.ReadAll(resp.Body)

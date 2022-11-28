@@ -22,7 +22,7 @@ func EncodeLoginResponse(encoder func(context.Context, http.ResponseWriter) goah
 	return func(ctx context.Context, w http.ResponseWriter, v interface{}) error {
 		res, _ := v.(*login.LoginResult)
 		enc := encoder(ctx, w)
-		body := res.UserID
+		body := NewLoginResponseBody(res)
 		w.WriteHeader(http.StatusOK)
 		return enc.Encode(body)
 	}

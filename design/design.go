@@ -29,14 +29,12 @@ var _ = Service("login", func() {
 			Required("username", "password")
 		})
 		Result(func() {
-			Attribute("jwt", String, "jwt used for future authentication")
-			Attribute("userID", String, "userID of user")
+			Attribute("LoginResponse", LoginResponse, "JWT and UserID")
 		})
 		HTTP(func() {
 			POST("/login")
 			Response(func() {
-				Body("jwt")
-				Body("userID")
+				Body("LoginResponse")
 			})
 		})
 	})
@@ -245,6 +243,12 @@ var SignupBasicAuth = BasicAuthSecurity("signup", func() {
 // JWTAuth defines a security scheme that uses JWT tokens.
 var JWTAuth = JWTSecurity("jwt", func() {
 	Description(`Secures endpoint by requiring a valid JWT token retrieved via the login endpoint.`)
+})
+
+var LoginResponse = Type("LoginResponse", func() {
+	Description("Response from logging in")
+	Attribute("jwt", String, "jwt used for future authentication")
+	Attribute("userID", String, "users ID")
 })
 
 var User = Type("User", func() {

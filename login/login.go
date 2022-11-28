@@ -60,7 +60,14 @@ func (s *Service) Login(ctx context.Context, p *login.LoginPayload) (*login.Logi
 	UserID := ctx.Value("UserID").(string)
 	token, err := auth.MakeToken(p.Username, ctx.Value("UserID").(string))
 	if err != nil {
-		return &login.LoginResult{JWT: nil, UserID: nil}, err
+		return nil, err
 	}
-	return &login.LoginResult{JWT: &token, UserID: &UserID}, nil
+	resp := &login.LoginResponse{
+		UserID: &UserID,
+		JWT:    &token,
+	}
+	res := &login.LoginResult{
+		LoginResponse: resp,
+	}
+	return res, nil
 }

@@ -11,12 +11,27 @@ import (
 	login "backend/gen/login"
 )
 
+// LoginResponseBody is the type of the "login" service "Login" endpoint HTTP
+// response body.
+type LoginResponseBody LoginResponseResponseBody
+
+// LoginResponseResponseBody is used to define fields on response body types.
+type LoginResponseResponseBody struct {
+	// jwt used for future authentication
+	JWT *string `form:"jwt,omitempty" json:"jwt,omitempty" xml:"jwt,omitempty"`
+	// users ID
+	UserID *string `form:"userID,omitempty" json:"userID,omitempty" xml:"userID,omitempty"`
+}
+
 // NewLoginResultOK builds a "login" service "Login" endpoint result from a
 // HTTP "OK" response.
-func NewLoginResultOK(body string) *login.LoginResult {
-	v := body
+func NewLoginResultOK(body *LoginResponseBody) *login.LoginResult {
+	v := &login.LoginResponse{
+		JWT:    body.JWT,
+		UserID: body.UserID,
+	}
 	res := &login.LoginResult{
-		UserID: &v,
+		LoginResponse: v,
 	}
 
 	return res
