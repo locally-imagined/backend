@@ -34,7 +34,7 @@ func NewEndpoints(s Service) *Endpoints {
 		DeletePost:          NewDeletePostEndpoint(s, a.JWTAuth),
 		EditPost:            NewEditPostEndpoint(s, a.JWTAuth),
 		GetPostPage:         NewGetPostPageEndpoint(s),
-		GetArtistPostPage:   NewGetArtistPostPageEndpoint(s, a.JWTAuth),
+		GetArtistPostPage:   NewGetArtistPostPageEndpoint(s),
 		GetPostPageFiltered: NewGetPostPageFilteredEndpoint(s),
 		GetImagesForPost:    NewGetImagesForPostEndpoint(s),
 	}
@@ -119,19 +119,9 @@ func NewGetPostPageEndpoint(s Service) goa.Endpoint {
 
 // NewGetArtistPostPageEndpoint returns an endpoint function that calls the
 // method "get_artist_post_page" of service "postings".
-func NewGetArtistPostPageEndpoint(s Service, authJWTFn security.AuthJWTFunc) goa.Endpoint {
+func NewGetArtistPostPageEndpoint(s Service) goa.Endpoint {
 	return func(ctx context.Context, req interface{}) (interface{}, error) {
 		p := req.(*GetArtistPostPagePayload)
-		var err error
-		sc := security.JWTScheme{
-			Name:           "jwt",
-			Scopes:         []string{},
-			RequiredScopes: []string{},
-		}
-		ctx, err = authJWTFn(ctx, p.Token, &sc)
-		if err != nil {
-			return nil, err
-		}
 		return s.GetArtistPostPage(ctx, p)
 	}
 }

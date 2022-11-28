@@ -172,11 +172,10 @@ var _ = Service("postings", func() {
 		})
 	})
 	Method("get_artist_post_page", func() {
-		Security(JWTAuth)
 		Payload(func() {
-			Token("token", String, "jwt used for auth")
+			Attribute("userID", String, "User ID to get posts for")
 			Attribute("page", Int, "Page to get posts for")
-			Required("token", "page")
+			Required("userID", "page")
 		})
 		Result(func() {
 			Attribute("Posts", ArrayOf(PostResponse))

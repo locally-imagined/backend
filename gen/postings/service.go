@@ -103,8 +103,8 @@ type EditPostResult struct {
 // GetArtistPostPagePayload is the payload type of the postings service
 // get_artist_post_page method.
 type GetArtistPostPagePayload struct {
-	// jwt used for auth
-	Token string
+	// User ID to get posts for
+	UserID string
 	// Page to get posts for
 	Page int
 }

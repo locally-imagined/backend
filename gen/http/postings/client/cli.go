@@ -184,8 +184,15 @@ func BuildGetPostPagePayload(postingsGetPostPagePage string, postingsGetPostPage
 
 // BuildGetArtistPostPagePayload builds the payload for the postings
 // get_artist_post_page endpoint from CLI flags.
-func BuildGetArtistPostPagePayload(postingsGetArtistPostPagePage string, postingsGetArtistPostPageToken string) (*postings.GetArtistPostPagePayload, error) {
+func BuildGetArtistPostPagePayload(postingsGetArtistPostPageBody string, postingsGetArtistPostPagePage string) (*postings.GetArtistPostPagePayload, error) {
 	var err error
+	var body GetArtistPostPageRequestBody
+	{
+		err = json.Unmarshal([]byte(postingsGetArtistPostPageBody), &body)
+		if err != nil {
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"userID\": \"Minus mollitia veritatis.\"\n   }'")
+		}
+	}
 	var page int
 	{
 		var v int64
@@ -195,13 +202,10 @@ func BuildGetArtistPostPagePayload(postingsGetArtistPostPagePage string, posting
 			return nil, fmt.Errorf("invalid value for page, must be INT")
 		}
 	}
-	var token string
-	{
-		token = postingsGetArtistPostPageToken
+	v := &postings.GetArtistPostPagePayload{
+		UserID: body.UserID,
 	}
-	v := &postings.GetArtistPostPagePayload{}
 	v.Page = page
-	v.Token = token
 
 	return v, nil
 }

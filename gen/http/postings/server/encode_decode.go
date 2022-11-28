@@ -260,9 +260,23 @@ func EncodeGetArtistPostPageResponse(encoder func(context.Context, http.Response
 func DecodeGetArtistPostPageRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (interface{}, error) {
 	return func(r *http.Request) (interface{}, error) {
 		var (
-			page  int
-			token string
-			err   error
+			body GetArtistPostPageRequestBody
+			err  error
+		)
+		err = decoder(r).Decode(&body)
+		if err != nil {
+			if err == io.EOF {
+				return nil, goa.MissingPayloadError()
+			}
+			return nil, goa.DecodePayloadError(err.Error())
+		}
+		err = ValidateGetArtistPostPageRequestBody(&body)
+		if err != nil {
+			return nil, err
+		}
+
+		var (
+			page int
 
 			params = mux.Vars(r)
 		)
@@ -274,19 +288,10 @@ func DecodeGetArtistPostPageRequest(mux goahttp.Muxer, decoder func(*http.Reques
 			}
 			page = int(v)
 		}
-		token = r.Header.Get("Authorization")
-		if token == "" {
-			err = goa.MergeErrors(err, goa.MissingFieldError("Authorization", "header"))
-		}
 		if err != nil {
 			return nil, err
 		}
-		payload := NewGetArtistPostPagePayload(page, token)
-		if strings.Contains(payload.Token, " ") {
-			// Remove authorization scheme prefix (e.g. "Bearer")
-			cred := strings.SplitN(payload.Token, " ", 2)[1]
-			payload.Token = cred
-		}
+		payload := NewGetArtistPostPagePayload(&body, page)
 
 		return payload, nil
 	}

@@ -404,13 +404,9 @@ func EncodeGetArtistPostPageRequest(encoder func(*http.Request) goahttp.Encoder)
 		if !ok {
 			return goahttp.ErrInvalidType("postings", "get_artist_post_page", "*postings.GetArtistPostPagePayload", v)
 		}
-		{
-			head := p.Token
-			if !strings.Contains(head, " ") {
-				req.Header.Set("Authorization", "Bearer "+head)
-			} else {
-				req.Header.Set("Authorization", head)
-			}
+		body := NewGetArtistPostPageRequestBody(p)
+		if err := encoder(req).Encode(&body); err != nil {
+			return goahttp.ErrEncodingError("postings", "get_artist_post_page", err)
 		}
 		return nil
 	}

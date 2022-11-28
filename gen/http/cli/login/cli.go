@@ -103,9 +103,9 @@ func ParseEndpoint(
 		postingsGetPostPagePageFlag    = postingsGetPostPageFlags.String("page", "REQUIRED", "Page to get posts for")
 		postingsGetPostPageKeywordFlag = postingsGetPostPageFlags.String("keyword", "", "")
 
-		postingsGetArtistPostPageFlags     = flag.NewFlagSet("get-artist-post-page", flag.ExitOnError)
-		postingsGetArtistPostPagePageFlag  = postingsGetArtistPostPageFlags.String("page", "REQUIRED", "Page to get posts for")
-		postingsGetArtistPostPageTokenFlag = postingsGetArtistPostPageFlags.String("token", "REQUIRED", "")
+		postingsGetArtistPostPageFlags    = flag.NewFlagSet("get-artist-post-page", flag.ExitOnError)
+		postingsGetArtistPostPageBodyFlag = postingsGetArtistPostPageFlags.String("body", "REQUIRED", "")
+		postingsGetArtistPostPagePageFlag = postingsGetArtistPostPageFlags.String("page", "REQUIRED", "Page to get posts for")
 
 		postingsGetPostPageFilteredFlags         = flag.NewFlagSet("get-post-page-filtered", flag.ExitOnError)
 		postingsGetPostPageFilteredPageFlag      = postingsGetPostPageFilteredFlags.String("page", "REQUIRED", "Page to get posts for")
@@ -258,7 +258,7 @@ func ParseEndpoint(
 				data, err = postingsc.BuildGetPostPagePayload(*postingsGetPostPagePageFlag, *postingsGetPostPageKeywordFlag)
 			case "get-artist-post-page":
 				endpoint = c.GetArtistPostPage()
-				data, err = postingsc.BuildGetArtistPostPagePayload(*postingsGetArtistPostPagePageFlag, *postingsGetArtistPostPageTokenFlag)
+				data, err = postingsc.BuildGetArtistPostPagePayload(*postingsGetArtistPostPageBodyFlag, *postingsGetArtistPostPagePageFlag)
 			case "get-post-page-filtered":
 				endpoint = c.GetPostPageFiltered()
 				data, err = postingsc.BuildGetPostPageFilteredPayload(*postingsGetPostPageFilteredPageFlag, *postingsGetPostPageFilteredKeywordFlag, *postingsGetPostPageFilteredStartDateFlag, *postingsGetPostPageFilteredEndDateFlag, *postingsGetPostPageFilteredMediumFlag)
@@ -417,14 +417,16 @@ Example:
 }
 
 func postingsGetArtistPostPageUsage() {
-	fmt.Fprintf(os.Stderr, `%[1]s [flags] postings get-artist-post-page -page INT -token STRING
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] postings get-artist-post-page -body JSON -page INT
 
 GetArtistPostPage implements get_artist_post_page.
+    -body JSON: 
     -page INT: Page to get posts for
-    -token STRING: 
 
 Example:
-    %[1]s postings get-artist-post-page --page 952206678845216916 --token "Mollitia veritatis delectus eaque."
+    %[1]s postings get-artist-post-page --body '{
+      "userID": "Minus mollitia veritatis."
+   }' --page 656510932370584375
 `, os.Args[0])
 }
 
@@ -439,7 +441,7 @@ GetPostPageFiltered implements get_post_page_filtered.
     -medium STRING: 
 
 Example:
-    %[1]s postings get-post-page-filtered --page 6778696889188512609 --keyword "Saepe aperiam." --start-date "Voluptas id ex qui occaecati." --end-date "Ratione asperiores nemo numquam iste sed ad." --medium "Id dolor autem."
+    %[1]s postings get-post-page-filtered --page 2791266757345210295 --keyword "Sint saepe aperiam non voluptas id ex." --start-date "Occaecati consectetur ratione asperiores nemo numquam iste." --end-date "Ad voluptatem id dolor autem iusto." --medium "Qui unde natus."
 `, os.Args[0])
 }
 
@@ -450,6 +452,6 @@ GetImagesForPost implements get_images_for_post.
     -post-id STRING: Post to get images for
 
 Example:
-    %[1]s postings get-images-for-post --post-id "Porro qui vel sed et tenetur."
+    %[1]s postings get-images-for-post --post-id "Molestiae non quaerat ipsa."
 `, os.Args[0])
 }
