@@ -19,13 +19,16 @@ import (
 
 func main() {
 	port := os.Getenv("PORT")
+
 	sL := &login.Service{}                      //# Create Service
 	loginEndpoints := genlogin.NewEndpoints(sL) // # Create endpoints
+
+	sS := &signup.Service{}
+	signupEndpoints := gensignup.NewEndpoints(sS)
+
 	postingsClient := postings.New(os.Getenv("BUCKETEER_AWS_ACCESS_KEY_ID"), os.Getenv("BUCKETEER_AWS_SECRET_ACCESS_KEY"), os.Getenv("BUCKETEER_AWS_REGION"), os.Getenv("BUCKETEER_BUCKET_NAME"), os.Getenv("DATABASE_URL"))
 	sP := postings.NewService(postingsClient)
 	postingsEndpoints := genpostings.NewEndpoints(sP)
-	sS := &signup.Service{}
-	signupEndpoints := gensignup.NewEndpoints(sS)
 
 	mux := goahttp.NewMuxer()      //# Create HTTP muxer
 	dec := goahttp.RequestDecoder  //# Set HTTP request decoder

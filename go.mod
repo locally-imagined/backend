@@ -7,6 +7,7 @@ require (
 	github.com/golang-jwt/jwt/v4 v4.4.2
 	github.com/google/uuid v1.3.0
 	github.com/lib/pq v1.10.7
+	goa.design/clue v0.13.0
 	goa.design/goa/v3 v3.10.2
 	goa.design/plugins/v3 v3.10.2
 )

@@ -58,6 +58,8 @@ github.com/stretchr/testify v1.8.0/go.mod h1:yNjHg4UonilssWZ8iaSj1OCr/vHnekPRkoO
 github.com/yuin/goldmark v1.4.13/go.mod h1:6yULJ656Px+3vBD8DxQVa3kxgyrAnzto9xy5taEt/CY=
 github.com/zach-klippenstein/goregen v0.0.0-20160303162051-795b5e3961ea h1:CyhwejzVGvZ3Q2PSbQ4NRRYn+ZWv5eS1vlaEusT+bAI=
 github.com/zach-klippenstein/goregen v0.0.0-20160303162051-795b5e3961ea/go.mod h1:eNr558nEUjP8acGw8FFjTeWvSgU1stO7FAO6eknhHe4=
+goa.design/clue v0.13.0 h1:EAD5WFV+wPe2RP/9amsymzH4O1Y42XpXriBNA0zfjhY=
+goa.design/clue v0.13.0/go.mod h1:JO/U46/L/fyIpnup8CJyDCGHnP89sNslEqW99OaJyxY=
 goa.design/goa/v3 v3.10.2 h1:wb6wUsraGTfA+C9lcwGqgp8ksaLVkyuofl8kQM6RRvA=
 goa.design/goa/v3 v3.10.2/go.mod h1:2Wz3eUgGUcniNuEns8ppaRFK7uijE8Tns4yoyc4B0P4=
 goa.design/plugins/v3 v3.10.2 h1:A2Aai9rHdib8CPwA2Hdqkici2QOtmgZBqD50x0himq8=

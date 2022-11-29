@@ -17,24 +17,33 @@ import (
 )
 
 type (
-	// client is the zendesk service client interface
+	// client is the postings service client interface
 	Client interface {
+		// Creates a post for the user and stores in s3 and postgres
 		CreatePost(ctx context.Context, p *postings.CreatePostPayload) (*postings.CreatePostResult, error)
 
+		// Gets first 25 posts in database
 		GetPostPage(ctx context.Context, p *postings.GetPostPagePayload) (*postings.GetPostPageResult, error)
 
+		// Gets first 25 posts for artist by id
 		GetArtistPostPage(ctx context.Context, p *postings.GetArtistPostPagePayload) (*postings.GetArtistPostPageResult, error)
 
+		// Gets first 25 filtered posts
 		GetPostPageFiltered(ctx context.Context, p *postings.GetPostPageFilteredPayload) (*postings.GetPostPageFilteredResult, error)
 
+		// Gets all image ids associated with a post
 		GetImagesForPost(ctx context.Context, p *postings.GetImagesForPostPayload) (*postings.GetImagesForPostResult, error)
 
+		// Deletes a post from database and images from s3
 		DeletePost(ctx context.Context, p *postings.DeletePostPayload) error
 
+		// Edits post with params given
 		EditPost(ctx context.Context, p *postings.EditPostPayload) (*postings.EditPostResult, error)
 
+		// Opens postgres db connection
 		openDB() (*sql.DB, error)
 
+		// Creates s3 session
 		getS3Session() (string, *s3.S3)
 	}
 
@@ -44,6 +53,24 @@ type (
 		awsRegion     string
 		awsBucketName string
 		dbURL         string
+	}
+
+	image struct {
+		imageID string
+	}
+
+	post struct {
+		postID       string
+		userID       string
+		postTitle    string
+		postDesc     string
+		price        string
+		uploadDate   string
+		imageID      string
+		medium       string
+		sold         bool
+		deliverytype string
+		username     string
 	}
 )
 
@@ -61,7 +88,7 @@ var (
 	// ErrUnauthorized is the error returned by Login when the request credentials
 	// are invalid.
 
-	// add prepares before queries
+	// add prepares before queries?
 	//
 	INSERTPOST   string = "INSERT INTO Posts (postid, userid, title, description, price, medium, deliverytype) Values ($1, $2, $3, $4, $5, $6, $7)"
 	INSERTIMAGES string = "INSERT INTO Images Values ($1, $2, $3)"
@@ -128,10 +155,6 @@ func deleteImageFromS3(ctx context.Context, svc *s3.S3, awsBucketName, imageID s
 	return err
 }
 
-// maybe i can mock openDB so that i am working with a mock db
-// make opendb a service method and mock it?
-// or restructure and make service/client files and mock the client entirely and dont do client tests
-// under postings directory, just have service.go and client.go and test service methods with mocked clients
 func (c *client) CreatePost(ctx context.Context, p *postings.CreatePostPayload) (*postings.CreatePostResult, error) {
 	awsBucketName, svc := c.getS3Session()
 	postID := uuid.New().String()
@@ -176,24 +199,6 @@ func (c *client) CreatePost(ctx context.Context, p *postings.CreatePostPayload) 
 		Posted: posted,
 	}
 	return res, nil
-}
-
-type image struct {
-	imageID string
-}
-
-type post struct {
-	postID       string
-	userID       string
-	postTitle    string
-	postDesc     string
-	price        string
-	uploadDate   string
-	imageID      string
-	medium       string
-	sold         bool
-	deliverytype string
-	username     string
 }
 
 func (c *client) GetPostPage(ctx context.Context, p *postings.GetPostPagePayload) (*postings.GetPostPageResult, error) {
