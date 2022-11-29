@@ -24,7 +24,7 @@ func BuildCreatePostPayload(postingsCreatePostBody string, postingsCreatePostTok
 	{
 		err = json.Unmarshal([]byte(postingsCreatePostBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"content\": [\n         \"Deleniti non praesentium molestiae consequuntur ipsam eum.\",\n         \"Ut deleniti laborum ea.\"\n      ],\n      \"deliverytype\": \"Commodi quia est et aut.\",\n      \"description\": \"Dignissimos repellendus quia.\",\n      \"medium\": \"Quia labore recusandae quae omnis et id.\",\n      \"price\": \"Architecto et expedita eum voluptatibus tenetur non.\",\n      \"title\": \"Distinctio ut laboriosam nam hic vel vel.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"content\": [\n         \"Dignissimos ullam.\",\n         \"Ut laboriosam nam hic.\"\n      ],\n      \"deliverytype\": \"Et expedita eum voluptatibus tenetur.\",\n      \"description\": \"Cupiditate voluptatem a eaque odit.\",\n      \"medium\": \"Vel rerum dignissimos repellendus quia voluptas.\",\n      \"price\": \"Atque voluptates at perferendis.\",\n      \"title\": \"Est inventore.\"\n   }'")
 		}
 		if body.Content == nil {
 			err = goa.MergeErrors(err, goa.MissingFieldError("content", "body"))
@@ -158,7 +158,7 @@ func BuildEditPostPayload(postingsEditPostPostID string, postingsEditPostTitle s
 
 // BuildGetPostPagePayload builds the payload for the postings get_post_page
 // endpoint from CLI flags.
-func BuildGetPostPagePayload(postingsGetPostPagePage string, postingsGetPostPageKeyword string) (*postings.GetPostPagePayload, error) {
+func BuildGetPostPagePayload(postingsGetPostPagePage string) (*postings.GetPostPagePayload, error) {
 	var err error
 	var page int
 	{
@@ -169,15 +169,8 @@ func BuildGetPostPagePayload(postingsGetPostPagePage string, postingsGetPostPage
 			return nil, fmt.Errorf("invalid value for page, must be INT")
 		}
 	}
-	var keyword *string
-	{
-		if postingsGetPostPageKeyword != "" {
-			keyword = &postingsGetPostPageKeyword
-		}
-	}
 	v := &postings.GetPostPagePayload{}
 	v.Page = page
-	v.Keyword = keyword
 
 	return v, nil
 }

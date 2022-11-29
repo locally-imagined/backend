@@ -154,8 +154,6 @@ type GetPostPageFilteredResult struct {
 type GetPostPagePayload struct {
 	// Page to get posts for
 	Page int
-	// Search bar keyword to search for in title and description
-	Keyword *string
 }
 
 // GetPostPageResult is the result type of the postings service get_post_page

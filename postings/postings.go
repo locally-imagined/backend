@@ -123,6 +123,10 @@ func openDB() (*sql.DB, error) {
 	return sql.Open("postgres", os.Getenv("DATABASE_URL"))
 }
 
+// maybe i can mock openDB so that i am working with a mock db
+// make opendb a service method and mock it?
+// or restructure and make service/client files and mock the client entirely and dont do client tests
+// under postings directory, just have service.go and client.go and test service methods with mocked clients
 func (s *Service) CreatePost(ctx context.Context, p *postings.CreatePostPayload) (*postings.CreatePostResult, error) {
 	awsBucketName, svc := getS3Session()
 	postID := uuid.New().String()
@@ -195,12 +199,7 @@ func (s *Service) GetPostPage(ctx context.Context, p *postings.GetPostPagePayloa
 	defer dbPool.Close()
 	offset := p.Page * IMAGESPERPAGE
 	var rows *sql.Rows
-	if p.Keyword != nil {
-		keyword := "%" + *p.Keyword + "%"
-		rows, err = dbPool.Query(GETPOSTPAGEWITHKEYWORD, keyword, keyword, offset)
-	} else {
-		rows, err = dbPool.Query(GETPOSTPAGE, offset)
-	}
+	rows, err = dbPool.Query(GETPOSTPAGE, offset)
 	if err != nil {
 		return nil, err
 	}
