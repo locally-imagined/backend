@@ -11,20 +11,22 @@ import (
 	"backend/auth"
 	"backend/gen/postings"
 	"context"
-	"database/sql"
-	"log"
-	"strings"
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
 
-	"github.com/google/uuid"
 	_ "github.com/lib/pq"
 	"goa.design/goa/v3/security"
 )
 
 type Service struct {
-	client client
+	postingsClient Client
+}
+
+func NewService(postingsClient Client) *Service {
+	return &Service{
+		postingsClient: postingsClient,
+	}
 }
 
 func (s *Service) JWTAuth(ctx context.Context, token string, scheme *security.JWTScheme) (context.Context, error) {
@@ -49,345 +51,55 @@ func (s *Service) JWTAuth(ctx context.Context, token string, scheme *security.JW
 	return ctx, nil
 }
 
-// maybe i can mock openDB so that i am working with a mock db
-// make opendb a service method and mock it?
-// or restructure and make service/client files and mock the client entirely and dont do client tests
-// under postings directory, just have service.go and client.go and test service methods with mocked clients
 func (s *Service) CreatePost(ctx context.Context, p *postings.CreatePostPayload) (*postings.CreatePostResult, error) {
-	res, err := s.client.CreatePost(ctx, p)
+	res, err := s.postingsClient.CreatePost(ctx, p)
 	if err != nil {
 		return nil, err
 	}
 	return res, nil
 }
 
-// type image struct {
-// 	imageID string
-// }
-
-// type post struct {
-// 	postID       string
-// 	userID       string
-// 	postTitle    string
-// 	postDesc     string
-// 	price        string
-// 	uploadDate   string
-// 	imageID      string
-// 	medium       string
-// 	sold         bool
-// 	deliverytype string
-// 	username     string
-// }
-
 func (s *Service) GetPostPage(ctx context.Context, p *postings.GetPostPagePayload) (*postings.GetPostPageResult, error) {
-	dbPool, err := openDB()
+	res, err := s.postingsClient.GetPostPage(ctx, p)
 	if err != nil {
 		return nil, err
 	}
-	defer dbPool.Close()
-	offset := p.Page * IMAGESPERPAGE
-	var rows *sql.Rows
-	rows, err = dbPool.Query(GETPOSTPAGE, offset)
-	if err != nil {
-		return nil, err
-	}
-	res := make([]*postings.PostResponse, 0)
-	for rows.Next() {
-		var row post
-		if err := rows.Scan(&row.postID, &row.userID, &row.username, &row.postTitle, &row.postDesc, &row.price, &row.medium, &row.sold, &row.uploadDate, &row.deliverytype, &row.imageID); err != nil {
-			log.Fatal(err)
-			return nil, err
-		}
-		imageID := make([]string, 0)
-		imageID = append(imageID, row.imageID)
-		res = append(res, &postings.PostResponse{UserID: row.userID, Username: row.username, Title: row.postTitle, Description: row.postDesc, Price: row.price, ImageIDs: imageID, PostID: row.postID, UploadDate: row.uploadDate, Medium: row.medium, Sold: row.sold, Deliverytype: row.deliverytype})
-	}
-	return &postings.GetPostPageResult{Posts: res}, err
+	return res, nil
 }
 
 func (s *Service) GetArtistPostPage(ctx context.Context, p *postings.GetArtistPostPagePayload) (*postings.GetArtistPostPageResult, error) {
-	dbPool, err := openDB()
+	res, err := s.postingsClient.GetArtistPostPage(ctx, p)
 	if err != nil {
 		return nil, err
 	}
-	defer dbPool.Close()
-	offset := p.Page * 25
-
-	rows, err := dbPool.Query(GETPOSTPAGEFORARTIST, p.UserID, offset)
-	if err != nil {
-		return nil, err
-	}
-	res := make([]*postings.PostResponse, 0)
-	for rows.Next() {
-		var row post
-		if err := rows.Scan(&row.postID, &row.userID, &row.username, &row.postTitle, &row.postDesc, &row.price, &row.medium, &row.sold, &row.uploadDate, &row.deliverytype, &row.imageID); err != nil {
-			log.Fatal(err)
-			return nil, err
-		}
-		imageID := make([]string, 0)
-		imageID = append(imageID, row.imageID)
-		res = append(res, &postings.PostResponse{UserID: row.userID, Username: row.username, Title: row.postTitle, Description: row.postDesc, Price: row.price, ImageIDs: imageID, PostID: row.postID, UploadDate: row.uploadDate, Medium: row.medium, Sold: row.sold, Deliverytype: row.deliverytype})
-	}
-	return &postings.GetArtistPostPageResult{Posts: res}, err
+	return res, nil
 }
 
 func (s *Service) GetPostPageFiltered(ctx context.Context, p *postings.GetPostPageFilteredPayload) (*postings.GetPostPageFilteredResult, error) {
-	dbPool, err := openDB()
+	res, err := s.postingsClient.GetPostPageFiltered(ctx, p)
 	if err != nil {
 		return nil, err
 	}
-	defer dbPool.Close()
-	// offset := p.Page * 25
-
-	querystring := `SELECT p.postid, p.userid, p.title, p.description, 
-	p.price, p.medium, p.sold, p.uploaddate, i.imgid FROM posts AS p LEFT 
-	JOIN images AS i ON p.postid=i.postid WHERE (i.index=0) AND ((LOWER(p.title) LIKE $1) OR 
-	(LOWER(p.description) LIKE $1)) AND (p.uploaddate >= $2) AND (p.uploaddate <= $3) AND (p.medium LIKE $4) 
-	ORDER BY p.uploaddate OFFSET $5 ROWS FETCH NEXT 25 ROWS ONLY`
-	keyword := "%%"
-	start := "2000-01-01"
-	end := "2025-01-01"
-	medium := "%%"
-	if p.Keyword != nil {
-		keyword = "%" + *p.Keyword + "%"
-	}
-	if p.StartDate != nil {
-		start = *p.StartDate
-	}
-	if p.EndDate != nil {
-		end = *p.EndDate
-	}
-	if p.Medium != nil {
-		medium = "%" + *p.Medium + "%"
-	}
-	rows, err := dbPool.Query(querystring, keyword, start, end, medium, p.Page*25)
-	if err != nil {
-		return nil, err
-	}
-	res := make([]*postings.PostResponse, 0)
-	for rows.Next() {
-		var row post
-		if err := rows.Scan(&row.postID, &row.userID, &row.postTitle, &row.postDesc, &row.price, &row.medium, &row.sold, &row.uploadDate, &row.imageID); err != nil {
-			log.Fatal(err)
-			return nil, err
-		}
-		imageID := make([]string, 0)
-		imageID = append(imageID, row.imageID)
-		res = append(res, &postings.PostResponse{Title: row.postTitle, Description: row.postDesc, Price: row.price, ImageIDs: imageID, PostID: row.postID, UploadDate: row.uploadDate, Medium: row.medium, Sold: row.sold})
-	}
-	return &postings.GetPostPageFilteredResult{Posts: res}, err
+	return res, nil
 }
 
 func (s *Service) GetImagesForPost(ctx context.Context, p *postings.GetImagesForPostPayload) (*postings.GetImagesForPostResult, error) {
-	dbPool, err := openDB()
+	res, err := s.postingsClient.GetImagesForPost(ctx, p)
 	if err != nil {
 		return nil, err
 	}
-	defer dbPool.Close()
-	rows, err := dbPool.Query(SELECTIMAGES, p.PostID)
-	if err != nil {
-		return nil, err
-	}
-	res := make([]string, 0)
-	for rows.Next() {
-		var row image
-		if err := rows.Scan(&row.imageID); err != nil {
-			log.Fatal(err)
-			return nil, err
-		}
-		res = append(res, row.imageID)
-	}
-	return &postings.GetImagesForPostResult{Images: res}, err
+	return res, nil
 }
 
 func (s *Service) DeletePost(ctx context.Context, p *postings.DeletePostPayload) error {
-	dbPool, err := openDB()
-	if err != nil {
-		return err
-	}
-	defer dbPool.Close()
-	rows, err := dbPool.Query(SELECTUSERID, p.PostID)
-	if err != nil {
-		return err
-	}
-	var userID string
-	for rows.Next() {
-		if err := rows.Scan(&userID); err != nil {
-			log.Fatal(err)
-			return err
-		}
-	}
-	if userID != ctx.Value("UserID").(string) {
-		return err
-	}
-
-	rows, err = dbPool.Query(SELECTIMAGES, p.PostID)
-	if err != nil {
-		return err
-	}
-	imageIDs := make([]string, 0)
-	for rows.Next() {
-		var imageID string
-		if err := rows.Scan(&imageID); err != nil {
-			log.Fatal(err)
-			return err
-		}
-		imageIDs = append(imageIDs, imageID)
-	}
-
-	_, err = dbPool.Query(DELETEIMAGES, p.PostID)
-	if err != nil {
-		return err
-	}
-	_, err = dbPool.Query(DELETEPOST, p.PostID)
-	if err != nil {
-		return err
-	}
-	awsBucketName, svc := getS3Session()
-	// delete the images in the bucket
-	for _, imageID := range imageIDs {
-		err = deleteImageFromS3(ctx, svc, awsBucketName, imageID)
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+	err := s.postingsClient.DeletePost(ctx, p)
+	return err
 }
 
 func (s *Service) EditPost(ctx context.Context, p *postings.EditPostPayload) (*postings.EditPostResult, error) {
-	dbPool, err := openDB()
+	res, err := s.postingsClient.EditPost(ctx, p)
 	if err != nil {
 		return nil, err
-	}
-	defer dbPool.Close()
-	rows, err := dbPool.Query(SELECTUSERID, p.PostID)
-	if err != nil {
-		return nil, err
-	}
-	var userID string
-	for rows.Next() {
-		if err := rows.Scan(&userID); err != nil {
-			log.Fatal(err)
-			return nil, err
-		}
-	}
-	if userID != ctx.Value("UserID").(string) {
-		return nil, err
-	}
-	query1 := "UPDATE posts SET "
-	query2 := "=$1 WHERE postID=$2"
-	if p.Title != nil {
-		query := query1 + "title" + query2
-		_, err = dbPool.Query(query, *p.Title, p.PostID)
-		if err != nil {
-			return nil, err
-		}
-	}
-	if p.Description != nil {
-		query := query1 + "description" + query2
-		_, err = dbPool.Query(query, *p.Description, p.PostID)
-		if err != nil {
-			return nil, err
-		}
-	}
-	if p.Price != nil {
-		query := query1 + "price" + query2
-		_, err = dbPool.Query(query, *p.Price, p.PostID)
-		if err != nil {
-			return nil, err
-		}
-	}
-	if p.Medium != nil {
-		query := query1 + "medium" + query2
-		_, err = dbPool.Query(query, *p.Medium, p.PostID)
-		if err != nil {
-			return nil, err
-		}
-	}
-	if p.Sold != nil {
-		query := query1 + "sold" + query2
-		_, err = dbPool.Query(query, *p.Sold, p.PostID)
-		if err != nil {
-			return nil, err
-		}
-	}
-	if p.Deliverytype != nil {
-		query := query1 + "deliverytype" + query2
-		_, err = dbPool.Query(query, *p.Deliverytype, p.PostID)
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	// what if image is the last pic? dont let user delete last pic?
-	if p.ImageID != nil {
-		_, err = dbPool.Query(UPDATEINDEX, p.PostID, *p.ImageID)
-		if err != nil {
-			return nil, err
-		}
-		_, err = dbPool.Query(DELETEIMAGE, *p.ImageID)
-		if err != nil {
-			return nil, err
-		}
-		awsBucketName, svc := getS3Session()
-		err = deleteImageFromS3(ctx, svc, awsBucketName, *p.ImageID)
-		if err != nil {
-			return nil, err
-		}
-	}
-	if p.Content != nil {
-		imageID := uuid.New().String()
-		awsBucketName, svc := getS3Session()
-		reader := strings.NewReader(string(*p.Content))
-		// put the object in the bucket
-		err := putImageToS3(ctx, svc, awsBucketName, imageID, reader)
-		if err != nil {
-			return nil, err
-		}
-		_, err = dbPool.Query(ADDIMAGE, imageID, p.PostID, p.PostID)
-		if err != nil {
-			return nil, err
-		}
-	}
-	rows, err = dbPool.Query(GETEDITEDINFO, p.PostID)
-	if err != nil {
-		return nil, err
-	}
-	var row post
-	for rows.Next() {
-		if err := rows.Scan(&row.postTitle, &row.postDesc, &row.price, &row.medium, &row.sold, &row.deliverytype, &row.uploadDate); err != nil {
-			log.Fatal(err)
-			return nil, err
-		}
-	}
-	rows, err = dbPool.Query(SELECTIMAGES, p.PostID)
-	if err != nil {
-		return nil, err
-	}
-	imageIDs := make([]string, 0)
-	for rows.Next() {
-		var imageID string
-		if err := rows.Scan(&imageID); err != nil {
-			log.Fatal(err)
-			return nil, err
-		}
-		imageIDs = append(imageIDs, imageID)
-	}
-	posted := &postings.PostResponse{
-		Title:        row.postTitle,
-		Description:  row.postDesc,
-		Price:        row.price,
-		ImageIDs:     imageIDs,
-		PostID:       p.PostID,
-		Medium:       row.medium,
-		Sold:         row.sold,
-		UploadDate:   row.uploadDate,
-		Deliverytype: row.deliverytype,
-		UserID:       ctx.Value("UserID").(string),
-	}
-	res := &postings.EditPostResult{
-		Posted: posted,
 	}
 	return res, nil
-
 }

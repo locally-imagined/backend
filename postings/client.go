@@ -5,7 +5,6 @@ import (
 	"context"
 	"database/sql"
 	"log"
-	"os"
 	"strings"
 	"time"
 
@@ -33,13 +32,29 @@ type (
 		DeletePost(ctx context.Context, p *postings.DeletePostPayload) error
 
 		EditPost(ctx context.Context, p *postings.EditPostPayload) (*postings.EditPostResult, error)
+
+		openDB() (*sql.DB, error)
+
+		getS3Session() (string, *s3.S3)
 	}
 
-	client struct{}
+	client struct {
+		awsAccessKey  string
+		awsSecretKey  string
+		awsRegion     string
+		awsBucketName string
+		dbURL         string
+	}
 )
 
-func New() Client {
-	return &client{}
+func New(awsAccessKey, awsSecretKey, awsRegion, awsBucketName, dbURL string) Client {
+	return &client{
+		awsAccessKey:  awsAccessKey,
+		awsSecretKey:  awsSecretKey,
+		awsRegion:     awsRegion,
+		awsBucketName: awsBucketName,
+		dbURL:         dbURL,
+	}
 }
 
 var (
@@ -78,11 +93,15 @@ var (
 	ErrUnauthorized error  = postings.Unauthorized("invalid jwt")
 )
 
-func getS3Session() (string, *s3.S3) {
-	awsAccessKey := os.Getenv("BUCKETEER_AWS_ACCESS_KEY_ID")
-	awsSecretKey := os.Getenv("BUCKETEER_AWS_SECRET_ACCESS_KEY")
-	awsRegion := os.Getenv("BUCKETEER_AWS_REGION")
-	awsBucketName := os.Getenv("BUCKETEER_BUCKET_NAME")
+func (c *client) openDB() (*sql.DB, error) {
+	return sql.Open("postgres", c.dbURL)
+}
+
+func (c *client) getS3Session() (string, *s3.S3) {
+	awsAccessKey := c.awsAccessKey
+	awsSecretKey := c.awsSecretKey
+	awsRegion := c.awsRegion
+	awsBucketName := c.awsBucketName
 	sess := session.Must(session.NewSession(&aws.Config{
 		Region:      aws.String(awsRegion),
 		Credentials: credentials.NewStaticCredentials(awsAccessKey, awsSecretKey, ""),
@@ -109,18 +128,14 @@ func deleteImageFromS3(ctx context.Context, svc *s3.S3, awsBucketName, imageID s
 	return err
 }
 
-func openDB() (*sql.DB, error) {
-	return sql.Open("postgres", os.Getenv("DATABASE_URL"))
-}
-
 // maybe i can mock openDB so that i am working with a mock db
 // make opendb a service method and mock it?
 // or restructure and make service/client files and mock the client entirely and dont do client tests
 // under postings directory, just have service.go and client.go and test service methods with mocked clients
 func (c *client) CreatePost(ctx context.Context, p *postings.CreatePostPayload) (*postings.CreatePostResult, error) {
-	awsBucketName, svc := getS3Session()
+	awsBucketName, svc := c.getS3Session()
 	postID := uuid.New().String()
-	dbPool, err := openDB()
+	dbPool, err := c.openDB()
 	if err != nil {
 		return nil, err
 	}
@@ -182,7 +197,7 @@ type post struct {
 }
 
 func (c *client) GetPostPage(ctx context.Context, p *postings.GetPostPagePayload) (*postings.GetPostPageResult, error) {
-	dbPool, err := openDB()
+	dbPool, err := c.openDB()
 	if err != nil {
 		return nil, err
 	}
@@ -208,7 +223,7 @@ func (c *client) GetPostPage(ctx context.Context, p *postings.GetPostPagePayload
 }
 
 func (c *client) GetArtistPostPage(ctx context.Context, p *postings.GetArtistPostPagePayload) (*postings.GetArtistPostPageResult, error) {
-	dbPool, err := openDB()
+	dbPool, err := c.openDB()
 	if err != nil {
 		return nil, err
 	}
@@ -234,7 +249,7 @@ func (c *client) GetArtistPostPage(ctx context.Context, p *postings.GetArtistPos
 }
 
 func (c *client) GetPostPageFiltered(ctx context.Context, p *postings.GetPostPageFilteredPayload) (*postings.GetPostPageFilteredResult, error) {
-	dbPool, err := openDB()
+	dbPool, err := c.openDB()
 	if err != nil {
 		return nil, err
 	}
@@ -281,7 +296,7 @@ func (c *client) GetPostPageFiltered(ctx context.Context, p *postings.GetPostPag
 }
 
 func (c *client) GetImagesForPost(ctx context.Context, p *postings.GetImagesForPostPayload) (*postings.GetImagesForPostResult, error) {
-	dbPool, err := openDB()
+	dbPool, err := c.openDB()
 	if err != nil {
 		return nil, err
 	}
@@ -303,7 +318,7 @@ func (c *client) GetImagesForPost(ctx context.Context, p *postings.GetImagesForP
 }
 
 func (c *client) DeletePost(ctx context.Context, p *postings.DeletePostPayload) error {
-	dbPool, err := openDB()
+	dbPool, err := c.openDB()
 	if err != nil {
 		return err
 	}
@@ -345,7 +360,7 @@ func (c *client) DeletePost(ctx context.Context, p *postings.DeletePostPayload) 
 	if err != nil {
 		return err
 	}
-	awsBucketName, svc := getS3Session()
+	awsBucketName, svc := c.getS3Session()
 	// delete the images in the bucket
 	for _, imageID := range imageIDs {
 		err = deleteImageFromS3(ctx, svc, awsBucketName, imageID)
@@ -357,7 +372,7 @@ func (c *client) DeletePost(ctx context.Context, p *postings.DeletePostPayload) 
 }
 
 func (c *client) EditPost(ctx context.Context, p *postings.EditPostPayload) (*postings.EditPostResult, error) {
-	dbPool, err := openDB()
+	dbPool, err := c.openDB()
 	if err != nil {
 		return nil, err
 	}
@@ -431,7 +446,7 @@ func (c *client) EditPost(ctx context.Context, p *postings.EditPostPayload) (*po
 		if err != nil {
 			return nil, err
 		}
-		awsBucketName, svc := getS3Session()
+		awsBucketName, svc := c.getS3Session()
 		err = deleteImageFromS3(ctx, svc, awsBucketName, *p.ImageID)
 		if err != nil {
 			return nil, err
@@ -439,7 +454,7 @@ func (c *client) EditPost(ctx context.Context, p *postings.EditPostPayload) (*po
 	}
 	if p.Content != nil {
 		imageID := uuid.New().String()
-		awsBucketName, svc := getS3Session()
+		awsBucketName, svc := c.getS3Session()
 		reader := strings.NewReader(string(*p.Content))
 		// put the object in the bucket
 		err := putImageToS3(ctx, svc, awsBucketName, imageID, reader)
