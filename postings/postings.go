@@ -11,9 +11,6 @@ import (
 	"backend/auth"
 	"backend/gen/postings"
 	"context"
-	"time"
-
-	"github.com/golang-jwt/jwt/v4"
 
 	_ "github.com/lib/pq"
 	"goa.design/goa/v3/security"
@@ -30,25 +27,7 @@ func NewService(postingsClient Client) *Service {
 }
 
 func (s *Service) JWTAuth(ctx context.Context, token string, scheme *security.JWTScheme) (context.Context, error) {
-	tok := auth.DecodeToken(token)
-	if tok == nil {
-		return ctx, ErrUnauthorized
-	}
-	// 3. add authInfo to context
-	claims := tok.Claims.(jwt.MapClaims)
-	ctx = context.WithValue(ctx, "Username", claims["Username"])
-	ctx = context.WithValue(ctx, "UserID", claims["UserID"])
-	var exp time.Time
-	var now time.Time = time.Now()
-	switch iat := claims["iat"].(type) {
-	case float64:
-		exp = time.Unix(int64(iat), 0)
-	}
-	if exp.Add(time.Hour * 2).Before(now) {
-		return ctx, ErrUnauthorized
-	}
-
-	return ctx, nil
+	return auth.JWTAuth(ctx, token, scheme)
 }
 
 func (s *Service) CreatePost(ctx context.Context, p *postings.CreatePostPayload) (*postings.CreatePostResult, error) {
