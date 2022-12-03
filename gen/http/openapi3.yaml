@@ -21,8 +21,8 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/LoginLoginResponseBody'
                             example:
-                                jwt: Et qui.
-                                userID: Eius tempore exercitationem harum tempore quos.
+                                jwt: Saepe nesciunt voluptas consequuntur aut consequatur culpa.
+                                userID: Dignissimos quia.
             security:
                 - login_header_Authorization: []
     /posts/artistposts/{page}:
@@ -40,8 +40,8 @@ paths:
                   schema:
                     type: string
                     description: User ID to get posts for
-                    example: Quas adipisci id aliquid sit molestiae minima.
-                  example: Nulla quos repudiandae dolores.
+                    example: In laudantium reprehenderit.
+                  example: Quia ipsa est.
                 - name: page
                   in: path
                   description: Page to get posts for
@@ -49,9 +49,9 @@ paths:
                   schema:
                     type: integer
                     description: Page to get posts for
-                    example: 4367413126306510175
+                    example: 4519301322116116698
                     format: int64
-                  example: 521604626767205398
+                  example: 328788103827175430
             responses:
                 "200":
                     description: OK response.
@@ -62,127 +62,85 @@ paths:
                                 items:
                                     $ref: '#/components/schemas/PostResponse'
                                 example:
-                                    - deliverytype: Nam quibusdam sunt.
-                                      description: Eum laudantium et.
+                                    - deliverytype: Earum commodi.
+                                      description: Quos est.
                                       imageIDs:
-                                        - Est temporibus sint in vel qui et.
-                                        - Iusto in veniam quia officia.
-                                        - Animi adipisci ipsam quae repellat sit.
-                                        - Maxime unde magni id cumque qui.
-                                      medium: Consequatur rerum ducimus.
-                                      postID: Ab id earum commodi repudiandae voluptatum atque.
-                                      price: Et ut.
-                                      sold: true
-                                      title: Reprehenderit optio.
-                                      uploadDate: Perspiciatis non aut.
-                                      userID: A sunt reiciendis.
-                                      username: Labore quisquam reiciendis in.
-                                    - deliverytype: Nam quibusdam sunt.
-                                      description: Eum laudantium et.
+                                        - Earum iusto.
+                                        - Veniam quia officia a animi.
+                                      medium: Sit recusandae maxime unde.
+                                      postID: Ipsam quae.
+                                      price: Sint in vel.
+                                      sold: false
+                                      title: Et ut.
+                                      uploadDate: Id cumque qui at.
+                                      userID: Voluptatum atque et consequatur rerum ducimus vel.
+                                      username: Non aut optio ea nam.
+                                    - deliverytype: Earum commodi.
+                                      description: Quos est.
                                       imageIDs:
-                                        - Est temporibus sint in vel qui et.
-                                        - Iusto in veniam quia officia.
-                                        - Animi adipisci ipsam quae repellat sit.
-                                        - Maxime unde magni id cumque qui.
-                                      medium: Consequatur rerum ducimus.
-                                      postID: Ab id earum commodi repudiandae voluptatum atque.
-                                      price: Et ut.
-                                      sold: true
-                                      title: Reprehenderit optio.
-                                      uploadDate: Perspiciatis non aut.
-                                      userID: A sunt reiciendis.
-                                      username: Labore quisquam reiciendis in.
-                                    - deliverytype: Nam quibusdam sunt.
-                                      description: Eum laudantium et.
+                                        - Earum iusto.
+                                        - Veniam quia officia a animi.
+                                      medium: Sit recusandae maxime unde.
+                                      postID: Ipsam quae.
+                                      price: Sint in vel.
+                                      sold: false
+                                      title: Et ut.
+                                      uploadDate: Id cumque qui at.
+                                      userID: Voluptatum atque et consequatur rerum ducimus vel.
+                                      username: Non aut optio ea nam.
+                                    - deliverytype: Earum commodi.
+                                      description: Quos est.
                                       imageIDs:
-                                        - Est temporibus sint in vel qui et.
-                                        - Iusto in veniam quia officia.
-                                        - Animi adipisci ipsam quae repellat sit.
-                                        - Maxime unde magni id cumque qui.
-                                      medium: Consequatur rerum ducimus.
-                                      postID: Ab id earum commodi repudiandae voluptatum atque.
-                                      price: Et ut.
-                                      sold: true
-                                      title: Reprehenderit optio.
-                                      uploadDate: Perspiciatis non aut.
-                                      userID: A sunt reiciendis.
-                                      username: Labore quisquam reiciendis in.
-                                    - deliverytype: Nam quibusdam sunt.
-                                      description: Eum laudantium et.
-                                      imageIDs:
-                                        - Est temporibus sint in vel qui et.
-                                        - Iusto in veniam quia officia.
-                                        - Animi adipisci ipsam quae repellat sit.
-                                        - Maxime unde magni id cumque qui.
-                                      medium: Consequatur rerum ducimus.
-                                      postID: Ab id earum commodi repudiandae voluptatum atque.
-                                      price: Et ut.
-                                      sold: true
-                                      title: Reprehenderit optio.
-                                      uploadDate: Perspiciatis non aut.
-                                      userID: A sunt reiciendis.
-                                      username: Labore quisquam reiciendis in.
+                                        - Earum iusto.
+                                        - Veniam quia officia a animi.
+                                      medium: Sit recusandae maxime unde.
+                                      postID: Ipsam quae.
+                                      price: Sint in vel.
+                                      sold: false
+                                      title: Et ut.
+                                      uploadDate: Id cumque qui at.
+                                      userID: Voluptatum atque et consequatur rerum ducimus vel.
+                                      username: Non aut optio ea nam.
                             example:
-                                - deliverytype: Nam quibusdam sunt.
-                                  description: Eum laudantium et.
+                                - deliverytype: Earum commodi.
+                                  description: Quos est.
                                   imageIDs:
-                                    - Est temporibus sint in vel qui et.
-                                    - Iusto in veniam quia officia.
-                                    - Animi adipisci ipsam quae repellat sit.
-                                    - Maxime unde magni id cumque qui.
-                                  medium: Consequatur rerum ducimus.
-                                  postID: Ab id earum commodi repudiandae voluptatum atque.
-                                  price: Et ut.
-                                  sold: true
-                                  title: Reprehenderit optio.
-                                  uploadDate: Perspiciatis non aut.
-                                  userID: A sunt reiciendis.
-                                  username: Labore quisquam reiciendis in.
-                                - deliverytype: Nam quibusdam sunt.
-                                  description: Eum laudantium et.
+                                    - Earum iusto.
+                                    - Veniam quia officia a animi.
+                                  medium: Sit recusandae maxime unde.
+                                  postID: Ipsam quae.
+                                  price: Sint in vel.
+                                  sold: false
+                                  title: Et ut.
+                                  uploadDate: Id cumque qui at.
+                                  userID: Voluptatum atque et consequatur rerum ducimus vel.
+                                  username: Non aut optio ea nam.
+                                - deliverytype: Earum commodi.
+                                  description: Quos est.
                                   imageIDs:
-                                    - Est temporibus sint in vel qui et.
-                                    - Iusto in veniam quia officia.
-                                    - Animi adipisci ipsam quae repellat sit.
-                                    - Maxime unde magni id cumque qui.
-                                  medium: Consequatur rerum ducimus.
-                                  postID: Ab id earum commodi repudiandae voluptatum atque.
-                                  price: Et ut.
-                                  sold: true
-                                  title: Reprehenderit optio.
-                                  uploadDate: Perspiciatis non aut.
-                                  userID: A sunt reiciendis.
-                                  username: Labore quisquam reiciendis in.
-                                - deliverytype: Nam quibusdam sunt.
-                                  description: Eum laudantium et.
+                                    - Earum iusto.
+                                    - Veniam quia officia a animi.
+                                  medium: Sit recusandae maxime unde.
+                                  postID: Ipsam quae.
+                                  price: Sint in vel.
+                                  sold: false
+                                  title: Et ut.
+                                  uploadDate: Id cumque qui at.
+                                  userID: Voluptatum atque et consequatur rerum ducimus vel.
+                                  username: Non aut optio ea nam.
+                                - deliverytype: Earum commodi.
+                                  description: Quos est.
                                   imageIDs:
-                                    - Est temporibus sint in vel qui et.
-                                    - Iusto in veniam quia officia.
-                                    - Animi adipisci ipsam quae repellat sit.
-                                    - Maxime unde magni id cumque qui.
-                                  medium: Consequatur rerum ducimus.
-                                  postID: Ab id earum commodi repudiandae voluptatum atque.
-                                  price: Et ut.
-                                  sold: true
-                                  title: Reprehenderit optio.
-                                  uploadDate: Perspiciatis non aut.
-                                  userID: A sunt reiciendis.
-                                  username: Labore quisquam reiciendis in.
-                                - deliverytype: Nam quibusdam sunt.
-                                  description: Eum laudantium et.
-                                  imageIDs:
-                                    - Est temporibus sint in vel qui et.
-                                    - Iusto in veniam quia officia.
-                                    - Animi adipisci ipsam quae repellat sit.
-                                    - Maxime unde magni id cumque qui.
-                                  medium: Consequatur rerum ducimus.
-                                  postID: Ab id earum commodi repudiandae voluptatum atque.
-                                  price: Et ut.
-                                  sold: true
-                                  title: Reprehenderit optio.
-                                  uploadDate: Perspiciatis non aut.
-                                  userID: A sunt reiciendis.
-                                  username: Labore quisquam reiciendis in.
+                                    - Earum iusto.
+                                    - Veniam quia officia a animi.
+                                  medium: Sit recusandae maxime unde.
+                                  postID: Ipsam quae.
+                                  price: Sint in vel.
+                                  sold: false
+                                  title: Et ut.
+                                  uploadDate: Id cumque qui at.
+                                  userID: Voluptatum atque et consequatur rerum ducimus vel.
+                                  username: Non aut optio ea nam.
     /posts/create:
         post:
             tags:
@@ -198,14 +156,15 @@ paths:
                             $ref: '#/components/schemas/Post'
                         example:
                             content:
-                                - Ipsum consequuntur et excepturi praesentium quae.
-                                - Assumenda voluptatem et commodi atque.
-                                - Rem fugit.
-                            deliverytype: Sed nemo rem nisi consequatur.
-                            description: Et commodi.
-                            medium: Aliquid sit voluptates.
-                            price: Est velit consectetur et voluptatem magni sunt.
-                            title: Error assumenda adipisci.
+                                - Nemo rem nisi consequatur molestiae iure quam.
+                                - Quaerat maxime et quisquam.
+                                - Aut aut saepe eos nam.
+                                - Omnis nesciunt excepturi quam eaque.
+                            deliverytype: Dolor porro assumenda dolor ex.
+                            description: Rem fugit.
+                            medium: Voluptatem maiores est maiores.
+                            price: Aliquid sit voluptates.
+                            title: Assumenda voluptatem et commodi atque.
             responses:
                 "200":
                     description: OK response.
@@ -214,20 +173,20 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/PostingscreatePostResponseBody'
                             example:
-                                deliverytype: Similique sed rem quos.
-                                description: Nesciunt excepturi quam eaque.
+                                deliverytype: Qui assumenda quas non.
+                                description: Et quia repudiandae minus aut sint et.
                                 imageIDs:
-                                    - Porro assumenda dolor ex.
-                                    - Dicta rerum.
-                                    - Fuga consequatur velit.
-                                medium: Quos exercitationem eaque dolores ea deleniti.
-                                postID: Et quia repudiandae minus aut sint et.
-                                price: Voluptatem maiores est maiores.
+                                    - Expedita ut consequuntur et est.
+                                    - Molestiae similique.
+                                    - Rem quos laborum dignissimos voluptatibus dolor.
+                                medium: Et aut quidem eaque laborum expedita numquam.
+                                postID: Veniam voluptatibus et omnis beatae sint.
+                                price: Quos exercitationem eaque dolores ea deleniti.
                                 sold: false
-                                title: Qui aut aut saepe eos nam placeat.
-                                uploadDate: Doloribus expedita ut consequuntur et est.
-                                userID: Dignissimos voluptatibus dolor ex veniam voluptatibus et.
-                                username: Beatae sint possimus et.
+                                title: Fuga consequatur velit.
+                                uploadDate: Et nemo aperiam.
+                                userID: Soluta est adipisci quia.
+                                username: Veritatis quod est officiis quidem iure et.
             security:
                 - jwt_header_Authorization: []
     /posts/delete/{postID}:
@@ -244,8 +203,8 @@ paths:
                   schema:
                     type: string
                     description: Post to delete
-                    example: Repellendus blanditiis aliquid dolorem ipsum et rerum.
-                  example: Impedit doloribus quidem.
+                    example: Illum deleniti repellendus dolores minima quod quia.
+                  example: Qui ipsam facere.
             responses:
                 "204":
                     description: No Content response.
@@ -265,8 +224,8 @@ paths:
                   schema:
                     type: string
                     description: Post title
-                    example: Sint rerum officiis qui odit distinctio quaerat.
-                  example: Vitae dolor.
+                    example: Libero sunt voluptate dolorem architecto aut sed.
+                  example: Maiores qui.
                 - name: description
                   in: query
                   description: Post description
@@ -274,8 +233,8 @@ paths:
                   schema:
                     type: string
                     description: Post description
-                    example: Doloribus et rerum.
-                  example: Qui quas.
+                    example: Doloremque magnam labore est fugit facere et.
+                  example: Et nihil numquam quae dolore.
                 - name: price
                   in: query
                   description: Post price
@@ -283,8 +242,8 @@ paths:
                   schema:
                     type: string
                     description: Post price
-                    example: Repellat rerum quasi et sit.
-                  example: Voluptatibus eaque vel omnis.
+                    example: Aut consequatur consequatur ea similique alias.
+                  example: Aliquid non nobis.
                 - name: content
                   in: query
                   description: Image content
@@ -292,8 +251,8 @@ paths:
                   schema:
                     type: string
                     description: Image content
-                    example: Totam doloremque dolore et.
-                  example: Distinctio eos nulla eos.
+                    example: Ea quas.
+                  example: Et ipsum sit dolore non.
                 - name: medium
                   in: query
                   description: Art type
@@ -301,8 +260,8 @@ paths:
                   schema:
                     type: string
                     description: Art type
-                    example: Totam odit non provident officiis ea.
-                  example: Corporis placeat aut.
+                    example: Repudiandae magni autem.
+                  example: Doloremque provident ut culpa sunt quia nostrum.
                 - name: sold
                   in: query
                   description: is sold
@@ -310,7 +269,7 @@ paths:
                   schema:
                     type: boolean
                     description: is sold
-                    example: true
+                    example: false
                   example: true
                 - name: deliverytype
                   in: query
@@ -319,8 +278,8 @@ paths:
                   schema:
                     type: string
                     description: Delivery type
-                    example: Sit aut ab dolor quasi.
-                  example: Fugit sed sit et placeat.
+                    example: Ea et tempora voluptas magnam non.
+                  example: Eum quia repudiandae neque sed nesciunt labore.
                 - name: imageID
                   in: query
                   description: Image ID
@@ -328,8 +287,8 @@ paths:
                   schema:
                     type: string
                     description: Image ID
-                    example: Dignissimos alias.
-                  example: Ea natus totam.
+                    example: Nihil praesentium id voluptatem animi.
+                  example: Iste incidunt.
                 - name: postID
                   in: path
                   description: Post ID
@@ -337,8 +296,8 @@ paths:
                   schema:
                     type: string
                     description: Post ID
-                    example: Soluta autem non ipsam tempore.
-                  example: Aspernatur totam incidunt ut ea.
+                    example: Ea dolore qui consequatur ut odio non.
+                  example: Provident illo tempore enim corrupti ab.
             responses:
                 "200":
                     description: OK response.
@@ -347,20 +306,20 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/PostResponse'
                             example:
-                                deliverytype: Similique sed rem quos.
-                                description: Nesciunt excepturi quam eaque.
+                                deliverytype: Qui assumenda quas non.
+                                description: Et quia repudiandae minus aut sint et.
                                 imageIDs:
-                                    - Porro assumenda dolor ex.
-                                    - Dicta rerum.
-                                    - Fuga consequatur velit.
-                                medium: Quos exercitationem eaque dolores ea deleniti.
-                                postID: Et quia repudiandae minus aut sint et.
-                                price: Voluptatem maiores est maiores.
+                                    - Expedita ut consequuntur et est.
+                                    - Molestiae similique.
+                                    - Rem quos laborum dignissimos voluptatibus dolor.
+                                medium: Et aut quidem eaque laborum expedita numquam.
+                                postID: Veniam voluptatibus et omnis beatae sint.
+                                price: Quos exercitationem eaque dolores ea deleniti.
                                 sold: false
-                                title: Qui aut aut saepe eos nam placeat.
-                                uploadDate: Doloribus expedita ut consequuntur et est.
-                                userID: Dignissimos voluptatibus dolor ex veniam voluptatibus et.
-                                username: Beatae sint possimus et.
+                                title: Fuga consequatur velit.
+                                uploadDate: Et nemo aperiam.
+                                userID: Soluta est adipisci quia.
+                                username: Veritatis quod est officiis quidem iure et.
             security:
                 - jwt_header_Authorization: []
     /posts/getimages/{postID}:
@@ -377,8 +336,8 @@ paths:
                   schema:
                     type: string
                     description: Post to get images for
-                    example: Doloremque magnam labore est fugit facere et.
-                  example: Et nihil numquam quae dolore.
+                    example: Laboriosam esse magnam cupiditate totam.
+                  example: Id quia culpa delectus maiores qui atque.
             responses:
                 "200":
                     description: OK response.
@@ -388,15 +347,15 @@ paths:
                                 type: array
                                 items:
                                     type: string
-                                    example: Sed consectetur minima.
+                                    example: Et cum possimus molestiae fugiat iure.
                                 example:
-                                    - Eos sapiente.
-                                    - Sunt dolor ipsa doloribus.
-                                    - Quos ducimus voluptates magnam quasi.
+                                    - A error aut molestias ex.
+                                    - Doloribus ut.
+                                    - Molestias exercitationem est consequatur qui cum ratione.
                             example:
-                                - Consequatur consequatur ea similique alias velit aliquid.
-                                - Nobis aut ea quas velit et.
-                                - Sit dolore.
+                                - Est a numquam.
+                                - Dolores nisi explicabo tempore ea qui.
+                                - Qui et ipsa et.
     /posts/getpage/{page}:
         get:
             tags:
@@ -411,9 +370,9 @@ paths:
                   schema:
                     type: integer
                     description: Page to get posts for
-                    example: 6742724951965962152
+                    example: 4049034306847738836
                     format: int64
-                  example: 770778146496743062
+                  example: 2274933446521582930
             responses:
                 "200":
                     description: OK response.
@@ -424,97 +383,111 @@ paths:
                                 items:
                                     $ref: '#/components/schemas/PostResponse'
                                 example:
-                                    - deliverytype: Nam quibusdam sunt.
-                                      description: Eum laudantium et.
+                                    - deliverytype: Earum commodi.
+                                      description: Quos est.
                                       imageIDs:
-                                        - Est temporibus sint in vel qui et.
-                                        - Iusto in veniam quia officia.
-                                        - Animi adipisci ipsam quae repellat sit.
-                                        - Maxime unde magni id cumque qui.
-                                      medium: Consequatur rerum ducimus.
-                                      postID: Ab id earum commodi repudiandae voluptatum atque.
-                                      price: Et ut.
-                                      sold: true
-                                      title: Reprehenderit optio.
-                                      uploadDate: Perspiciatis non aut.
-                                      userID: A sunt reiciendis.
-                                      username: Labore quisquam reiciendis in.
-                                    - deliverytype: Nam quibusdam sunt.
-                                      description: Eum laudantium et.
+                                        - Earum iusto.
+                                        - Veniam quia officia a animi.
+                                      medium: Sit recusandae maxime unde.
+                                      postID: Ipsam quae.
+                                      price: Sint in vel.
+                                      sold: false
+                                      title: Et ut.
+                                      uploadDate: Id cumque qui at.
+                                      userID: Voluptatum atque et consequatur rerum ducimus vel.
+                                      username: Non aut optio ea nam.
+                                    - deliverytype: Earum commodi.
+                                      description: Quos est.
                                       imageIDs:
-                                        - Est temporibus sint in vel qui et.
-                                        - Iusto in veniam quia officia.
-                                        - Animi adipisci ipsam quae repellat sit.
-                                        - Maxime unde magni id cumque qui.
-                                      medium: Consequatur rerum ducimus.
-                                      postID: Ab id earum commodi repudiandae voluptatum atque.
-                                      price: Et ut.
-                                      sold: true
-                                      title: Reprehenderit optio.
-                                      uploadDate: Perspiciatis non aut.
-                                      userID: A sunt reiciendis.
-                                      username: Labore quisquam reiciendis in.
+                                        - Earum iusto.
+                                        - Veniam quia officia a animi.
+                                      medium: Sit recusandae maxime unde.
+                                      postID: Ipsam quae.
+                                      price: Sint in vel.
+                                      sold: false
+                                      title: Et ut.
+                                      uploadDate: Id cumque qui at.
+                                      userID: Voluptatum atque et consequatur rerum ducimus vel.
+                                      username: Non aut optio ea nam.
+                                    - deliverytype: Earum commodi.
+                                      description: Quos est.
+                                      imageIDs:
+                                        - Earum iusto.
+                                        - Veniam quia officia a animi.
+                                      medium: Sit recusandae maxime unde.
+                                      postID: Ipsam quae.
+                                      price: Sint in vel.
+                                      sold: false
+                                      title: Et ut.
+                                      uploadDate: Id cumque qui at.
+                                      userID: Voluptatum atque et consequatur rerum ducimus vel.
+                                      username: Non aut optio ea nam.
+                                    - deliverytype: Earum commodi.
+                                      description: Quos est.
+                                      imageIDs:
+                                        - Earum iusto.
+                                        - Veniam quia officia a animi.
+                                      medium: Sit recusandae maxime unde.
+                                      postID: Ipsam quae.
+                                      price: Sint in vel.
+                                      sold: false
+                                      title: Et ut.
+                                      uploadDate: Id cumque qui at.
+                                      userID: Voluptatum atque et consequatur rerum ducimus vel.
+                                      username: Non aut optio ea nam.
                             example:
-                                - deliverytype: Nam quibusdam sunt.
-                                  description: Eum laudantium et.
+                                - deliverytype: Earum commodi.
+                                  description: Quos est.
                                   imageIDs:
-                                    - Est temporibus sint in vel qui et.
-                                    - Iusto in veniam quia officia.
-                                    - Animi adipisci ipsam quae repellat sit.
-                                    - Maxime unde magni id cumque qui.
-                                  medium: Consequatur rerum ducimus.
-                                  postID: Ab id earum commodi repudiandae voluptatum atque.
-                                  price: Et ut.
-                                  sold: true
-                                  title: Reprehenderit optio.
-                                  uploadDate: Perspiciatis non aut.
-                                  userID: A sunt reiciendis.
-                                  username: Labore quisquam reiciendis in.
-                                - deliverytype: Nam quibusdam sunt.
-                                  description: Eum laudantium et.
+                                    - Earum iusto.
+                                    - Veniam quia officia a animi.
+                                  medium: Sit recusandae maxime unde.
+                                  postID: Ipsam quae.
+                                  price: Sint in vel.
+                                  sold: false
+                                  title: Et ut.
+                                  uploadDate: Id cumque qui at.
+                                  userID: Voluptatum atque et consequatur rerum ducimus vel.
+                                  username: Non aut optio ea nam.
+                                - deliverytype: Earum commodi.
+                                  description: Quos est.
                                   imageIDs:
-                                    - Est temporibus sint in vel qui et.
-                                    - Iusto in veniam quia officia.
-                                    - Animi adipisci ipsam quae repellat sit.
-                                    - Maxime unde magni id cumque qui.
-                                  medium: Consequatur rerum ducimus.
-                                  postID: Ab id earum commodi repudiandae voluptatum atque.
-                                  price: Et ut.
-                                  sold: true
-                                  title: Reprehenderit optio.
-                                  uploadDate: Perspiciatis non aut.
-                                  userID: A sunt reiciendis.
-                                  username: Labore quisquam reiciendis in.
-                                - deliverytype: Nam quibusdam sunt.
-                                  description: Eum laudantium et.
+                                    - Earum iusto.
+                                    - Veniam quia officia a animi.
+                                  medium: Sit recusandae maxime unde.
+                                  postID: Ipsam quae.
+                                  price: Sint in vel.
+                                  sold: false
+                                  title: Et ut.
+                                  uploadDate: Id cumque qui at.
+                                  userID: Voluptatum atque et consequatur rerum ducimus vel.
+                                  username: Non aut optio ea nam.
+                                - deliverytype: Earum commodi.
+                                  description: Quos est.
                                   imageIDs:
-                                    - Est temporibus sint in vel qui et.
-                                    - Iusto in veniam quia officia.
-                                    - Animi adipisci ipsam quae repellat sit.
-                                    - Maxime unde magni id cumque qui.
-                                  medium: Consequatur rerum ducimus.
-                                  postID: Ab id earum commodi repudiandae voluptatum atque.
-                                  price: Et ut.
-                                  sold: true
-                                  title: Reprehenderit optio.
-                                  uploadDate: Perspiciatis non aut.
-                                  userID: A sunt reiciendis.
-                                  username: Labore quisquam reiciendis in.
-                                - deliverytype: Nam quibusdam sunt.
-                                  description: Eum laudantium et.
+                                    - Earum iusto.
+                                    - Veniam quia officia a animi.
+                                  medium: Sit recusandae maxime unde.
+                                  postID: Ipsam quae.
+                                  price: Sint in vel.
+                                  sold: false
+                                  title: Et ut.
+                                  uploadDate: Id cumque qui at.
+                                  userID: Voluptatum atque et consequatur rerum ducimus vel.
+                                  username: Non aut optio ea nam.
+                                - deliverytype: Earum commodi.
+                                  description: Quos est.
                                   imageIDs:
-                                    - Est temporibus sint in vel qui et.
-                                    - Iusto in veniam quia officia.
-                                    - Animi adipisci ipsam quae repellat sit.
-                                    - Maxime unde magni id cumque qui.
-                                  medium: Consequatur rerum ducimus.
-                                  postID: Ab id earum commodi repudiandae voluptatum atque.
-                                  price: Et ut.
-                                  sold: true
-                                  title: Reprehenderit optio.
-                                  uploadDate: Perspiciatis non aut.
-                                  userID: A sunt reiciendis.
-                                  username: Labore quisquam reiciendis in.
+                                    - Earum iusto.
+                                    - Veniam quia officia a animi.
+                                  medium: Sit recusandae maxime unde.
+                                  postID: Ipsam quae.
+                                  price: Sint in vel.
+                                  sold: false
+                                  title: Et ut.
+                                  uploadDate: Id cumque qui at.
+                                  userID: Voluptatum atque et consequatur rerum ducimus vel.
+                                  username: Non aut optio ea nam.
     /posts/getpagefiltered/{page}:
         get:
             tags:
@@ -529,8 +502,8 @@ paths:
                   schema:
                     type: string
                     description: Search bar keyword to search for in title and description
-                    example: Et cum possimus molestiae fugiat iure.
-                  example: Provident a error aut molestias.
+                    example: Dolor impedit voluptatem odit illo id.
+                  example: Et soluta minus consequatur.
                 - name: startDate
                   in: query
                   description: Filter attribute to see posts after given date
@@ -538,8 +511,8 @@ paths:
                   schema:
                     type: string
                     description: Filter attribute to see posts after given date
-                    example: Alias doloribus ut.
-                  example: Molestias exercitationem est consequatur qui cum ratione.
+                    example: Rerum accusantium sed est voluptate error.
+                  example: Et vel sit et eveniet.
                 - name: endDate
                   in: query
                   description: Filter attribute to see posts before given date
@@ -547,8 +520,8 @@ paths:
                   schema:
                     type: string
                     description: Filter attribute to see posts before given date
-                    example: Doloribus blanditiis molestiae quo adipisci aut quibusdam.
-                  example: Illum deleniti repellendus dolores minima quod quia.
+                    example: Vitae non.
+                  example: Et cumque rerum repellat.
                 - name: medium
                   in: query
                   description: Filter attribute to see posts with given medium type
@@ -556,8 +529,8 @@ paths:
                   schema:
                     type: string
                     description: Filter attribute to see posts with given medium type
-                    example: Qui ipsam facere.
-                  example: Libero sunt voluptate dolorem architecto aut sed.
+                    example: Quidem quod laborum.
+                  example: Commodi libero explicabo quidem.
                 - name: page
                   in: path
                   description: Page to get posts for
@@ -565,9 +538,9 @@ paths:
                   schema:
                     type: integer
                     description: Page to get posts for
-                    example: 4210847760908749209
+                    example: 6772827480463409616
                     format: int64
-                  example: 910455385023239905
+                  example: 5015274517374525482
             responses:
                 "200":
                     description: OK response.
@@ -578,112 +551,111 @@ paths:
                                 items:
                                     $ref: '#/components/schemas/PostResponse'
                                 example:
-                                    - deliverytype: Nam quibusdam sunt.
-                                      description: Eum laudantium et.
+                                    - deliverytype: Earum commodi.
+                                      description: Quos est.
                                       imageIDs:
-                                        - Est temporibus sint in vel qui et.
-                                        - Iusto in veniam quia officia.
-                                        - Animi adipisci ipsam quae repellat sit.
-                                        - Maxime unde magni id cumque qui.
-                                      medium: Consequatur rerum ducimus.
-                                      postID: Ab id earum commodi repudiandae voluptatum atque.
-                                      price: Et ut.
-                                      sold: true
-                                      title: Reprehenderit optio.
-                                      uploadDate: Perspiciatis non aut.
-                                      userID: A sunt reiciendis.
-                                      username: Labore quisquam reiciendis in.
-                                    - deliverytype: Nam quibusdam sunt.
-                                      description: Eum laudantium et.
+                                        - Earum iusto.
+                                        - Veniam quia officia a animi.
+                                      medium: Sit recusandae maxime unde.
+                                      postID: Ipsam quae.
+                                      price: Sint in vel.
+                                      sold: false
+                                      title: Et ut.
+                                      uploadDate: Id cumque qui at.
+                                      userID: Voluptatum atque et consequatur rerum ducimus vel.
+                                      username: Non aut optio ea nam.
+                                    - deliverytype: Earum commodi.
+                                      description: Quos est.
                                       imageIDs:
-                                        - Est temporibus sint in vel qui et.
-                                        - Iusto in veniam quia officia.
-                                        - Animi adipisci ipsam quae repellat sit.
-                                        - Maxime unde magni id cumque qui.
-                                      medium: Consequatur rerum ducimus.
-                                      postID: Ab id earum commodi repudiandae voluptatum atque.
-                                      price: Et ut.
-                                      sold: true
-                                      title: Reprehenderit optio.
-                                      uploadDate: Perspiciatis non aut.
-                                      userID: A sunt reiciendis.
-                                      username: Labore quisquam reiciendis in.
-                                    - deliverytype: Nam quibusdam sunt.
-                                      description: Eum laudantium et.
+                                        - Earum iusto.
+                                        - Veniam quia officia a animi.
+                                      medium: Sit recusandae maxime unde.
+                                      postID: Ipsam quae.
+                                      price: Sint in vel.
+                                      sold: false
+                                      title: Et ut.
+                                      uploadDate: Id cumque qui at.
+                                      userID: Voluptatum atque et consequatur rerum ducimus vel.
+                                      username: Non aut optio ea nam.
+                                    - deliverytype: Earum commodi.
+                                      description: Quos est.
                                       imageIDs:
-                                        - Est temporibus sint in vel qui et.
-                                        - Iusto in veniam quia officia.
-                                        - Animi adipisci ipsam quae repellat sit.
-                                        - Maxime unde magni id cumque qui.
-                                      medium: Consequatur rerum ducimus.
-                                      postID: Ab id earum commodi repudiandae voluptatum atque.
-                                      price: Et ut.
-                                      sold: true
-                                      title: Reprehenderit optio.
-                                      uploadDate: Perspiciatis non aut.
-                                      userID: A sunt reiciendis.
-                                      username: Labore quisquam reiciendis in.
+                                        - Earum iusto.
+                                        - Veniam quia officia a animi.
+                                      medium: Sit recusandae maxime unde.
+                                      postID: Ipsam quae.
+                                      price: Sint in vel.
+                                      sold: false
+                                      title: Et ut.
+                                      uploadDate: Id cumque qui at.
+                                      userID: Voluptatum atque et consequatur rerum ducimus vel.
+                                      username: Non aut optio ea nam.
+                                    - deliverytype: Earum commodi.
+                                      description: Quos est.
+                                      imageIDs:
+                                        - Earum iusto.
+                                        - Veniam quia officia a animi.
+                                      medium: Sit recusandae maxime unde.
+                                      postID: Ipsam quae.
+                                      price: Sint in vel.
+                                      sold: false
+                                      title: Et ut.
+                                      uploadDate: Id cumque qui at.
+                                      userID: Voluptatum atque et consequatur rerum ducimus vel.
+                                      username: Non aut optio ea nam.
                             example:
-                                - deliverytype: Nam quibusdam sunt.
-                                  description: Eum laudantium et.
+                                - deliverytype: Earum commodi.
+                                  description: Quos est.
                                   imageIDs:
-                                    - Est temporibus sint in vel qui et.
-                                    - Iusto in veniam quia officia.
-                                    - Animi adipisci ipsam quae repellat sit.
-                                    - Maxime unde magni id cumque qui.
-                                  medium: Consequatur rerum ducimus.
-                                  postID: Ab id earum commodi repudiandae voluptatum atque.
-                                  price: Et ut.
-                                  sold: true
-                                  title: Reprehenderit optio.
-                                  uploadDate: Perspiciatis non aut.
-                                  userID: A sunt reiciendis.
-                                  username: Labore quisquam reiciendis in.
-                                - deliverytype: Nam quibusdam sunt.
-                                  description: Eum laudantium et.
+                                    - Earum iusto.
+                                    - Veniam quia officia a animi.
+                                  medium: Sit recusandae maxime unde.
+                                  postID: Ipsam quae.
+                                  price: Sint in vel.
+                                  sold: false
+                                  title: Et ut.
+                                  uploadDate: Id cumque qui at.
+                                  userID: Voluptatum atque et consequatur rerum ducimus vel.
+                                  username: Non aut optio ea nam.
+                                - deliverytype: Earum commodi.
+                                  description: Quos est.
                                   imageIDs:
-                                    - Est temporibus sint in vel qui et.
-                                    - Iusto in veniam quia officia.
-                                    - Animi adipisci ipsam quae repellat sit.
-                                    - Maxime unde magni id cumque qui.
-                                  medium: Consequatur rerum ducimus.
-                                  postID: Ab id earum commodi repudiandae voluptatum atque.
-                                  price: Et ut.
-                                  sold: true
-                                  title: Reprehenderit optio.
-                                  uploadDate: Perspiciatis non aut.
-                                  userID: A sunt reiciendis.
-                                  username: Labore quisquam reiciendis in.
-                                - deliverytype: Nam quibusdam sunt.
-                                  description: Eum laudantium et.
+                                    - Earum iusto.
+                                    - Veniam quia officia a animi.
+                                  medium: Sit recusandae maxime unde.
+                                  postID: Ipsam quae.
+                                  price: Sint in vel.
+                                  sold: false
+                                  title: Et ut.
+                                  uploadDate: Id cumque qui at.
+                                  userID: Voluptatum atque et consequatur rerum ducimus vel.
+                                  username: Non aut optio ea nam.
+                                - deliverytype: Earum commodi.
+                                  description: Quos est.
                                   imageIDs:
-                                    - Est temporibus sint in vel qui et.
-                                    - Iusto in veniam quia officia.
-                                    - Animi adipisci ipsam quae repellat sit.
-                                    - Maxime unde magni id cumque qui.
-                                  medium: Consequatur rerum ducimus.
-                                  postID: Ab id earum commodi repudiandae voluptatum atque.
-                                  price: Et ut.
-                                  sold: true
-                                  title: Reprehenderit optio.
-                                  uploadDate: Perspiciatis non aut.
-                                  userID: A sunt reiciendis.
-                                  username: Labore quisquam reiciendis in.
-                                - deliverytype: Nam quibusdam sunt.
-                                  description: Eum laudantium et.
+                                    - Earum iusto.
+                                    - Veniam quia officia a animi.
+                                  medium: Sit recusandae maxime unde.
+                                  postID: Ipsam quae.
+                                  price: Sint in vel.
+                                  sold: false
+                                  title: Et ut.
+                                  uploadDate: Id cumque qui at.
+                                  userID: Voluptatum atque et consequatur rerum ducimus vel.
+                                  username: Non aut optio ea nam.
+                                - deliverytype: Earum commodi.
+                                  description: Quos est.
                                   imageIDs:
-                                    - Est temporibus sint in vel qui et.
-                                    - Iusto in veniam quia officia.
-                                    - Animi adipisci ipsam quae repellat sit.
-                                    - Maxime unde magni id cumque qui.
-                                  medium: Consequatur rerum ducimus.
-                                  postID: Ab id earum commodi repudiandae voluptatum atque.
-                                  price: Et ut.
-                                  sold: true
-                                  title: Reprehenderit optio.
-                                  uploadDate: Perspiciatis non aut.
-                                  userID: A sunt reiciendis.
-                                  username: Labore quisquam reiciendis in.
+                                    - Earum iusto.
+                                    - Veniam quia officia a animi.
+                                  medium: Sit recusandae maxime unde.
+                                  postID: Ipsam quae.
+                                  price: Sint in vel.
+                                  sold: false
+                                  title: Et ut.
+                                  uploadDate: Id cumque qui at.
+                                  userID: Voluptatum atque et consequatur rerum ducimus vel.
+                                  username: Non aut optio ea nam.
     /signup:
         post:
             tags:
@@ -697,10 +669,10 @@ paths:
                         schema:
                             $ref: '#/components/schemas/User'
                         example:
-                            email: Dolore et ad voluptatum est at.
-                            firstName: Nihil cum ipsum neque.
-                            lastName: Voluptatem enim eligendi doloremque ut enim distinctio.
-                            phone: Quisquam eveniet.
+                            email: Voluptatem enim eligendi doloremque ut enim distinctio.
+                            firstName: Et qui.
+                            lastName: Eius tempore exercitationem harum tempore quos.
+                            phone: Nihil cum ipsum neque.
             responses:
                 "200":
                     description: OK response.
@@ -708,12 +680,78 @@ paths:
                         application/json:
                             schema:
                                 type: string
-                                example: Aliquid nostrum.
-                            example: Aspernatur vitae est praesentium et quos voluptatem.
+                                example: Alias exercitationem debitis aut ut aut accusamus.
+                            example: Doloribus blanditiis molestiae quo adipisci aut quibusdam.
             security:
                 - signup_header_Authorization: []
+    /users/get_contact_info:
+        get:
+            tags:
+                - users
+            summary: get_contact_info users
+            operationId: users#get_contact_info
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/GetContactInfoRequestBody'
+                        example:
+                            userid: 971592518085908694
+            responses:
+                "200":
+                    description: OK response.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/User'
+                            example:
+                                email: Beatae ipsum consequuntur et excepturi praesentium.
+                                firstName: Error assumenda adipisci.
+                                lastName: Et commodi.
+                                phone: Est velit consectetur et voluptatem magni sunt.
+    /users/update_bio:
+        post:
+            tags:
+                - users
+            summary: update_bio users
+            operationId: users#update_bio
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpdateBioRequestBody'
+                        example:
+                            bio: Est iusto eos sunt quis deleniti.
+            responses:
+                "200":
+                    description: OK response.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/User'
+                            example:
+                                email: Beatae ipsum consequuntur et excepturi praesentium.
+                                firstName: Error assumenda adipisci.
+                                lastName: Et commodi.
+                                phone: Est velit consectetur et voluptatem magni sunt.
+            security:
+                - jwt_header_Authorization: []
 components:
     schemas:
+        GetContactInfoRequestBody:
+            type: object
+            properties:
+                userid:
+                    type: integer
+                    description: userid of user whose info to retrieve
+                    example: 6171087394779577374
+                    format: int64
+            example:
+                userid: 7569665906257161575
+            required:
+                - userid
         LoginLoginResponseBody:
             $ref: '#/components/schemas/LoginResponse'
         LoginResponse:
@@ -722,15 +760,15 @@ components:
                 jwt:
                     type: string
                     description: jwt used for future authentication
-                    example: Qui minus minima hic explicabo est aut.
+                    example: Qui et.
                 userID:
                     type: string
                     description: users ID
-                    example: Dolor nisi perspiciatis.
+                    example: Et quos non est dolor nobis.
             description: Response from logging in
             example:
-                jwt: Repellendus expedita iste et ducimus id.
-                userID: Vero aut ex dolore.
+                jwt: Aut inventore dicta.
+                userID: Quis aliquid sequi nesciunt repellendus alias id.
         Post:
             type: object
             properties:
@@ -738,44 +776,42 @@ components:
                     type: array
                     items:
                         type: string
-                        example: Harum dolores autem eum aut sit eaque.
+                        example: Adipisci porro.
                     description: Post content
                     example:
-                        - Qui consequatur.
-                        - Quia sapiente.
-                        - Maiores quia optio numquam.
+                        - Autem dolorem animi.
+                        - Doloremque et accusantium.
                 deliverytype:
                     type: string
                     description: Delivery type
-                    example: Placeat aspernatur nostrum aut.
+                    example: Saepe recusandae quos.
                 description:
                     type: string
                     description: Post description
-                    example: Molestias et voluptatem omnis omnis provident.
+                    example: Qui aliquid id amet nesciunt veniam.
                 medium:
                     type: string
                     description: Art type
-                    example: Nam quibusdam provident quia dolores.
+                    example: Veritatis doloribus modi maxime aut.
                 price:
                     type: string
                     description: Post price
-                    example: Molestiae veritatis natus quae expedita similique.
+                    example: Necessitatibus ut natus.
                 title:
                     type: string
                     description: Post title
-                    example: Similique et ut soluta perferendis.
+                    example: Et ducimus.
             description: Describes a post payload
             example:
                 content:
-                    - Aliquid sequi nesciunt repellendus alias id non.
-                    - Eum ut incidunt sunt.
-                    - Est quas non adipisci non.
-                    - Iure qui.
-                deliverytype: Qui corrupti facere dolorem.
-                description: Et quos non est dolor nobis.
-                medium: Et et et inventore officia fuga quaerat.
-                price: Aut inventore dicta.
-                title: Qui et.
+                    - Expedita rerum.
+                    - Et molestiae voluptatum accusantium.
+                    - Voluptas facilis.
+                deliverytype: Nesciunt quod et error.
+                description: Odit voluptas non quo id odit.
+                medium: Maxime excepturi nisi alias qui.
+                price: Qui natus pariatur.
+                title: Cum animi error deleniti esse.
             required:
                 - title
                 - description
@@ -789,68 +825,71 @@ components:
                 deliverytype:
                     type: string
                     description: Delivery type
-                    example: Ut natus dolores adipisci porro quibusdam natus.
+                    example: Et rerum laboriosam qui quas.
                 description:
                     type: string
                     description: Post description
-                    example: Voluptatem labore magni non qui.
+                    example: Sequi impedit consequatur in laudantium.
                 imageIDs:
                     type: array
                     items:
                         type: string
-                        example: Porro omnis dolorem reiciendis quidem deserunt qui.
+                        example: Sit sed consectetur minima recusandae veritatis eos.
                     description: Image ID
                     example:
-                        - Exercitationem debitis aut ut aut.
-                        - Repudiandae labore sint ad possimus.
-                        - Omnis voluptas est id.
+                        - Sunt dolor ipsa doloribus.
+                        - Quos ducimus voluptates magnam quasi.
+                        - Aspernatur vitae est praesentium et quos voluptatem.
+                        - Repellendus blanditiis aliquid dolorem ipsum et rerum.
                 medium:
                     type: string
                     description: Art type
-                    example: Et ducimus.
+                    example: Sint rerum officiis qui odit distinctio quaerat.
                 postID:
                     type: string
                     description: Post ID
-                    example: Hic enim assumenda quam adipisci.
+                    example: Impedit doloribus quidem.
                 price:
                     type: string
                     description: Post price
-                    example: Qui est soluta.
+                    example: Laboriosam excepturi iure quam et dolorem aspernatur.
                 sold:
                     type: boolean
                     description: is sold
-                    example: false
+                    example: true
                 title:
                     type: string
                     description: Post title
-                    example: Saepe quos incidunt.
+                    example: Ut occaecati facere.
                 uploadDate:
                     type: string
                     description: Upload Date
-                    example: Qui aliquid id amet nesciunt veniam.
+                    example: Vitae dolor.
                 userID:
                     type: string
                     description: User id associated with post
-                    example: Dolorem animi asperiores doloremque.
+                    example: Repellat rerum quasi et sit.
                 username:
                     type: string
                     description: Username associated with post
-                    example: Accusantium eaque.
+                    example: Voluptatibus eaque vel omnis.
             description: Describes a post response
             example:
-                deliverytype: Quod et error laudantium ut.
-                description: Aut et saepe recusandae.
+                deliverytype: Ducimus doloribus et.
+                description: Distinctio eos nulla eos.
                 imageIDs:
-                    - Natus odit voluptas non quo id.
-                    - Esse qui natus pariatur.
-                medium: Accusantium iure voluptas facilis culpa maxime.
-                postID: Perspiciatis expedita rerum maxime et molestiae.
-                price: Aspernatur cum animi error.
+                    - Placeat aut.
+                    - Dolor autem sit aut ab.
+                    - Quasi eaque fugit sed.
+                    - Et placeat provident.
+                medium: Id soluta autem non.
+                postID: Alias ex ea natus.
+                price: Totam odit non provident officiis ea.
                 sold: false
-                title: Doloribus modi.
-                uploadDate: Nisi alias qui.
-                userID: Facere delectus sequi impedit consequatur.
-                username: Laudantium at laboriosam excepturi iure quam et.
+                title: Totam doloremque dolore et.
+                uploadDate: Tempore nam aspernatur totam incidunt.
+                userID: Quas adipisci id aliquid sit molestiae minima.
+                username: Nulla quos repudiandae dolores.
             required:
                 - title
                 - description
@@ -865,31 +904,42 @@ components:
                 - userID
         PostingscreatePostResponseBody:
             $ref: '#/components/schemas/PostResponse'
+        UpdateBioRequestBody:
+            type: object
+            properties:
+                bio:
+                    type: string
+                    description: New bio to be addeed
+                    example: Labore sint ad possimus error omnis voluptas.
+            example:
+                bio: Id consequatur hic enim assumenda.
+            required:
+                - bio
         User:
             type: object
             properties:
                 email:
                     type: string
                     description: Email
-                    example: Vel qui maxime dolores non.
+                    example: Quaerat suscipit qui corrupti facere dolorem quod.
                 firstName:
                     type: string
                     description: First name
-                    example: Qui esse iusto iste.
+                    example: Inventore eum ut incidunt sunt delectus est.
                 lastName:
                     type: string
                     description: Last name
-                    example: Modi soluta ipsam iusto omnis cupiditate.
+                    example: Non adipisci non nostrum iure qui omnis.
                 phone:
                     type: string
                     description: Phone number
-                    example: Facere doloribus fugit rem perspiciatis.
+                    example: Et et inventore officia.
             description: Describes a user
             example:
-                email: Fugiat eum nihil non non.
-                firstName: Velit et alias et et reprehenderit.
-                lastName: Laborum et.
-                phone: Aspernatur ab.
+                email: Porro omnis dolorem reiciendis quidem deserunt qui.
+                firstName: Quos incidunt.
+                lastName: Voluptatem labore magni non qui.
+                phone: Qui est soluta.
             required:
                 - firstName
                 - lastName
@@ -911,4 +961,5 @@ components:
 tags:
     - name: login
     - name: signup
+    - name: users
     - name: postings

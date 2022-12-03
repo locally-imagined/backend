@@ -204,6 +204,42 @@ var _ = Service("postings", func() {
 	})
 })
 
+var _ = Service("users", func() {
+	Error("unauthorized", String, "Credentials are invalid")
+	Method("update_bio", func() {
+		Security(JWTAuth)
+		Payload(func() {
+			Token("token", String, "jwt used for auth")
+			Attribute("bio", String, "New bio to be addeed")
+			Required("token", "bio")
+		})
+		Result(func() {
+			Attribute("updated_user", User)
+		})
+		HTTP(func() {
+			POST("/users/update_bio")
+			Response(func() {
+				Body("updated_user")
+			})
+		})
+	})
+	Method("get_contact_info", func() {
+		Payload(func() {
+			Attribute("userid", Int, "userid of user whose info to retrieve")
+			Required("userid")
+		})
+		Result(func() {
+			Attribute("contact_info", User)
+		})
+		HTTP(func() {
+			GET("/users/get_contact_info")
+			Response(func() {
+				Body("contact_info")
+			})
+		})
+	})
+})
+
 // BasicAuth defines a security scheme using basic authentication. The scheme
 // protects the "login" action used to create JWTs.
 var LoginBasicAuth = BasicAuthSecurity("login", func() {
