@@ -20,13 +20,6 @@ type UpdateBioRequestBody struct {
 	Bio *string `form:"bio,omitempty" json:"bio,omitempty" xml:"bio,omitempty"`
 }
 
-// GetContactInfoRequestBody is the type of the "users" service
-// "get_contact_info" endpoint HTTP request body.
-type GetContactInfoRequestBody struct {
-	// userid of user whose info to retrieve
-	Userid *int `form:"userid,omitempty" json:"userid,omitempty" xml:"userid,omitempty"`
-}
-
 // UpdateBioResponseBody is the type of the "users" service "update_bio"
 // endpoint HTTP response body.
 type UpdateBioResponseBody UserResponseBody
@@ -83,10 +76,9 @@ func NewUpdateBioPayload(body *UpdateBioRequestBody, token string) *users.Update
 
 // NewGetContactInfoPayload builds a users service get_contact_info endpoint
 // payload.
-func NewGetContactInfoPayload(body *GetContactInfoRequestBody) *users.GetContactInfoPayload {
-	v := &users.GetContactInfoPayload{
-		Userid: *body.Userid,
-	}
+func NewGetContactInfoPayload(userid int) *users.GetContactInfoPayload {
+	v := &users.GetContactInfoPayload{}
+	v.Userid = userid
 
 	return v
 }
@@ -96,15 +88,6 @@ func NewGetContactInfoPayload(body *GetContactInfoRequestBody) *users.GetContact
 func ValidateUpdateBioRequestBody(body *UpdateBioRequestBody) (err error) {
 	if body.Bio == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("bio", "body"))
-	}
-	return
-}
-
-// ValidateGetContactInfoRequestBody runs the validations defined on
-// get_contact_info_request_body
-func ValidateGetContactInfoRequestBody(body *GetContactInfoRequestBody) (err error) {
-	if body.Userid == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("userid", "body"))
 	}
 	return
 }

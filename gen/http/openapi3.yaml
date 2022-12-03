@@ -40,8 +40,8 @@ paths:
                   schema:
                     type: string
                     description: User ID to get posts for
-                    example: In laudantium reprehenderit.
-                  example: Quia ipsa est.
+                    example: Est nam provident.
+                  example: Qui dolor impedit voluptatem odit.
                 - name: page
                   in: path
                   description: Page to get posts for
@@ -49,9 +49,9 @@ paths:
                   schema:
                     type: integer
                     description: Page to get posts for
-                    example: 4519301322116116698
+                    example: 8138130235998228927
                     format: int64
-                  example: 328788103827175430
+                  example: 3034495144737272459
             responses:
                 "200":
                     description: OK response.
@@ -102,6 +102,19 @@ paths:
                                       userID: Voluptatum atque et consequatur rerum ducimus vel.
                                       username: Non aut optio ea nam.
                             example:
+                                - deliverytype: Earum commodi.
+                                  description: Quos est.
+                                  imageIDs:
+                                    - Earum iusto.
+                                    - Veniam quia officia a animi.
+                                  medium: Sit recusandae maxime unde.
+                                  postID: Ipsam quae.
+                                  price: Sint in vel.
+                                  sold: false
+                                  title: Et ut.
+                                  uploadDate: Id cumque qui at.
+                                  userID: Voluptatum atque et consequatur rerum ducimus vel.
+                                  username: Non aut optio ea nam.
                                 - deliverytype: Earum commodi.
                                   description: Quos est.
                                   imageIDs:
@@ -203,8 +216,8 @@ paths:
                   schema:
                     type: string
                     description: Post to delete
-                    example: Illum deleniti repellendus dolores minima quod quia.
-                  example: Qui ipsam facere.
+                    example: Repellendus dolores minima quod.
+                  example: Beatae qui.
             responses:
                 "204":
                     description: No Content response.
@@ -224,8 +237,8 @@ paths:
                   schema:
                     type: string
                     description: Post title
-                    example: Libero sunt voluptate dolorem architecto aut sed.
-                  example: Maiores qui.
+                    example: Facere et libero sunt voluptate.
+                  example: Architecto aut sed quia.
                 - name: description
                   in: query
                   description: Post description
@@ -233,8 +246,8 @@ paths:
                   schema:
                     type: string
                     description: Post description
-                    example: Doloremque magnam labore est fugit facere et.
-                  example: Et nihil numquam quae dolore.
+                    example: Qui maiores doloremque magnam labore est fugit.
+                  example: Et placeat et nihil numquam quae.
                 - name: price
                   in: query
                   description: Post price
@@ -242,8 +255,8 @@ paths:
                   schema:
                     type: string
                     description: Post price
-                    example: Aut consequatur consequatur ea similique alias.
-                  example: Aliquid non nobis.
+                    example: Odio aut consequatur consequatur ea similique.
+                  example: Velit aliquid non nobis aut.
                 - name: content
                   in: query
                   description: Image content
@@ -251,8 +264,8 @@ paths:
                   schema:
                     type: string
                     description: Image content
-                    example: Ea quas.
-                  example: Et ipsum sit dolore non.
+                    example: Quas velit et ipsum sit dolore non.
+                  example: Repudiandae magni autem.
                 - name: medium
                   in: query
                   description: Art type
@@ -260,8 +273,8 @@ paths:
                   schema:
                     type: string
                     description: Art type
-                    example: Repudiandae magni autem.
-                  example: Doloremque provident ut culpa sunt quia nostrum.
+                    example: Doloremque provident ut culpa sunt quia nostrum.
+                  example: Repellat porro ea et tempora voluptas.
                 - name: sold
                   in: query
                   description: is sold
@@ -278,8 +291,8 @@ paths:
                   schema:
                     type: string
                     description: Delivery type
-                    example: Ea et tempora voluptas magnam non.
-                  example: Eum quia repudiandae neque sed nesciunt labore.
+                    example: Eum quia repudiandae neque sed nesciunt labore.
+                  example: Nihil praesentium id voluptatem animi.
                 - name: imageID
                   in: query
                   description: Image ID
@@ -287,8 +300,8 @@ paths:
                   schema:
                     type: string
                     description: Image ID
-                    example: Nihil praesentium id voluptatem animi.
-                  example: Iste incidunt.
+                    example: Iste incidunt.
+                  example: Ea dolore qui consequatur ut odio non.
                 - name: postID
                   in: path
                   description: Post ID
@@ -296,8 +309,8 @@ paths:
                   schema:
                     type: string
                     description: Post ID
-                    example: Ea dolore qui consequatur ut odio non.
-                  example: Provident illo tempore enim corrupti ab.
+                    example: Provident illo tempore enim corrupti ab.
+                  example: Optio consectetur voluptatibus in laudantium.
             responses:
                 "200":
                     description: OK response.
@@ -336,8 +349,8 @@ paths:
                   schema:
                     type: string
                     description: Post to get images for
-                    example: Laboriosam esse magnam cupiditate totam.
-                  example: Id quia culpa delectus maiores qui atque.
+                    example: Quia culpa delectus maiores qui.
+                  example: Repudiandae voluptatibus.
             responses:
                 "200":
                     description: OK response.
@@ -353,9 +366,8 @@ paths:
                                     - Doloribus ut.
                                     - Molestias exercitationem est consequatur qui cum ratione.
                             example:
-                                - Est a numquam.
-                                - Dolores nisi explicabo tempore ea qui.
-                                - Qui et ipsa et.
+                                - Numquam voluptas dolores nisi explicabo tempore.
+                                - Qui et qui et ipsa et et.
     /posts/getpage/{page}:
         get:
             tags:
@@ -370,9 +382,9 @@ paths:
                   schema:
                     type: integer
                     description: Page to get posts for
-                    example: 4049034306847738836
+                    example: 5832066295471385354
                     format: int64
-                  example: 2274933446521582930
+                  example: 3975415973250346259
             responses:
                 "200":
                     description: OK response.
@@ -436,19 +448,6 @@ paths:
                                       userID: Voluptatum atque et consequatur rerum ducimus vel.
                                       username: Non aut optio ea nam.
                             example:
-                                - deliverytype: Earum commodi.
-                                  description: Quos est.
-                                  imageIDs:
-                                    - Earum iusto.
-                                    - Veniam quia officia a animi.
-                                  medium: Sit recusandae maxime unde.
-                                  postID: Ipsam quae.
-                                  price: Sint in vel.
-                                  sold: false
-                                  title: Et ut.
-                                  uploadDate: Id cumque qui at.
-                                  userID: Voluptatum atque et consequatur rerum ducimus vel.
-                                  username: Non aut optio ea nam.
                                 - deliverytype: Earum commodi.
                                   description: Quos est.
                                   imageIDs:
@@ -502,8 +501,8 @@ paths:
                   schema:
                     type: string
                     description: Search bar keyword to search for in title and description
-                    example: Dolor impedit voluptatem odit illo id.
-                  example: Et soluta minus consequatur.
+                    example: Soluta minus.
+                  example: Modi rerum accusantium.
                 - name: startDate
                   in: query
                   description: Filter attribute to see posts after given date
@@ -511,8 +510,8 @@ paths:
                   schema:
                     type: string
                     description: Filter attribute to see posts after given date
-                    example: Rerum accusantium sed est voluptate error.
-                  example: Et vel sit et eveniet.
+                    example: Est voluptate error praesentium.
+                  example: Vel sit et eveniet dolores.
                 - name: endDate
                   in: query
                   description: Filter attribute to see posts before given date
@@ -520,8 +519,8 @@ paths:
                   schema:
                     type: string
                     description: Filter attribute to see posts before given date
-                    example: Vitae non.
-                  example: Et cumque rerum repellat.
+                    example: Non error et cumque rerum repellat sed.
+                  example: Quod laborum suscipit commodi.
                 - name: medium
                   in: query
                   description: Filter attribute to see posts with given medium type
@@ -529,8 +528,8 @@ paths:
                   schema:
                     type: string
                     description: Filter attribute to see posts with given medium type
-                    example: Quidem quod laborum.
-                  example: Commodi libero explicabo quidem.
+                    example: Explicabo quidem sed.
+                  example: Cum accusantium laboriosam esse magnam.
                 - name: page
                   in: path
                   description: Page to get posts for
@@ -538,9 +537,9 @@ paths:
                   schema:
                     type: integer
                     description: Page to get posts for
-                    example: 6772827480463409616
+                    example: 6634410388287292432
                     format: int64
-                  example: 5015274517374525482
+                  example: 4754796518606262319
             responses:
                 "200":
                     description: OK response.
@@ -604,32 +603,6 @@ paths:
                                       userID: Voluptatum atque et consequatur rerum ducimus vel.
                                       username: Non aut optio ea nam.
                             example:
-                                - deliverytype: Earum commodi.
-                                  description: Quos est.
-                                  imageIDs:
-                                    - Earum iusto.
-                                    - Veniam quia officia a animi.
-                                  medium: Sit recusandae maxime unde.
-                                  postID: Ipsam quae.
-                                  price: Sint in vel.
-                                  sold: false
-                                  title: Et ut.
-                                  uploadDate: Id cumque qui at.
-                                  userID: Voluptatum atque et consequatur rerum ducimus vel.
-                                  username: Non aut optio ea nam.
-                                - deliverytype: Earum commodi.
-                                  description: Quos est.
-                                  imageIDs:
-                                    - Earum iusto.
-                                    - Veniam quia officia a animi.
-                                  medium: Sit recusandae maxime unde.
-                                  postID: Ipsam quae.
-                                  price: Sint in vel.
-                                  sold: false
-                                  title: Et ut.
-                                  uploadDate: Id cumque qui at.
-                                  userID: Voluptatum atque et consequatur rerum ducimus vel.
-                                  username: Non aut optio ea nam.
                                 - deliverytype: Earum commodi.
                                   description: Quos est.
                                   imageIDs:
@@ -690,14 +663,18 @@ paths:
                 - users
             summary: get_contact_info users
             operationId: users#get_contact_info
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/GetContactInfoRequestBody'
-                        example:
-                            userid: 971592518085908694
+            parameters:
+                - name: userid
+                  in: query
+                  description: userid of user whose info to retrieve
+                  allowEmptyValue: true
+                  required: true
+                  schema:
+                    type: integer
+                    description: userid of user whose info to retrieve
+                    example: 2761291241299958360
+                    format: int64
+                  example: 1127780710051314974
             responses:
                 "200":
                     description: OK response.
@@ -740,18 +717,6 @@ paths:
                 - jwt_header_Authorization: []
 components:
     schemas:
-        GetContactInfoRequestBody:
-            type: object
-            properties:
-                userid:
-                    type: integer
-                    description: userid of user whose info to retrieve
-                    example: 6171087394779577374
-                    format: int64
-            example:
-                userid: 7569665906257161575
-            required:
-                - userid
         LoginLoginResponseBody:
             $ref: '#/components/schemas/LoginResponse'
         LoginResponse:
@@ -800,7 +765,7 @@ components:
                 title:
                     type: string
                     description: Post title
-                    example: Et ducimus.
+                    example: Adipisci delectus et ducimus.
             description: Describes a post payload
             example:
                 content:

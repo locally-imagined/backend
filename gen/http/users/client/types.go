@@ -20,13 +20,6 @@ type UpdateBioRequestBody struct {
 	Bio string `form:"bio" json:"bio" xml:"bio"`
 }
 
-// GetContactInfoRequestBody is the type of the "users" service
-// "get_contact_info" endpoint HTTP request body.
-type GetContactInfoRequestBody struct {
-	// userid of user whose info to retrieve
-	Userid int `form:"userid" json:"userid" xml:"userid"`
-}
-
 // UpdateBioResponseBody is the type of the "users" service "update_bio"
 // endpoint HTTP response body.
 type UpdateBioResponseBody UserResponseBody
@@ -52,15 +45,6 @@ type UserResponseBody struct {
 func NewUpdateBioRequestBody(p *users.UpdateBioPayload) *UpdateBioRequestBody {
 	body := &UpdateBioRequestBody{
 		Bio: p.Bio,
-	}
-	return body
-}
-
-// NewGetContactInfoRequestBody builds the HTTP request body from the payload
-// of the "get_contact_info" endpoint of the "users" service.
-func NewGetContactInfoRequestBody(p *users.GetContactInfoPayload) *GetContactInfoRequestBody {
-	body := &GetContactInfoRequestBody{
-		Userid: p.Userid,
 	}
 	return body
 }

@@ -89,8 +89,8 @@ func ParseEndpoint(
 		usersUpdateBioBodyFlag  = usersUpdateBioFlags.String("body", "REQUIRED", "")
 		usersUpdateBioTokenFlag = usersUpdateBioFlags.String("token", "REQUIRED", "")
 
-		usersGetContactInfoFlags    = flag.NewFlagSet("get-contact-info", flag.ExitOnError)
-		usersGetContactInfoBodyFlag = usersGetContactInfoFlags.String("body", "REQUIRED", "")
+		usersGetContactInfoFlags      = flag.NewFlagSet("get-contact-info", flag.ExitOnError)
+		usersGetContactInfoUseridFlag = usersGetContactInfoFlags.String("userid", "REQUIRED", "")
 
 		postingsFlags = flag.NewFlagSet("postings", flag.ContinueOnError)
 
@@ -279,7 +279,7 @@ func ParseEndpoint(
 				data, err = usersc.BuildUpdateBioPayload(*usersUpdateBioBodyFlag, *usersUpdateBioTokenFlag)
 			case "get-contact-info":
 				endpoint = c.GetContactInfo()
-				data, err = usersc.BuildGetContactInfoPayload(*usersGetContactInfoBodyFlag)
+				data, err = usersc.BuildGetContactInfoPayload(*usersGetContactInfoUseridFlag)
 			}
 		case "postings":
 			c := postingsc.NewClient(scheme, host, doer, enc, dec, restore)
@@ -400,15 +400,13 @@ Example:
 }
 
 func usersGetContactInfoUsage() {
-	fmt.Fprintf(os.Stderr, `%[1]s [flags] users get-contact-info -body JSON
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] users get-contact-info -userid INT
 
 GetContactInfo implements get_contact_info.
-    -body JSON: 
+    -userid INT: 
 
 Example:
-    %[1]s users get-contact-info --body '{
-      "userid": 971592518085908694
-   }'
+    %[1]s users get-contact-info --userid 971592518085908694
 `, os.Args[0])
 }
 

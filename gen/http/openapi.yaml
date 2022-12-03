@@ -318,13 +318,11 @@ paths:
             summary: get_contact_info users
             operationId: users#get_contact_info
             parameters:
-                - name: get_contact_info_request_body
-                  in: body
+                - name: userid
+                  in: query
+                  description: userid of user whose info to retrieve
                   required: true
-                  schema:
-                    $ref: '#/definitions/UsersGetContactInfoRequestBody'
-                    required:
-                        - userid
+                  type: integer
             responses:
                 "200":
                     description: OK response.
@@ -481,66 +479,67 @@ definitions:
             deliverytype:
                 type: string
                 description: Delivery type
-                example: Non impedit explicabo.
+                example: Voluptatem sunt illum doloribus.
             description:
                 type: string
                 description: Post description
-                example: Laboriosam nesciunt illo ipsam sapiente.
+                example: Sunt dicta molestiae.
             imageIDs:
                 type: array
                 items:
                     type: string
-                    example: Earum velit eaque aut.
+                    example: Laudantium repellat aliquid sed hic omnis.
                 description: Image ID
                 example:
-                    - Animi et qui repudiandae.
-                    - Corrupti magni reiciendis.
+                    - Velit eaque aut vel repudiandae.
+                    - Et qui repudiandae sit corrupti magni reiciendis.
                     - Et explicabo labore nesciunt illo sint ab.
-                    - Dignissimos sit ut ipsam reprehenderit.
             medium:
                 type: string
                 description: Art type
-                example: Nostrum vero in.
+                example: Facere rerum laudantium a possimus quae soluta.
             postID:
                 type: string
                 description: Post ID
-                example: Facere rerum laudantium a possimus quae soluta.
+                example: Dignissimos sit ut ipsam reprehenderit.
             price:
                 type: string
                 description: Post price
-                example: Laudantium repellat aliquid sed hic omnis.
+                example: Laboriosam nesciunt illo ipsam sapiente.
             sold:
                 type: boolean
                 description: is sold
-                example: false
+                example: true
             title:
                 type: string
                 description: Post title
-                example: Et iusto temporibus asperiores sunt dicta molestiae.
+                example: Deserunt debitis et iusto temporibus.
             uploadDate:
                 type: string
                 description: Upload Date
-                example: Autem voluptatem sunt illum doloribus blanditiis.
+                example: Nostrum vero in.
             userID:
                 type: string
                 description: User id associated with post
-                example: Quis eos occaecati et.
+                example: Qui qui non impedit.
             username:
                 type: string
                 description: Username associated with post
-                example: Sed dignissimos accusamus in et.
+                example: Vitae quis eos occaecati.
         description: Describes a post response
         example:
             deliverytype: Quis dignissimos amet vero sed reprehenderit similique.
-            description: Cumque quasi vitae nihil vero eos.
+            description: Molestiae perferendis est esse doloribus.
             imageIDs:
+                - Sint ut pariatur ducimus.
+                - Autem assumenda.
                 - Officiis ipsa quia praesentium.
                 - Impedit quod soluta molestiae deleniti.
             medium: Possimus sed voluptatibus.
             postID: Aliquam sed distinctio dolore eos voluptatem et.
-            price: Magnam sint ut pariatur ducimus voluptas autem.
+            price: Cumque quasi vitae nihil vero eos.
             sold: false
-            title: Molestiae perferendis est esse doloribus.
+            title: Autem sed dignissimos accusamus in et.
             uploadDate: Voluptatem amet.
             userID: Doloribus et.
             username: Ullam dolore.
@@ -675,19 +674,6 @@ definitions:
             - lastName
             - phone
             - email
-    UsersGetContactInfoRequestBody:
-        title: UsersGetContactInfoRequestBody
-        type: object
-        properties:
-            userid:
-                type: integer
-                description: userid of user whose info to retrieve
-                example: 5524011674081984016
-                format: int64
-        example:
-            userid: 3479959314327577475
-        required:
-            - userid
     UsersGetContactInfoResponseBody:
         title: UsersGetContactInfoResponseBody
         $ref: '#/definitions/UserResponseBody'

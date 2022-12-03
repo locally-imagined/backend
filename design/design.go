@@ -233,6 +233,7 @@ var _ = Service("users", func() {
 		})
 		HTTP(func() {
 			GET("/users/get_contact_info")
+			Param("userid")
 			Response(func() {
 				Body("contact_info")
 			})

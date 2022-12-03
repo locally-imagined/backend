@@ -11,6 +11,7 @@ import (
 	users "backend/gen/users"
 	"encoding/json"
 	"fmt"
+	"strconv"
 )
 
 // BuildUpdateBioPayload builds the payload for the users update_bio endpoint
@@ -38,18 +39,19 @@ func BuildUpdateBioPayload(usersUpdateBioBody string, usersUpdateBioToken string
 
 // BuildGetContactInfoPayload builds the payload for the users get_contact_info
 // endpoint from CLI flags.
-func BuildGetContactInfoPayload(usersGetContactInfoBody string) (*users.GetContactInfoPayload, error) {
+func BuildGetContactInfoPayload(usersGetContactInfoUserid string) (*users.GetContactInfoPayload, error) {
 	var err error
-	var body GetContactInfoRequestBody
+	var userid int
 	{
-		err = json.Unmarshal([]byte(usersGetContactInfoBody), &body)
+		var v int64
+		v, err = strconv.ParseInt(usersGetContactInfoUserid, 10, strconv.IntSize)
+		userid = int(v)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"userid\": 971592518085908694\n   }'")
+			return nil, fmt.Errorf("invalid value for userid, must be INT")
 		}
 	}
-	v := &users.GetContactInfoPayload{
-		Userid: body.Userid,
-	}
+	v := &users.GetContactInfoPayload{}
+	v.Userid = userid
 
 	return v, nil
 }
