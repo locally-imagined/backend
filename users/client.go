@@ -36,24 +36,6 @@ type (
 		awsBucketName string
 		dbURL         string
 	}
-
-	image struct {
-		imageID string
-	}
-
-	post struct {
-		postID       string
-		userID       string
-		postTitle    string
-		postDesc     string
-		price        string
-		uploadDate   string
-		imageID      string
-		medium       string
-		sold         bool
-		deliverytype string
-		username     string
-	}
 )
 
 func New(awsAccessKey, awsSecretKey, awsRegion, awsBucketName, dbURL string) Client {
