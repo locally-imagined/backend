@@ -281,7 +281,7 @@ func (c *client) GetPostPageFiltered(ctx context.Context, p *postings.GetPostPag
 	res := make([]*postings.PostResponse, 0)
 	for rows.Next() {
 		var row post
-		if err := rows.Scan(&row.postID, &row.userID, &row.postTitle, &row.postDesc, &row.price, &row.medium, &row.sold, &row.uploadDate, &row.imageID); err != nil {
+		if err := rows.Scan(&row.postID, &row.userID, &row.postTitle, &row.postDesc, &row.price, &row.medium, &row.sold, &row.uploadDate, &row.imageID, &row.username); err != nil {
 			return nil, err
 		}
 		imageID := make([]string, 0)
