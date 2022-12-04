@@ -121,7 +121,7 @@ var _ = Service("postings", func() {
 			Attribute("title", String, "Post title")
 			Attribute("description", String, "Post description")
 			Attribute("price", String, "Post price")
-			Attribute("content", String, "Image content")
+			Attribute("content", Content, "Image content")
 			Attribute("medium", String, "Art type")
 			Attribute("sold", Boolean, "is sold")
 			Attribute("deliverytype", String, "Delivery type")
@@ -140,10 +140,7 @@ var _ = Service("postings", func() {
 			Param("sold")
 			Param("deliverytype")
 			Param("imageID")
-			Body(func() {
-				Attribute("content")
-				Required()
-			})
+			Body("content")
 			Response(func() {
 				Body("Posted")
 			})
@@ -242,6 +239,11 @@ var LoginResponse = Type("LoginResponse", func() {
 	Description("Response from logging in")
 	Attribute("jwt", String, "jwt used for future authentication")
 	Attribute("userID", String, "users ID")
+})
+
+var Content = Type("Content", func() {
+	Description("Image Content")
+	Attribute("content", String, "raw image content")
 })
 
 var User = Type("User", func() {

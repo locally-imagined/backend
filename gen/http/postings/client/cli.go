@@ -78,16 +78,13 @@ func BuildDeletePostPayload(postingsDeletePostPostID string, postingsDeletePostT
 
 // BuildEditPostPayload builds the payload for the postings edit_post endpoint
 // from CLI flags.
-func BuildEditPostPayload(postingsEditPostBody string, postingsEditPostPostID string, postingsEditPostTitle string, postingsEditPostDescription string, postingsEditPostPrice string, postingsEditPostMedium string, postingsEditPostSold string, postingsEditPostDeliverytype string, postingsEditPostImageID string) (*postings.EditPostPayload, error) {
+func BuildEditPostPayload(postingsEditPostBody string, postingsEditPostPostID string, postingsEditPostTitle string, postingsEditPostDescription string, postingsEditPostPrice string, postingsEditPostMedium string, postingsEditPostSold string, postingsEditPostDeliverytype string, postingsEditPostImageID string, postingsEditPostToken string) (*postings.EditPostPayload, error) {
 	var err error
-	var body struct {
-		// Image content
-		Content *string `form:"content" json:"content" xml:"content"`
-	}
+	var body EditPostRequestBody
 	{
 		err = json.Unmarshal([]byte(postingsEditPostBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"content\": \"Minima fuga.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"content\": \"Officiis quidem iure et.\"\n   }'")
 		}
 	}
 	var postID string
@@ -141,19 +138,27 @@ func BuildEditPostPayload(postingsEditPostBody string, postingsEditPostPostID st
 			imageID = &postingsEditPostImageID
 		}
 	}
-	v := &postings.EditPostPayload{
+	var token string
+	{
+		token = postingsEditPostToken
+	}
+	v := &postings.Content{
 		Content: body.Content,
 	}
-	v.PostID = postID
-	v.Title = title
-	v.Description = description
-	v.Price = price
-	v.Medium = medium
-	v.Sold = sold
-	v.Deliverytype = deliverytype
-	v.ImageID = imageID
+	res := &postings.EditPostPayload{
+		Content: v,
+	}
+	res.PostID = postID
+	res.Title = title
+	res.Description = description
+	res.Price = price
+	res.Medium = medium
+	res.Sold = sold
+	res.Deliverytype = deliverytype
+	res.ImageID = imageID
+	res.Token = token
 
-	return v, nil
+	return res, nil
 }
 
 // BuildGetPostPagePayload builds the payload for the postings get_post_page

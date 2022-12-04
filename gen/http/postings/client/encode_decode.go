@@ -269,6 +269,14 @@ func EncodeEditPostRequest(encoder func(*http.Request) goahttp.Encoder) func(*ht
 		if !ok {
 			return goahttp.ErrInvalidType("postings", "edit_post", "*postings.EditPostPayload", v)
 		}
+		{
+			head := p.Token
+			if !strings.Contains(head, " ") {
+				req.Header.Set("Authorization", "Bearer "+head)
+			} else {
+				req.Header.Set("Authorization", head)
+			}
+		}
 		values := req.URL.Query()
 		if p.Title != nil {
 			values.Add("title", *p.Title)
@@ -292,7 +300,7 @@ func EncodeEditPostRequest(encoder func(*http.Request) goahttp.Encoder) func(*ht
 			values.Add("imageID", *p.ImageID)
 		}
 		req.URL.RawQuery = values.Encode()
-		body := p
+		body := NewEditPostRequestBody(p)
 		if err := encoder(req).Encode(&body); err != nil {
 			return goahttp.ErrEncodingError("postings", "edit_post", err)
 		}

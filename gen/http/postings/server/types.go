@@ -30,6 +30,13 @@ type CreatePostRequestBody struct {
 	Deliverytype *string `form:"deliverytype,omitempty" json:"deliverytype,omitempty" xml:"deliverytype,omitempty"`
 }
 
+// EditPostRequestBody is the type of the "postings" service "edit_post"
+// endpoint HTTP request body.
+type EditPostRequestBody struct {
+	// raw image content
+	Content *string `form:"content,omitempty" json:"content,omitempty" xml:"content,omitempty"`
+}
+
 // CreatePostResponseBody is the type of the "postings" service "create_post"
 // endpoint HTTP response body.
 type CreatePostResponseBody PostResponseResponseBody
@@ -667,23 +674,24 @@ func NewDeletePostPayload(postID string, token string) *postings.DeletePostPaylo
 }
 
 // NewEditPostPayload builds a postings service edit_post endpoint payload.
-func NewEditPostPayload(body struct {
-	// Image content
-	Content *string `form:"content" json:"content" xml:"content"`
-}, postID string, title *string, description *string, price *string, medium *string, sold *bool, deliverytype *string, imageID *string) *postings.EditPostPayload {
-	v := &postings.EditPostPayload{
+func NewEditPostPayload(body *EditPostRequestBody, postID string, title *string, description *string, price *string, medium *string, sold *bool, deliverytype *string, imageID *string, token string) *postings.EditPostPayload {
+	v := &postings.Content{
 		Content: body.Content,
 	}
-	v.PostID = postID
-	v.Title = title
-	v.Description = description
-	v.Price = price
-	v.Medium = medium
-	v.Sold = sold
-	v.Deliverytype = deliverytype
-	v.ImageID = imageID
+	res := &postings.EditPostPayload{
+		Content: v,
+	}
+	res.PostID = postID
+	res.Title = title
+	res.Description = description
+	res.Price = price
+	res.Medium = medium
+	res.Sold = sold
+	res.Deliverytype = deliverytype
+	res.ImageID = imageID
+	res.Token = token
 
-	return v
+	return res
 }
 
 // NewGetPostPagePayload builds a postings service get_post_page endpoint

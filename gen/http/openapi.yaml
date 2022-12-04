@@ -198,16 +198,17 @@ paths:
                   description: Post ID
                   required: true
                   type: string
-                - name: object
+                - name: Authorization
+                  in: header
+                  description: jwt used for auth
+                  required: true
+                  type: string
+                - name: edit_post_request_body
                   in: body
+                  description: Image content
                   required: true
                   schema:
-                    type: object
-                    properties:
-                        content:
-                            type: string
-                            description: Image content
-                            example: Eum quo recusandae.
+                    $ref: '#/definitions/PostingsEditPostRequestBody'
             responses:
                 "200":
                     description: OK response.
@@ -236,7 +237,7 @@ paths:
             schemes:
                 - http
             security:
-                - jwt_body_token: []
+                - jwt_header_Authorization: []
     /posts/getimages/{postID}:
         get:
             tags:
@@ -445,65 +446,65 @@ definitions:
             deliverytype:
                 type: string
                 description: Delivery type
-                example: Quod ut rerum consequatur excepturi dicta fugiat.
+                example: Qui laudantium culpa voluptas quos.
             description:
                 type: string
                 description: Post description
-                example: Dolore dolorum illum ab rerum nobis.
+                example: Cupiditate autem.
             imageIDs:
                 type: array
                 items:
                     type: string
-                    example: Quas unde beatae sint enim alias.
+                    example: Odio eaque quaerat ut eveniet.
                 description: Image ID
                 example:
-                    - Eaque quaerat ut eveniet officiis eum.
-                    - Consequuntur veniam architecto aut nobis vitae voluptatem.
-                    - Autem id eligendi at.
+                    - Maiores consequuntur veniam architecto aut nobis vitae.
+                    - Quis autem id eligendi at est.
+                    - Debitis accusantium minima est.
             medium:
                 type: string
                 description: Art type
-                example: Est quisquam aliquam sed sit.
+                example: Repellat esse odit corporis officia quod.
             postID:
                 type: string
                 description: Post ID
-                example: Illum debitis accusantium.
+                example: Aliquam sed sit est.
             price:
                 type: string
                 description: Post price
-                example: Cupiditate autem.
+                example: Quas unde beatae sint enim alias.
             sold:
                 type: boolean
                 description: is sold
-                example: true
+                example: false
             title:
                 type: string
                 description: Post title
-                example: Nihil dolore consequatur molestias non consectetur et.
+                example: Dolore dolorum illum ab rerum nobis.
             uploadDate:
                 type: string
                 description: Upload Date
-                example: Ea repellat esse odit.
+                example: Rerum consequatur excepturi dicta fugiat.
             userID:
                 type: string
                 description: User id associated with post
-                example: Aut qui laudantium culpa voluptas quos magni.
+                example: Necessitatibus eveniet totam et.
             username:
                 type: string
                 description: Username associated with post
-                example: Eveniet totam et cum dicta magnam sunt.
+                example: Dicta magnam.
         description: Describes a post response
         example:
             deliverytype: Soluta ipsam iusto omnis cupiditate vero.
-            description: Harum vel hic iste eos.
+            description: Quod accusantium harum.
             imageIDs:
-                - Minus minima hic explicabo.
-                - Aut nihil dolor nisi perspiciatis.
+                - Qui minus minima hic explicabo est aut.
+                - Dolor nisi perspiciatis.
             medium: Vero aut ex dolore.
             postID: Repellendus expedita iste et ducimus id.
-            price: Quia rerum rerum.
+            price: Hic iste eos rerum quia rerum.
             sold: true
-            title: Autem adipisci impedit molestiae in officiis quod.
+            title: Quos autem adipisci impedit molestiae in.
             uploadDate: Qui esse iusto iste.
             userID: Doloribus fugit rem.
             username: Est vel.
@@ -872,6 +873,17 @@ definitions:
             - temporary
             - timeout
             - fault
+    PostingsEditPostRequestBody:
+        title: PostingsEditPostRequestBody
+        type: object
+        properties:
+            content:
+                type: string
+                description: raw image content
+                example: Eum quo recusandae.
+        description: Image Content
+        example:
+            content: Nihil dolore consequatur molestias non consectetur et.
     PostingsEditPostResponseBody:
         title: PostingsEditPostResponseBody
         $ref: '#/definitions/PostResponseResponseBody'
@@ -1337,11 +1349,6 @@ definitions:
             - timeout
             - fault
 securityDefinitions:
-    jwt_body_token:
-        type: apiKey
-        description: Secures endpoint by requiring a valid JWT token retrieved via the login endpoint.
-        name: token
-        in: body
     jwt_header_Authorization:
         type: apiKey
         description: Secures endpoint by requiring a valid JWT token retrieved via the login endpoint.

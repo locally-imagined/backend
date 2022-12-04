@@ -446,7 +446,7 @@ func (c *client) EditPost(ctx context.Context, p *postings.EditPostPayload) (*po
 	if p.Content != nil {
 		imageID := uuid.New().String()
 		awsBucketName, svc := c.getS3Session()
-		reader := strings.NewReader(string(*p.Content))
+		reader := strings.NewReader(string(*p.Content.Content))
 		// put the object in the bucket
 		err := putImageToS3(ctx, svc, awsBucketName, imageID, reader)
 		if err != nil {

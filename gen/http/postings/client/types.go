@@ -30,6 +30,13 @@ type CreatePostRequestBody struct {
 	Deliverytype string `form:"deliverytype" json:"deliverytype" xml:"deliverytype"`
 }
 
+// EditPostRequestBody is the type of the "postings" service "edit_post"
+// endpoint HTTP request body.
+type EditPostRequestBody struct {
+	// raw image content
+	Content *string `form:"content,omitempty" json:"content,omitempty" xml:"content,omitempty"`
+}
+
 // CreatePostResponseBody is the type of the "postings" service "create_post"
 // endpoint HTTP response body.
 type CreatePostResponseBody PostResponseResponseBody
@@ -373,6 +380,15 @@ func NewCreatePostRequestBody(p *postings.CreatePostPayload) *CreatePostRequestB
 		for i, val := range p.Post.Content {
 			body.Content[i] = val
 		}
+	}
+	return body
+}
+
+// NewEditPostRequestBody builds the HTTP request body from the payload of the
+// "edit_post" endpoint of the "postings" service.
+func NewEditPostRequestBody(p *postings.EditPostPayload) *EditPostRequestBody {
+	body := &EditPostRequestBody{
+		Content: p.Content.Content,
 	}
 	return body
 }

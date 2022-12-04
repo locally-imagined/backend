@@ -48,6 +48,12 @@ const ServiceName = "postings"
 // MethodKey key.
 var MethodNames = [7]string{"create_post", "delete_post", "edit_post", "get_post_page", "get_artist_post_page", "get_post_page_filtered", "get_images_for_post"}
 
+// Image Content
+type Content struct {
+	// raw image content
+	Content *string
+}
+
 // CreatePostPayload is the payload type of the postings service create_post
 // method.
 type CreatePostPayload struct {
@@ -85,7 +91,7 @@ type EditPostPayload struct {
 	// Post price
 	Price *string
 	// Image content
-	Content *string
+	Content *Content
 	// Art type
 	Medium *string
 	// is sold
