@@ -4,6 +4,7 @@ import (
 	"backend/gen/postings"
 	"context"
 	"database/sql"
+	"fmt"
 	"strings"
 	"time"
 
@@ -444,6 +445,8 @@ func (c *client) EditPost(ctx context.Context, p *postings.EditPostPayload) (*po
 		}
 	}
 	if p.Content != nil {
+		fmt.Printf("%v", p.Content)
+		fmt.Printf("%s", *p.Content.Content)
 		imageID := uuid.New().String()
 		awsBucketName, svc := c.getS3Session()
 		reader := strings.NewReader(string(*p.Content.Content))
