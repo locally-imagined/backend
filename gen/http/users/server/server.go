@@ -52,10 +52,10 @@ func New(
 ) *Server {
 	return &Server{
 		Mounts: []*MountPoint{
-			{"UpdateBio", "PUT", "/users/update_bio"},
-			{"GetContactInfo", "GET", "/users/get_contact_info"},
-			{"CORS", "OPTIONS", "/users/update_bio"},
-			{"CORS", "OPTIONS", "/users/get_contact_info"},
+			{"UpdateBio", "PUT", "/users/updatebio"},
+			{"GetContactInfo", "GET", "/users/contactinfo"},
+			{"CORS", "OPTIONS", "/users/updatebio"},
+			{"CORS", "OPTIONS", "/users/contactinfo"},
 		},
 		UpdateBio:      NewUpdateBioHandler(e.UpdateBio, mux, decoder, encoder, errhandler, formatter),
 		GetContactInfo: NewGetContactInfoHandler(e.GetContactInfo, mux, decoder, encoder, errhandler, formatter),
@@ -97,7 +97,7 @@ func MountUpdateBioHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("PUT", "/users/update_bio", f)
+	mux.Handle("PUT", "/users/updatebio", f)
 }
 
 // NewUpdateBioHandler creates a HTTP handler which loads the HTTP request and
@@ -148,7 +148,7 @@ func MountGetContactInfoHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("GET", "/users/get_contact_info", f)
+	mux.Handle("GET", "/users/contactinfo", f)
 }
 
 // NewGetContactInfoHandler creates a HTTP handler which loads the HTTP request
@@ -194,8 +194,8 @@ func NewGetContactInfoHandler(
 // service users.
 func MountCORSHandler(mux goahttp.Muxer, h http.Handler) {
 	h = HandleUsersOrigin(h)
-	mux.Handle("OPTIONS", "/users/update_bio", h.ServeHTTP)
-	mux.Handle("OPTIONS", "/users/get_contact_info", h.ServeHTTP)
+	mux.Handle("OPTIONS", "/users/updatebio", h.ServeHTTP)
+	mux.Handle("OPTIONS", "/users/contactinfo", h.ServeHTTP)
 }
 
 // NewCORSHandler creates a HTTP handler which returns a simple 200 response.

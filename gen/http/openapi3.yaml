@@ -774,7 +774,7 @@ paths:
                                 $ref: '#/components/schemas/Error'
             security:
                 - signup_header_Authorization: []
-    /users/get_contact_info:
+    /users/contactinfo:
         get:
             tags:
                 - users
@@ -809,7 +809,7 @@ paths:
                         application/vnd.goa.error:
                             schema:
                                 $ref: '#/components/schemas/Error'
-    /users/update_bio:
+    /users/updatebio:
         put:
             tags:
                 - users

@@ -225,7 +225,7 @@ var _ = Service("users", func() {
 			Attribute("updated_user", User)
 		})
 		HTTP(func() {
-			PUT("/users/update_bio")
+			PUT("/users/updatebio")
 			Body("bio")
 			Response(func() {
 				Body("updated_user")
@@ -241,7 +241,7 @@ var _ = Service("users", func() {
 			Attribute("contact_info", User)
 		})
 		HTTP(func() {
-			GET("/users/get_contact_info")
+			GET("/users/contactinfo")
 			Param("userID")
 			Response(func() {
 				Body("contact_info")
@@ -271,12 +271,6 @@ var LoginResponse = Type("LoginResponse", func() {
 	Description("Response from logging in")
 	Attribute("jwt", String, "jwt used for future authentication")
 	Attribute("userID", String, "users ID")
-})
-
-var Bio = Type("Bio", func() {
-	Description("Bio to add or update")
-	Attribute("bio", String, "Bio")
-	Required("bio")
 })
 
 var User = Type("User", func() {

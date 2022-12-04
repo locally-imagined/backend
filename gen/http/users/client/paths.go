@@ -9,10 +9,10 @@ package client
 
 // UpdateBioUsersPath returns the URL path to the users service update_bio HTTP endpoint.
 func UpdateBioUsersPath() string {
-	return "/users/update_bio"
+	return "/users/updatebio"
 }
 
 // GetContactInfoUsersPath returns the URL path to the users service get_contact_info HTTP endpoint.
 func GetContactInfoUsersPath() string {
-	return "/users/get_contact_info"
+	return "/users/contactinfo"
 }

@@ -375,7 +375,7 @@ paths:
                 - http
             security:
                 - signup_header_Authorization: []
-    /users/get_contact_info:
+    /users/contactinfo:
         get:
             tags:
                 - users
@@ -403,7 +403,7 @@ paths:
                         $ref: '#/definitions/UsersGetContactInfoUnauthorizedResponseBody'
             schemes:
                 - http
-    /users/update_bio:
+    /users/updatebio:
         put:
             tags:
                 - users
