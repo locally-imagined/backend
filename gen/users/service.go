@@ -37,6 +37,12 @@ const ServiceName = "users"
 // MethodKey key.
 var MethodNames = [2]string{"update_bio", "get_contact_info"}
 
+// Bio to add or update
+type Bio struct {
+	// Bio
+	Bio string
+}
+
 // GetContactInfoPayload is the payload type of the users service
 // get_contact_info method.
 type GetContactInfoPayload struct {
@@ -55,7 +61,7 @@ type UpdateBioPayload struct {
 	// jwt used for auth
 	Token string
 	// New bio to be addeed
-	Bio string
+	Bio *Bio
 }
 
 // UpdateBioResult is the result type of the users service update_bio method.

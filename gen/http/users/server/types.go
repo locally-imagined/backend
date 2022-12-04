@@ -13,6 +13,13 @@ import (
 	goa "goa.design/goa/v3/pkg"
 )
 
+// UpdateBioRequestBody is the type of the "users" service "update_bio"
+// endpoint HTTP request body.
+type UpdateBioRequestBody struct {
+	// Bio
+	Bio *string `form:"bio,omitempty" json:"bio,omitempty" xml:"bio,omitempty"`
+}
+
 // UpdateBioResponseBody is the type of the "users" service "update_bio"
 // endpoint HTTP response body.
 type UpdateBioResponseBody UserResponseBody
@@ -122,8 +129,10 @@ func NewGetContactInfoUnauthorizedResponseBody(res *goa.ServiceError) *GetContac
 }
 
 // NewUpdateBioPayload builds a users service update_bio endpoint payload.
-func NewUpdateBioPayload(body string, token string) *users.UpdateBioPayload {
-	v := body
+func NewUpdateBioPayload(body *UpdateBioRequestBody, token string) *users.UpdateBioPayload {
+	v := &users.Bio{
+		Bio: *body.Bio,
+	}
 	res := &users.UpdateBioPayload{
 		Bio: v,
 	}
@@ -139,4 +148,13 @@ func NewGetContactInfoPayload(userID string) *users.GetContactInfoPayload {
 	v.UserID = userID
 
 	return v
+}
+
+// ValidateUpdateBioRequestBody runs the validations defined on
+// update_bio_request_body
+func ValidateUpdateBioRequestBody(body *UpdateBioRequestBody) (err error) {
+	if body.Bio == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("bio", "body"))
+	}
+	return
 }

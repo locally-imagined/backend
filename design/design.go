@@ -124,6 +124,7 @@ var _ = Service("postings", func() {
 		Result(func() {
 			Attribute("Posted", PostResponse)
 		})
+		// take these out of param
 		HTTP(func() {
 			PUT("/posts/edit/{postID}")
 			Param("title")
@@ -217,7 +218,7 @@ var _ = Service("users", func() {
 		Security(JWTAuth)
 		Payload(func() {
 			Token("token", String, "jwt used for auth")
-			Attribute("bio", String, "New bio to be addeed")
+			Attribute("bio", Bio, "New bio to be added")
 			Required("token", "bio")
 		})
 		Result(func() {
@@ -270,6 +271,12 @@ var LoginResponse = Type("LoginResponse", func() {
 	Description("Response from logging in")
 	Attribute("jwt", String, "jwt used for future authentication")
 	Attribute("userID", String, "users ID")
+})
+
+var Bio = Type("Bio", func() {
+	Description("Bio to add or update")
+	Attribute("bio", String, "Bio")
+	Required("bio")
 })
 
 var User = Type("User", func() {

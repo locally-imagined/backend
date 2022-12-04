@@ -50,7 +50,7 @@ func EncodeUpdateBioRequest(encoder func(*http.Request) goahttp.Encoder) func(*h
 				req.Header.Set("Authorization", head)
 			}
 		}
-		body := p.Bio
+		body := NewUpdateBioRequestBody(p)
 		if err := encoder(req).Encode(&body); err != nil {
 			return goahttp.ErrEncodingError("users", "update_bio", err)
 		}
