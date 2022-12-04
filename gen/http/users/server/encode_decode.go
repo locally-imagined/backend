@@ -35,7 +35,7 @@ func EncodeUpdateBioResponse(encoder func(context.Context, http.ResponseWriter) 
 func DecodeUpdateBioRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (interface{}, error) {
 	return func(r *http.Request) (interface{}, error) {
 		var (
-			body UpdateBioRequestBody
+			body string
 			err  error
 		)
 		err = decoder(r).Decode(&body)
@@ -44,10 +44,6 @@ func DecodeUpdateBioRequest(mux goahttp.Muxer, decoder func(*http.Request) goaht
 				return nil, goa.MissingPayloadError()
 			}
 			return nil, goa.DecodePayloadError(err.Error())
-		}
-		err = ValidateUpdateBioRequestBody(&body)
-		if err != nil {
-			return nil, err
 		}
 
 		var (
@@ -60,7 +56,7 @@ func DecodeUpdateBioRequest(mux goahttp.Muxer, decoder func(*http.Request) goaht
 		if err != nil {
 			return nil, err
 		}
-		payload := NewUpdateBioPayload(&body, token)
+		payload := NewUpdateBioPayload(body, token)
 		if strings.Contains(payload.Token, " ") {
 			// Remove authorization scheme prefix (e.g. "Bearer")
 			cred := strings.SplitN(payload.Token, " ", 2)[1]

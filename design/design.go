@@ -218,6 +218,7 @@ var _ = Service("users", func() {
 		})
 		HTTP(func() {
 			POST("/users/update_bio")
+			Body("bio")
 			Response(func() {
 				Body("updated_user")
 			})

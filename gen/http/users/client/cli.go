@@ -9,31 +9,26 @@ package client
 
 import (
 	users "backend/gen/users"
-	"encoding/json"
-	"fmt"
 )
 
 // BuildUpdateBioPayload builds the payload for the users update_bio endpoint
 // from CLI flags.
 func BuildUpdateBioPayload(usersUpdateBioBody string, usersUpdateBioToken string) (*users.UpdateBioPayload, error) {
-	var err error
-	var body UpdateBioRequestBody
+	var body string
 	{
-		err = json.Unmarshal([]byte(usersUpdateBioBody), &body)
-		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"bio\": \"Eaque assumenda voluptatem et commodi atque earum.\"\n   }'")
-		}
+		body = usersUpdateBioBody
 	}
 	var token string
 	{
 		token = usersUpdateBioToken
 	}
-	v := &users.UpdateBioPayload{
-		Bio: body.Bio,
+	v := body
+	res := &users.UpdateBioPayload{
+		Bio: v,
 	}
-	v.Token = token
+	res.Token = token
 
-	return v, nil
+	return res, nil
 }
 
 // BuildGetContactInfoPayload builds the payload for the users get_contact_info

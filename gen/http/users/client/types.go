@@ -13,13 +13,6 @@ import (
 	goa "goa.design/goa/v3/pkg"
 )
 
-// UpdateBioRequestBody is the type of the "users" service "update_bio"
-// endpoint HTTP request body.
-type UpdateBioRequestBody struct {
-	// New bio to be addeed
-	Bio string `form:"bio" json:"bio" xml:"bio"`
-}
-
 // UpdateBioResponseBody is the type of the "users" service "update_bio"
 // endpoint HTTP response body.
 type UpdateBioResponseBody UserResponseBody
@@ -38,15 +31,6 @@ type UserResponseBody struct {
 	Phone *string `form:"phone,omitempty" json:"phone,omitempty" xml:"phone,omitempty"`
 	// Email
 	Email *string `form:"email,omitempty" json:"email,omitempty" xml:"email,omitempty"`
-}
-
-// NewUpdateBioRequestBody builds the HTTP request body from the payload of the
-// "update_bio" endpoint of the "users" service.
-func NewUpdateBioRequestBody(p *users.UpdateBioPayload) *UpdateBioRequestBody {
-	body := &UpdateBioRequestBody{
-		Bio: p.Bio,
-	}
-	return body
 }
 
 // NewUpdateBioResultOK builds a "users" service "update_bio" endpoint result
