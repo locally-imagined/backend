@@ -444,7 +444,7 @@ func (c *client) EditPost(ctx context.Context, p *postings.EditPostPayload) (*po
 			return nil, err
 		}
 	}
-	if p.Content != nil {
+	if p.Content.Content != nil {
 		fmt.Printf("%v", p.Content)
 		fmt.Printf("%s", *p.Content.Content)
 		imageID := uuid.New().String()
