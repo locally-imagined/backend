@@ -11,9 +11,16 @@ import (
 	"backend/auth"
 	"backend/gen/postings"
 	"context"
+	"fmt"
 
 	_ "github.com/lib/pq"
+	goa "goa.design/goa/v3/pkg"
 	"goa.design/goa/v3/security"
+)
+
+var (
+	// ErrInternal is the error returned by Postings when the client returns an error
+	ErrInternal *goa.ServiceError = postings.MakeInternal(fmt.Errorf("internal error"))
 )
 
 type Service struct {
@@ -33,7 +40,7 @@ func (s *Service) JWTAuth(ctx context.Context, token string, scheme *security.JW
 func (s *Service) CreatePost(ctx context.Context, p *postings.CreatePostPayload) (*postings.CreatePostResult, error) {
 	res, err := s.postingsClient.CreatePost(ctx, p)
 	if err != nil {
-		return nil, err
+		return nil, ErrInternal
 	}
 	return res, nil
 }
@@ -41,7 +48,7 @@ func (s *Service) CreatePost(ctx context.Context, p *postings.CreatePostPayload)
 func (s *Service) GetPostPage(ctx context.Context, p *postings.GetPostPagePayload) (*postings.GetPostPageResult, error) {
 	res, err := s.postingsClient.GetPostPage(ctx, p)
 	if err != nil {
-		return nil, err
+		return nil, ErrInternal
 	}
 	return res, nil
 }
@@ -49,7 +56,7 @@ func (s *Service) GetPostPage(ctx context.Context, p *postings.GetPostPagePayloa
 func (s *Service) GetArtistPostPage(ctx context.Context, p *postings.GetArtistPostPagePayload) (*postings.GetArtistPostPageResult, error) {
 	res, err := s.postingsClient.GetArtistPostPage(ctx, p)
 	if err != nil {
-		return nil, err
+		return nil, ErrInternal
 	}
 	return res, nil
 }
@@ -57,7 +64,7 @@ func (s *Service) GetArtistPostPage(ctx context.Context, p *postings.GetArtistPo
 func (s *Service) GetPostPageFiltered(ctx context.Context, p *postings.GetPostPageFilteredPayload) (*postings.GetPostPageFilteredResult, error) {
 	res, err := s.postingsClient.GetPostPageFiltered(ctx, p)
 	if err != nil {
-		return nil, err
+		return nil, ErrInternal
 	}
 	return res, nil
 }
@@ -65,20 +72,23 @@ func (s *Service) GetPostPageFiltered(ctx context.Context, p *postings.GetPostPa
 func (s *Service) GetImagesForPost(ctx context.Context, p *postings.GetImagesForPostPayload) (*postings.GetImagesForPostResult, error) {
 	res, err := s.postingsClient.GetImagesForPost(ctx, p)
 	if err != nil {
-		return nil, err
+		return nil, ErrInternal
 	}
 	return res, nil
 }
 
 func (s *Service) DeletePost(ctx context.Context, p *postings.DeletePostPayload) error {
 	err := s.postingsClient.DeletePost(ctx, p)
-	return err
+	if err != nil {
+		return ErrInternal
+	}
+	return nil
 }
 
 func (s *Service) EditPost(ctx context.Context, p *postings.EditPostPayload) (*postings.EditPostResult, error) {
 	res, err := s.postingsClient.EditPost(ctx, p)
 	if err != nil {
-		return nil, err
+		return nil, ErrInternal
 	}
 	return res, nil
 }

@@ -10,6 +10,7 @@ package server
 import (
 	signup "backend/gen/signup"
 	"context"
+	"errors"
 	"io"
 	"net/http"
 
@@ -57,5 +58,34 @@ func DecodeSignupRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.
 		payload.Password = pass
 
 		return payload, nil
+	}
+}
+
+// EncodeSignupError returns an encoder for errors returned by the Signup
+// signup endpoint.
+func EncodeSignupError(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder, formatter func(ctx context.Context, err error) goahttp.Statuser) func(context.Context, http.ResponseWriter, error) error {
+	encodeError := goahttp.ErrorEncoder(encoder, formatter)
+	return func(ctx context.Context, w http.ResponseWriter, v error) error {
+		var en goa.GoaErrorNamer
+		if !errors.As(v, &en) {
+			return encodeError(ctx, w, v)
+		}
+		switch en.GoaErrorName() {
+		case "unauthorized":
+			var res *goa.ServiceError
+			errors.As(v, &res)
+			enc := encoder(ctx, w)
+			var body interface{}
+			if formatter != nil {
+				body = formatter(ctx, res)
+			} else {
+				body = NewSignupUnauthorizedResponseBody(res)
+			}
+			w.Header().Set("goa-error", res.GoaErrorName())
+			w.WriteHeader(http.StatusUnauthorized)
+			return enc.Encode(body)
+		default:
+			return encodeError(ctx, w, v)
+		}
 	}
 }

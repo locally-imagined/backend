@@ -22,11 +22,16 @@ var _ = API("locallyimagined", func() {
 		cors.MaxAge(600)                                        // How long to cache a preflight request response
 		cors.Credentials()                                      // Sets Access-Control-Allow-Credentials header
 	})
-
+	Error("unauthorized", ErrorResult, "Credentials are invalid")
+	Error("internal", ErrorResult, "Internal Error")
+	HTTP(func() {
+		Response("unauthorized", StatusUnauthorized)
+		Response("internal", StatusInternalServerError)
+	})
 })
 
 var _ = Service("login", func() {
-	Error("unauthorized", String, "Credentials are invalid")
+	Error("unauthorized", ErrorResult, "Credentials are invalid")
 	Method("Login", func() {
 		Security(LoginBasicAuth)
 		Payload(func() {
@@ -47,6 +52,7 @@ var _ = Service("login", func() {
 })
 
 var _ = Service("signup", func() {
+	Error("unauthorized", ErrorResult, "Credentials are invalid")
 	Method("Signup", func() {
 		Security(SignupBasicAuth)
 		Payload(func() {
@@ -69,7 +75,8 @@ var _ = Service("signup", func() {
 })
 
 var _ = Service("postings", func() {
-	Error("unauthorized", String, "Credentials are invalid")
+	Error("unauthorized", ErrorResult, "Credentials are invalid")
+	Error("internal", ErrorResult, "Internal Error")
 	Method("create_post", func() {
 		Security(JWTAuth)
 		Payload(func() {

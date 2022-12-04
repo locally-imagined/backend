@@ -10,6 +10,7 @@ import (
 
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/google/uuid"
+	goa "goa.design/goa/v3/pkg"
 	"goa.design/goa/v3/security"
 )
 
@@ -19,7 +20,7 @@ type locallyImaginedClaims struct {
 	jwt.RegisteredClaims
 }
 
-var ErrUnauthorized error = postings.Unauthorized("invalid jwt")
+var ErrUnauthorized *goa.ServiceError = postings.MakeUnauthorized(fmt.Errorf("Unauthorized"))
 
 func JWTAuth(ctx context.Context, token string, scheme *security.JWTScheme) (context.Context, error) {
 	tok := DecodeToken(token)
@@ -58,7 +59,7 @@ func MakeToken(username, userID string) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, payload)
 	signedJWT, err := token.SignedString([]byte("test"))
 	if err != nil {
-		return "", fmt.Errorf("unable to sign token with secret: %v", err)
+		return "", ErrUnauthorized
 	}
 	return signedJWT, nil
 }

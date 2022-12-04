@@ -10,6 +10,7 @@ package signup
 import (
 	"context"
 
+	goa "goa.design/goa/v3/pkg"
 	"goa.design/goa/v3/security"
 )
 
@@ -59,4 +60,9 @@ type User struct {
 	Phone string
 	// Email
 	Email string
+}
+
+// MakeUnauthorized builds a goa.ServiceError from an error.
+func MakeUnauthorized(err error) *goa.ServiceError {
+	return goa.NewServiceError(err, "unauthorized", false, false, false)
 }

@@ -30,6 +30,10 @@ paths:
                     description: OK response.
                     schema:
                         $ref: '#/definitions/LoginLoginResponseBody'
+                "401":
+                    description: Unauthorized response.
+                    schema:
+                        $ref: '#/definitions/LoginLoginUnauthorizedResponseBody'
             schemes:
                 - http
             security:
@@ -58,6 +62,14 @@ paths:
                         type: array
                         items:
                             $ref: '#/definitions/PostResponse'
+                "401":
+                    description: Unauthorized response.
+                    schema:
+                        $ref: '#/definitions/PostingsGetArtistPostPageUnauthorizedResponseBody'
+                "500":
+                    description: Internal Server Error response.
+                    schema:
+                        $ref: '#/definitions/PostingsGetArtistPostPageInternalResponseBody'
             schemes:
                 - http
     /posts/create:
@@ -95,6 +107,14 @@ paths:
                             - deliverytype
                             - userID
                             - username
+                "401":
+                    description: Unauthorized response.
+                    schema:
+                        $ref: '#/definitions/PostingsCreatePostUnauthorizedResponseBody'
+                "500":
+                    description: Internal Server Error response.
+                    schema:
+                        $ref: '#/definitions/PostingsCreatePostInternalResponseBody'
             schemes:
                 - http
             security:
@@ -119,6 +139,14 @@ paths:
             responses:
                 "204":
                     description: No Content response.
+                "401":
+                    description: Unauthorized response.
+                    schema:
+                        $ref: '#/definitions/PostingsDeletePostUnauthorizedResponseBody'
+                "500":
+                    description: Internal Server Error response.
+                    schema:
+                        $ref: '#/definitions/PostingsDeletePostInternalResponseBody'
             schemes:
                 - http
             security:
@@ -197,6 +225,14 @@ paths:
                             - deliverytype
                             - userID
                             - username
+                "401":
+                    description: Unauthorized response.
+                    schema:
+                        $ref: '#/definitions/PostingsEditPostUnauthorizedResponseBody'
+                "500":
+                    description: Internal Server Error response.
+                    schema:
+                        $ref: '#/definitions/PostingsEditPostInternalResponseBody'
             schemes:
                 - http
             security:
@@ -220,7 +256,15 @@ paths:
                         type: array
                         items:
                             type: string
-                            example: Quia rerum rerum.
+                            example: Molestiae veritatis natus quae expedita similique.
+                "401":
+                    description: Unauthorized response.
+                    schema:
+                        $ref: '#/definitions/PostingsGetImagesForPostUnauthorizedResponseBody'
+                "500":
+                    description: Internal Server Error response.
+                    schema:
+                        $ref: '#/definitions/PostingsGetImagesForPostInternalResponseBody'
             schemes:
                 - http
     /posts/getpage/{page}:
@@ -242,6 +286,14 @@ paths:
                         type: array
                         items:
                             $ref: '#/definitions/PostResponse'
+                "401":
+                    description: Unauthorized response.
+                    schema:
+                        $ref: '#/definitions/PostingsGetPostPageUnauthorizedResponseBody'
+                "500":
+                    description: Internal Server Error response.
+                    schema:
+                        $ref: '#/definitions/PostingsGetPostPageInternalResponseBody'
             schemes:
                 - http
     /posts/getpagefiltered/{page}:
@@ -283,6 +335,14 @@ paths:
                         type: array
                         items:
                             $ref: '#/definitions/PostResponse'
+                "401":
+                    description: Unauthorized response.
+                    schema:
+                        $ref: '#/definitions/PostingsGetPostPageFilteredUnauthorizedResponseBody'
+                "500":
+                    description: Internal Server Error response.
+                    schema:
+                        $ref: '#/definitions/PostingsGetPostPageFilteredInternalResponseBody'
             schemes:
                 - http
     /signup:
@@ -307,6 +367,10 @@ paths:
                     description: OK response.
                     schema:
                         type: string
+                "401":
+                    description: Unauthorized response.
+                    schema:
+                        $ref: '#/definitions/SignupSignupUnauthorizedResponseBody'
             schemes:
                 - http
             security:
@@ -315,6 +379,49 @@ definitions:
     LoginLoginResponseBody:
         title: LoginLoginResponseBody
         $ref: '#/definitions/LoginResponseResponseBody'
+    LoginLoginUnauthorizedResponseBody:
+        title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+        type: object
+        properties:
+            fault:
+                type: boolean
+                description: Is the error a server-side fault?
+                example: true
+            id:
+                type: string
+                description: ID is a unique identifier for this particular occurrence of the problem.
+                example: 123abc
+            message:
+                type: string
+                description: Message is a human-readable explanation specific to this occurrence of the problem.
+                example: parameter 'p' must be an integer
+            name:
+                type: string
+                description: Name is the name of this class of errors.
+                example: bad_request
+            temporary:
+                type: boolean
+                description: Is the error temporary?
+                example: false
+            timeout:
+                type: boolean
+                description: Is the error a timeout?
+                example: true
+        description: Credentials are invalid (default view)
+        example:
+            fault: false
+            id: 123abc
+            message: parameter 'p' must be an integer
+            name: bad_request
+            temporary: true
+            timeout: false
+        required:
+            - name
+            - id
+            - message
+            - temporary
+            - timeout
+            - fault
     LoginResponseResponseBody:
         title: LoginResponseResponseBody
         type: object
@@ -338,68 +445,70 @@ definitions:
             deliverytype:
                 type: string
                 description: Delivery type
-                example: Nobis sint cupiditate autem rerum quas.
+                example: Repellat esse odit corporis officia quod.
             description:
                 type: string
                 description: Post description
-                example: Excepturi est veniam.
+                example: Nihil dolore consequatur molestias non consectetur et.
             imageIDs:
                 type: array
                 items:
                     type: string
-                    example: Neque consectetur ea.
+                    example: Cupiditate autem.
                 description: Image ID
                 example:
-                    - Maiores totam.
-                    - Sed nulla voluptas consequatur eum voluptates.
-                    - Quis exercitationem soluta.
+                    - Unde beatae sint enim alias delectus odio.
+                    - Quaerat ut eveniet officiis eum.
+                    - Consequuntur veniam architecto aut nobis vitae voluptatem.
             medium:
                 type: string
                 description: Art type
-                example: Recusandae sint nihil dolore consequatur molestias.
+                example: Illum debitis accusantium.
             postID:
                 type: string
                 description: Post ID
-                example: Ut eveniet rerum ad nihil eum.
+                example: Autem id eligendi at.
             price:
                 type: string
                 description: Post price
-                example: Sit esse aliquam neque est qui qui.
+                example: Dolore dolorum illum ab rerum nobis.
             sold:
                 type: boolean
                 description: is sold
-                example: true
+                example: false
             title:
                 type: string
                 description: Post title
-                example: Aliquid doloribus et accusantium ullam.
+                example: Eum quo recusandae.
             uploadDate:
                 type: string
                 description: Upload Date
-                example: Consectetur et ut dolore dolorum illum.
+                example: Est quisquam aliquam sed sit.
             userID:
                 type: string
                 description: User id associated with post
-                example: Beatae sint enim alias delectus odio.
+                example: Rerum consequatur excepturi dicta fugiat.
             username:
                 type: string
                 description: Username associated with post
-                example: Quaerat ut eveniet officiis eum.
+                example: Aut qui laudantium culpa voluptas quos magni.
         description: Describes a post response
         example:
-            deliverytype: Magnam sunt.
-            description: Autem id eligendi at.
+            deliverytype: Doloribus fugit rem.
+            description: Autem adipisci impedit molestiae in officiis quod.
             imageIDs:
-                - Quisquam aliquam sed sit est ea repellat.
-                - Odit corporis officia quod ut rerum.
-            medium: Culpa voluptas quos.
-            postID: Excepturi dicta fugiat inventore aut qui.
-            price: Illum debitis accusantium.
+                - Rerum rerum itaque.
+                - Minus minima hic explicabo.
+                - Aut nihil dolor nisi perspiciatis.
+                - Repellendus expedita iste et ducimus id.
+            medium: Qui esse iusto iste.
+            postID: Vero aut ex dolore.
+            price: Harum vel hic iste eos.
             sold: false
-            title: Consequuntur veniam architecto aut nobis vitae voluptatem.
-            uploadDate: Necessitatibus eveniet totam et.
-            userID: Autem adipisci impedit molestiae in officiis quod.
-            username: Harum vel hic iste eos.
+            title: Eveniet totam et cum dicta magnam sunt.
+            uploadDate: Modi soluta ipsam iusto omnis cupiditate.
+            userID: Est vel.
+            username: Maxime dolores.
         required:
             - title
             - description
@@ -419,68 +528,70 @@ definitions:
             deliverytype:
                 type: string
                 description: Delivery type
-                example: Aliquam voluptatem.
+                example: Aut omnis.
             description:
                 type: string
                 description: Post description
-                example: Adipisci animi ea voluptas.
+                example: Vero cupiditate sint.
             imageIDs:
                 type: array
                 items:
                     type: string
-                    example: Vero cupiditate sint.
+                    example: Molestiae molestiae est quis impedit dolores impedit.
                 description: Image ID
                 example:
-                    - Est dolorem.
-                    - Molestiae est quis.
+                    - Consequatur aut.
+                    - Laudantium eius.
+                    - Modi iusto animi.
             medium:
                 type: string
                 description: Art type
-                example: Aut et laudantium eius quod.
+                example: Delectus nulla aliquam voluptatem consectetur voluptatem.
             postID:
                 type: string
                 description: Post ID
-                example: Dolores impedit qui aut.
+                example: Cumque aliquid.
             price:
                 type: string
                 description: Post price
-                example: Ratione voluptatum natus omnis et qui.
+                example: Culpa est.
             sold:
                 type: boolean
                 description: is sold
-                example: false
+                example: true
             title:
                 type: string
                 description: Post title
-                example: Et voluptatum ducimus in incidunt qui qui.
+                example: Ratione voluptatum natus omnis et qui.
             uploadDate:
                 type: string
                 description: Upload Date
-                example: Iusto animi perferendis cumque aliquid voluptas.
+                example: In nostrum est ut consequatur explicabo.
             userID:
                 type: string
                 description: User id associated with post
-                example: Voluptatem et in nostrum est ut consequatur.
+                example: Eos neque dolorem.
             username:
                 type: string
                 description: Username associated with post
-                example: Non et aut omnis.
+                example: Placeat laborum magnam laboriosam consequatur.
         description: Describes a post response
         example:
-            deliverytype: Aut vel.
-            description: Placeat laborum magnam laboriosam consequatur.
+            deliverytype: Labore nesciunt illo sint.
+            description: Ut ea eius minus.
             imageIDs:
-                - Ea eius minus delectus.
-                - Debitis et iusto temporibus asperiores.
                 - Dicta molestiae doloribus.
-            medium: Sapiente a laudantium repellat aliquid.
-            postID: Nesciunt illo.
-            price: Expedita adipisci tenetur voluptatibus quisquam.
-            sold: true
-            title: Eos neque dolorem.
-            uploadDate: Hic omnis quasi earum.
-            userID: Animi et qui repudiandae.
-            username: Corrupti magni reiciendis.
+                - Nesciunt illo.
+                - Sapiente a laudantium repellat aliquid.
+                - Hic omnis quasi earum.
+            medium: Qui repudiandae sit.
+            postID: Eaque aut vel repudiandae animi.
+            price: Deserunt debitis et iusto temporibus.
+            sold: false
+            title: Expedita adipisci tenetur voluptatibus quisquam.
+            uploadDate: Magni reiciendis animi.
+            userID: Eaque dignissimos.
+            username: Ut ipsam reprehenderit.
         required:
             - title
             - description
@@ -493,6 +604,49 @@ definitions:
             - deliverytype
             - username
             - userID
+    PostingsCreatePostInternalResponseBody:
+        title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+        type: object
+        properties:
+            fault:
+                type: boolean
+                description: Is the error a server-side fault?
+                example: false
+            id:
+                type: string
+                description: ID is a unique identifier for this particular occurrence of the problem.
+                example: 123abc
+            message:
+                type: string
+                description: Message is a human-readable explanation specific to this occurrence of the problem.
+                example: parameter 'p' must be an integer
+            name:
+                type: string
+                description: Name is the name of this class of errors.
+                example: bad_request
+            temporary:
+                type: boolean
+                description: Is the error temporary?
+                example: true
+            timeout:
+                type: boolean
+                description: Is the error a timeout?
+                example: false
+        description: Internal Error (default view)
+        example:
+            fault: true
+            id: 123abc
+            message: parameter 'p' must be an integer
+            name: bad_request
+            temporary: true
+            timeout: false
+        required:
+            - name
+            - id
+            - message
+            - temporary
+            - timeout
+            - fault
     PostingsCreatePostRequestBody:
         title: PostingsCreatePostRequestBody
         type: object
@@ -501,44 +655,43 @@ definitions:
                 type: array
                 items:
                     type: string
-                    example: Nostrum vero in.
+                    example: Dignissimos accusamus in et nostrum molestiae.
                 description: Post content
                 example:
-                    - Voluptatem sunt illum doloribus.
-                    - Qui qui non impedit.
-                    - Vitae quis eos occaecati.
-                    - Autem sed dignissimos accusamus in et.
+                    - Esse doloribus esse cumque quasi vitae.
+                    - Vero eos quasi.
+                    - Sint ut pariatur ducimus.
             deliverytype:
                 type: string
                 description: Delivery type
-                example: Cumque quasi vitae nihil vero eos.
+                example: Officiis ipsa quia praesentium.
             description:
                 type: string
                 description: Post description
-                example: Dignissimos sit ut ipsam reprehenderit.
+                example: Qui non impedit explicabo vitae quis.
             medium:
                 type: string
                 description: Art type
-                example: Molestiae perferendis est esse doloribus.
+                example: Autem assumenda.
             price:
                 type: string
                 description: Post price
-                example: Facere rerum laudantium a possimus quae soluta.
+                example: Occaecati et autem.
             title:
                 type: string
                 description: Post title
-                example: Et explicabo labore nesciunt illo sint ab.
+                example: Autem voluptatem sunt illum doloribus blanditiis.
         description: Describes a post payload
         example:
             content:
-                - Eos voluptatem et.
-                - Possimus sed voluptatibus.
-                - Voluptatem amet.
-            deliverytype: Sed reprehenderit.
-            description: Aperiam officiis ipsa quia praesentium autem impedit.
-            medium: Maxime quis dignissimos amet.
-            price: Soluta molestiae deleniti non aliquam sed.
-            title: Magnam sint ut pariatur ducimus voluptas autem.
+                - Amet et maxime quis.
+                - Amet vero sed reprehenderit.
+                - Aliquid doloribus et accusantium ullam.
+            deliverytype: Sit esse aliquam neque est qui qui.
+            description: Aliquam sed distinctio dolore eos voluptatem et.
+            medium: Excepturi est veniam.
+            price: Possimus sed voluptatibus.
+            title: Impedit quod soluta molestiae deleniti.
         required:
             - title
             - description
@@ -549,9 +702,568 @@ definitions:
     PostingsCreatePostResponseBody:
         title: PostingsCreatePostResponseBody
         $ref: '#/definitions/PostResponseResponseBody'
+    PostingsCreatePostUnauthorizedResponseBody:
+        title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+        type: object
+        properties:
+            fault:
+                type: boolean
+                description: Is the error a server-side fault?
+                example: true
+            id:
+                type: string
+                description: ID is a unique identifier for this particular occurrence of the problem.
+                example: 123abc
+            message:
+                type: string
+                description: Message is a human-readable explanation specific to this occurrence of the problem.
+                example: parameter 'p' must be an integer
+            name:
+                type: string
+                description: Name is the name of this class of errors.
+                example: bad_request
+            temporary:
+                type: boolean
+                description: Is the error temporary?
+                example: true
+            timeout:
+                type: boolean
+                description: Is the error a timeout?
+                example: false
+        description: Credentials are invalid (default view)
+        example:
+            fault: true
+            id: 123abc
+            message: parameter 'p' must be an integer
+            name: bad_request
+            temporary: false
+            timeout: false
+        required:
+            - name
+            - id
+            - message
+            - temporary
+            - timeout
+            - fault
+    PostingsDeletePostInternalResponseBody:
+        title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+        type: object
+        properties:
+            fault:
+                type: boolean
+                description: Is the error a server-side fault?
+                example: false
+            id:
+                type: string
+                description: ID is a unique identifier for this particular occurrence of the problem.
+                example: 123abc
+            message:
+                type: string
+                description: Message is a human-readable explanation specific to this occurrence of the problem.
+                example: parameter 'p' must be an integer
+            name:
+                type: string
+                description: Name is the name of this class of errors.
+                example: bad_request
+            temporary:
+                type: boolean
+                description: Is the error temporary?
+                example: true
+            timeout:
+                type: boolean
+                description: Is the error a timeout?
+                example: false
+        description: Internal Error (default view)
+        example:
+            fault: false
+            id: 123abc
+            message: parameter 'p' must be an integer
+            name: bad_request
+            temporary: true
+            timeout: true
+        required:
+            - name
+            - id
+            - message
+            - temporary
+            - timeout
+            - fault
+    PostingsDeletePostUnauthorizedResponseBody:
+        title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+        type: object
+        properties:
+            fault:
+                type: boolean
+                description: Is the error a server-side fault?
+                example: false
+            id:
+                type: string
+                description: ID is a unique identifier for this particular occurrence of the problem.
+                example: 123abc
+            message:
+                type: string
+                description: Message is a human-readable explanation specific to this occurrence of the problem.
+                example: parameter 'p' must be an integer
+            name:
+                type: string
+                description: Name is the name of this class of errors.
+                example: bad_request
+            temporary:
+                type: boolean
+                description: Is the error temporary?
+                example: false
+            timeout:
+                type: boolean
+                description: Is the error a timeout?
+                example: false
+        description: Credentials are invalid (default view)
+        example:
+            fault: true
+            id: 123abc
+            message: parameter 'p' must be an integer
+            name: bad_request
+            temporary: true
+            timeout: false
+        required:
+            - name
+            - id
+            - message
+            - temporary
+            - timeout
+            - fault
+    PostingsEditPostInternalResponseBody:
+        title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+        type: object
+        properties:
+            fault:
+                type: boolean
+                description: Is the error a server-side fault?
+                example: false
+            id:
+                type: string
+                description: ID is a unique identifier for this particular occurrence of the problem.
+                example: 123abc
+            message:
+                type: string
+                description: Message is a human-readable explanation specific to this occurrence of the problem.
+                example: parameter 'p' must be an integer
+            name:
+                type: string
+                description: Name is the name of this class of errors.
+                example: bad_request
+            temporary:
+                type: boolean
+                description: Is the error temporary?
+                example: true
+            timeout:
+                type: boolean
+                description: Is the error a timeout?
+                example: false
+        description: Internal Error (default view)
+        example:
+            fault: false
+            id: 123abc
+            message: parameter 'p' must be an integer
+            name: bad_request
+            temporary: false
+            timeout: true
+        required:
+            - name
+            - id
+            - message
+            - temporary
+            - timeout
+            - fault
     PostingsEditPostResponseBody:
         title: PostingsEditPostResponseBody
         $ref: '#/definitions/PostResponseResponseBody'
+    PostingsEditPostUnauthorizedResponseBody:
+        title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+        type: object
+        properties:
+            fault:
+                type: boolean
+                description: Is the error a server-side fault?
+                example: true
+            id:
+                type: string
+                description: ID is a unique identifier for this particular occurrence of the problem.
+                example: 123abc
+            message:
+                type: string
+                description: Message is a human-readable explanation specific to this occurrence of the problem.
+                example: parameter 'p' must be an integer
+            name:
+                type: string
+                description: Name is the name of this class of errors.
+                example: bad_request
+            temporary:
+                type: boolean
+                description: Is the error temporary?
+                example: false
+            timeout:
+                type: boolean
+                description: Is the error a timeout?
+                example: false
+        description: Credentials are invalid (default view)
+        example:
+            fault: true
+            id: 123abc
+            message: parameter 'p' must be an integer
+            name: bad_request
+            temporary: true
+            timeout: false
+        required:
+            - name
+            - id
+            - message
+            - temporary
+            - timeout
+            - fault
+    PostingsGetArtistPostPageInternalResponseBody:
+        title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+        type: object
+        properties:
+            fault:
+                type: boolean
+                description: Is the error a server-side fault?
+                example: false
+            id:
+                type: string
+                description: ID is a unique identifier for this particular occurrence of the problem.
+                example: 123abc
+            message:
+                type: string
+                description: Message is a human-readable explanation specific to this occurrence of the problem.
+                example: parameter 'p' must be an integer
+            name:
+                type: string
+                description: Name is the name of this class of errors.
+                example: bad_request
+            temporary:
+                type: boolean
+                description: Is the error temporary?
+                example: true
+            timeout:
+                type: boolean
+                description: Is the error a timeout?
+                example: false
+        description: Internal Error (default view)
+        example:
+            fault: false
+            id: 123abc
+            message: parameter 'p' must be an integer
+            name: bad_request
+            temporary: true
+            timeout: false
+        required:
+            - name
+            - id
+            - message
+            - temporary
+            - timeout
+            - fault
+    PostingsGetArtistPostPageUnauthorizedResponseBody:
+        title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+        type: object
+        properties:
+            fault:
+                type: boolean
+                description: Is the error a server-side fault?
+                example: false
+            id:
+                type: string
+                description: ID is a unique identifier for this particular occurrence of the problem.
+                example: 123abc
+            message:
+                type: string
+                description: Message is a human-readable explanation specific to this occurrence of the problem.
+                example: parameter 'p' must be an integer
+            name:
+                type: string
+                description: Name is the name of this class of errors.
+                example: bad_request
+            temporary:
+                type: boolean
+                description: Is the error temporary?
+                example: true
+            timeout:
+                type: boolean
+                description: Is the error a timeout?
+                example: true
+        description: Credentials are invalid (default view)
+        example:
+            fault: true
+            id: 123abc
+            message: parameter 'p' must be an integer
+            name: bad_request
+            temporary: true
+            timeout: false
+        required:
+            - name
+            - id
+            - message
+            - temporary
+            - timeout
+            - fault
+    PostingsGetImagesForPostInternalResponseBody:
+        title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+        type: object
+        properties:
+            fault:
+                type: boolean
+                description: Is the error a server-side fault?
+                example: false
+            id:
+                type: string
+                description: ID is a unique identifier for this particular occurrence of the problem.
+                example: 123abc
+            message:
+                type: string
+                description: Message is a human-readable explanation specific to this occurrence of the problem.
+                example: parameter 'p' must be an integer
+            name:
+                type: string
+                description: Name is the name of this class of errors.
+                example: bad_request
+            temporary:
+                type: boolean
+                description: Is the error temporary?
+                example: false
+            timeout:
+                type: boolean
+                description: Is the error a timeout?
+                example: true
+        description: Internal Error (default view)
+        example:
+            fault: false
+            id: 123abc
+            message: parameter 'p' must be an integer
+            name: bad_request
+            temporary: false
+            timeout: true
+        required:
+            - name
+            - id
+            - message
+            - temporary
+            - timeout
+            - fault
+    PostingsGetImagesForPostUnauthorizedResponseBody:
+        title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+        type: object
+        properties:
+            fault:
+                type: boolean
+                description: Is the error a server-side fault?
+                example: false
+            id:
+                type: string
+                description: ID is a unique identifier for this particular occurrence of the problem.
+                example: 123abc
+            message:
+                type: string
+                description: Message is a human-readable explanation specific to this occurrence of the problem.
+                example: parameter 'p' must be an integer
+            name:
+                type: string
+                description: Name is the name of this class of errors.
+                example: bad_request
+            temporary:
+                type: boolean
+                description: Is the error temporary?
+                example: false
+            timeout:
+                type: boolean
+                description: Is the error a timeout?
+                example: false
+        description: Credentials are invalid (default view)
+        example:
+            fault: true
+            id: 123abc
+            message: parameter 'p' must be an integer
+            name: bad_request
+            temporary: true
+            timeout: false
+        required:
+            - name
+            - id
+            - message
+            - temporary
+            - timeout
+            - fault
+    PostingsGetPostPageFilteredInternalResponseBody:
+        title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+        type: object
+        properties:
+            fault:
+                type: boolean
+                description: Is the error a server-side fault?
+                example: false
+            id:
+                type: string
+                description: ID is a unique identifier for this particular occurrence of the problem.
+                example: 123abc
+            message:
+                type: string
+                description: Message is a human-readable explanation specific to this occurrence of the problem.
+                example: parameter 'p' must be an integer
+            name:
+                type: string
+                description: Name is the name of this class of errors.
+                example: bad_request
+            temporary:
+                type: boolean
+                description: Is the error temporary?
+                example: true
+            timeout:
+                type: boolean
+                description: Is the error a timeout?
+                example: true
+        description: Internal Error (default view)
+        example:
+            fault: false
+            id: 123abc
+            message: parameter 'p' must be an integer
+            name: bad_request
+            temporary: false
+            timeout: true
+        required:
+            - name
+            - id
+            - message
+            - temporary
+            - timeout
+            - fault
+    PostingsGetPostPageFilteredUnauthorizedResponseBody:
+        title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+        type: object
+        properties:
+            fault:
+                type: boolean
+                description: Is the error a server-side fault?
+                example: false
+            id:
+                type: string
+                description: ID is a unique identifier for this particular occurrence of the problem.
+                example: 123abc
+            message:
+                type: string
+                description: Message is a human-readable explanation specific to this occurrence of the problem.
+                example: parameter 'p' must be an integer
+            name:
+                type: string
+                description: Name is the name of this class of errors.
+                example: bad_request
+            temporary:
+                type: boolean
+                description: Is the error temporary?
+                example: false
+            timeout:
+                type: boolean
+                description: Is the error a timeout?
+                example: false
+        description: Credentials are invalid (default view)
+        example:
+            fault: true
+            id: 123abc
+            message: parameter 'p' must be an integer
+            name: bad_request
+            temporary: false
+            timeout: false
+        required:
+            - name
+            - id
+            - message
+            - temporary
+            - timeout
+            - fault
+    PostingsGetPostPageInternalResponseBody:
+        title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+        type: object
+        properties:
+            fault:
+                type: boolean
+                description: Is the error a server-side fault?
+                example: true
+            id:
+                type: string
+                description: ID is a unique identifier for this particular occurrence of the problem.
+                example: 123abc
+            message:
+                type: string
+                description: Message is a human-readable explanation specific to this occurrence of the problem.
+                example: parameter 'p' must be an integer
+            name:
+                type: string
+                description: Name is the name of this class of errors.
+                example: bad_request
+            temporary:
+                type: boolean
+                description: Is the error temporary?
+                example: true
+            timeout:
+                type: boolean
+                description: Is the error a timeout?
+                example: true
+        description: Internal Error (default view)
+        example:
+            fault: true
+            id: 123abc
+            message: parameter 'p' must be an integer
+            name: bad_request
+            temporary: true
+            timeout: false
+        required:
+            - name
+            - id
+            - message
+            - temporary
+            - timeout
+            - fault
+    PostingsGetPostPageUnauthorizedResponseBody:
+        title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+        type: object
+        properties:
+            fault:
+                type: boolean
+                description: Is the error a server-side fault?
+                example: false
+            id:
+                type: string
+                description: ID is a unique identifier for this particular occurrence of the problem.
+                example: 123abc
+            message:
+                type: string
+                description: Message is a human-readable explanation specific to this occurrence of the problem.
+                example: parameter 'p' must be an integer
+            name:
+                type: string
+                description: Name is the name of this class of errors.
+                example: bad_request
+            temporary:
+                type: boolean
+                description: Is the error temporary?
+                example: false
+            timeout:
+                type: boolean
+                description: Is the error a timeout?
+                example: false
+        description: Credentials are invalid (default view)
+        example:
+            fault: true
+            id: 123abc
+            message: parameter 'p' must be an integer
+            name: bad_request
+            temporary: false
+            timeout: false
+        required:
+            - name
+            - id
+            - message
+            - temporary
+            - timeout
+            - fault
     SignupSignupRequestBody:
         title: SignupSignupRequestBody
         type: object
@@ -559,30 +1271,73 @@ definitions:
             email:
                 type: string
                 description: Email
-                example: Aut ipsam vitae magnam.
+                example: Vel optio velit sed corrupti velit quod.
             firstName:
                 type: string
                 description: First name
-                example: Alias omnis.
+                example: Vero nesciunt unde optio aut ipsam vitae.
             lastName:
                 type: string
                 description: Last name
-                example: Molestiae sequi quia et natus architecto.
+                example: Quo asperiores alias soluta et nobis eos.
             phone:
                 type: string
                 description: Phone number
-                example: Quo aperiam vero nesciunt unde.
+                example: Suscipit sed culpa.
         description: Describes a user
         example:
-            email: Velit quod aspernatur at ipsum molestias.
-            firstName: Asperiores alias.
-            lastName: Et nobis eos consequatur suscipit sed.
-            phone: Labore vel optio velit sed.
+            email: Qui sequi adipisci animi ea voluptas.
+            firstName: At ipsum.
+            lastName: Debitis et.
+            phone: Ducimus in incidunt.
         required:
             - firstName
             - lastName
             - phone
             - email
+    SignupSignupUnauthorizedResponseBody:
+        title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+        type: object
+        properties:
+            fault:
+                type: boolean
+                description: Is the error a server-side fault?
+                example: true
+            id:
+                type: string
+                description: ID is a unique identifier for this particular occurrence of the problem.
+                example: 123abc
+            message:
+                type: string
+                description: Message is a human-readable explanation specific to this occurrence of the problem.
+                example: parameter 'p' must be an integer
+            name:
+                type: string
+                description: Name is the name of this class of errors.
+                example: bad_request
+            temporary:
+                type: boolean
+                description: Is the error temporary?
+                example: false
+            timeout:
+                type: boolean
+                description: Is the error a timeout?
+                example: false
+        description: Credentials are invalid (default view)
+        example:
+            fault: true
+            id: 123abc
+            message: parameter 'p' must be an integer
+            name: bad_request
+            temporary: true
+            timeout: true
+        required:
+            - name
+            - id
+            - message
+            - temporary
+            - timeout
+            - fault
 securityDefinitions:
     jwt_header_Authorization:
         type: apiKey

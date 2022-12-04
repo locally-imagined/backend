@@ -9,11 +9,31 @@ package server
 
 import (
 	login "backend/gen/login"
+
+	goa "goa.design/goa/v3/pkg"
 )
 
 // LoginResponseBody is the type of the "login" service "Login" endpoint HTTP
 // response body.
 type LoginResponseBody LoginResponseResponseBody
+
+// LoginUnauthorizedResponseBody is the type of the "login" service "Login"
+// endpoint HTTP response body for the "unauthorized" error.
+type LoginUnauthorizedResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
 
 // LoginResponseResponseBody is used to define fields on response body types.
 type LoginResponseResponseBody struct {
@@ -29,6 +49,20 @@ func NewLoginResponseBody(res *login.LoginResult) *LoginResponseBody {
 	body := &LoginResponseBody{
 		JWT:    res.LoginResponse.JWT,
 		UserID: res.LoginResponse.UserID,
+	}
+	return body
+}
+
+// NewLoginUnauthorizedResponseBody builds the HTTP response body from the
+// result of the "Login" endpoint of the "login" service.
+func NewLoginUnauthorizedResponseBody(res *goa.ServiceError) *LoginUnauthorizedResponseBody {
+	body := &LoginUnauthorizedResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
 	}
 	return body
 }

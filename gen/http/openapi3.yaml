@@ -23,6 +23,12 @@ paths:
                             example:
                                 jwt: Et qui.
                                 userID: Eius tempore exercitationem harum tempore quos.
+                "401":
+                    description: 'unauthorized: Credentials are invalid'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
             security:
                 - login_header_Authorization: []
     /posts/artistposts/{page}:
@@ -40,8 +46,8 @@ paths:
                   schema:
                     type: string
                     description: User ID to get posts for
-                    example: Quas adipisci id aliquid sit molestiae minima.
-                  example: Nulla quos repudiandae dolores.
+                    example: Quia repudiandae neque sed.
+                  example: Labore perspiciatis.
                 - name: page
                   in: path
                   description: Page to get posts for
@@ -49,9 +55,9 @@ paths:
                   schema:
                     type: integer
                     description: Page to get posts for
-                    example: 4367413126306510175
+                    example: 5267236904603973190
                     format: int64
-                  example: 521604626767205398
+                  example: 4119489462430522892
             responses:
                 "200":
                     description: OK response.
@@ -62,36 +68,6 @@ paths:
                                 items:
                                     $ref: '#/components/schemas/PostResponse'
                                 example:
-                                    - deliverytype: Nam quibusdam sunt.
-                                      description: Eum laudantium et.
-                                      imageIDs:
-                                        - Est temporibus sint in vel qui et.
-                                        - Iusto in veniam quia officia.
-                                        - Animi adipisci ipsam quae repellat sit.
-                                        - Maxime unde magni id cumque qui.
-                                      medium: Consequatur rerum ducimus.
-                                      postID: Ab id earum commodi repudiandae voluptatum atque.
-                                      price: Et ut.
-                                      sold: true
-                                      title: Reprehenderit optio.
-                                      uploadDate: Perspiciatis non aut.
-                                      userID: A sunt reiciendis.
-                                      username: Labore quisquam reiciendis in.
-                                    - deliverytype: Nam quibusdam sunt.
-                                      description: Eum laudantium et.
-                                      imageIDs:
-                                        - Est temporibus sint in vel qui et.
-                                        - Iusto in veniam quia officia.
-                                        - Animi adipisci ipsam quae repellat sit.
-                                        - Maxime unde magni id cumque qui.
-                                      medium: Consequatur rerum ducimus.
-                                      postID: Ab id earum commodi repudiandae voluptatum atque.
-                                      price: Et ut.
-                                      sold: true
-                                      title: Reprehenderit optio.
-                                      uploadDate: Perspiciatis non aut.
-                                      userID: A sunt reiciendis.
-                                      username: Labore quisquam reiciendis in.
                                     - deliverytype: Nam quibusdam sunt.
                                       description: Eum laudantium et.
                                       imageIDs:
@@ -183,6 +159,18 @@ paths:
                                   uploadDate: Perspiciatis non aut.
                                   userID: A sunt reiciendis.
                                   username: Labore quisquam reiciendis in.
+                "401":
+                    description: 'unauthorized: Credentials are invalid'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                "500":
+                    description: 'internal: Internal Error'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
     /posts/create:
         post:
             tags:
@@ -228,6 +216,18 @@ paths:
                                 uploadDate: Doloribus expedita ut consequuntur et est.
                                 userID: Dignissimos voluptatibus dolor ex veniam voluptatibus et.
                                 username: Beatae sint possimus et.
+                "401":
+                    description: 'unauthorized: Credentials are invalid'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                "500":
+                    description: 'internal: Internal Error'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
             security:
                 - jwt_header_Authorization: []
     /posts/delete/{postID}:
@@ -244,11 +244,23 @@ paths:
                   schema:
                     type: string
                     description: Post to delete
-                    example: Repellendus blanditiis aliquid dolorem ipsum et rerum.
-                  example: Impedit doloribus quidem.
+                    example: Molestias ex alias doloribus ut inventore.
+                  example: Exercitationem est.
             responses:
                 "204":
                     description: No Content response.
+                "401":
+                    description: 'unauthorized: Credentials are invalid'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                "500":
+                    description: 'internal: Internal Error'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
             security:
                 - jwt_header_Authorization: []
     /posts/edit/{postID}:
@@ -265,8 +277,8 @@ paths:
                   schema:
                     type: string
                     description: Post title
-                    example: Sint rerum officiis qui odit distinctio quaerat.
-                  example: Vitae dolor.
+                    example: Qui cum ratione sed doloribus blanditiis.
+                  example: Quo adipisci aut.
                 - name: description
                   in: query
                   description: Post description
@@ -274,8 +286,8 @@ paths:
                   schema:
                     type: string
                     description: Post description
-                    example: Doloribus et rerum.
-                  example: Qui quas.
+                    example: Autem illum.
+                  example: Repellendus dolores minima quod.
                 - name: price
                   in: query
                   description: Post price
@@ -283,8 +295,8 @@ paths:
                   schema:
                     type: string
                     description: Post price
-                    example: Repellat rerum quasi et sit.
-                  example: Voluptatibus eaque vel omnis.
+                    example: Beatae qui.
+                  example: Facere et libero sunt voluptate.
                 - name: content
                   in: query
                   description: Image content
@@ -292,8 +304,8 @@ paths:
                   schema:
                     type: string
                     description: Image content
-                    example: Totam doloremque dolore et.
-                  example: Distinctio eos nulla eos.
+                    example: Architecto aut sed quia.
+                  example: Qui maiores doloremque magnam labore est fugit.
                 - name: medium
                   in: query
                   description: Art type
@@ -301,8 +313,8 @@ paths:
                   schema:
                     type: string
                     description: Art type
-                    example: Totam odit non provident officiis ea.
-                  example: Corporis placeat aut.
+                    example: Et placeat et nihil numquam quae.
+                  example: Odio aut consequatur consequatur ea similique.
                 - name: sold
                   in: query
                   description: is sold
@@ -311,7 +323,7 @@ paths:
                     type: boolean
                     description: is sold
                     example: true
-                  example: true
+                  example: false
                 - name: deliverytype
                   in: query
                   description: Delivery type
@@ -319,8 +331,8 @@ paths:
                   schema:
                     type: string
                     description: Delivery type
-                    example: Sit aut ab dolor quasi.
-                  example: Fugit sed sit et placeat.
+                    example: Non nobis.
+                  example: Ea quas.
                 - name: imageID
                   in: query
                   description: Image ID
@@ -328,8 +340,8 @@ paths:
                   schema:
                     type: string
                     description: Image ID
-                    example: Dignissimos alias.
-                  example: Ea natus totam.
+                    example: Et ipsum sit dolore non.
+                  example: Repudiandae magni autem.
                 - name: postID
                   in: path
                   description: Post ID
@@ -337,8 +349,8 @@ paths:
                   schema:
                     type: string
                     description: Post ID
-                    example: Soluta autem non ipsam tempore.
-                  example: Aspernatur totam incidunt ut ea.
+                    example: Doloremque provident ut culpa sunt quia nostrum.
+                  example: Repellat porro ea et tempora voluptas.
             responses:
                 "200":
                     description: OK response.
@@ -361,6 +373,18 @@ paths:
                                 uploadDate: Doloribus expedita ut consequuntur et est.
                                 userID: Dignissimos voluptatibus dolor ex veniam voluptatibus et.
                                 username: Beatae sint possimus et.
+                "401":
+                    description: 'unauthorized: Credentials are invalid'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                "500":
+                    description: 'internal: Internal Error'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
             security:
                 - jwt_header_Authorization: []
     /posts/getimages/{postID}:
@@ -377,8 +401,8 @@ paths:
                   schema:
                     type: string
                     description: Post to get images for
-                    example: Doloremque magnam labore est fugit facere et.
-                  example: Et nihil numquam quae dolore.
+                    example: Voluptatem odit illo id sint et soluta.
+                  example: Consequatur modi rerum accusantium.
             responses:
                 "200":
                     description: OK response.
@@ -388,15 +412,26 @@ paths:
                                 type: array
                                 items:
                                     type: string
-                                    example: Sed consectetur minima.
+                                    example: Incidunt ut ea ducimus.
                                 example:
-                                    - Eos sapiente.
-                                    - Sunt dolor ipsa doloribus.
-                                    - Quos ducimus voluptates magnam quasi.
+                                    - Sapiente quas adipisci id aliquid sit.
+                                    - Minima omnis nulla quos.
+                                    - Dolores distinctio explicabo expedita consequatur et cum.
                             example:
-                                - Consequatur consequatur ea similique alias velit aliquid.
-                                - Nobis aut ea quas velit et.
-                                - Sit dolore.
+                                - Voluptate error praesentium et.
+                                - Sit et eveniet.
+                "401":
+                    description: 'unauthorized: Credentials are invalid'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                "500":
+                    description: 'internal: Internal Error'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
     /posts/getpage/{page}:
         get:
             tags:
@@ -411,9 +446,9 @@ paths:
                   schema:
                     type: integer
                     description: Page to get posts for
-                    example: 6742724951965962152
+                    example: 1107676641434885999
                     format: int64
-                  example: 770778146496743062
+                  example: 3221826859152799050
             responses:
                 "200":
                     description: OK response.
@@ -515,6 +550,18 @@ paths:
                                   uploadDate: Perspiciatis non aut.
                                   userID: A sunt reiciendis.
                                   username: Labore quisquam reiciendis in.
+                "401":
+                    description: 'unauthorized: Credentials are invalid'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                "500":
+                    description: 'internal: Internal Error'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
     /posts/getpagefiltered/{page}:
         get:
             tags:
@@ -529,8 +576,8 @@ paths:
                   schema:
                     type: string
                     description: Search bar keyword to search for in title and description
-                    example: Et cum possimus molestiae fugiat iure.
-                  example: Provident a error aut molestias.
+                    example: Animi tenetur iste.
+                  example: Quos ea.
                 - name: startDate
                   in: query
                   description: Filter attribute to see posts after given date
@@ -538,8 +585,8 @@ paths:
                   schema:
                     type: string
                     description: Filter attribute to see posts after given date
-                    example: Alias doloribus ut.
-                  example: Molestias exercitationem est consequatur qui cum ratione.
+                    example: Qui consequatur ut.
+                  example: Non molestiae provident.
                 - name: endDate
                   in: query
                   description: Filter attribute to see posts before given date
@@ -547,8 +594,8 @@ paths:
                   schema:
                     type: string
                     description: Filter attribute to see posts before given date
-                    example: Doloribus blanditiis molestiae quo adipisci aut quibusdam.
-                  example: Illum deleniti repellendus dolores minima quod quia.
+                    example: Tempore enim corrupti.
+                  example: Praesentium optio.
                 - name: medium
                   in: query
                   description: Filter attribute to see posts with given medium type
@@ -556,8 +603,8 @@ paths:
                   schema:
                     type: string
                     description: Filter attribute to see posts with given medium type
-                    example: Qui ipsam facere.
-                  example: Libero sunt voluptate dolorem architecto aut sed.
+                    example: Voluptatibus in laudantium reprehenderit eligendi quia ipsa.
+                  example: Nam provident.
                 - name: page
                   in: path
                   description: Page to get posts for
@@ -565,9 +612,9 @@ paths:
                   schema:
                     type: integer
                     description: Page to get posts for
-                    example: 4210847760908749209
+                    example: 1524715036425140674
                     format: int64
-                  example: 910455385023239905
+                  example: 4581658401737344110
             responses:
                 "200":
                     description: OK response.
@@ -578,21 +625,6 @@ paths:
                                 items:
                                     $ref: '#/components/schemas/PostResponse'
                                 example:
-                                    - deliverytype: Nam quibusdam sunt.
-                                      description: Eum laudantium et.
-                                      imageIDs:
-                                        - Est temporibus sint in vel qui et.
-                                        - Iusto in veniam quia officia.
-                                        - Animi adipisci ipsam quae repellat sit.
-                                        - Maxime unde magni id cumque qui.
-                                      medium: Consequatur rerum ducimus.
-                                      postID: Ab id earum commodi repudiandae voluptatum atque.
-                                      price: Et ut.
-                                      sold: true
-                                      title: Reprehenderit optio.
-                                      uploadDate: Perspiciatis non aut.
-                                      userID: A sunt reiciendis.
-                                      username: Labore quisquam reiciendis in.
                                     - deliverytype: Nam quibusdam sunt.
                                       description: Eum laudantium et.
                                       imageIDs:
@@ -654,36 +686,18 @@ paths:
                                   uploadDate: Perspiciatis non aut.
                                   userID: A sunt reiciendis.
                                   username: Labore quisquam reiciendis in.
-                                - deliverytype: Nam quibusdam sunt.
-                                  description: Eum laudantium et.
-                                  imageIDs:
-                                    - Est temporibus sint in vel qui et.
-                                    - Iusto in veniam quia officia.
-                                    - Animi adipisci ipsam quae repellat sit.
-                                    - Maxime unde magni id cumque qui.
-                                  medium: Consequatur rerum ducimus.
-                                  postID: Ab id earum commodi repudiandae voluptatum atque.
-                                  price: Et ut.
-                                  sold: true
-                                  title: Reprehenderit optio.
-                                  uploadDate: Perspiciatis non aut.
-                                  userID: A sunt reiciendis.
-                                  username: Labore quisquam reiciendis in.
-                                - deliverytype: Nam quibusdam sunt.
-                                  description: Eum laudantium et.
-                                  imageIDs:
-                                    - Est temporibus sint in vel qui et.
-                                    - Iusto in veniam quia officia.
-                                    - Animi adipisci ipsam quae repellat sit.
-                                    - Maxime unde magni id cumque qui.
-                                  medium: Consequatur rerum ducimus.
-                                  postID: Ab id earum commodi repudiandae voluptatum atque.
-                                  price: Et ut.
-                                  sold: true
-                                  title: Reprehenderit optio.
-                                  uploadDate: Perspiciatis non aut.
-                                  userID: A sunt reiciendis.
-                                  username: Labore quisquam reiciendis in.
+                "401":
+                    description: 'unauthorized: Credentials are invalid'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                "500":
+                    description: 'internal: Internal Error'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
     /signup:
         post:
             tags:
@@ -708,12 +722,57 @@ paths:
                         application/json:
                             schema:
                                 type: string
-                                example: Aliquid nostrum.
-                            example: Aspernatur vitae est praesentium et quos voluptatem.
+                                example: Voluptatem labore magni non qui.
+                            example: Molestiae fugiat iure dicta provident a error.
+                "401":
+                    description: 'unauthorized: Credentials are invalid'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
             security:
                 - signup_header_Authorization: []
 components:
     schemas:
+        Error:
+            type: object
+            properties:
+                fault:
+                    type: boolean
+                    description: Is the error a server-side fault?
+                    example: true
+                id:
+                    type: string
+                    description: ID is a unique identifier for this particular occurrence of the problem.
+                    example: 123abc
+                message:
+                    type: string
+                    description: Message is a human-readable explanation specific to this occurrence of the problem.
+                    example: parameter 'p' must be an integer
+                name:
+                    type: string
+                    description: Name is the name of this class of errors.
+                    example: bad_request
+                temporary:
+                    type: boolean
+                    description: Is the error temporary?
+                    example: false
+                timeout:
+                    type: boolean
+                    description: Is the error a timeout?
+                    example: true
+            description: Credentials are invalid
+            example:
+                id: 3F1FKVRR
+                message: Value of ID must be an integer
+                name: bad_request
+            required:
+                - name
+                - id
+                - message
+                - temporary
+                - timeout
+                - fault
         LoginLoginResponseBody:
             $ref: '#/components/schemas/LoginResponse'
         LoginResponse:
@@ -722,15 +781,15 @@ components:
                 jwt:
                     type: string
                     description: jwt used for future authentication
-                    example: Qui minus minima hic explicabo est aut.
+                    example: Quia sapiente.
                 userID:
                     type: string
                     description: users ID
-                    example: Dolor nisi perspiciatis.
+                    example: Maiores quia optio numquam.
             description: Response from logging in
             example:
-                jwt: Repellendus expedita iste et ducimus id.
-                userID: Vero aut ex dolore.
+                jwt: Nam quibusdam provident quia dolores.
+                userID: Placeat aspernatur nostrum aut.
         Post:
             type: object
             properties:
@@ -738,44 +797,43 @@ components:
                     type: array
                     items:
                         type: string
-                        example: Harum dolores autem eum aut sit eaque.
+                        example: Labore sint ad possimus error omnis voluptas.
                     description: Post content
                     example:
-                        - Qui consequatur.
-                        - Quia sapiente.
-                        - Maiores quia optio numquam.
+                        - Consequatur hic enim assumenda quam.
+                        - Delectus et ducimus cupiditate qui.
+                        - Id amet.
                 deliverytype:
                     type: string
                     description: Delivery type
-                    example: Placeat aspernatur nostrum aut.
+                    example: Adipisci porro.
                 description:
                     type: string
                     description: Post description
-                    example: Molestias et voluptatem omnis omnis provident.
+                    example: Porro omnis dolorem reiciendis quidem deserunt qui.
                 medium:
                     type: string
                     description: Art type
-                    example: Nam quibusdam provident quia dolores.
+                    example: Veniam qui necessitatibus ut natus.
                 price:
                     type: string
                     description: Post price
-                    example: Molestiae veritatis natus quae expedita similique.
+                    example: Alias exercitationem debitis aut ut aut accusamus.
                 title:
                     type: string
                     description: Post title
-                    example: Similique et ut soluta perferendis.
+                    example: Qui est soluta.
             description: Describes a post payload
             example:
                 content:
-                    - Aliquid sequi nesciunt repellendus alias id non.
-                    - Eum ut incidunt sunt.
-                    - Est quas non adipisci non.
-                    - Iure qui.
-                deliverytype: Qui corrupti facere dolorem.
-                description: Et quos non est dolor nobis.
-                medium: Et et et inventore officia fuga quaerat.
-                price: Aut inventore dicta.
-                title: Qui et.
+                    - Et saepe recusandae quos aspernatur cum.
+                    - Error deleniti esse natus odit voluptas non.
+                    - Id odit esse.
+                deliverytype: Et molestiae voluptatum accusantium.
+                description: Et accusantium eaque.
+                medium: Natus pariatur est perspiciatis expedita rerum.
+                price: Doloribus modi.
+                title: Natus autem dolorem animi asperiores.
             required:
                 - title
                 - description
@@ -789,68 +847,71 @@ components:
                 deliverytype:
                     type: string
                     description: Delivery type
-                    example: Ut natus dolores adipisci porro quibusdam natus.
+                    example: Dolorem ipsum et rerum enim.
                 description:
                     type: string
                     description: Post description
-                    example: Voluptatem labore magni non qui.
+                    example: Maxime excepturi nisi alias qui.
                 imageIDs:
                     type: array
                     items:
                         type: string
-                        example: Porro omnis dolorem reiciendis quidem deserunt qui.
+                        example: Ut occaecati facere.
                     description: Image ID
                     example:
-                        - Exercitationem debitis aut ut aut.
-                        - Repudiandae labore sint ad possimus.
-                        - Omnis voluptas est id.
+                        - Impedit consequatur in laudantium at laboriosam excepturi.
+                        - Quam et dolorem aspernatur qui.
+                        - Sed consectetur minima.
+                        - Veritatis eos sapiente sed sunt dolor.
                 medium:
                     type: string
                     description: Art type
-                    example: Et ducimus.
+                    example: Repellat aspernatur vitae est.
                 postID:
                     type: string
                     description: Post ID
-                    example: Hic enim assumenda quam adipisci.
+                    example: Doloribus aut quos ducimus voluptates magnam.
                 price:
                     type: string
                     description: Post price
-                    example: Qui est soluta.
+                    example: Nesciunt quod et error.
                 sold:
                     type: boolean
                     description: is sold
-                    example: false
+                    example: true
                 title:
                     type: string
                     description: Post title
-                    example: Saepe quos incidunt.
+                    example: Voluptas facilis.
                 uploadDate:
                     type: string
                     description: Upload Date
-                    example: Qui aliquid id amet nesciunt veniam.
+                    example: Et quos voluptatem itaque repellendus.
                 userID:
                     type: string
                     description: User id associated with post
-                    example: Dolorem animi asperiores doloremque.
+                    example: Doloribus quidem ut sint rerum officiis qui.
                 username:
                     type: string
                     description: Username associated with post
-                    example: Accusantium eaque.
+                    example: Distinctio quaerat nostrum vitae dolor eveniet doloribus.
             description: Describes a post response
             example:
-                deliverytype: Quod et error laudantium ut.
-                description: Aut et saepe recusandae.
+                deliverytype: Ex ea.
+                description: Quas quibusdam repellat rerum quasi et.
                 imageIDs:
-                    - Natus odit voluptas non quo id.
-                    - Esse qui natus pariatur.
-                medium: Accusantium iure voluptas facilis culpa maxime.
-                postID: Perspiciatis expedita rerum maxime et molestiae.
-                price: Aspernatur cum animi error.
+                    - Omnis officia totam doloremque dolore et.
+                    - Distinctio eos nulla eos.
+                    - Totam odit non provident officiis ea.
+                    - Corporis placeat aut.
+                medium: Quasi eaque fugit sed.
+                postID: Dolor autem sit aut ab.
+                price: Illum voluptatibus.
                 sold: false
-                title: Doloribus modi.
-                uploadDate: Nisi alias qui.
-                userID: Facere delectus sequi impedit consequatur.
-                username: Laudantium at laboriosam excepturi iure quam et.
+                title: Rerum laboriosam.
+                uploadDate: Et placeat provident.
+                userID: Totam id soluta.
+                username: Non ipsam.
             required:
                 - title
                 - description
@@ -871,25 +932,25 @@ components:
                 email:
                     type: string
                     description: Email
-                    example: Vel qui maxime dolores non.
+                    example: Inventore eum ut incidunt sunt delectus est.
                 firstName:
                     type: string
                     description: First name
-                    example: Qui esse iusto iste.
+                    example: Et quos non est dolor nobis.
                 lastName:
                     type: string
                     description: Last name
-                    example: Modi soluta ipsam iusto omnis cupiditate.
+                    example: Aut inventore dicta.
                 phone:
                     type: string
                     description: Phone number
-                    example: Facere doloribus fugit rem perspiciatis.
+                    example: Quis aliquid sequi nesciunt repellendus alias id.
             description: Describes a user
             example:
-                email: Fugiat eum nihil non non.
-                firstName: Velit et alias et et reprehenderit.
-                lastName: Laborum et.
-                phone: Aspernatur ab.
+                email: Quos incidunt.
+                firstName: Non adipisci non nostrum iure qui omnis.
+                lastName: Et et inventore officia.
+                phone: Quaerat suscipit qui corrupti facere dolorem quod.
             required:
                 - firstName
                 - lastName

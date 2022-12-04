@@ -143,7 +143,7 @@ func NewCreatePostHandler(
 	var (
 		decodeRequest  = DecodeCreatePostRequest(mux, decoder)
 		encodeResponse = EncodeCreatePostResponse(encoder)
-		encodeError    = goahttp.ErrorEncoder(encoder, formatter)
+		encodeError    = EncodeCreatePostError(encoder, formatter)
 	)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
@@ -194,7 +194,7 @@ func NewDeletePostHandler(
 	var (
 		decodeRequest  = DecodeDeletePostRequest(mux, decoder)
 		encodeResponse = EncodeDeletePostResponse(encoder)
-		encodeError    = goahttp.ErrorEncoder(encoder, formatter)
+		encodeError    = EncodeDeletePostError(encoder, formatter)
 	)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
@@ -245,7 +245,7 @@ func NewEditPostHandler(
 	var (
 		decodeRequest  = DecodeEditPostRequest(mux, decoder)
 		encodeResponse = EncodeEditPostResponse(encoder)
-		encodeError    = goahttp.ErrorEncoder(encoder, formatter)
+		encodeError    = EncodeEditPostError(encoder, formatter)
 	)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
@@ -296,7 +296,7 @@ func NewGetPostPageHandler(
 	var (
 		decodeRequest  = DecodeGetPostPageRequest(mux, decoder)
 		encodeResponse = EncodeGetPostPageResponse(encoder)
-		encodeError    = goahttp.ErrorEncoder(encoder, formatter)
+		encodeError    = EncodeGetPostPageError(encoder, formatter)
 	)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
@@ -347,7 +347,7 @@ func NewGetArtistPostPageHandler(
 	var (
 		decodeRequest  = DecodeGetArtistPostPageRequest(mux, decoder)
 		encodeResponse = EncodeGetArtistPostPageResponse(encoder)
-		encodeError    = goahttp.ErrorEncoder(encoder, formatter)
+		encodeError    = EncodeGetArtistPostPageError(encoder, formatter)
 	)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
@@ -398,7 +398,7 @@ func NewGetPostPageFilteredHandler(
 	var (
 		decodeRequest  = DecodeGetPostPageFilteredRequest(mux, decoder)
 		encodeResponse = EncodeGetPostPageFilteredResponse(encoder)
-		encodeError    = goahttp.ErrorEncoder(encoder, formatter)
+		encodeError    = EncodeGetPostPageFilteredError(encoder, formatter)
 	)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
@@ -449,7 +449,7 @@ func NewGetImagesForPostHandler(
 	var (
 		decodeRequest  = DecodeGetImagesForPostRequest(mux, decoder)
 		encodeResponse = EncodeGetImagesForPostResponse(encoder)
-		encodeError    = goahttp.ErrorEncoder(encoder, formatter)
+		encodeError    = EncodeGetImagesForPostError(encoder, formatter)
 	)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))

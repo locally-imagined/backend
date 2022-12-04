@@ -50,6 +50,262 @@ type GetArtistPostPageResponseBody []*PostResponse
 // "get_post_page_filtered" endpoint HTTP response body.
 type GetPostPageFilteredResponseBody []*PostResponse
 
+// CreatePostUnauthorizedResponseBody is the type of the "postings" service
+// "create_post" endpoint HTTP response body for the "unauthorized" error.
+type CreatePostUnauthorizedResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// CreatePostInternalResponseBody is the type of the "postings" service
+// "create_post" endpoint HTTP response body for the "internal" error.
+type CreatePostInternalResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// DeletePostUnauthorizedResponseBody is the type of the "postings" service
+// "delete_post" endpoint HTTP response body for the "unauthorized" error.
+type DeletePostUnauthorizedResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// DeletePostInternalResponseBody is the type of the "postings" service
+// "delete_post" endpoint HTTP response body for the "internal" error.
+type DeletePostInternalResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// EditPostUnauthorizedResponseBody is the type of the "postings" service
+// "edit_post" endpoint HTTP response body for the "unauthorized" error.
+type EditPostUnauthorizedResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// EditPostInternalResponseBody is the type of the "postings" service
+// "edit_post" endpoint HTTP response body for the "internal" error.
+type EditPostInternalResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// GetPostPageUnauthorizedResponseBody is the type of the "postings" service
+// "get_post_page" endpoint HTTP response body for the "unauthorized" error.
+type GetPostPageUnauthorizedResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// GetPostPageInternalResponseBody is the type of the "postings" service
+// "get_post_page" endpoint HTTP response body for the "internal" error.
+type GetPostPageInternalResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// GetArtistPostPageUnauthorizedResponseBody is the type of the "postings"
+// service "get_artist_post_page" endpoint HTTP response body for the
+// "unauthorized" error.
+type GetArtistPostPageUnauthorizedResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// GetArtistPostPageInternalResponseBody is the type of the "postings" service
+// "get_artist_post_page" endpoint HTTP response body for the "internal" error.
+type GetArtistPostPageInternalResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// GetPostPageFilteredUnauthorizedResponseBody is the type of the "postings"
+// service "get_post_page_filtered" endpoint HTTP response body for the
+// "unauthorized" error.
+type GetPostPageFilteredUnauthorizedResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// GetPostPageFilteredInternalResponseBody is the type of the "postings"
+// service "get_post_page_filtered" endpoint HTTP response body for the
+// "internal" error.
+type GetPostPageFilteredInternalResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// GetImagesForPostUnauthorizedResponseBody is the type of the "postings"
+// service "get_images_for_post" endpoint HTTP response body for the
+// "unauthorized" error.
+type GetImagesForPostUnauthorizedResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// GetImagesForPostInternalResponseBody is the type of the "postings" service
+// "get_images_for_post" endpoint HTTP response body for the "internal" error.
+type GetImagesForPostInternalResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
 // PostResponseResponseBody is used to define fields on response body types.
 type PostResponseResponseBody struct {
 	// Post title
@@ -176,6 +432,206 @@ func NewGetPostPageFilteredResponseBody(res *postings.GetPostPageFilteredResult)
 	body := make([]*PostResponse, len(res.Posts))
 	for i, val := range res.Posts {
 		body[i] = marshalPostingsPostResponseToPostResponse(val)
+	}
+	return body
+}
+
+// NewCreatePostUnauthorizedResponseBody builds the HTTP response body from the
+// result of the "create_post" endpoint of the "postings" service.
+func NewCreatePostUnauthorizedResponseBody(res *goa.ServiceError) *CreatePostUnauthorizedResponseBody {
+	body := &CreatePostUnauthorizedResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewCreatePostInternalResponseBody builds the HTTP response body from the
+// result of the "create_post" endpoint of the "postings" service.
+func NewCreatePostInternalResponseBody(res *goa.ServiceError) *CreatePostInternalResponseBody {
+	body := &CreatePostInternalResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewDeletePostUnauthorizedResponseBody builds the HTTP response body from the
+// result of the "delete_post" endpoint of the "postings" service.
+func NewDeletePostUnauthorizedResponseBody(res *goa.ServiceError) *DeletePostUnauthorizedResponseBody {
+	body := &DeletePostUnauthorizedResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewDeletePostInternalResponseBody builds the HTTP response body from the
+// result of the "delete_post" endpoint of the "postings" service.
+func NewDeletePostInternalResponseBody(res *goa.ServiceError) *DeletePostInternalResponseBody {
+	body := &DeletePostInternalResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewEditPostUnauthorizedResponseBody builds the HTTP response body from the
+// result of the "edit_post" endpoint of the "postings" service.
+func NewEditPostUnauthorizedResponseBody(res *goa.ServiceError) *EditPostUnauthorizedResponseBody {
+	body := &EditPostUnauthorizedResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewEditPostInternalResponseBody builds the HTTP response body from the
+// result of the "edit_post" endpoint of the "postings" service.
+func NewEditPostInternalResponseBody(res *goa.ServiceError) *EditPostInternalResponseBody {
+	body := &EditPostInternalResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewGetPostPageUnauthorizedResponseBody builds the HTTP response body from
+// the result of the "get_post_page" endpoint of the "postings" service.
+func NewGetPostPageUnauthorizedResponseBody(res *goa.ServiceError) *GetPostPageUnauthorizedResponseBody {
+	body := &GetPostPageUnauthorizedResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewGetPostPageInternalResponseBody builds the HTTP response body from the
+// result of the "get_post_page" endpoint of the "postings" service.
+func NewGetPostPageInternalResponseBody(res *goa.ServiceError) *GetPostPageInternalResponseBody {
+	body := &GetPostPageInternalResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewGetArtistPostPageUnauthorizedResponseBody builds the HTTP response body
+// from the result of the "get_artist_post_page" endpoint of the "postings"
+// service.
+func NewGetArtistPostPageUnauthorizedResponseBody(res *goa.ServiceError) *GetArtistPostPageUnauthorizedResponseBody {
+	body := &GetArtistPostPageUnauthorizedResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewGetArtistPostPageInternalResponseBody builds the HTTP response body from
+// the result of the "get_artist_post_page" endpoint of the "postings" service.
+func NewGetArtistPostPageInternalResponseBody(res *goa.ServiceError) *GetArtistPostPageInternalResponseBody {
+	body := &GetArtistPostPageInternalResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewGetPostPageFilteredUnauthorizedResponseBody builds the HTTP response body
+// from the result of the "get_post_page_filtered" endpoint of the "postings"
+// service.
+func NewGetPostPageFilteredUnauthorizedResponseBody(res *goa.ServiceError) *GetPostPageFilteredUnauthorizedResponseBody {
+	body := &GetPostPageFilteredUnauthorizedResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewGetPostPageFilteredInternalResponseBody builds the HTTP response body
+// from the result of the "get_post_page_filtered" endpoint of the "postings"
+// service.
+func NewGetPostPageFilteredInternalResponseBody(res *goa.ServiceError) *GetPostPageFilteredInternalResponseBody {
+	body := &GetPostPageFilteredInternalResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewGetImagesForPostUnauthorizedResponseBody builds the HTTP response body
+// from the result of the "get_images_for_post" endpoint of the "postings"
+// service.
+func NewGetImagesForPostUnauthorizedResponseBody(res *goa.ServiceError) *GetImagesForPostUnauthorizedResponseBody {
+	body := &GetImagesForPostUnauthorizedResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewGetImagesForPostInternalResponseBody builds the HTTP response body from
+// the result of the "get_images_for_post" endpoint of the "postings" service.
+func NewGetImagesForPostInternalResponseBody(res *goa.ServiceError) *GetImagesForPostInternalResponseBody {
+	body := &GetImagesForPostInternalResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
 	}
 	return body
 }

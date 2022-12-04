@@ -26,6 +26,38 @@ type SignupRequestBody struct {
 	Email *string `form:"email,omitempty" json:"email,omitempty" xml:"email,omitempty"`
 }
 
+// SignupUnauthorizedResponseBody is the type of the "signup" service "Signup"
+// endpoint HTTP response body for the "unauthorized" error.
+type SignupUnauthorizedResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// NewSignupUnauthorizedResponseBody builds the HTTP response body from the
+// result of the "Signup" endpoint of the "signup" service.
+func NewSignupUnauthorizedResponseBody(res *goa.ServiceError) *SignupUnauthorizedResponseBody {
+	body := &SignupUnauthorizedResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
 // NewSignupPayload builds a signup service Signup endpoint payload.
 func NewSignupPayload(body *SignupRequestBody) *signup.SignupPayload {
 	v := &signup.User{

@@ -10,6 +10,7 @@ package postings
 import (
 	"context"
 
+	goa "goa.design/goa/v3/pkg"
 	"goa.design/goa/v3/security"
 )
 
@@ -204,22 +205,12 @@ type PostResponse struct {
 	Username string
 }
 
-// Credentials are invalid
-type Unauthorized string
-
-// Error returns an error description.
-func (e Unauthorized) Error() string {
-	return "Credentials are invalid"
+// MakeUnauthorized builds a goa.ServiceError from an error.
+func MakeUnauthorized(err error) *goa.ServiceError {
+	return goa.NewServiceError(err, "unauthorized", false, false, false)
 }
 
-// ErrorName returns "unauthorized".
-//
-// Deprecated: Use GoaErrorName - https://github.com/goadesign/goa/issues/3105
-func (e Unauthorized) ErrorName() string {
-	return e.GoaErrorName()
-}
-
-// GoaErrorName returns "unauthorized".
-func (e Unauthorized) GoaErrorName() string {
-	return "unauthorized"
+// MakeInternal builds a goa.ServiceError from an error.
+func MakeInternal(err error) *goa.ServiceError {
+	return goa.NewServiceError(err, "internal", false, false, false)
 }

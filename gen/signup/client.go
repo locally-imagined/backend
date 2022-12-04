@@ -26,6 +26,9 @@ func NewClient(signup goa.Endpoint) *Client {
 }
 
 // Signup calls the "Signup" endpoint of the "signup" service.
+// Signup may return the following errors:
+//	- "unauthorized" (type *goa.ServiceError): Credentials are invalid
+//	- error: internal error
 func (c *Client) Signup(ctx context.Context, p *SignupPayload) (res *SignupResult, err error) {
 	var ires interface{}
 	ires, err = c.SignupEndpoint(ctx, p)
