@@ -93,11 +93,11 @@ var (
 					LEFT JOIN (SELECT imgid, postid FROM images WHERE index=0) AS i ON p.postid=i.postid 
 					LEFT JOIN users AS u ON p.userid = u.userid
 					ORDER BY p.uploaddate OFFSET $1 ROWS FETCH NEXT 25 ROWS ONLY`
-	GETPOSTPAGEWITHKEYWORD string = `SELECT p.postid, p.userid, p.title, p.description, 
-					p.price, p.medium, p.sold, p.uploaddate, p.deliverytype, i.imgid FROM posts AS p LEFT 
-					JOIN images AS i ON p.postid = i.postid WHERE i.index=0 AND 
-					((LOWER(p.title) LIKE $1) OR (LOWER(p.description) LIKE $2))
-					ORDER BY p.uploaddate OFFSET $3 ROWS FETCH NEXT 25 ROWS ONLY`
+	GETPOSTPAGEFILTERED string = `SELECT p.postid, p.userid, p.title, p.description, 
+					p.price, p.medium, p.sold, p.uploaddate, i.imgid, u.username FROM posts AS p LEFT 
+					JOIN images AS i ON p.postid=i.postid LEFT JOIN users AS u ON p.userid = u.userid WHERE (i.index=0) AND ((LOWER(p.title) LIKE $1) OR 
+					(LOWER(p.description) LIKE $1)) AND (p.uploaddate >= $2) AND (p.uploaddate <= $3) AND (p.medium LIKE $4) 
+					ORDER BY p.uploaddate OFFSET $5 ROWS FETCH NEXT 25 ROWS ONLY`
 	GETPOSTPAGEFORARTIST string = `SELECT p.postid, p.userid, u.username, p.title, 
 					p.description, p.price, p.medium, p.sold, p.uploaddate, p.deliverytype, i.imgid FROM posts AS p
 					LEFT JOIN (SELECT imgid, postid FROM images WHERE index=0) AS i ON p.postid=i.postid 
@@ -226,7 +226,7 @@ func (c *client) GetArtistPostPage(ctx context.Context, p *postings.GetArtistPos
 		return nil, err
 	}
 	defer dbPool.Close()
-	offset := p.Page * 25
+	offset := p.Page * IMAGESPERPAGE
 
 	rows, err := dbPool.Query(GETPOSTPAGEFORARTIST, p.UserID, offset)
 	if err != nil {
@@ -251,13 +251,8 @@ func (c *client) GetPostPageFiltered(ctx context.Context, p *postings.GetPostPag
 		return nil, err
 	}
 	defer dbPool.Close()
-	// offset := p.Page * 25
+	offset := p.Page * IMAGESPERPAGE
 
-	querystring := `SELECT p.postid, p.userid, p.title, p.description, 
-	p.price, p.medium, p.sold, p.uploaddate, i.imgid, u.username FROM posts AS p LEFT 
-	JOIN images AS i ON p.postid=i.postid LEFT JOIN users AS u ON p.userid = u.userid WHERE (i.index=0) AND ((LOWER(p.title) LIKE $1) OR 
-	(LOWER(p.description) LIKE $1)) AND (p.uploaddate >= $2) AND (p.uploaddate <= $3) AND (p.medium LIKE $4) 
-	ORDER BY p.uploaddate OFFSET $5 ROWS FETCH NEXT 25 ROWS ONLY`
 	keyword := "%%"
 	start := "2000-01-01"
 	end := "2025-01-01"
@@ -274,7 +269,7 @@ func (c *client) GetPostPageFiltered(ctx context.Context, p *postings.GetPostPag
 	if p.Medium != nil {
 		medium = "%" + *p.Medium + "%"
 	}
-	rows, err := dbPool.Query(querystring, keyword, start, end, medium, p.Page*25)
+	rows, err := dbPool.Query(GETPOSTPAGEFILTERED, keyword, start, end, medium, offset)
 	if err != nil {
 		return nil, err
 	}
