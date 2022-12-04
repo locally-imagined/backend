@@ -286,7 +286,7 @@ func (c *client) GetPostPageFiltered(ctx context.Context, p *postings.GetPostPag
 		}
 		imageID := make([]string, 0)
 		imageID = append(imageID, row.imageID)
-		res = append(res, &postings.PostResponse{Title: row.postTitle, Description: row.postDesc, Price: row.price, ImageIDs: imageID, PostID: row.postID, UploadDate: row.uploadDate, Medium: row.medium, Sold: row.sold, Username: row.username})
+		res = append(res, &postings.PostResponse{UserID: row.userID, Title: row.postTitle, Description: row.postDesc, Price: row.price, ImageIDs: imageID, PostID: row.postID, UploadDate: row.uploadDate, Medium: row.medium, Sold: row.sold, Username: row.username})
 	}
 	return &postings.GetPostPageFilteredResult{Posts: res}, err
 }
