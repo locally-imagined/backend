@@ -15,7 +15,7 @@ var _ = API("locallyimagined", func() {
 		cors.MaxAge(600)                                        // How long to cache a preflight request response
 		cors.Credentials()                                      // Sets Access-Control-Allow-Credentials header
 	})
-	cors.Origin("http://localhost:3001", func() { // Define CORS policy, may be prefixed with "*" wildcard
+	cors.Origin("http://localhost", func() { // Define CORS policy, may be prefixed with "*" wildcard
 		cors.Headers("*")                                       // One or more authorized headers, use "*" to authorize all
 		cors.Methods("GET", "POST", "DELETE", "PUT", "OPTIONS") // One or more authorized HTTP methods
 		cors.Expose("*")                                        // One or more headers exposed to clients
@@ -131,6 +131,7 @@ var _ = Service("postings", func() {
 		Result(func() {
 			Attribute("Posted", PostResponse)
 		})
+		// take these out of param
 		HTTP(func() {
 			PUT("/posts/edit/{postID}")
 			Param("title")
@@ -218,6 +219,44 @@ var _ = Service("postings", func() {
 	})
 })
 
+var _ = Service("users", func() {
+	Error("unauthorized", String, "Credentials are invalid")
+	Method("update_bio", func() {
+		Security(JWTAuth)
+		Payload(func() {
+			Token("token", String, "jwt used for auth")
+			Attribute("bio", Bio, "New bio to be added")
+			Required("token", "bio")
+		})
+		Result(func() {
+			Attribute("updated_user", User)
+		})
+		HTTP(func() {
+			PUT("/users/updatebio")
+			Body("bio")
+			Response(func() {
+				Body("updated_user")
+			})
+		})
+	})
+	Method("get_contact_info", func() {
+		Payload(func() {
+			Attribute("userID", String, "userid of user whose info to retrieve")
+			Required("userID")
+		})
+		Result(func() {
+			Attribute("contact_info", User)
+		})
+		HTTP(func() {
+			GET("/users/contactinfo")
+			Param("userID")
+			Response(func() {
+				Body("contact_info")
+			})
+		})
+	})
+})
+
 // BasicAuth defines a security scheme using basic authentication. The scheme
 // protects the "login" action used to create JWTs.
 var LoginBasicAuth = BasicAuthSecurity("login", func() {
@@ -244,6 +283,11 @@ var LoginResponse = Type("LoginResponse", func() {
 var Content = Type("Content", func() {
 	Description("Image Content")
 	Attribute("content", String, "raw image content")
+})
+
+var Bio = Type("Bio", func() {
+	Description("Updated Bio")
+	Attribute("bio", String, "New Bio")
 })
 
 var User = Type("User", func() {

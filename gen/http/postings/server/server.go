@@ -505,7 +505,7 @@ func HandlePostingsOrigin(h http.Handler) http.Handler {
 			h.ServeHTTP(w, r)
 			return
 		}
-		if cors.MatchOrigin(origin, "http://localhost:3000") {
+		if cors.MatchOrigin(origin, "http://localhost") {
 			w.Header().Set("Access-Control-Allow-Origin", origin)
 			w.Header().Set("Vary", "Origin")
 			w.Header().Set("Access-Control-Expose-Headers", "*")
@@ -519,7 +519,7 @@ func HandlePostingsOrigin(h http.Handler) http.Handler {
 			h.ServeHTTP(w, r)
 			return
 		}
-		if cors.MatchOrigin(origin, "http://localhost:3001") {
+		if cors.MatchOrigin(origin, "http://localhost:3000") {
 			w.Header().Set("Access-Control-Allow-Origin", origin)
 			w.Header().Set("Vary", "Origin")
 			w.Header().Set("Access-Control-Expose-Headers", "*")
