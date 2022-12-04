@@ -15,7 +15,7 @@ var _ = API("locallyimagined", func() {
 		cors.MaxAge(600)                                        // How long to cache a preflight request response
 		cors.Credentials()                                      // Sets Access-Control-Allow-Credentials header
 	})
-	cors.Origin("http://localhost:3001", func() { // Define CORS policy, may be prefixed with "*" wildcard
+	cors.Origin("http://localhost", func() { // Define CORS policy, may be prefixed with "*" wildcard
 		cors.Headers("*")                                       // One or more authorized headers, use "*" to authorize all
 		cors.Methods("GET", "POST", "DELETE", "PUT", "OPTIONS") // One or more authorized HTTP methods
 		cors.Expose("*")                                        // One or more headers exposed to clients
@@ -206,6 +206,44 @@ var _ = Service("postings", func() {
 			GET("/posts/getimages/{postID}")
 			Response(func() {
 				Body("Images")
+			})
+		})
+	})
+})
+
+var _ = Service("users", func() {
+	Error("unauthorized", String, "Credentials are invalid")
+	Method("update_bio", func() {
+		Security(JWTAuth)
+		Payload(func() {
+			Token("token", String, "jwt used for auth")
+			Attribute("bio", String, "New bio to be addeed")
+			Required("token", "bio")
+		})
+		Result(func() {
+			Attribute("updated_user", User)
+		})
+		HTTP(func() {
+			PUT("/users/update_bio")
+			Body("bio")
+			Response(func() {
+				Body("updated_user")
+			})
+		})
+	})
+	Method("get_contact_info", func() {
+		Payload(func() {
+			Attribute("userID", String, "userid of user whose info to retrieve")
+			Required("userID")
+		})
+		Result(func() {
+			Attribute("contact_info", User)
+		})
+		HTTP(func() {
+			GET("/users/get_contact_info")
+			Param("userID")
+			Response(func() {
+				Body("contact_info")
 			})
 		})
 	})
