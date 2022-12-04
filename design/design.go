@@ -218,7 +218,7 @@ var _ = Service("users", func() {
 		Security(JWTAuth)
 		Payload(func() {
 			Token("token", String, "jwt used for auth")
-			Attribute("bio", Bio, "New bio to be added")
+			Attribute("bio", String, "New bio to be added")
 			Required("token", "bio")
 		})
 		Result(func() {

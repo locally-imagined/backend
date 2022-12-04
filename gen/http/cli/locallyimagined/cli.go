@@ -42,20 +42,19 @@ func UsageExamples() string {
       "lastName": "Veritatis voluptatum nihil.",
       "phone": "Est iusto eos sunt quis deleniti."
    }' --username "Error assumenda adipisci." --password "Et commodi."` + "\n" +
-		os.Args[0] + ` users update-bio --body '{
-      "bio": "Eaque assumenda voluptatem et commodi atque earum."
-   }' --token "Fugit ex."` + "\n" +
+		os.Args[0] + ` users update-bio --body "Iure quam possimus quaerat maxime et." --token "Sit voluptates."` + "\n" +
 		os.Args[0] + ` postings create-post --body '{
       "content": [
-         "Consequatur velit eum et.",
-         "Repudiandae minus aut."
+         "Expedita ut consequuntur et est.",
+         "Molestiae similique.",
+         "Rem quos laborum dignissimos voluptatibus dolor."
       ],
-      "deliverytype": "Exercitationem eaque dolores ea.",
-      "description": "Dolor porro assumenda dolor ex.",
-      "medium": "Et rerum.",
-      "price": "Dicta rerum.",
-      "title": "Voluptatem maiores est maiores."
-   }' --token "Eos doloribus expedita ut."` + "\n" +
+      "deliverytype": "Et aut quidem eaque laborum expedita numquam.",
+      "description": "Et quia repudiandae minus aut sint et.",
+      "medium": "Veniam voluptatibus et omnis beatae sint.",
+      "price": "Quos exercitationem eaque dolores ea deleniti.",
+      "title": "Fuga consequatur velit."
+   }' --token "Et nemo aperiam."` + "\n" +
 		""
 }
 
@@ -385,16 +384,14 @@ Additional help:
 `, os.Args[0])
 }
 func usersUpdateBioUsage() {
-	fmt.Fprintf(os.Stderr, `%[1]s [flags] users update-bio -body JSON -token STRING
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] users update-bio -body STRING -token STRING
 
 UpdateBio implements update_bio.
-    -body JSON: 
+    -body STRING: 
     -token STRING: 
 
 Example:
-    %[1]s users update-bio --body '{
-      "bio": "Eaque assumenda voluptatem et commodi atque earum."
-   }' --token "Fugit ex."
+    %[1]s users update-bio --body "Iure quam possimus quaerat maxime et." --token "Sit voluptates."
 `, os.Args[0])
 }
 
@@ -405,7 +402,7 @@ GetContactInfo implements get_contact_info.
     -user-id STRING: 
 
 Example:
-    %[1]s users get-contact-info --user-id "Nesciunt excepturi quam eaque."
+    %[1]s users get-contact-info --user-id "Dicta rerum."
 `, os.Args[0])
 }
 
@@ -438,15 +435,16 @@ CreatePost implements create_post.
 Example:
     %[1]s postings create-post --body '{
       "content": [
-         "Consequatur velit eum et.",
-         "Repudiandae minus aut."
+         "Expedita ut consequuntur et est.",
+         "Molestiae similique.",
+         "Rem quos laborum dignissimos voluptatibus dolor."
       ],
-      "deliverytype": "Exercitationem eaque dolores ea.",
-      "description": "Dolor porro assumenda dolor ex.",
-      "medium": "Et rerum.",
-      "price": "Dicta rerum.",
-      "title": "Voluptatem maiores est maiores."
-   }' --token "Eos doloribus expedita ut."
+      "deliverytype": "Et aut quidem eaque laborum expedita numquam.",
+      "description": "Et quia repudiandae minus aut sint et.",
+      "medium": "Veniam voluptatibus et omnis beatae sint.",
+      "price": "Quos exercitationem eaque dolores ea deleniti.",
+      "title": "Fuga consequatur velit."
+   }' --token "Et nemo aperiam."
 `, os.Args[0])
 }
 
@@ -458,7 +456,7 @@ DeletePost implements delete_post.
     -token STRING: 
 
 Example:
-    %[1]s postings delete-post --post-id "Iusto et in eum reiciendis." --token "Hic omnis dignissimos et."
+    %[1]s postings delete-post --post-id "Sit doloremque pariatur." --token "Alias in recusandae incidunt."
 `, os.Args[0])
 }
 
@@ -478,7 +476,7 @@ EditPost implements edit_post.
     -token STRING: 
 
 Example:
-    %[1]s postings edit-post --post-id "Porro ut maiores." --title "Exercitationem itaque." --description "Tenetur est dolor placeat minima fuga." --price "Quidem quia reiciendis." --content "Id aut." --medium "Sit doloremque pariatur." --sold true --deliverytype "In recusandae." --image-id "Doloribus necessitatibus." --token "Provident deserunt optio sit blanditiis ipsum."
+    %[1]s postings edit-post --post-id "Blanditiis ipsum repudiandae ea voluptatem et." --title "Fugit enim." --description "Porro beatae fugiat dolor sed." --price "Ipsa consequatur dignissimos ut voluptatem accusantium fuga." --content "Aut aut sequi sunt molestiae exercitationem." --medium "Voluptas amet." --sold false --deliverytype "Magnam ipsum." --image-id "Ab inventore." --token "A aperiam."
 `, os.Args[0])
 }
 
@@ -489,7 +487,7 @@ GetPostPage implements get_post_page.
     -page INT: Page to get posts for
 
 Example:
-    %[1]s postings get-post-page --page 4494216049559114133
+    %[1]s postings get-post-page --page 1940306571495683276
 `, os.Args[0])
 }
 
@@ -501,7 +499,7 @@ GetArtistPostPage implements get_artist_post_page.
     -user-id STRING: 
 
 Example:
-    %[1]s postings get-artist-post-page --page 2947001032931167766 --user-id "Repellendus porro beatae fugiat dolor sed blanditiis."
+    %[1]s postings get-artist-post-page --page 6118265302512200579 --user-id "Optio ea voluptas."
 `, os.Args[0])
 }
 
@@ -516,7 +514,7 @@ GetPostPageFiltered implements get_post_page_filtered.
     -medium STRING: 
 
 Example:
-    %[1]s postings get-post-page-filtered --page 6286263452585646401 --keyword "Accusantium fuga laudantium aut." --start-date "Sequi sunt molestiae." --end-date "Quia voluptas amet quas placeat magnam." --medium "Quia ab inventore iure a."
+    %[1]s postings get-post-page-filtered --page 7138833091128058371 --keyword "Consequatur ratione voluptatem cumque eius." --start-date "In placeat enim." --end-date "Deleniti nihil ut omnis eum recusandae iste." --medium "Repellendus illum vitae voluptatibus laboriosam vero nesciunt."
 `, os.Args[0])
 }
 
@@ -527,6 +525,6 @@ GetImagesForPost implements get_images_for_post.
     -post-id STRING: Post to get images for
 
 Example:
-    %[1]s postings get-images-for-post --post-id "Ea voluptas similique rerum molestias dignissimos reiciendis."
+    %[1]s postings get-images-for-post --post-id "Molestiae sequi quia et natus architecto."
 `, os.Args[0])
 }
