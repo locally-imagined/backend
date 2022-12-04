@@ -140,7 +140,9 @@ var _ = Service("postings", func() {
 			Param("sold")
 			Param("deliverytype")
 			Param("imageID")
-			Body("content")
+			Body(func() {
+				Attribute("content")
+			})
 			Response(func() {
 				Body("Posted")
 			})

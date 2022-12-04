@@ -78,11 +78,17 @@ func BuildDeletePostPayload(postingsDeletePostPostID string, postingsDeletePostT
 
 // BuildEditPostPayload builds the payload for the postings edit_post endpoint
 // from CLI flags.
-func BuildEditPostPayload(postingsEditPostBody string, postingsEditPostPostID string, postingsEditPostTitle string, postingsEditPostDescription string, postingsEditPostPrice string, postingsEditPostMedium string, postingsEditPostSold string, postingsEditPostDeliverytype string, postingsEditPostImageID string, postingsEditPostToken string) (*postings.EditPostPayload, error) {
+func BuildEditPostPayload(postingsEditPostBody string, postingsEditPostPostID string, postingsEditPostTitle string, postingsEditPostDescription string, postingsEditPostPrice string, postingsEditPostMedium string, postingsEditPostSold string, postingsEditPostDeliverytype string, postingsEditPostImageID string) (*postings.EditPostPayload, error) {
 	var err error
-	var body string
+	var body struct {
+		// Image content
+		Content *string `form:"content" json:"content" xml:"content"`
+	}
 	{
-		body = postingsEditPostBody
+		err = json.Unmarshal([]byte(postingsEditPostBody), &body)
+		if err != nil {
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"content\": \"Minima fuga.\"\n   }'")
+		}
 	}
 	var postID string
 	{
@@ -135,25 +141,19 @@ func BuildEditPostPayload(postingsEditPostBody string, postingsEditPostPostID st
 			imageID = &postingsEditPostImageID
 		}
 	}
-	var token string
-	{
-		token = postingsEditPostToken
+	v := &postings.EditPostPayload{
+		Content: body.Content,
 	}
-	v := body
-	res := &postings.EditPostPayload{
-		Content: &v,
-	}
-	res.PostID = postID
-	res.Title = title
-	res.Description = description
-	res.Price = price
-	res.Medium = medium
-	res.Sold = sold
-	res.Deliverytype = deliverytype
-	res.ImageID = imageID
-	res.Token = token
+	v.PostID = postID
+	v.Title = title
+	v.Description = description
+	v.Price = price
+	v.Medium = medium
+	v.Sold = sold
+	v.Deliverytype = deliverytype
+	v.ImageID = imageID
 
-	return res, nil
+	return v, nil
 }
 
 // BuildGetPostPagePayload builds the payload for the postings get_post_page

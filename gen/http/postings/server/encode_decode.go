@@ -213,16 +213,18 @@ func EncodeEditPostResponse(encoder func(context.Context, http.ResponseWriter) g
 func DecodeEditPostRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (interface{}, error) {
 	return func(r *http.Request) (interface{}, error) {
 		var (
-			body string
-			err  error
+			body struct {
+				// Image content
+				Content *string `form:"content" json:"content" xml:"content"`
+			}
+			err error
 		)
 		err = decoder(r).Decode(&body)
 		if err != nil {
 			if err == io.EOF {
-				err = nil
-			} else {
-				return nil, goa.DecodePayloadError(err.Error())
+				return nil, goa.MissingPayloadError()
 			}
+			return nil, goa.DecodePayloadError(err.Error())
 		}
 
 		var (
@@ -234,7 +236,6 @@ func DecodeEditPostRequest(mux goahttp.Muxer, decoder func(*http.Request) goahtt
 			sold         *bool
 			deliverytype *string
 			imageID      *string
-			token        string
 
 			params = mux.Vars(r)
 		)
@@ -273,19 +274,10 @@ func DecodeEditPostRequest(mux goahttp.Muxer, decoder func(*http.Request) goahtt
 		if imageIDRaw != "" {
 			imageID = &imageIDRaw
 		}
-		token = r.Header.Get("Authorization")
-		if token == "" {
-			err = goa.MergeErrors(err, goa.MissingFieldError("Authorization", "header"))
-		}
 		if err != nil {
 			return nil, err
 		}
-		payload := NewEditPostPayload(body, postID, title, description, price, medium, sold, deliverytype, imageID, token)
-		if strings.Contains(payload.Token, " ") {
-			// Remove authorization scheme prefix (e.g. "Bearer")
-			cred := strings.SplitN(payload.Token, " ", 2)[1]
-			payload.Token = cred
-		}
+		payload := NewEditPostPayload(body, postID, title, description, price, medium, sold, deliverytype, imageID)
 
 		return payload, nil
 	}

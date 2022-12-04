@@ -667,22 +667,23 @@ func NewDeletePostPayload(postID string, token string) *postings.DeletePostPaylo
 }
 
 // NewEditPostPayload builds a postings service edit_post endpoint payload.
-func NewEditPostPayload(body string, postID string, title *string, description *string, price *string, medium *string, sold *bool, deliverytype *string, imageID *string, token string) *postings.EditPostPayload {
-	v := body
-	res := &postings.EditPostPayload{
-		Content: &v,
+func NewEditPostPayload(body struct {
+	// Image content
+	Content *string `form:"content" json:"content" xml:"content"`
+}, postID string, title *string, description *string, price *string, medium *string, sold *bool, deliverytype *string, imageID *string) *postings.EditPostPayload {
+	v := &postings.EditPostPayload{
+		Content: body.Content,
 	}
-	res.PostID = postID
-	res.Title = title
-	res.Description = description
-	res.Price = price
-	res.Medium = medium
-	res.Sold = sold
-	res.Deliverytype = deliverytype
-	res.ImageID = imageID
-	res.Token = token
+	v.PostID = postID
+	v.Title = title
+	v.Description = description
+	v.Price = price
+	v.Medium = medium
+	v.Sold = sold
+	v.Deliverytype = deliverytype
+	v.ImageID = imageID
 
-	return res
+	return v
 }
 
 // NewGetPostPagePayload builds a postings service get_post_page endpoint
