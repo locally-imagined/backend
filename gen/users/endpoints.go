@@ -16,8 +16,9 @@ import (
 
 // Endpoints wraps the "users" service endpoints.
 type Endpoints struct {
-	UpdateBio      goa.Endpoint
-	GetContactInfo goa.Endpoint
+	UpdateBio          goa.Endpoint
+	UpdateProfilePhoto goa.Endpoint
+	GetContactInfo     goa.Endpoint
 }
 
 // NewEndpoints wraps the methods of the "users" service with endpoints.
@@ -25,14 +26,16 @@ func NewEndpoints(s Service) *Endpoints {
 	// Casting service to Auther interface
 	a := s.(Auther)
 	return &Endpoints{
-		UpdateBio:      NewUpdateBioEndpoint(s, a.JWTAuth),
-		GetContactInfo: NewGetContactInfoEndpoint(s),
+		UpdateBio:          NewUpdateBioEndpoint(s, a.JWTAuth),
+		UpdateProfilePhoto: NewUpdateProfilePhotoEndpoint(s, a.JWTAuth),
+		GetContactInfo:     NewGetContactInfoEndpoint(s),
 	}
 }
 
 // Use applies the given middleware to all the "users" service endpoints.
 func (e *Endpoints) Use(m func(goa.Endpoint) goa.Endpoint) {
 	e.UpdateBio = m(e.UpdateBio)
+	e.UpdateProfilePhoto = m(e.UpdateProfilePhoto)
 	e.GetContactInfo = m(e.GetContactInfo)
 }
 
@@ -52,6 +55,25 @@ func NewUpdateBioEndpoint(s Service, authJWTFn security.AuthJWTFunc) goa.Endpoin
 			return nil, err
 		}
 		return s.UpdateBio(ctx, p)
+	}
+}
+
+// NewUpdateProfilePhotoEndpoint returns an endpoint function that calls the
+// method "update_profile_photo" of service "users".
+func NewUpdateProfilePhotoEndpoint(s Service, authJWTFn security.AuthJWTFunc) goa.Endpoint {
+	return func(ctx context.Context, req interface{}) (interface{}, error) {
+		p := req.(*UpdateProfilePhotoPayload)
+		var err error
+		sc := security.JWTScheme{
+			Name:           "jwt",
+			Scopes:         []string{},
+			RequiredScopes: []string{},
+		}
+		ctx, err = authJWTFn(ctx, p.Token, &sc)
+		if err != nil {
+			return nil, err
+		}
+		return s.UpdateProfilePhoto(ctx, p)
 	}
 }
 

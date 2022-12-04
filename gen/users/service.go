@@ -17,6 +17,8 @@ import (
 type Service interface {
 	// UpdateBio implements update_bio.
 	UpdateBio(context.Context, *UpdateBioPayload) (res *UpdateBioResult, err error)
+	// UpdateProfilePhoto implements update_profile_photo.
+	UpdateProfilePhoto(context.Context, *UpdateProfilePhotoPayload) (res *UpdateProfilePhotoResult, err error)
 	// GetContactInfo implements get_contact_info.
 	GetContactInfo(context.Context, *GetContactInfoPayload) (res *GetContactInfoResult, err error)
 }
@@ -35,12 +37,18 @@ const ServiceName = "users"
 // MethodNames lists the service method names as defined in the design. These
 // are the same values that are set in the endpoint request contexts under the
 // MethodKey key.
-var MethodNames = [2]string{"update_bio", "get_contact_info"}
+var MethodNames = [3]string{"update_bio", "update_profile_photo", "get_contact_info"}
 
 // Updated Bio
 type Bio struct {
 	// New Bio
 	Bio *string
+}
+
+// Image Content
+type Content struct {
+	// raw image content
+	Content *string
 }
 
 // GetContactInfoPayload is the payload type of the users service
@@ -56,6 +64,12 @@ type GetContactInfoResult struct {
 	ContactInfo *User
 }
 
+// Profile Photo uuid
+type ProfilePhoto struct {
+	// photo id
+	PhotoUUID *string
+}
+
 // UpdateBioPayload is the payload type of the users service update_bio method.
 type UpdateBioPayload struct {
 	// jwt used for auth
@@ -67,6 +81,21 @@ type UpdateBioPayload struct {
 // UpdateBioResult is the result type of the users service update_bio method.
 type UpdateBioResult struct {
 	UpdatedUser *User
+}
+
+// UpdateProfilePhotoPayload is the payload type of the users service
+// update_profile_photo method.
+type UpdateProfilePhotoPayload struct {
+	// jwt used for auth
+	Token string
+	// New Profile Photo
+	Content *Content
+}
+
+// UpdateProfilePhotoResult is the result type of the users service
+// update_profile_photo method.
+type UpdateProfilePhotoResult struct {
+	PhotoID *ProfilePhoto
 }
 
 // Describes a user

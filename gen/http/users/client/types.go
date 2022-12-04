@@ -20,9 +20,20 @@ type UpdateBioRequestBody struct {
 	Bio *string `form:"bio,omitempty" json:"bio,omitempty" xml:"bio,omitempty"`
 }
 
+// UpdateProfilePhotoRequestBody is the type of the "users" service
+// "update_profile_photo" endpoint HTTP request body.
+type UpdateProfilePhotoRequestBody struct {
+	// raw image content
+	Content *string `form:"content,omitempty" json:"content,omitempty" xml:"content,omitempty"`
+}
+
 // UpdateBioResponseBody is the type of the "users" service "update_bio"
 // endpoint HTTP response body.
 type UpdateBioResponseBody UserResponseBody
+
+// UpdateProfilePhotoResponseBody is the type of the "users" service
+// "update_profile_photo" endpoint HTTP response body.
+type UpdateProfilePhotoResponseBody ProfilePhotoResponseBody
 
 // GetContactInfoResponseBody is the type of the "users" service
 // "get_contact_info" endpoint HTTP response body.
@@ -31,6 +42,25 @@ type GetContactInfoResponseBody UserResponseBody
 // UpdateBioUnauthorizedResponseBody is the type of the "users" service
 // "update_bio" endpoint HTTP response body for the "unauthorized" error.
 type UpdateBioUnauthorizedResponseBody struct {
+	// Name is the name of this class of errors.
+	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID *string `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message *string `form:"message,omitempty" json:"message,omitempty" xml:"message,omitempty"`
+	// Is the error temporary?
+	Temporary *bool `form:"temporary,omitempty" json:"temporary,omitempty" xml:"temporary,omitempty"`
+	// Is the error a timeout?
+	Timeout *bool `form:"timeout,omitempty" json:"timeout,omitempty" xml:"timeout,omitempty"`
+	// Is the error a server-side fault?
+	Fault *bool `form:"fault,omitempty" json:"fault,omitempty" xml:"fault,omitempty"`
+}
+
+// UpdateProfilePhotoUnauthorizedResponseBody is the type of the "users"
+// service "update_profile_photo" endpoint HTTP response body for the
+// "unauthorized" error.
+type UpdateProfilePhotoUnauthorizedResponseBody struct {
 	// Name is the name of this class of errors.
 	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
 	// ID is a unique identifier for this particular occurrence of the problem.
@@ -76,11 +106,26 @@ type UserResponseBody struct {
 	Email *string `form:"email,omitempty" json:"email,omitempty" xml:"email,omitempty"`
 }
 
+// ProfilePhotoResponseBody is used to define fields on response body types.
+type ProfilePhotoResponseBody struct {
+	// photo id
+	PhotoUUID *string `form:"photo_uuid,omitempty" json:"photo_uuid,omitempty" xml:"photo_uuid,omitempty"`
+}
+
 // NewUpdateBioRequestBody builds the HTTP request body from the payload of the
 // "update_bio" endpoint of the "users" service.
 func NewUpdateBioRequestBody(p *users.UpdateBioPayload) *UpdateBioRequestBody {
 	body := &UpdateBioRequestBody{
 		Bio: p.Bio.Bio,
+	}
+	return body
+}
+
+// NewUpdateProfilePhotoRequestBody builds the HTTP request body from the
+// payload of the "update_profile_photo" endpoint of the "users" service.
+func NewUpdateProfilePhotoRequestBody(p *users.UpdateProfilePhotoPayload) *UpdateProfilePhotoRequestBody {
+	body := &UpdateProfilePhotoRequestBody{
+		Content: p.Content.Content,
 	}
 	return body
 }
@@ -104,6 +149,34 @@ func NewUpdateBioResultOK(body *UpdateBioResponseBody) *users.UpdateBioResult {
 // NewUpdateBioUnauthorized builds a users service update_bio endpoint
 // unauthorized error.
 func NewUpdateBioUnauthorized(body *UpdateBioUnauthorizedResponseBody) *goa.ServiceError {
+	v := &goa.ServiceError{
+		Name:      *body.Name,
+		ID:        *body.ID,
+		Message:   *body.Message,
+		Temporary: *body.Temporary,
+		Timeout:   *body.Timeout,
+		Fault:     *body.Fault,
+	}
+
+	return v
+}
+
+// NewUpdateProfilePhotoResultOK builds a "users" service
+// "update_profile_photo" endpoint result from a HTTP "OK" response.
+func NewUpdateProfilePhotoResultOK(body *UpdateProfilePhotoResponseBody) *users.UpdateProfilePhotoResult {
+	v := &users.ProfilePhoto{
+		PhotoUUID: body.PhotoUUID,
+	}
+	res := &users.UpdateProfilePhotoResult{
+		PhotoID: v,
+	}
+
+	return res
+}
+
+// NewUpdateProfilePhotoUnauthorized builds a users service
+// update_profile_photo endpoint unauthorized error.
+func NewUpdateProfilePhotoUnauthorized(body *UpdateProfilePhotoUnauthorizedResponseBody) *goa.ServiceError {
 	v := &goa.ServiceError{
 		Name:      *body.Name,
 		ID:        *body.ID,
@@ -186,6 +259,30 @@ func ValidateGetContactInfoResponseBody(body *GetContactInfoResponseBody) (err e
 // ValidateUpdateBioUnauthorizedResponseBody runs the validations defined on
 // update_bio_unauthorized_response_body
 func ValidateUpdateBioUnauthorizedResponseBody(body *UpdateBioUnauthorizedResponseBody) (err error) {
+	if body.Name == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("name", "body"))
+	}
+	if body.ID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("id", "body"))
+	}
+	if body.Message == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("message", "body"))
+	}
+	if body.Temporary == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("temporary", "body"))
+	}
+	if body.Timeout == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("timeout", "body"))
+	}
+	if body.Fault == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("fault", "body"))
+	}
+	return
+}
+
+// ValidateUpdateProfilePhotoUnauthorizedResponseBody runs the validations
+// defined on update_profile_photo_unauthorized_response_body
+func ValidateUpdateProfilePhotoUnauthorizedResponseBody(body *UpdateProfilePhotoUnauthorizedResponseBody) (err error) {
 	if body.Name == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("name", "body"))
 	}

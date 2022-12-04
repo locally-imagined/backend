@@ -239,6 +239,24 @@ var _ = Service("users", func() {
 			})
 		})
 	})
+	Method("update_profile_photo", func() {
+		Security(JWTAuth)
+		Payload(func() {
+			Token("token", String, "jwt used for auth")
+			Attribute("content", Content, "New Profile Photo")
+			Required("token", "content")
+		})
+		Result(func() {
+			Attribute("photo_id", ProfilePhoto)
+		})
+		HTTP(func() {
+			PUT("/users/update_profile_photo")
+			Body("content")
+			Response(func() {
+				Body("photo_id")
+			})
+		})
+	})
 	Method("get_contact_info", func() {
 		Payload(func() {
 			Attribute("userID", String, "userid of user whose info to retrieve")
@@ -297,6 +315,11 @@ var User = Type("User", func() {
 	Attribute("phone", String, "Phone number")
 	Attribute("email", String, "Email")
 	Required("firstName", "lastName", "phone", "email")
+})
+
+var ProfilePhoto = Type("Profile Photo", func() {
+	Description("Profile Photo uuid")
+	Attribute("photo_uuid", String, "photo id")
 })
 
 // we probably dont need this, change createpost to return postresponse

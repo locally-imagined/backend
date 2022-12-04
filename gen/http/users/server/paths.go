@@ -12,6 +12,11 @@ func UpdateBioUsersPath() string {
 	return "/users/updatebio"
 }
 
+// UpdateProfilePhotoUsersPath returns the URL path to the users service update_profile_photo HTTP endpoint.
+func UpdateProfilePhotoUsersPath() string {
+	return "/users/update_profile_photo"
+}
+
 // GetContactInfoUsersPath returns the URL path to the users service get_contact_info HTTP endpoint.
 func GetContactInfoUsersPath() string {
 	return "/users/contactinfo"

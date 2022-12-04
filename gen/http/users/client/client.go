@@ -21,6 +21,10 @@ type Client struct {
 	// endpoint.
 	UpdateBioDoer goahttp.Doer
 
+	// UpdateProfilePhoto Doer is the HTTP client used to make requests to the
+	// update_profile_photo endpoint.
+	UpdateProfilePhotoDoer goahttp.Doer
+
 	// GetContactInfo Doer is the HTTP client used to make requests to the
 	// get_contact_info endpoint.
 	GetContactInfoDoer goahttp.Doer
@@ -48,14 +52,15 @@ func NewClient(
 	restoreBody bool,
 ) *Client {
 	return &Client{
-		UpdateBioDoer:       doer,
-		GetContactInfoDoer:  doer,
-		CORSDoer:            doer,
-		RestoreResponseBody: restoreBody,
-		scheme:              scheme,
-		host:                host,
-		decoder:             dec,
-		encoder:             enc,
+		UpdateBioDoer:          doer,
+		UpdateProfilePhotoDoer: doer,
+		GetContactInfoDoer:     doer,
+		CORSDoer:               doer,
+		RestoreResponseBody:    restoreBody,
+		scheme:                 scheme,
+		host:                   host,
+		decoder:                dec,
+		encoder:                enc,
 	}
 }
 
@@ -78,6 +83,30 @@ func (c *Client) UpdateBio() goa.Endpoint {
 		resp, err := c.UpdateBioDoer.Do(req)
 		if err != nil {
 			return nil, goahttp.ErrRequestError("users", "update_bio", err)
+		}
+		return decodeResponse(resp)
+	}
+}
+
+// UpdateProfilePhoto returns an endpoint that makes HTTP requests to the users
+// service update_profile_photo server.
+func (c *Client) UpdateProfilePhoto() goa.Endpoint {
+	var (
+		encodeRequest  = EncodeUpdateProfilePhotoRequest(c.encoder)
+		decodeResponse = DecodeUpdateProfilePhotoResponse(c.decoder, c.RestoreResponseBody)
+	)
+	return func(ctx context.Context, v interface{}) (interface{}, error) {
+		req, err := c.BuildUpdateProfilePhotoRequest(ctx, v)
+		if err != nil {
+			return nil, err
+		}
+		err = encodeRequest(req, v)
+		if err != nil {
+			return nil, err
+		}
+		resp, err := c.UpdateProfilePhotoDoer.Do(req)
+		if err != nil {
+			return nil, goahttp.ErrRequestError("users", "update_profile_photo", err)
 		}
 		return decodeResponse(resp)
 	}

@@ -62,8 +62,8 @@ func EncodeUpdateBioRequest(encoder func(*http.Request) goahttp.Encoder) func(*h
 // users update_bio endpoint. restoreBody controls whether the response body
 // should be restored after having been read.
 // DecodeUpdateBioResponse may return the following errors:
-//	- "unauthorized" (type *goa.ServiceError): http.StatusUnauthorized
-//	- error: internal error
+//   - "unauthorized" (type *goa.ServiceError): http.StatusUnauthorized
+//   - error: internal error
 func DecodeUpdateBioResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
 	return func(resp *http.Response) (interface{}, error) {
 		if restoreBody {
@@ -115,6 +115,99 @@ func DecodeUpdateBioResponse(decoder func(*http.Response) goahttp.Decoder, resto
 	}
 }
 
+// BuildUpdateProfilePhotoRequest instantiates a HTTP request object with
+// method and path set to call the "users" service "update_profile_photo"
+// endpoint
+func (c *Client) BuildUpdateProfilePhotoRequest(ctx context.Context, v interface{}) (*http.Request, error) {
+	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: UpdateProfilePhotoUsersPath()}
+	req, err := http.NewRequest("PUT", u.String(), nil)
+	if err != nil {
+		return nil, goahttp.ErrInvalidURL("users", "update_profile_photo", u.String(), err)
+	}
+	if ctx != nil {
+		req = req.WithContext(ctx)
+	}
+
+	return req, nil
+}
+
+// EncodeUpdateProfilePhotoRequest returns an encoder for requests sent to the
+// users update_profile_photo server.
+func EncodeUpdateProfilePhotoRequest(encoder func(*http.Request) goahttp.Encoder) func(*http.Request, interface{}) error {
+	return func(req *http.Request, v interface{}) error {
+		p, ok := v.(*users.UpdateProfilePhotoPayload)
+		if !ok {
+			return goahttp.ErrInvalidType("users", "update_profile_photo", "*users.UpdateProfilePhotoPayload", v)
+		}
+		{
+			head := p.Token
+			if !strings.Contains(head, " ") {
+				req.Header.Set("Authorization", "Bearer "+head)
+			} else {
+				req.Header.Set("Authorization", head)
+			}
+		}
+		body := NewUpdateProfilePhotoRequestBody(p)
+		if err := encoder(req).Encode(&body); err != nil {
+			return goahttp.ErrEncodingError("users", "update_profile_photo", err)
+		}
+		return nil
+	}
+}
+
+// DecodeUpdateProfilePhotoResponse returns a decoder for responses returned by
+// the users update_profile_photo endpoint. restoreBody controls whether the
+// response body should be restored after having been read.
+// DecodeUpdateProfilePhotoResponse may return the following errors:
+//   - "unauthorized" (type *goa.ServiceError): http.StatusUnauthorized
+//   - error: internal error
+func DecodeUpdateProfilePhotoResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
+	return func(resp *http.Response) (interface{}, error) {
+		if restoreBody {
+			b, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return nil, err
+			}
+			resp.Body = io.NopCloser(bytes.NewBuffer(b))
+			defer func() {
+				resp.Body = io.NopCloser(bytes.NewBuffer(b))
+			}()
+		} else {
+			defer resp.Body.Close()
+		}
+		switch resp.StatusCode {
+		case http.StatusOK:
+			var (
+				body UpdateProfilePhotoResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("users", "update_profile_photo", err)
+			}
+			res := NewUpdateProfilePhotoResultOK(&body)
+			return res, nil
+		case http.StatusUnauthorized:
+			var (
+				body UpdateProfilePhotoUnauthorizedResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("users", "update_profile_photo", err)
+			}
+			err = ValidateUpdateProfilePhotoUnauthorizedResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("users", "update_profile_photo", err)
+			}
+			return nil, NewUpdateProfilePhotoUnauthorized(&body)
+		default:
+			body, _ := io.ReadAll(resp.Body)
+			return nil, goahttp.ErrInvalidResponse("users", "update_profile_photo", resp.StatusCode, string(body))
+		}
+	}
+}
+
 // BuildGetContactInfoRequest instantiates a HTTP request object with method
 // and path set to call the "users" service "get_contact_info" endpoint
 func (c *Client) BuildGetContactInfoRequest(ctx context.Context, v interface{}) (*http.Request, error) {
@@ -149,8 +242,8 @@ func EncodeGetContactInfoRequest(encoder func(*http.Request) goahttp.Encoder) fu
 // users get_contact_info endpoint. restoreBody controls whether the response
 // body should be restored after having been read.
 // DecodeGetContactInfoResponse may return the following errors:
-//	- "unauthorized" (type *goa.ServiceError): http.StatusUnauthorized
-//	- error: internal error
+//   - "unauthorized" (type *goa.ServiceError): http.StatusUnauthorized
+//   - error: internal error
 func DecodeGetContactInfoResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
 	return func(resp *http.Response) (interface{}, error) {
 		if restoreBody {
