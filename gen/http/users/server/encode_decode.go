@@ -12,7 +12,6 @@ import (
 	"context"
 	"io"
 	"net/http"
-	"strconv"
 	"strings"
 
 	goahttp "goa.design/goa/v3/http"
@@ -89,24 +88,17 @@ func EncodeGetContactInfoResponse(encoder func(context.Context, http.ResponseWri
 func DecodeGetContactInfoRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (interface{}, error) {
 	return func(r *http.Request) (interface{}, error) {
 		var (
-			userid int
+			userID string
 			err    error
 		)
-		{
-			useridRaw := r.URL.Query().Get("userid")
-			if useridRaw == "" {
-				err = goa.MergeErrors(err, goa.MissingFieldError("userid", "query string"))
-			}
-			v, err2 := strconv.ParseInt(useridRaw, 10, strconv.IntSize)
-			if err2 != nil {
-				err = goa.MergeErrors(err, goa.InvalidFieldTypeError("userid", useridRaw, "integer"))
-			}
-			userid = int(v)
+		userID = r.URL.Query().Get("userID")
+		if userID == "" {
+			err = goa.MergeErrors(err, goa.MissingFieldError("userID", "query string"))
 		}
 		if err != nil {
 			return nil, err
 		}
-		payload := NewGetContactInfoPayload(userid)
+		payload := NewGetContactInfoPayload(userID)
 
 		return payload, nil
 	}

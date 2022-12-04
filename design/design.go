@@ -225,15 +225,15 @@ var _ = Service("users", func() {
 	})
 	Method("get_contact_info", func() {
 		Payload(func() {
-			Attribute("userid", Int, "userid of user whose info to retrieve")
-			Required("userid")
+			Attribute("userID", String, "userid of user whose info to retrieve")
+			Required("userID")
 		})
 		Result(func() {
 			Attribute("contact_info", User)
 		})
 		HTTP(func() {
 			GET("/users/get_contact_info")
-			Param("userid")
+			Param("userID")
 			Response(func() {
 				Body("contact_info")
 			})

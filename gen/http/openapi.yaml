@@ -318,11 +318,11 @@ paths:
             summary: get_contact_info users
             operationId: users#get_contact_info
             parameters:
-                - name: userid
+                - name: userID
                   in: query
                   description: userid of user whose info to retrieve
                   required: true
-                  type: integer
+                  type: string
             responses:
                 "200":
                     description: OK response.
@@ -379,15 +379,15 @@ definitions:
             jwt:
                 type: string
                 description: jwt used for future authentication
-                example: Molestiae sequi quia et natus architecto.
+                example: Quia et natus architecto accusamus quo aperiam.
             userID:
                 type: string
                 description: users ID
-                example: Quo aperiam vero nesciunt unde.
+                example: Nesciunt unde optio aut ipsam.
         description: Response from logging in
         example:
-            jwt: Aut ipsam vitae magnam.
-            userID: Asperiores alias.
+            jwt: Magnam quo asperiores alias soluta et nobis.
+            userID: Consequatur suscipit sed.
     PostResponse:
         title: PostResponse
         type: object
@@ -479,67 +479,66 @@ definitions:
             deliverytype:
                 type: string
                 description: Delivery type
-                example: Voluptatem sunt illum doloribus.
+                example: Non impedit explicabo.
             description:
                 type: string
                 description: Post description
-                example: Sunt dicta molestiae.
+                example: Laboriosam nesciunt illo ipsam sapiente.
             imageIDs:
                 type: array
                 items:
                     type: string
-                    example: Laudantium repellat aliquid sed hic omnis.
+                    example: Earum velit eaque aut.
                 description: Image ID
                 example:
-                    - Velit eaque aut vel repudiandae.
-                    - Et qui repudiandae sit corrupti magni reiciendis.
+                    - Animi et qui repudiandae.
+                    - Corrupti magni reiciendis.
                     - Et explicabo labore nesciunt illo sint ab.
+                    - Dignissimos sit ut ipsam reprehenderit.
             medium:
                 type: string
                 description: Art type
-                example: Facere rerum laudantium a possimus quae soluta.
+                example: Nostrum vero in.
             postID:
                 type: string
                 description: Post ID
-                example: Dignissimos sit ut ipsam reprehenderit.
+                example: Facere rerum laudantium a possimus quae soluta.
             price:
                 type: string
                 description: Post price
-                example: Laboriosam nesciunt illo ipsam sapiente.
+                example: Laudantium repellat aliquid sed hic omnis.
             sold:
                 type: boolean
                 description: is sold
-                example: true
+                example: false
             title:
                 type: string
                 description: Post title
-                example: Deserunt debitis et iusto temporibus.
+                example: Sunt dicta molestiae.
             uploadDate:
                 type: string
                 description: Upload Date
-                example: Nostrum vero in.
+                example: Autem voluptatem sunt illum doloribus blanditiis.
             userID:
                 type: string
                 description: User id associated with post
-                example: Qui qui non impedit.
+                example: Quis eos occaecati et.
             username:
                 type: string
                 description: Username associated with post
-                example: Vitae quis eos occaecati.
+                example: Sed dignissimos accusamus in et.
         description: Describes a post response
         example:
             deliverytype: Quis dignissimos amet vero sed reprehenderit similique.
-            description: Molestiae perferendis est esse doloribus.
+            description: Cumque quasi vitae nihil vero eos.
             imageIDs:
-                - Sint ut pariatur ducimus.
-                - Autem assumenda.
                 - Officiis ipsa quia praesentium.
                 - Impedit quod soluta molestiae deleniti.
             medium: Possimus sed voluptatibus.
             postID: Aliquam sed distinctio dolore eos voluptatem et.
-            price: Cumque quasi vitae nihil vero eos.
+            price: Magnam sint ut pariatur ducimus voluptas autem.
             sold: false
-            title: Autem sed dignissimos accusamus in et.
+            title: Molestiae perferendis est esse doloribus.
             uploadDate: Voluptatem amet.
             userID: Doloribus et.
             username: Ullam dolore.
@@ -619,25 +618,25 @@ definitions:
             email:
                 type: string
                 description: Email
-                example: Et voluptatum ducimus in incidunt qui qui.
+                example: Adipisci animi ea voluptas.
             firstName:
                 type: string
                 description: First name
-                example: Et nobis eos consequatur suscipit sed.
+                example: Labore vel optio velit sed.
             lastName:
                 type: string
                 description: Last name
-                example: Labore vel optio velit sed.
+                example: Velit quod aspernatur at ipsum molestias.
             phone:
                 type: string
                 description: Phone number
-                example: Velit quod aspernatur at ipsum molestias.
+                example: Et voluptatum ducimus in incidunt qui qui.
         description: Describes a user
         example:
-            email: Culpa est.
-            firstName: Adipisci animi ea voluptas.
-            lastName: Ratione voluptatum natus omnis et qui.
-            phone: Vero cupiditate sint.
+            email: Molestiae molestiae est quis impedit dolores impedit.
+            firstName: Ratione voluptatum natus omnis et qui.
+            lastName: Vero cupiditate sint.
+            phone: Culpa est.
         required:
             - firstName
             - lastName
@@ -650,25 +649,25 @@ definitions:
             email:
                 type: string
                 description: Email
-                example: Cumque aliquid.
+                example: Delectus nulla aliquam voluptatem consectetur voluptatem.
             firstName:
                 type: string
                 description: First name
-                example: Molestiae molestiae est quis impedit dolores impedit.
+                example: Aut consequatur aut et laudantium eius.
             lastName:
                 type: string
                 description: Last name
-                example: Aut consequatur aut et laudantium eius.
+                example: Modi iusto animi.
             phone:
                 type: string
                 description: Phone number
-                example: Modi iusto animi.
+                example: Cumque aliquid.
         description: Describes a user
         example:
-            email: Placeat laborum magnam laboriosam consequatur.
-            firstName: Delectus nulla aliquam voluptatem consectetur voluptatem.
-            lastName: In nostrum est ut consequatur explicabo.
-            phone: Et aut omnis est eos neque dolorem.
+            email: Expedita adipisci tenetur voluptatibus quisquam.
+            firstName: In nostrum est ut consequatur explicabo.
+            lastName: Et aut omnis est eos neque dolorem.
+            phone: Placeat laborum magnam laboriosam consequatur.
         required:
             - firstName
             - lastName
@@ -684,9 +683,9 @@ definitions:
             bio:
                 type: string
                 description: New bio to be addeed
-                example: Expedita adipisci tenetur voluptatibus quisquam.
+                example: Ut ea eius minus.
         example:
-            bio: Ut ea eius minus.
+            bio: Deserunt debitis et iusto temporibus.
         required:
             - bio
     UsersUpdateBioResponseBody:

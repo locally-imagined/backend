@@ -41,7 +41,7 @@ var MethodNames = [2]string{"update_bio", "get_contact_info"}
 // get_contact_info method.
 type GetContactInfoPayload struct {
 	// userid of user whose info to retrieve
-	Userid int
+	UserID string
 }
 
 // GetContactInfoResult is the result type of the users service

@@ -11,7 +11,6 @@ import (
 	users "backend/gen/users"
 	"bytes"
 	"context"
-	"fmt"
 	"io"
 	"net/http"
 	"net/url"
@@ -123,7 +122,7 @@ func EncodeGetContactInfoRequest(encoder func(*http.Request) goahttp.Encoder) fu
 			return goahttp.ErrInvalidType("users", "get_contact_info", "*users.GetContactInfoPayload", v)
 		}
 		values := req.URL.Query()
-		values.Add("userid", fmt.Sprintf("%v", p.Userid))
+		values.Add("userID", p.UserID)
 		req.URL.RawQuery = values.Encode()
 		return nil
 	}

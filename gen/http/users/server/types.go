@@ -76,9 +76,9 @@ func NewUpdateBioPayload(body *UpdateBioRequestBody, token string) *users.Update
 
 // NewGetContactInfoPayload builds a users service get_contact_info endpoint
 // payload.
-func NewGetContactInfoPayload(userid int) *users.GetContactInfoPayload {
+func NewGetContactInfoPayload(userID string) *users.GetContactInfoPayload {
 	v := &users.GetContactInfoPayload{}
-	v.Userid = userid
+	v.UserID = userID
 
 	return v
 }

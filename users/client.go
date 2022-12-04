@@ -174,7 +174,7 @@ func (c *client) GetContactInfo(ctx context.Context, p *users.GetContactInfoPayl
 	defer dbPool.Close()
 
 	var rows *sql.Rows
-	rows, err = dbPool.Query(GETUSER, p.Userid)
+	rows, err = dbPool.Query(GETUSER, p.UserID)
 	if err != nil {
 		return nil, err
 	}
