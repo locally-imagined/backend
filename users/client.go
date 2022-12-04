@@ -145,7 +145,7 @@ func (c *client) UpdateBio(ctx context.Context, p *users.UpdateBioPayload) (*use
 		return nil, err
 	}
 	defer dbPool.Close()
-	_, err = dbPool.Query(UPDATEBIO, *p.Bio, ctx.Value("UserID").(string))
+	_, err = dbPool.Query(UPDATEBIO, p.Bio.Bio, ctx.Value("UserID").(string))
 	if err != nil {
 		return nil, err
 	}
