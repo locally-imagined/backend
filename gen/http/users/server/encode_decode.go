@@ -10,7 +10,6 @@ package server
 import (
 	users "backend/gen/users"
 	"context"
-	"io"
 	"net/http"
 	"strings"
 
@@ -35,20 +34,14 @@ func EncodeUpdateBioResponse(encoder func(context.Context, http.ResponseWriter) 
 func DecodeUpdateBioRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (interface{}, error) {
 	return func(r *http.Request) (interface{}, error) {
 		var (
-			body string
-			err  error
-		)
-		err = decoder(r).Decode(&body)
-		if err != nil {
-			if err == io.EOF {
-				return nil, goa.MissingPayloadError()
-			}
-			return nil, goa.DecodePayloadError(err.Error())
-		}
-
-		var (
+			bio   string
 			token string
+			err   error
 		)
+		bio = r.URL.Query().Get("bio")
+		if bio == "" {
+			err = goa.MergeErrors(err, goa.MissingFieldError("bio", "query string"))
+		}
 		token = r.Header.Get("Authorization")
 		if token == "" {
 			err = goa.MergeErrors(err, goa.MissingFieldError("Authorization", "header"))
@@ -56,7 +49,7 @@ func DecodeUpdateBioRequest(mux goahttp.Muxer, decoder func(*http.Request) goaht
 		if err != nil {
 			return nil, err
 		}
-		payload := NewUpdateBioPayload(body, token)
+		payload := NewUpdateBioPayload(bio, token)
 		if strings.Contains(payload.Token, " ") {
 			// Remove authorization scheme prefix (e.g. "Bearer")
 			cred := strings.SplitN(payload.Token, " ", 2)[1]

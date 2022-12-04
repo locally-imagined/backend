@@ -217,8 +217,8 @@ var _ = Service("users", func() {
 			Attribute("updated_user", User)
 		})
 		HTTP(func() {
-			POST("/users/update_bio")
-			Body("bio")
+			PUT("/users/update_bio")
+			Param("bio")
 			Response(func() {
 				Body("updated_user")
 			})

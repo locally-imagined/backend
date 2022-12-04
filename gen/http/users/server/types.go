@@ -56,14 +56,12 @@ func NewGetContactInfoResponseBody(res *users.GetContactInfoResult) *GetContactI
 }
 
 // NewUpdateBioPayload builds a users service update_bio endpoint payload.
-func NewUpdateBioPayload(body string, token string) *users.UpdateBioPayload {
-	v := body
-	res := &users.UpdateBioPayload{
-		Bio: v,
-	}
-	res.Token = token
+func NewUpdateBioPayload(bio string, token string) *users.UpdateBioPayload {
+	v := &users.UpdateBioPayload{}
+	v.Bio = bio
+	v.Token = token
 
-	return res
+	return v
 }
 
 // NewGetContactInfoPayload builds a users service get_contact_info endpoint

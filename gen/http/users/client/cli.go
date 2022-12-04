@@ -13,22 +13,20 @@ import (
 
 // BuildUpdateBioPayload builds the payload for the users update_bio endpoint
 // from CLI flags.
-func BuildUpdateBioPayload(usersUpdateBioBody string, usersUpdateBioToken string) (*users.UpdateBioPayload, error) {
-	var body string
+func BuildUpdateBioPayload(usersUpdateBioBio string, usersUpdateBioToken string) (*users.UpdateBioPayload, error) {
+	var bio string
 	{
-		body = usersUpdateBioBody
+		bio = usersUpdateBioBio
 	}
 	var token string
 	{
 		token = usersUpdateBioToken
 	}
-	v := body
-	res := &users.UpdateBioPayload{
-		Bio: v,
-	}
-	res.Token = token
+	v := &users.UpdateBioPayload{}
+	v.Bio = bio
+	v.Token = token
 
-	return res, nil
+	return v, nil
 }
 
 // BuildGetContactInfoPayload builds the payload for the users get_contact_info

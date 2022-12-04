@@ -23,7 +23,7 @@ import (
 // path set to call the "users" service "update_bio" endpoint
 func (c *Client) BuildUpdateBioRequest(ctx context.Context, v interface{}) (*http.Request, error) {
 	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: UpdateBioUsersPath()}
-	req, err := http.NewRequest("POST", u.String(), nil)
+	req, err := http.NewRequest("PUT", u.String(), nil)
 	if err != nil {
 		return nil, goahttp.ErrInvalidURL("users", "update_bio", u.String(), err)
 	}
@@ -50,10 +50,9 @@ func EncodeUpdateBioRequest(encoder func(*http.Request) goahttp.Encoder) func(*h
 				req.Header.Set("Authorization", head)
 			}
 		}
-		body := p.Bio
-		if err := encoder(req).Encode(&body); err != nil {
-			return goahttp.ErrEncodingError("users", "update_bio", err)
-		}
+		values := req.URL.Query()
+		values.Add("bio", p.Bio)
+		req.URL.RawQuery = values.Encode()
 		return nil
 	}
 }

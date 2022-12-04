@@ -52,7 +52,7 @@ func New(
 ) *Server {
 	return &Server{
 		Mounts: []*MountPoint{
-			{"UpdateBio", "POST", "/users/update_bio"},
+			{"UpdateBio", "PUT", "/users/update_bio"},
 			{"GetContactInfo", "GET", "/users/get_contact_info"},
 			{"CORS", "OPTIONS", "/users/update_bio"},
 			{"CORS", "OPTIONS", "/users/get_contact_info"},
@@ -97,7 +97,7 @@ func MountUpdateBioHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("POST", "/users/update_bio", f)
+	mux.Handle("PUT", "/users/update_bio", f)
 }
 
 // NewUpdateBioHandler creates a HTTP handler which loads the HTTP request and
