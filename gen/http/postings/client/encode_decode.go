@@ -287,9 +287,6 @@ func EncodeEditPostRequest(encoder func(*http.Request) goahttp.Encoder) func(*ht
 		if p.Price != nil {
 			values.Add("price", *p.Price)
 		}
-		if p.Content != nil {
-			values.Add("content", *p.Content)
-		}
 		if p.Medium != nil {
 			values.Add("medium", *p.Medium)
 		}
@@ -303,6 +300,10 @@ func EncodeEditPostRequest(encoder func(*http.Request) goahttp.Encoder) func(*ht
 			values.Add("imageID", *p.ImageID)
 		}
 		req.URL.RawQuery = values.Encode()
+		body := p.Content
+		if err := encoder(req).Encode(&body); err != nil {
+			return goahttp.ErrEncodingError("postings", "edit_post", err)
+		}
 		return nil
 	}
 }

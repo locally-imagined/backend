@@ -173,11 +173,6 @@ paths:
                   description: Post price
                   required: false
                   type: string
-                - name: content
-                  in: query
-                  description: Image content
-                  required: false
-                  type: string
                 - name: medium
                   in: query
                   description: Art type
@@ -208,6 +203,12 @@ paths:
                   description: jwt used for auth
                   required: true
                   type: string
+                - name: string
+                  in: body
+                  description: Image content
+                  required: true
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: OK response.

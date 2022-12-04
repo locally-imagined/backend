@@ -78,8 +78,12 @@ func BuildDeletePostPayload(postingsDeletePostPostID string, postingsDeletePostT
 
 // BuildEditPostPayload builds the payload for the postings edit_post endpoint
 // from CLI flags.
-func BuildEditPostPayload(postingsEditPostPostID string, postingsEditPostTitle string, postingsEditPostDescription string, postingsEditPostPrice string, postingsEditPostContent string, postingsEditPostMedium string, postingsEditPostSold string, postingsEditPostDeliverytype string, postingsEditPostImageID string, postingsEditPostToken string) (*postings.EditPostPayload, error) {
+func BuildEditPostPayload(postingsEditPostBody string, postingsEditPostPostID string, postingsEditPostTitle string, postingsEditPostDescription string, postingsEditPostPrice string, postingsEditPostMedium string, postingsEditPostSold string, postingsEditPostDeliverytype string, postingsEditPostImageID string, postingsEditPostToken string) (*postings.EditPostPayload, error) {
 	var err error
+	var body string
+	{
+		body = postingsEditPostBody
+	}
 	var postID string
 	{
 		postID = postingsEditPostPostID
@@ -100,12 +104,6 @@ func BuildEditPostPayload(postingsEditPostPostID string, postingsEditPostTitle s
 	{
 		if postingsEditPostPrice != "" {
 			price = &postingsEditPostPrice
-		}
-	}
-	var content *string
-	{
-		if postingsEditPostContent != "" {
-			content = &postingsEditPostContent
 		}
 	}
 	var medium *string
@@ -141,19 +139,21 @@ func BuildEditPostPayload(postingsEditPostPostID string, postingsEditPostTitle s
 	{
 		token = postingsEditPostToken
 	}
-	v := &postings.EditPostPayload{}
-	v.PostID = postID
-	v.Title = title
-	v.Description = description
-	v.Price = price
-	v.Content = content
-	v.Medium = medium
-	v.Sold = sold
-	v.Deliverytype = deliverytype
-	v.ImageID = imageID
-	v.Token = token
+	v := body
+	res := &postings.EditPostPayload{
+		Content: &v,
+	}
+	res.PostID = postID
+	res.Title = title
+	res.Description = description
+	res.Price = price
+	res.Medium = medium
+	res.Sold = sold
+	res.Deliverytype = deliverytype
+	res.ImageID = imageID
+	res.Token = token
 
-	return v, nil
+	return res, nil
 }
 
 // BuildGetPostPagePayload builds the payload for the postings get_post_page

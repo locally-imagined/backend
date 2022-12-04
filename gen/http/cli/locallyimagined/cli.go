@@ -89,11 +89,11 @@ func ParseEndpoint(
 		postingsDeletePostTokenFlag  = postingsDeletePostFlags.String("token", "REQUIRED", "")
 
 		postingsEditPostFlags            = flag.NewFlagSet("edit-post", flag.ExitOnError)
+		postingsEditPostBodyFlag         = postingsEditPostFlags.String("body", "REQUIRED", "")
 		postingsEditPostPostIDFlag       = postingsEditPostFlags.String("post-id", "REQUIRED", "Post ID")
 		postingsEditPostTitleFlag        = postingsEditPostFlags.String("title", "", "")
 		postingsEditPostDescriptionFlag  = postingsEditPostFlags.String("description", "", "")
 		postingsEditPostPriceFlag        = postingsEditPostFlags.String("price", "", "")
-		postingsEditPostContentFlag      = postingsEditPostFlags.String("content", "", "")
 		postingsEditPostMediumFlag       = postingsEditPostFlags.String("medium", "", "")
 		postingsEditPostSoldFlag         = postingsEditPostFlags.String("sold", "", "")
 		postingsEditPostDeliverytypeFlag = postingsEditPostFlags.String("deliverytype", "", "")
@@ -252,7 +252,7 @@ func ParseEndpoint(
 				data, err = postingsc.BuildDeletePostPayload(*postingsDeletePostPostIDFlag, *postingsDeletePostTokenFlag)
 			case "edit-post":
 				endpoint = c.EditPost()
-				data, err = postingsc.BuildEditPostPayload(*postingsEditPostPostIDFlag, *postingsEditPostTitleFlag, *postingsEditPostDescriptionFlag, *postingsEditPostPriceFlag, *postingsEditPostContentFlag, *postingsEditPostMediumFlag, *postingsEditPostSoldFlag, *postingsEditPostDeliverytypeFlag, *postingsEditPostImageIDFlag, *postingsEditPostTokenFlag)
+				data, err = postingsc.BuildEditPostPayload(*postingsEditPostBodyFlag, *postingsEditPostPostIDFlag, *postingsEditPostTitleFlag, *postingsEditPostDescriptionFlag, *postingsEditPostPriceFlag, *postingsEditPostMediumFlag, *postingsEditPostSoldFlag, *postingsEditPostDeliverytypeFlag, *postingsEditPostImageIDFlag, *postingsEditPostTokenFlag)
 			case "get-post-page":
 				endpoint = c.GetPostPage()
 				data, err = postingsc.BuildGetPostPagePayload(*postingsGetPostPagePageFlag)
@@ -386,14 +386,14 @@ Example:
 }
 
 func postingsEditPostUsage() {
-	fmt.Fprintf(os.Stderr, `%[1]s [flags] postings edit-post -post-id STRING -title STRING -description STRING -price STRING -content STRING -medium STRING -sold BOOL -deliverytype STRING -image-id STRING -token STRING
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] postings edit-post -body STRING -post-id STRING -title STRING -description STRING -price STRING -medium STRING -sold BOOL -deliverytype STRING -image-id STRING -token STRING
 
 EditPost implements edit_post.
+    -body STRING: 
     -post-id STRING: Post ID
     -title STRING: 
     -description STRING: 
     -price STRING: 
-    -content STRING: 
     -medium STRING: 
     -sold BOOL: 
     -deliverytype STRING: 
@@ -401,7 +401,7 @@ EditPost implements edit_post.
     -token STRING: 
 
 Example:
-    %[1]s postings edit-post --post-id "Officiis quidem iure et." --title "Consequatur ratione voluptas consectetur." --description "Excepturi molestiae." --price "Cumque ipsam unde excepturi." --content "Laborum assumenda soluta eos inventore ut ipsam." --medium "Iusto et in eum reiciendis." --sold false --deliverytype "Omnis dignissimos et maxime." --image-id "Accusamus velit est soluta ratione." --token "Vel porro ut maiores iste exercitationem."
+    %[1]s postings edit-post --body "Quidem quia reiciendis." --post-id "Excepturi molestiae." --title "Cumque ipsam unde excepturi." --description "Laborum assumenda soluta eos inventore ut ipsam." --price "Iusto et in eum reiciendis." --medium "Hic omnis dignissimos et." --sold false --deliverytype "Accusamus velit est soluta ratione." --image-id "Vel porro ut maiores iste exercitationem." --token "Officiis tenetur est dolor."
 `, os.Args[0])
 }
 
@@ -412,7 +412,7 @@ GetPostPage implements get_post_page.
     -page INT: Page to get posts for
 
 Example:
-    %[1]s postings get-post-page --page 5598832216702840124
+    %[1]s postings get-post-page --page 7004518366770578561
 `, os.Args[0])
 }
 
@@ -424,7 +424,7 @@ GetArtistPostPage implements get_artist_post_page.
     -user-id STRING: 
 
 Example:
-    %[1]s postings get-artist-post-page --page 7716643791946622574 --user-id "Fuga voluptatum quidem quia reiciendis."
+    %[1]s postings get-artist-post-page --page 3117430132321206967 --user-id "Itaque alias in recusandae incidunt doloribus."
 `, os.Args[0])
 }
 
@@ -439,7 +439,7 @@ GetPostPageFiltered implements get_post_page_filtered.
     -medium STRING: 
 
 Example:
-    %[1]s postings get-post-page-filtered --page 2915125047393590633 --keyword "Doloremque pariatur itaque alias in." --start-date "Incidunt doloribus necessitatibus." --end-date "Provident deserunt optio sit blanditiis ipsum." --medium "Ea voluptatem et nostrum."
+    %[1]s postings get-post-page-filtered --page 5826081886013517422 --keyword "Sit blanditiis ipsum repudiandae ea voluptatem et." --start-date "Fugit enim." --end-date "Porro beatae fugiat dolor sed." --medium "Ipsa consequatur dignissimos ut voluptatem accusantium fuga."
 `, os.Args[0])
 }
 
@@ -450,6 +450,6 @@ GetImagesForPost implements get_images_for_post.
     -post-id STRING: Post to get images for
 
 Example:
-    %[1]s postings get-images-for-post --post-id "Ipsa consequatur dignissimos ut voluptatem accusantium fuga."
+    %[1]s postings get-images-for-post --post-id "Quia voluptas amet quas placeat magnam."
 `, os.Args[0])
 }
