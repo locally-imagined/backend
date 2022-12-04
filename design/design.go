@@ -142,6 +142,7 @@ var _ = Service("postings", func() {
 			Param("imageID")
 			Body(func() {
 				Attribute("content")
+				Required()
 			})
 			Response(func() {
 				Body("Posted")
