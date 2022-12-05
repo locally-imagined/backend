@@ -58,7 +58,7 @@ var (
 
 	// add prepares before queries?
 	//
-	GETPROFILEPIC    string = "SELECT profpicid FROM users WHERE userid=$1 AND profpicid IS NOT NULL"
+	GETPROFILEPIC    string = "SELECT profpicid FROM users WHERE userid=$1"
 	UPDATEPROFILEPIC string = "UPDATE users SET profpicid=$1 WHERE userid=$2"
 
 	UPDATEINDEX   string = "UPDATE images SET index = index - 1 WHERE (postid=$1 AND index>(SELECT index FROM images WHERE imgid=$2))"
@@ -157,17 +157,17 @@ func (c *client) UpdateProfilePicture(ctx context.Context, p *users.UpdateProfil
 
 	var rows *sql.Rows
 	rows, err = dbPool.Query(GETPROFILEPIC, ctx.Value("UserID").(string))
-	if (err != nil) && (err != sql.ErrNoRows) {
+	if err != nil {
 		return nil, err
 	}
 	bucketName, svc := c.getS3Session()
-	if err != sql.ErrNoRows {
-		var oldID string
-		for rows.Next() {
-			if err := rows.Scan(&oldID); err != nil {
-				return nil, err
-			}
+	var oldID string
+	for rows.Next() {
+		if err := rows.Scan(&oldID); err != nil {
+			return nil, err
 		}
+	}
+	if oldID != uuid.Nil.String() {
 		err = deleteImageFromS3(ctx, svc, bucketName, oldID)
 		if err != nil {
 			return nil, err
