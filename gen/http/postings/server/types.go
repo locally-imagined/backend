@@ -335,6 +335,8 @@ type PostResponseResponseBody struct {
 	Deliverytype string `form:"deliverytype" json:"deliverytype" xml:"deliverytype"`
 	// User id associated with post
 	UserID string `form:"userID" json:"userID" xml:"userID"`
+	// prof pic id
+	ProfpicID string `form:"profpicID" json:"profpicID" xml:"profpicID"`
 	// Username associated with post
 	Username string `form:"username" json:"username" xml:"username"`
 }
@@ -361,6 +363,8 @@ type PostResponse struct {
 	Deliverytype string `form:"deliverytype" json:"deliverytype" xml:"deliverytype"`
 	// User id associated with post
 	UserID string `form:"userID" json:"userID" xml:"userID"`
+	// prof pic id
+	ProfpicID string `form:"profpicID" json:"profpicID" xml:"profpicID"`
 	// Username associated with post
 	Username string `form:"username" json:"username" xml:"username"`
 }
@@ -378,6 +382,7 @@ func NewCreatePostResponseBody(res *postings.CreatePostResult) *CreatePostRespon
 		Sold:         res.Posted.Sold,
 		Deliverytype: res.Posted.Deliverytype,
 		UserID:       res.Posted.UserID,
+		ProfpicID:    res.Posted.ProfpicID,
 		Username:     res.Posted.Username,
 	}
 	if res.Posted.ImageIDs != nil {
@@ -402,6 +407,7 @@ func NewEditPostResponseBody(res *postings.EditPostResult) *EditPostResponseBody
 		Sold:         res.Posted.Sold,
 		Deliverytype: res.Posted.Deliverytype,
 		UserID:       res.Posted.UserID,
+		ProfpicID:    res.Posted.ProfpicID,
 		Username:     res.Posted.Username,
 	}
 	if res.Posted.ImageIDs != nil {

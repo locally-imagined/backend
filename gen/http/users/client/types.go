@@ -20,9 +20,9 @@ type UpdateBioRequestBody struct {
 	Bio *string `form:"bio,omitempty" json:"bio,omitempty" xml:"bio,omitempty"`
 }
 
-// UpdateProfilePhotoRequestBody is the type of the "users" service
-// "update_profile_photo" endpoint HTTP request body.
-type UpdateProfilePhotoRequestBody struct {
+// UpdateProfilePictureRequestBody is the type of the "users" service
+// "update_profile_picture" endpoint HTTP request body.
+type UpdateProfilePictureRequestBody struct {
 	// raw image content
 	Content *string `form:"content,omitempty" json:"content,omitempty" xml:"content,omitempty"`
 }
@@ -31,9 +31,9 @@ type UpdateProfilePhotoRequestBody struct {
 // endpoint HTTP response body.
 type UpdateBioResponseBody UserResponseBody
 
-// UpdateProfilePhotoResponseBody is the type of the "users" service
-// "update_profile_photo" endpoint HTTP response body.
-type UpdateProfilePhotoResponseBody ProfilePhotoResponseBody
+// UpdateProfilePictureResponseBody is the type of the "users" service
+// "update_profile_picture" endpoint HTTP response body.
+type UpdateProfilePictureResponseBody ProfilePhotoResponseBody
 
 // GetContactInfoResponseBody is the type of the "users" service
 // "get_contact_info" endpoint HTTP response body.
@@ -57,10 +57,10 @@ type UpdateBioUnauthorizedResponseBody struct {
 	Fault *bool `form:"fault,omitempty" json:"fault,omitempty" xml:"fault,omitempty"`
 }
 
-// UpdateProfilePhotoUnauthorizedResponseBody is the type of the "users"
-// service "update_profile_photo" endpoint HTTP response body for the
+// UpdateProfilePictureUnauthorizedResponseBody is the type of the "users"
+// service "update_profile_picture" endpoint HTTP response body for the
 // "unauthorized" error.
-type UpdateProfilePhotoUnauthorizedResponseBody struct {
+type UpdateProfilePictureUnauthorizedResponseBody struct {
 	// Name is the name of this class of errors.
 	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
 	// ID is a unique identifier for this particular occurrence of the problem.
@@ -104,12 +104,14 @@ type UserResponseBody struct {
 	Phone *string `form:"phone,omitempty" json:"phone,omitempty" xml:"phone,omitempty"`
 	// Email
 	Email *string `form:"email,omitempty" json:"email,omitempty" xml:"email,omitempty"`
+	// Prof Pic UUID
+	Profpic *string `form:"profpic,omitempty" json:"profpic,omitempty" xml:"profpic,omitempty"`
 }
 
 // ProfilePhotoResponseBody is used to define fields on response body types.
 type ProfilePhotoResponseBody struct {
-	// photo id
-	PhotoUUID *string `form:"photo_uuid,omitempty" json:"photo_uuid,omitempty" xml:"photo_uuid,omitempty"`
+	// Image ID
+	ImageID *string `form:"imageID,omitempty" json:"imageID,omitempty" xml:"imageID,omitempty"`
 }
 
 // NewUpdateBioRequestBody builds the HTTP request body from the payload of the
@@ -121,10 +123,10 @@ func NewUpdateBioRequestBody(p *users.UpdateBioPayload) *UpdateBioRequestBody {
 	return body
 }
 
-// NewUpdateProfilePhotoRequestBody builds the HTTP request body from the
-// payload of the "update_profile_photo" endpoint of the "users" service.
-func NewUpdateProfilePhotoRequestBody(p *users.UpdateProfilePhotoPayload) *UpdateProfilePhotoRequestBody {
-	body := &UpdateProfilePhotoRequestBody{
+// NewUpdateProfilePictureRequestBody builds the HTTP request body from the
+// payload of the "update_profile_picture" endpoint of the "users" service.
+func NewUpdateProfilePictureRequestBody(p *users.UpdateProfilePicturePayload) *UpdateProfilePictureRequestBody {
+	body := &UpdateProfilePictureRequestBody{
 		Content: p.Content.Content,
 	}
 	return body
@@ -138,6 +140,7 @@ func NewUpdateBioResultOK(body *UpdateBioResponseBody) *users.UpdateBioResult {
 		LastName:  *body.LastName,
 		Phone:     *body.Phone,
 		Email:     *body.Email,
+		Profpic:   body.Profpic,
 	}
 	res := &users.UpdateBioResult{
 		UpdatedUser: v,
@@ -161,22 +164,22 @@ func NewUpdateBioUnauthorized(body *UpdateBioUnauthorizedResponseBody) *goa.Serv
 	return v
 }
 
-// NewUpdateProfilePhotoResultOK builds a "users" service
-// "update_profile_photo" endpoint result from a HTTP "OK" response.
-func NewUpdateProfilePhotoResultOK(body *UpdateProfilePhotoResponseBody) *users.UpdateProfilePhotoResult {
+// NewUpdateProfilePictureResultOK builds a "users" service
+// "update_profile_picture" endpoint result from a HTTP "OK" response.
+func NewUpdateProfilePictureResultOK(body *UpdateProfilePictureResponseBody) *users.UpdateProfilePictureResult {
 	v := &users.ProfilePhoto{
-		PhotoUUID: body.PhotoUUID,
+		ImageID: body.ImageID,
 	}
-	res := &users.UpdateProfilePhotoResult{
-		PhotoID: v,
+	res := &users.UpdateProfilePictureResult{
+		ImageID: v,
 	}
 
 	return res
 }
 
-// NewUpdateProfilePhotoUnauthorized builds a users service
-// update_profile_photo endpoint unauthorized error.
-func NewUpdateProfilePhotoUnauthorized(body *UpdateProfilePhotoUnauthorizedResponseBody) *goa.ServiceError {
+// NewUpdateProfilePictureUnauthorized builds a users service
+// update_profile_picture endpoint unauthorized error.
+func NewUpdateProfilePictureUnauthorized(body *UpdateProfilePictureUnauthorizedResponseBody) *goa.ServiceError {
 	v := &goa.ServiceError{
 		Name:      *body.Name,
 		ID:        *body.ID,
@@ -197,6 +200,7 @@ func NewGetContactInfoResultOK(body *GetContactInfoResponseBody) *users.GetConta
 		LastName:  *body.LastName,
 		Phone:     *body.Phone,
 		Email:     *body.Email,
+		Profpic:   body.Profpic,
 	}
 	res := &users.GetContactInfoResult{
 		ContactInfo: v,
@@ -280,9 +284,9 @@ func ValidateUpdateBioUnauthorizedResponseBody(body *UpdateBioUnauthorizedRespon
 	return
 }
 
-// ValidateUpdateProfilePhotoUnauthorizedResponseBody runs the validations
-// defined on update_profile_photo_unauthorized_response_body
-func ValidateUpdateProfilePhotoUnauthorizedResponseBody(body *UpdateProfilePhotoUnauthorizedResponseBody) (err error) {
+// ValidateUpdateProfilePictureUnauthorizedResponseBody runs the validations
+// defined on update_profile_picture_unauthorized_response_body
+func ValidateUpdateProfilePictureUnauthorizedResponseBody(body *UpdateProfilePictureUnauthorizedResponseBody) (err error) {
 	if body.Name == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("name", "body"))
 	}

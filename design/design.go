@@ -239,7 +239,7 @@ var _ = Service("users", func() {
 			})
 		})
 	})
-	Method("update_profile_photo", func() {
+	Method("update_profile_picture", func() {
 		Security(JWTAuth)
 		Payload(func() {
 			Token("token", String, "jwt used for auth")
@@ -247,13 +247,13 @@ var _ = Service("users", func() {
 			Required("token", "content")
 		})
 		Result(func() {
-			Attribute("photo_id", ProfilePhoto)
+			Attribute("imageID", ProfilePhoto)
 		})
 		HTTP(func() {
-			PUT("/users/update_profile_photo")
+			PUT("/users/updateprofilepic")
 			Body("content")
 			Response(func() {
-				Body("photo_id")
+				Body("imageID")
 			})
 		})
 	})
@@ -320,7 +320,7 @@ var User = Type("User", func() {
 
 var ProfilePhoto = Type("Profile Photo", func() {
 	Description("Profile Photo uuid")
-	Attribute("photo_uuid", String, "photo id")
+	Attribute("imageID", String, "Image ID")
 })
 
 // we probably dont need this, change createpost to return postresponse

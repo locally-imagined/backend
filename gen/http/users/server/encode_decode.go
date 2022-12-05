@@ -97,24 +97,24 @@ func EncodeUpdateBioError(encoder func(context.Context, http.ResponseWriter) goa
 	}
 }
 
-// EncodeUpdateProfilePhotoResponse returns an encoder for responses returned
-// by the users update_profile_photo endpoint.
-func EncodeUpdateProfilePhotoResponse(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder) func(context.Context, http.ResponseWriter, interface{}) error {
+// EncodeUpdateProfilePictureResponse returns an encoder for responses returned
+// by the users update_profile_picture endpoint.
+func EncodeUpdateProfilePictureResponse(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder) func(context.Context, http.ResponseWriter, interface{}) error {
 	return func(ctx context.Context, w http.ResponseWriter, v interface{}) error {
-		res, _ := v.(*users.UpdateProfilePhotoResult)
+		res, _ := v.(*users.UpdateProfilePictureResult)
 		enc := encoder(ctx, w)
-		body := NewUpdateProfilePhotoResponseBody(res)
+		body := NewUpdateProfilePictureResponseBody(res)
 		w.WriteHeader(http.StatusOK)
 		return enc.Encode(body)
 	}
 }
 
-// DecodeUpdateProfilePhotoRequest returns a decoder for requests sent to the
-// users update_profile_photo endpoint.
-func DecodeUpdateProfilePhotoRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (interface{}, error) {
+// DecodeUpdateProfilePictureRequest returns a decoder for requests sent to the
+// users update_profile_picture endpoint.
+func DecodeUpdateProfilePictureRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (interface{}, error) {
 	return func(r *http.Request) (interface{}, error) {
 		var (
-			body UpdateProfilePhotoRequestBody
+			body UpdateProfilePictureRequestBody
 			err  error
 		)
 		err = decoder(r).Decode(&body)
@@ -135,7 +135,7 @@ func DecodeUpdateProfilePhotoRequest(mux goahttp.Muxer, decoder func(*http.Reque
 		if err != nil {
 			return nil, err
 		}
-		payload := NewUpdateProfilePhotoPayload(&body, token)
+		payload := NewUpdateProfilePicturePayload(&body, token)
 		if strings.Contains(payload.Token, " ") {
 			// Remove authorization scheme prefix (e.g. "Bearer")
 			cred := strings.SplitN(payload.Token, " ", 2)[1]
@@ -146,9 +146,9 @@ func DecodeUpdateProfilePhotoRequest(mux goahttp.Muxer, decoder func(*http.Reque
 	}
 }
 
-// EncodeUpdateProfilePhotoError returns an encoder for errors returned by the
-// update_profile_photo users endpoint.
-func EncodeUpdateProfilePhotoError(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder, formatter func(ctx context.Context, err error) goahttp.Statuser) func(context.Context, http.ResponseWriter, error) error {
+// EncodeUpdateProfilePictureError returns an encoder for errors returned by
+// the update_profile_picture users endpoint.
+func EncodeUpdateProfilePictureError(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder, formatter func(ctx context.Context, err error) goahttp.Statuser) func(context.Context, http.ResponseWriter, error) error {
 	encodeError := goahttp.ErrorEncoder(encoder, formatter)
 	return func(ctx context.Context, w http.ResponseWriter, v error) error {
 		var en goa.GoaErrorNamer
@@ -164,7 +164,7 @@ func EncodeUpdateProfilePhotoError(encoder func(context.Context, http.ResponseWr
 			if formatter != nil {
 				body = formatter(ctx, res)
 			} else {
-				body = NewUpdateProfilePhotoUnauthorizedResponseBody(res)
+				body = NewUpdateProfilePictureUnauthorizedResponseBody(res)
 			}
 			w.Header().Set("goa-error", res.GoaErrorName())
 			w.WriteHeader(http.StatusUnauthorized)

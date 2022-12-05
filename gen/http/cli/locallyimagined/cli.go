@@ -27,34 +27,37 @@ import (
 func UsageCommands() string {
 	return `login login
 signup signup
-users (update-bio|update-profile-photo|get-contact-info)
+users (update-bio|update-profile-picture|get-contact-info)
 postings (create-post|delete-post|edit-post|get-post-page|get-artist-post-page|get-post-page-filtered|get-images-for-post)
 `
 }
 
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
-	return os.Args[0] + ` login login --username "Aut consequatur culpa." --password "Dignissimos quia."` + "\n" +
+	return os.Args[0] + ` login login --username "Nihil cum ipsum neque." --password "Voluptatem enim eligendi doloremque ut enim distinctio."` + "\n" +
 		os.Args[0] + ` signup signup --body '{
-      "email": "Dolore et ad voluptatum est at.",
-      "firstName": "Nihil cum ipsum neque.",
-      "lastName": "Voluptatem enim eligendi doloremque ut enim distinctio.",
-      "phone": "Quisquam eveniet."
-   }' --username "Autem minima reprehenderit consequuntur." --password "Veritatis voluptatum nihil."` + "\n" +
+      "email": "Nihil repellendus et ratione.",
+      "firstName": "Autem minima reprehenderit consequuntur.",
+      "lastName": "Veritatis voluptatum nihil.",
+      "phone": "Est iusto eos sunt quis deleniti.",
+      "profpic": "Error assumenda adipisci."
+   }' --username "Et commodi." --password "Est velit consectetur et voluptatem magni sunt."` + "\n" +
 		os.Args[0] + ` users update-bio --body '{
-      "bio": "Error assumenda adipisci."
-   }' --token "Et commodi."` + "\n" +
+      "bio": "Fugit ex."
+   }' --token "Sit voluptates."` + "\n" +
 		os.Args[0] + ` postings create-post --body '{
       "content": [
-         "Rerum ut.",
-         "Consequatur velit eum et."
+         "Quos laborum.",
+         "Voluptatibus dolor ex veniam voluptatibus et omnis.",
+         "Sint possimus et aut quidem eaque.",
+         "Expedita numquam natus et nemo aperiam rerum."
       ],
-      "deliverytype": "Et rerum.",
-      "description": "Voluptatem maiores est maiores.",
-      "medium": "Repudiandae minus aut.",
-      "price": "Dolor porro assumenda dolor ex.",
-      "title": "Nesciunt excepturi quam eaque."
-   }' --token "Exercitationem eaque dolores ea."` + "\n" +
+      "deliverytype": "Soluta est adipisci quia.",
+      "description": "Doloribus expedita ut consequuntur et est.",
+      "medium": "Qui assumenda quas non.",
+      "price": "Molestiae similique.",
+      "title": "Quos exercitationem eaque dolores ea deleniti."
+   }' --token "Veritatis quod est officiis quidem iure et."` + "\n" +
 		""
 }
 
@@ -87,9 +90,9 @@ func ParseEndpoint(
 		usersUpdateBioBodyFlag  = usersUpdateBioFlags.String("body", "REQUIRED", "")
 		usersUpdateBioTokenFlag = usersUpdateBioFlags.String("token", "REQUIRED", "")
 
-		usersUpdateProfilePhotoFlags     = flag.NewFlagSet("update-profile-photo", flag.ExitOnError)
-		usersUpdateProfilePhotoBodyFlag  = usersUpdateProfilePhotoFlags.String("body", "REQUIRED", "")
-		usersUpdateProfilePhotoTokenFlag = usersUpdateProfilePhotoFlags.String("token", "REQUIRED", "")
+		usersUpdateProfilePictureFlags     = flag.NewFlagSet("update-profile-picture", flag.ExitOnError)
+		usersUpdateProfilePictureBodyFlag  = usersUpdateProfilePictureFlags.String("body", "REQUIRED", "")
+		usersUpdateProfilePictureTokenFlag = usersUpdateProfilePictureFlags.String("token", "REQUIRED", "")
 
 		usersGetContactInfoFlags      = flag.NewFlagSet("get-contact-info", flag.ExitOnError)
 		usersGetContactInfoUserIDFlag = usersGetContactInfoFlags.String("user-id", "REQUIRED", "")
@@ -141,7 +144,7 @@ func ParseEndpoint(
 
 	usersFlags.Usage = usersUsage
 	usersUpdateBioFlags.Usage = usersUpdateBioUsage
-	usersUpdateProfilePhotoFlags.Usage = usersUpdateProfilePhotoUsage
+	usersUpdateProfilePictureFlags.Usage = usersUpdateProfilePictureUsage
 	usersGetContactInfoFlags.Usage = usersGetContactInfoUsage
 
 	postingsFlags.Usage = postingsUsage
@@ -210,8 +213,8 @@ func ParseEndpoint(
 			case "update-bio":
 				epf = usersUpdateBioFlags
 
-			case "update-profile-photo":
-				epf = usersUpdateProfilePhotoFlags
+			case "update-profile-picture":
+				epf = usersUpdateProfilePictureFlags
 
 			case "get-contact-info":
 				epf = usersGetContactInfoFlags
@@ -283,9 +286,9 @@ func ParseEndpoint(
 			case "update-bio":
 				endpoint = c.UpdateBio()
 				data, err = usersc.BuildUpdateBioPayload(*usersUpdateBioBodyFlag, *usersUpdateBioTokenFlag)
-			case "update-profile-photo":
-				endpoint = c.UpdateProfilePhoto()
-				data, err = usersc.BuildUpdateProfilePhotoPayload(*usersUpdateProfilePhotoBodyFlag, *usersUpdateProfilePhotoTokenFlag)
+			case "update-profile-picture":
+				endpoint = c.UpdateProfilePicture()
+				data, err = usersc.BuildUpdateProfilePicturePayload(*usersUpdateProfilePictureBodyFlag, *usersUpdateProfilePictureTokenFlag)
 			case "get-contact-info":
 				endpoint = c.GetContactInfo()
 				data, err = usersc.BuildGetContactInfoPayload(*usersGetContactInfoUserIDFlag)
@@ -345,7 +348,7 @@ Login implements Login.
     -password STRING: User password
 
 Example:
-    %[1]s login login --username "Aut consequatur culpa." --password "Dignissimos quia."
+    %[1]s login login --username "Nihil cum ipsum neque." --password "Voluptatem enim eligendi doloremque ut enim distinctio."
 `, os.Args[0])
 }
 
@@ -372,11 +375,12 @@ Signup implements Signup.
 
 Example:
     %[1]s signup signup --body '{
-      "email": "Dolore et ad voluptatum est at.",
-      "firstName": "Nihil cum ipsum neque.",
-      "lastName": "Voluptatem enim eligendi doloremque ut enim distinctio.",
-      "phone": "Quisquam eveniet."
-   }' --username "Autem minima reprehenderit consequuntur." --password "Veritatis voluptatum nihil."
+      "email": "Nihil repellendus et ratione.",
+      "firstName": "Autem minima reprehenderit consequuntur.",
+      "lastName": "Veritatis voluptatum nihil.",
+      "phone": "Est iusto eos sunt quis deleniti.",
+      "profpic": "Error assumenda adipisci."
+   }' --username "Et commodi." --password "Est velit consectetur et voluptatem magni sunt."
 `, os.Args[0])
 }
 
@@ -388,7 +392,7 @@ Usage:
 
 COMMAND:
     update-bio: UpdateBio implements update_bio.
-    update-profile-photo: UpdateProfilePhoto implements update_profile_photo.
+    update-profile-picture: UpdateProfilePicture implements update_profile_picture.
     get-contact-info: GetContactInfo implements get_contact_info.
 
 Additional help:
@@ -404,22 +408,22 @@ UpdateBio implements update_bio.
 
 Example:
     %[1]s users update-bio --body '{
-      "bio": "Error assumenda adipisci."
-   }' --token "Et commodi."
+      "bio": "Fugit ex."
+   }' --token "Sit voluptates."
 `, os.Args[0])
 }
 
-func usersUpdateProfilePhotoUsage() {
-	fmt.Fprintf(os.Stderr, `%[1]s [flags] users update-profile-photo -body JSON -token STRING
+func usersUpdateProfilePictureUsage() {
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] users update-profile-picture -body JSON -token STRING
 
-UpdateProfilePhoto implements update_profile_photo.
+UpdateProfilePicture implements update_profile_picture.
     -body JSON: 
     -token STRING: 
 
 Example:
-    %[1]s users update-profile-photo --body '{
-      "content": "Sit voluptates."
-   }' --token "Sed nemo rem nisi consequatur."
+    %[1]s users update-profile-picture --body '{
+      "content": "Dolor porro assumenda dolor ex."
+   }' --token "Dicta rerum."
 `, os.Args[0])
 }
 
@@ -430,7 +434,7 @@ GetContactInfo implements get_contact_info.
     -user-id STRING: 
 
 Example:
-    %[1]s users get-contact-info --user-id "Qui aut aut saepe eos nam placeat."
+    %[1]s users get-contact-info --user-id "Et quia repudiandae minus aut sint et."
 `, os.Args[0])
 }
 
@@ -463,15 +467,17 @@ CreatePost implements create_post.
 Example:
     %[1]s postings create-post --body '{
       "content": [
-         "Rerum ut.",
-         "Consequatur velit eum et."
+         "Quos laborum.",
+         "Voluptatibus dolor ex veniam voluptatibus et omnis.",
+         "Sint possimus et aut quidem eaque.",
+         "Expedita numquam natus et nemo aperiam rerum."
       ],
-      "deliverytype": "Et rerum.",
-      "description": "Voluptatem maiores est maiores.",
-      "medium": "Repudiandae minus aut.",
-      "price": "Dolor porro assumenda dolor ex.",
-      "title": "Nesciunt excepturi quam eaque."
-   }' --token "Exercitationem eaque dolores ea."
+      "deliverytype": "Soluta est adipisci quia.",
+      "description": "Doloribus expedita ut consequuntur et est.",
+      "medium": "Qui assumenda quas non.",
+      "price": "Molestiae similique.",
+      "title": "Quos exercitationem eaque dolores ea deleniti."
+   }' --token "Veritatis quod est officiis quidem iure et."
 `, os.Args[0])
 }
 
@@ -483,7 +489,7 @@ DeletePost implements delete_post.
     -token STRING: 
 
 Example:
-    %[1]s postings delete-post --post-id "Iusto et in eum reiciendis." --token "Hic omnis dignissimos et."
+    %[1]s postings delete-post --post-id "Necessitatibus sed provident deserunt optio." --token "Blanditiis ipsum repudiandae ea voluptatem et."
 `, os.Args[0])
 }
 
@@ -504,8 +510,8 @@ EditPost implements edit_post.
 
 Example:
     %[1]s postings edit-post --body '{
-      "content": "Porro ut maiores."
-   }' --post-id "Exercitationem itaque." --title "Tenetur est dolor placeat minima fuga." --description "Quidem quia reiciendis." --price "Id aut." --medium "Sit doloremque pariatur." --sold true --deliverytype "In recusandae." --image-id "Doloribus necessitatibus." --token "Provident deserunt optio sit blanditiis ipsum."
+      "content": "Porro beatae fugiat dolor sed."
+   }' --post-id "Ipsa consequatur dignissimos ut voluptatem accusantium fuga." --title "Aut aut sequi sunt molestiae exercitationem." --description "Voluptas amet." --price "Placeat magnam ipsum quia." --medium "Inventore iure a aperiam consectetur." --sold true --deliverytype "Sit amet dignissimos expedita optio." --image-id "Voluptas similique rerum molestias dignissimos reiciendis." --token "Ratione voluptatem cumque."
 `, os.Args[0])
 }
 
@@ -516,7 +522,7 @@ GetPostPage implements get_post_page.
     -page INT: Page to get posts for
 
 Example:
-    %[1]s postings get-post-page --page 4494216049559114133
+    %[1]s postings get-post-page --page 2504337988449270554
 `, os.Args[0])
 }
 
@@ -528,7 +534,7 @@ GetArtistPostPage implements get_artist_post_page.
     -user-id STRING: 
 
 Example:
-    %[1]s postings get-artist-post-page --page 2947001032931167766 --user-id "Repellendus porro beatae fugiat dolor sed blanditiis."
+    %[1]s postings get-artist-post-page --page 4076269079962159526 --user-id "Nihil ut omnis eum."
 `, os.Args[0])
 }
 
@@ -543,7 +549,7 @@ GetPostPageFiltered implements get_post_page_filtered.
     -medium STRING: 
 
 Example:
-    %[1]s postings get-post-page-filtered --page 6286263452585646401 --keyword "Accusantium fuga laudantium aut." --start-date "Sequi sunt molestiae." --end-date "Quia voluptas amet quas placeat magnam." --medium "Quia ab inventore iure a."
+    %[1]s postings get-post-page-filtered --page 6154296402512402597 --keyword "Vitae voluptatibus laboriosam vero." --start-date "Officia rerum deserunt facilis deleniti." --end-date "Alias omnis." --medium "Molestiae sequi quia et natus architecto."
 `, os.Args[0])
 }
 
@@ -554,6 +560,6 @@ GetImagesForPost implements get_images_for_post.
     -post-id STRING: Post to get images for
 
 Example:
-    %[1]s postings get-images-for-post --post-id "Ea voluptas similique rerum molestias dignissimos reiciendis."
+    %[1]s postings get-images-for-post --post-id "Quo asperiores alias soluta et nobis eos."
 `, os.Args[0])
 }

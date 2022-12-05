@@ -24,6 +24,8 @@ type SignupRequestBody struct {
 	Phone string `form:"phone" json:"phone" xml:"phone"`
 	// Email
 	Email string `form:"email" json:"email" xml:"email"`
+	// Prof Pic UUID
+	Profpic *string `form:"profpic,omitempty" json:"profpic,omitempty" xml:"profpic,omitempty"`
 }
 
 // SignupUnauthorizedResponseBody is the type of the "signup" service "Signup"
@@ -52,6 +54,7 @@ func NewSignupRequestBody(p *signup.SignupPayload) *SignupRequestBody {
 		LastName:  p.User.LastName,
 		Phone:     p.User.Phone,
 		Email:     p.User.Email,
+		Profpic:   p.User.Profpic,
 	}
 	return body
 }

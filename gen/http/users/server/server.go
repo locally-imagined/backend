@@ -19,11 +19,11 @@ import (
 
 // Server lists the users service endpoint HTTP handlers.
 type Server struct {
-	Mounts             []*MountPoint
-	UpdateBio          http.Handler
-	UpdateProfilePhoto http.Handler
-	GetContactInfo     http.Handler
-	CORS               http.Handler
+	Mounts               []*MountPoint
+	UpdateBio            http.Handler
+	UpdateProfilePicture http.Handler
+	GetContactInfo       http.Handler
+	CORS                 http.Handler
 }
 
 // MountPoint holds information about the mounted endpoints.
@@ -54,16 +54,16 @@ func New(
 	return &Server{
 		Mounts: []*MountPoint{
 			{"UpdateBio", "PUT", "/users/updatebio"},
-			{"UpdateProfilePhoto", "PUT", "/users/update_profile_photo"},
+			{"UpdateProfilePicture", "PUT", "/users/updateprofilepic"},
 			{"GetContactInfo", "GET", "/users/contactinfo"},
 			{"CORS", "OPTIONS", "/users/updatebio"},
-			{"CORS", "OPTIONS", "/users/update_profile_photo"},
+			{"CORS", "OPTIONS", "/users/updateprofilepic"},
 			{"CORS", "OPTIONS", "/users/contactinfo"},
 		},
-		UpdateBio:          NewUpdateBioHandler(e.UpdateBio, mux, decoder, encoder, errhandler, formatter),
-		UpdateProfilePhoto: NewUpdateProfilePhotoHandler(e.UpdateProfilePhoto, mux, decoder, encoder, errhandler, formatter),
-		GetContactInfo:     NewGetContactInfoHandler(e.GetContactInfo, mux, decoder, encoder, errhandler, formatter),
-		CORS:               NewCORSHandler(),
+		UpdateBio:            NewUpdateBioHandler(e.UpdateBio, mux, decoder, encoder, errhandler, formatter),
+		UpdateProfilePicture: NewUpdateProfilePictureHandler(e.UpdateProfilePicture, mux, decoder, encoder, errhandler, formatter),
+		GetContactInfo:       NewGetContactInfoHandler(e.GetContactInfo, mux, decoder, encoder, errhandler, formatter),
+		CORS:                 NewCORSHandler(),
 	}
 }
 
@@ -73,7 +73,7 @@ func (s *Server) Service() string { return "users" }
 // Use wraps the server handlers with the given middleware.
 func (s *Server) Use(m func(http.Handler) http.Handler) {
 	s.UpdateBio = m(s.UpdateBio)
-	s.UpdateProfilePhoto = m(s.UpdateProfilePhoto)
+	s.UpdateProfilePicture = m(s.UpdateProfilePicture)
 	s.GetContactInfo = m(s.GetContactInfo)
 	s.CORS = m(s.CORS)
 }
@@ -84,7 +84,7 @@ func (s *Server) MethodNames() []string { return users.MethodNames[:] }
 // Mount configures the mux to serve the users endpoints.
 func Mount(mux goahttp.Muxer, h *Server) {
 	MountUpdateBioHandler(mux, h.UpdateBio)
-	MountUpdateProfilePhotoHandler(mux, h.UpdateProfilePhoto)
+	MountUpdateProfilePictureHandler(mux, h.UpdateProfilePicture)
 	MountGetContactInfoHandler(mux, h.GetContactInfo)
 	MountCORSHandler(mux, h.CORS)
 }
@@ -145,21 +145,21 @@ func NewUpdateBioHandler(
 	})
 }
 
-// MountUpdateProfilePhotoHandler configures the mux to serve the "users"
-// service "update_profile_photo" endpoint.
-func MountUpdateProfilePhotoHandler(mux goahttp.Muxer, h http.Handler) {
+// MountUpdateProfilePictureHandler configures the mux to serve the "users"
+// service "update_profile_picture" endpoint.
+func MountUpdateProfilePictureHandler(mux goahttp.Muxer, h http.Handler) {
 	f, ok := HandleUsersOrigin(h).(http.HandlerFunc)
 	if !ok {
 		f = func(w http.ResponseWriter, r *http.Request) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("PUT", "/users/update_profile_photo", f)
+	mux.Handle("PUT", "/users/updateprofilepic", f)
 }
 
-// NewUpdateProfilePhotoHandler creates a HTTP handler which loads the HTTP
-// request and calls the "users" service "update_profile_photo" endpoint.
-func NewUpdateProfilePhotoHandler(
+// NewUpdateProfilePictureHandler creates a HTTP handler which loads the HTTP
+// request and calls the "users" service "update_profile_picture" endpoint.
+func NewUpdateProfilePictureHandler(
 	endpoint goa.Endpoint,
 	mux goahttp.Muxer,
 	decoder func(*http.Request) goahttp.Decoder,
@@ -168,13 +168,13 @@ func NewUpdateProfilePhotoHandler(
 	formatter func(ctx context.Context, err error) goahttp.Statuser,
 ) http.Handler {
 	var (
-		decodeRequest  = DecodeUpdateProfilePhotoRequest(mux, decoder)
-		encodeResponse = EncodeUpdateProfilePhotoResponse(encoder)
-		encodeError    = EncodeUpdateProfilePhotoError(encoder, formatter)
+		decodeRequest  = DecodeUpdateProfilePictureRequest(mux, decoder)
+		encodeResponse = EncodeUpdateProfilePictureResponse(encoder)
+		encodeError    = EncodeUpdateProfilePictureError(encoder, formatter)
 	)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
-		ctx = context.WithValue(ctx, goa.MethodKey, "update_profile_photo")
+		ctx = context.WithValue(ctx, goa.MethodKey, "update_profile_picture")
 		ctx = context.WithValue(ctx, goa.ServiceKey, "users")
 		payload, err := decodeRequest(r)
 		if err != nil {
@@ -252,7 +252,7 @@ func NewGetContactInfoHandler(
 func MountCORSHandler(mux goahttp.Muxer, h http.Handler) {
 	h = HandleUsersOrigin(h)
 	mux.Handle("OPTIONS", "/users/updatebio", h.ServeHTTP)
-	mux.Handle("OPTIONS", "/users/update_profile_photo", h.ServeHTTP)
+	mux.Handle("OPTIONS", "/users/updateprofilepic", h.ServeHTTP)
 	mux.Handle("OPTIONS", "/users/contactinfo", h.ServeHTTP)
 }
 

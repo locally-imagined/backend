@@ -17,8 +17,8 @@ import (
 type Service interface {
 	// UpdateBio implements update_bio.
 	UpdateBio(context.Context, *UpdateBioPayload) (res *UpdateBioResult, err error)
-	// UpdateProfilePhoto implements update_profile_photo.
-	UpdateProfilePhoto(context.Context, *UpdateProfilePhotoPayload) (res *UpdateProfilePhotoResult, err error)
+	// UpdateProfilePicture implements update_profile_picture.
+	UpdateProfilePicture(context.Context, *UpdateProfilePicturePayload) (res *UpdateProfilePictureResult, err error)
 	// GetContactInfo implements get_contact_info.
 	GetContactInfo(context.Context, *GetContactInfoPayload) (res *GetContactInfoResult, err error)
 }
@@ -37,7 +37,7 @@ const ServiceName = "users"
 // MethodNames lists the service method names as defined in the design. These
 // are the same values that are set in the endpoint request contexts under the
 // MethodKey key.
-var MethodNames = [3]string{"update_bio", "update_profile_photo", "get_contact_info"}
+var MethodNames = [3]string{"update_bio", "update_profile_picture", "get_contact_info"}
 
 // Updated Bio
 type Bio struct {
@@ -66,8 +66,8 @@ type GetContactInfoResult struct {
 
 // Profile Photo uuid
 type ProfilePhoto struct {
-	// photo id
-	PhotoUUID *string
+	// Image ID
+	ImageID *string
 }
 
 // UpdateBioPayload is the payload type of the users service update_bio method.
@@ -83,19 +83,19 @@ type UpdateBioResult struct {
 	UpdatedUser *User
 }
 
-// UpdateProfilePhotoPayload is the payload type of the users service
-// update_profile_photo method.
-type UpdateProfilePhotoPayload struct {
+// UpdateProfilePicturePayload is the payload type of the users service
+// update_profile_picture method.
+type UpdateProfilePicturePayload struct {
 	// jwt used for auth
 	Token string
 	// New Profile Photo
 	Content *Content
 }
 
-// UpdateProfilePhotoResult is the result type of the users service
-// update_profile_photo method.
-type UpdateProfilePhotoResult struct {
-	PhotoID *ProfilePhoto
+// UpdateProfilePictureResult is the result type of the users service
+// update_profile_picture method.
+type UpdateProfilePictureResult struct {
+	ImageID *ProfilePhoto
 }
 
 // Describes a user
@@ -108,6 +108,8 @@ type User struct {
 	Phone string
 	// Email
 	Email string
+	// Prof Pic UUID
+	Profpic *string
 }
 
 // Credentials are invalid

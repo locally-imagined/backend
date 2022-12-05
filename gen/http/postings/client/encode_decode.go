@@ -837,6 +837,7 @@ func unmarshalPostResponseToPostingsPostResponse(v *PostResponse) *postings.Post
 		Sold:         *v.Sold,
 		Deliverytype: *v.Deliverytype,
 		UserID:       *v.UserID,
+		ProfpicID:    *v.ProfpicID,
 		Username:     *v.Username,
 	}
 	res.ImageIDs = make([]string, len(v.ImageIDs))

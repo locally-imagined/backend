@@ -21,7 +21,7 @@ func BuildUpdateBioPayload(usersUpdateBioBody string, usersUpdateBioToken string
 	{
 		err = json.Unmarshal([]byte(usersUpdateBioBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"bio\": \"Error assumenda adipisci.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"bio\": \"Fugit ex.\"\n   }'")
 		}
 	}
 	var token string
@@ -39,25 +39,25 @@ func BuildUpdateBioPayload(usersUpdateBioBody string, usersUpdateBioToken string
 	return res, nil
 }
 
-// BuildUpdateProfilePhotoPayload builds the payload for the users
-// update_profile_photo endpoint from CLI flags.
-func BuildUpdateProfilePhotoPayload(usersUpdateProfilePhotoBody string, usersUpdateProfilePhotoToken string) (*users.UpdateProfilePhotoPayload, error) {
+// BuildUpdateProfilePicturePayload builds the payload for the users
+// update_profile_picture endpoint from CLI flags.
+func BuildUpdateProfilePicturePayload(usersUpdateProfilePictureBody string, usersUpdateProfilePictureToken string) (*users.UpdateProfilePicturePayload, error) {
 	var err error
-	var body UpdateProfilePhotoRequestBody
+	var body UpdateProfilePictureRequestBody
 	{
-		err = json.Unmarshal([]byte(usersUpdateProfilePhotoBody), &body)
+		err = json.Unmarshal([]byte(usersUpdateProfilePictureBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"content\": \"Sit voluptates.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"content\": \"Dolor porro assumenda dolor ex.\"\n   }'")
 		}
 	}
 	var token string
 	{
-		token = usersUpdateProfilePhotoToken
+		token = usersUpdateProfilePictureToken
 	}
 	v := &users.Content{
 		Content: body.Content,
 	}
-	res := &users.UpdateProfilePhotoPayload{
+	res := &users.UpdateProfilePicturePayload{
 		Content: v,
 	}
 	res.Token = token

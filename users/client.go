@@ -10,6 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
+	"github.com/google/uuid"
 	_ "github.com/lib/pq"
 )
 
@@ -21,6 +22,9 @@ type (
 
 		// Retrieves contact info for given userid
 		GetContactInfo(ctx context.Context, p *users.GetContactInfoPayload) (*users.GetContactInfoResult, error)
+
+		// Updates user profile picture
+		UpdateProfilePicture(ctx context.Context, p *users.UpdateProfilePicturePayload) (*users.UpdateProfilePictureResult, error)
 
 		// Opens postgres db connection
 		openDB() (*sql.DB, error)
@@ -54,29 +58,9 @@ var (
 
 	// add prepares before queries?
 	//
-	INSERTPOST   string = "INSERT INTO Posts (postid, userid, title, description, price, medium, deliverytype) Values ($1, $2, $3, $4, $5, $6, $7)"
-	INSERTIMAGES string = "INSERT INTO Images Values ($1, $2, $3)"
-	GETUSERNAME  string = "SELECT username FROM users WHERE userid=$1"
-	GETPOSTPAGE  string = `SELECT p.postid, p.userid, u.username, p.title, p.description, 
-					p.price, p.medium, p.sold, p.uploaddate, p.deliverytype, i.imgid FROM posts AS p
-					LEFT JOIN (SELECT imgid, postid FROM images WHERE index=0) AS i ON p.postid=i.postid 
-					LEFT JOIN users AS u ON p.userid = u.userid
-					ORDER BY p.uploaddate OFFSET $1 ROWS FETCH NEXT 25 ROWS ONLY`
-	GETPOSTPAGEWITHKEYWORD string = `SELECT p.postid, p.userid, p.title, p.description, 
-					p.price, p.medium, p.sold, p.uploaddate, p.deliverytype, i.imgid FROM posts AS p LEFT 
-					JOIN images AS i ON p.postid = i.postid WHERE i.index=0 AND 
-					((LOWER(p.title) LIKE $1) OR (LOWER(p.description) LIKE $2))
-					ORDER BY p.uploaddate OFFSET $3 ROWS FETCH NEXT 25 ROWS ONLY`
-	GETPOSTPAGEFORARTIST string = `SELECT p.postid, p.userid, u.username, p.title, 
-					p.description, p.price, p.medium, p.sold, p.uploaddate, p.deliverytype, i.imgid FROM posts AS p
-					LEFT JOIN (SELECT imgid, postid FROM images WHERE index=0) AS i ON p.postid=i.postid 
-					LEFT JOIN users AS u ON p.userid = u.userid where p.userid=$1      
-					ORDER BY p.uploaddate OFFSET $2 ROWS FETCH NEXT 25 ROWS ONLY;`
-	SELECTIMAGES  string = "SELECT imgid from images where postid=$1 ORDER BY index"
-	SELECTUSERID  string = "SELECT userID from Posts where postID=$1"
-	DELETEIMAGES  string = "DELETE FROM images WHERE postID=$1"
-	DELETEPOST    string = "DELETE FROM posts WHERE postID=$1"
-	DELETEIMAGE   string = "DELETE FROM images where imgid=$1"
+	GETPROFILEPIC    string = "SELECT profpicid FROM users WHERE userid=$1"
+	UPDATEPROFILEPIC string = "UPDATE users SET profpicid=$1 WHERE userid=$2"
+
 	UPDATEINDEX   string = "UPDATE images SET index = index - 1 WHERE (postid=$1 AND index>(SELECT index FROM images WHERE imgid=$2))"
 	ADDIMAGE      string = "INSERT INTO images VALUES($1, $2, (SELECT MAX(index) FROM images where postID=$3) + 1)"
 	GETEDITEDINFO string = "SELECT title, description, price, medium, sold, deliverytype, uploaddate FROM posts where postID=$1"
@@ -161,5 +145,44 @@ func (c *client) GetContactInfo(ctx context.Context, p *users.GetContactInfoPayl
 		}
 	}
 	resp := users.GetContactInfoResult{ContactInfo: &row}
+	return &resp, err
+}
+
+func (c *client) UpdateProfilePicture(ctx context.Context, p *users.UpdateProfilePicturePayload) (*users.UpdateProfilePictureResult, error) {
+	dbPool, err := c.openDB()
+	if err != nil {
+		return nil, err
+	}
+	defer dbPool.Close()
+
+	var rows *sql.Rows
+	rows, err = dbPool.Query(GETPROFILEPIC, ctx.Value("UserID").(string))
+	if err != nil {
+		return nil, err
+	}
+
+	var oldID string
+	for rows.Next() {
+		if err := rows.Scan(&oldID); err != nil {
+			return nil, err
+		}
+	}
+	bucketName, svc := c.getS3Session()
+	err = deleteImageFromS3(ctx, svc, bucketName, oldID)
+	if err != nil {
+		return nil, err
+	}
+	newID := uuid.New().String()
+	rows, err = dbPool.Query(UPDATEPROFILEPIC, newID, ctx.Value("UserID").(string))
+	if err != nil {
+		return nil, err
+	}
+	reader := strings.NewReader(string(*p.Content.Content))
+	err = putImageToS3(ctx, svc, bucketName, newID, reader)
+	if err != nil {
+		return nil, err
+	}
+	photo := users.ProfilePhoto{ImageID: &newID}
+	resp := users.UpdateProfilePictureResult{&photo}
 	return &resp, err
 }

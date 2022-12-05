@@ -39,6 +39,10 @@ func (s *Service) GetContactInfo(ctx context.Context, p *users.GetContactInfoPay
 	return res, nil
 }
 
-func (s *Service) UpdateProfilePhoto(ctx context.Context, p *users.UpdateProfilePhotoPayload) {
-
+func (s *Service) UpdateProfilePicture(ctx context.Context, p *users.UpdateProfilePicturePayload) (*users.UpdateProfilePictureResult, error) {
+	res, err := s.usersClient.UpdateProfilePicture(ctx, p)
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
 }

@@ -335,6 +335,8 @@ type PostResponseResponseBody struct {
 	Deliverytype *string `form:"deliverytype,omitempty" json:"deliverytype,omitempty" xml:"deliverytype,omitempty"`
 	// User id associated with post
 	UserID *string `form:"userID,omitempty" json:"userID,omitempty" xml:"userID,omitempty"`
+	// prof pic id
+	ProfpicID *string `form:"profpicID,omitempty" json:"profpicID,omitempty" xml:"profpicID,omitempty"`
 	// Username associated with post
 	Username *string `form:"username,omitempty" json:"username,omitempty" xml:"username,omitempty"`
 }
@@ -361,6 +363,8 @@ type PostResponse struct {
 	Deliverytype *string `form:"deliverytype,omitempty" json:"deliverytype,omitempty" xml:"deliverytype,omitempty"`
 	// User id associated with post
 	UserID *string `form:"userID,omitempty" json:"userID,omitempty" xml:"userID,omitempty"`
+	// prof pic id
+	ProfpicID *string `form:"profpicID,omitempty" json:"profpicID,omitempty" xml:"profpicID,omitempty"`
 	// Username associated with post
 	Username *string `form:"username,omitempty" json:"username,omitempty" xml:"username,omitempty"`
 }
@@ -406,6 +410,7 @@ func NewCreatePostResultOK(body *CreatePostResponseBody) *postings.CreatePostRes
 		Sold:         *body.Sold,
 		Deliverytype: *body.Deliverytype,
 		UserID:       *body.UserID,
+		ProfpicID:    *body.ProfpicID,
 		Username:     *body.Username,
 	}
 	v.ImageIDs = make([]string, len(body.ImageIDs))
@@ -492,6 +497,7 @@ func NewEditPostResultOK(body *EditPostResponseBody) *postings.EditPostResult {
 		Sold:         *body.Sold,
 		Deliverytype: *body.Deliverytype,
 		UserID:       *body.UserID,
+		ProfpicID:    *body.ProfpicID,
 		Username:     *body.Username,
 	}
 	v.ImageIDs = make([]string, len(body.ImageIDs))
@@ -744,6 +750,9 @@ func ValidateCreatePostResponseBody(body *CreatePostResponseBody) (err error) {
 	if body.UserID == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("userID", "body"))
 	}
+	if body.ProfpicID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("profpicID", "body"))
+	}
 	if body.Username == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("username", "body"))
 	}
@@ -782,6 +791,9 @@ func ValidateEditPostResponseBody(body *EditPostResponseBody) (err error) {
 	}
 	if body.UserID == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("userID", "body"))
+	}
+	if body.ProfpicID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("profpicID", "body"))
 	}
 	if body.Username == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("username", "body"))
@@ -1161,6 +1173,9 @@ func ValidatePostResponseResponseBody(body *PostResponseResponseBody) (err error
 	if body.UserID == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("userID", "body"))
 	}
+	if body.ProfpicID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("profpicID", "body"))
+	}
 	return
 }
 
@@ -1198,6 +1213,9 @@ func ValidatePostResponse(body *PostResponse) (err error) {
 	}
 	if body.UserID == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("userID", "body"))
+	}
+	if body.ProfpicID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("profpicID", "body"))
 	}
 	return
 }

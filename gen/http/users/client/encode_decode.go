@@ -115,14 +115,14 @@ func DecodeUpdateBioResponse(decoder func(*http.Response) goahttp.Decoder, resto
 	}
 }
 
-// BuildUpdateProfilePhotoRequest instantiates a HTTP request object with
-// method and path set to call the "users" service "update_profile_photo"
+// BuildUpdateProfilePictureRequest instantiates a HTTP request object with
+// method and path set to call the "users" service "update_profile_picture"
 // endpoint
-func (c *Client) BuildUpdateProfilePhotoRequest(ctx context.Context, v interface{}) (*http.Request, error) {
-	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: UpdateProfilePhotoUsersPath()}
+func (c *Client) BuildUpdateProfilePictureRequest(ctx context.Context, v interface{}) (*http.Request, error) {
+	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: UpdateProfilePictureUsersPath()}
 	req, err := http.NewRequest("PUT", u.String(), nil)
 	if err != nil {
-		return nil, goahttp.ErrInvalidURL("users", "update_profile_photo", u.String(), err)
+		return nil, goahttp.ErrInvalidURL("users", "update_profile_picture", u.String(), err)
 	}
 	if ctx != nil {
 		req = req.WithContext(ctx)
@@ -131,13 +131,13 @@ func (c *Client) BuildUpdateProfilePhotoRequest(ctx context.Context, v interface
 	return req, nil
 }
 
-// EncodeUpdateProfilePhotoRequest returns an encoder for requests sent to the
-// users update_profile_photo server.
-func EncodeUpdateProfilePhotoRequest(encoder func(*http.Request) goahttp.Encoder) func(*http.Request, interface{}) error {
+// EncodeUpdateProfilePictureRequest returns an encoder for requests sent to
+// the users update_profile_picture server.
+func EncodeUpdateProfilePictureRequest(encoder func(*http.Request) goahttp.Encoder) func(*http.Request, interface{}) error {
 	return func(req *http.Request, v interface{}) error {
-		p, ok := v.(*users.UpdateProfilePhotoPayload)
+		p, ok := v.(*users.UpdateProfilePicturePayload)
 		if !ok {
-			return goahttp.ErrInvalidType("users", "update_profile_photo", "*users.UpdateProfilePhotoPayload", v)
+			return goahttp.ErrInvalidType("users", "update_profile_picture", "*users.UpdateProfilePicturePayload", v)
 		}
 		{
 			head := p.Token
@@ -147,21 +147,21 @@ func EncodeUpdateProfilePhotoRequest(encoder func(*http.Request) goahttp.Encoder
 				req.Header.Set("Authorization", head)
 			}
 		}
-		body := NewUpdateProfilePhotoRequestBody(p)
+		body := NewUpdateProfilePictureRequestBody(p)
 		if err := encoder(req).Encode(&body); err != nil {
-			return goahttp.ErrEncodingError("users", "update_profile_photo", err)
+			return goahttp.ErrEncodingError("users", "update_profile_picture", err)
 		}
 		return nil
 	}
 }
 
-// DecodeUpdateProfilePhotoResponse returns a decoder for responses returned by
-// the users update_profile_photo endpoint. restoreBody controls whether the
-// response body should be restored after having been read.
-// DecodeUpdateProfilePhotoResponse may return the following errors:
+// DecodeUpdateProfilePictureResponse returns a decoder for responses returned
+// by the users update_profile_picture endpoint. restoreBody controls whether
+// the response body should be restored after having been read.
+// DecodeUpdateProfilePictureResponse may return the following errors:
 //   - "unauthorized" (type *goa.ServiceError): http.StatusUnauthorized
 //   - error: internal error
-func DecodeUpdateProfilePhotoResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
+func DecodeUpdateProfilePictureResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
 	return func(resp *http.Response) (interface{}, error) {
 		if restoreBody {
 			b, err := io.ReadAll(resp.Body)
@@ -178,32 +178,32 @@ func DecodeUpdateProfilePhotoResponse(decoder func(*http.Response) goahttp.Decod
 		switch resp.StatusCode {
 		case http.StatusOK:
 			var (
-				body UpdateProfilePhotoResponseBody
+				body UpdateProfilePictureResponseBody
 				err  error
 			)
 			err = decoder(resp).Decode(&body)
 			if err != nil {
-				return nil, goahttp.ErrDecodingError("users", "update_profile_photo", err)
+				return nil, goahttp.ErrDecodingError("users", "update_profile_picture", err)
 			}
-			res := NewUpdateProfilePhotoResultOK(&body)
+			res := NewUpdateProfilePictureResultOK(&body)
 			return res, nil
 		case http.StatusUnauthorized:
 			var (
-				body UpdateProfilePhotoUnauthorizedResponseBody
+				body UpdateProfilePictureUnauthorizedResponseBody
 				err  error
 			)
 			err = decoder(resp).Decode(&body)
 			if err != nil {
-				return nil, goahttp.ErrDecodingError("users", "update_profile_photo", err)
+				return nil, goahttp.ErrDecodingError("users", "update_profile_picture", err)
 			}
-			err = ValidateUpdateProfilePhotoUnauthorizedResponseBody(&body)
+			err = ValidateUpdateProfilePictureUnauthorizedResponseBody(&body)
 			if err != nil {
-				return nil, goahttp.ErrValidationError("users", "update_profile_photo", err)
+				return nil, goahttp.ErrValidationError("users", "update_profile_picture", err)
 			}
-			return nil, NewUpdateProfilePhotoUnauthorized(&body)
+			return nil, NewUpdateProfilePictureUnauthorized(&body)
 		default:
 			body, _ := io.ReadAll(resp.Body)
-			return nil, goahttp.ErrInvalidResponse("users", "update_profile_photo", resp.StatusCode, string(body))
+			return nil, goahttp.ErrInvalidResponse("users", "update_profile_picture", resp.StatusCode, string(body))
 		}
 	}
 }

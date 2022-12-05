@@ -15,17 +15,17 @@ import (
 
 // Client is the "users" service client.
 type Client struct {
-	UpdateBioEndpoint          goa.Endpoint
-	UpdateProfilePhotoEndpoint goa.Endpoint
-	GetContactInfoEndpoint     goa.Endpoint
+	UpdateBioEndpoint            goa.Endpoint
+	UpdateProfilePictureEndpoint goa.Endpoint
+	GetContactInfoEndpoint       goa.Endpoint
 }
 
 // NewClient initializes a "users" service client given the endpoints.
-func NewClient(updateBio, updateProfilePhoto, getContactInfo goa.Endpoint) *Client {
+func NewClient(updateBio, updateProfilePicture, getContactInfo goa.Endpoint) *Client {
 	return &Client{
-		UpdateBioEndpoint:          updateBio,
-		UpdateProfilePhotoEndpoint: updateProfilePhoto,
-		GetContactInfoEndpoint:     getContactInfo,
+		UpdateBioEndpoint:            updateBio,
+		UpdateProfilePictureEndpoint: updateProfilePicture,
+		GetContactInfoEndpoint:       getContactInfo,
 	}
 }
 
@@ -42,18 +42,18 @@ func (c *Client) UpdateBio(ctx context.Context, p *UpdateBioPayload) (res *Updat
 	return ires.(*UpdateBioResult), nil
 }
 
-// UpdateProfilePhoto calls the "update_profile_photo" endpoint of the "users"
-// service.
-// UpdateProfilePhoto may return the following errors:
+// UpdateProfilePicture calls the "update_profile_picture" endpoint of the
+// "users" service.
+// UpdateProfilePicture may return the following errors:
 //   - "unauthorized" (type Unauthorized)
 //   - error: internal error
-func (c *Client) UpdateProfilePhoto(ctx context.Context, p *UpdateProfilePhotoPayload) (res *UpdateProfilePhotoResult, err error) {
+func (c *Client) UpdateProfilePicture(ctx context.Context, p *UpdateProfilePicturePayload) (res *UpdateProfilePictureResult, err error) {
 	var ires interface{}
-	ires, err = c.UpdateProfilePhotoEndpoint(ctx, p)
+	ires, err = c.UpdateProfilePictureEndpoint(ctx, p)
 	if err != nil {
 		return
 	}
-	return ires.(*UpdateProfilePhotoResult), nil
+	return ires.(*UpdateProfilePictureResult), nil
 }
 
 // GetContactInfo calls the "get_contact_info" endpoint of the "users" service.

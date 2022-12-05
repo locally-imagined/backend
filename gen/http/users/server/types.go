@@ -20,9 +20,9 @@ type UpdateBioRequestBody struct {
 	Bio *string `form:"bio,omitempty" json:"bio,omitempty" xml:"bio,omitempty"`
 }
 
-// UpdateProfilePhotoRequestBody is the type of the "users" service
-// "update_profile_photo" endpoint HTTP request body.
-type UpdateProfilePhotoRequestBody struct {
+// UpdateProfilePictureRequestBody is the type of the "users" service
+// "update_profile_picture" endpoint HTTP request body.
+type UpdateProfilePictureRequestBody struct {
 	// raw image content
 	Content *string `form:"content,omitempty" json:"content,omitempty" xml:"content,omitempty"`
 }
@@ -31,9 +31,9 @@ type UpdateProfilePhotoRequestBody struct {
 // endpoint HTTP response body.
 type UpdateBioResponseBody UserResponseBody
 
-// UpdateProfilePhotoResponseBody is the type of the "users" service
-// "update_profile_photo" endpoint HTTP response body.
-type UpdateProfilePhotoResponseBody ProfilePhotoResponseBody
+// UpdateProfilePictureResponseBody is the type of the "users" service
+// "update_profile_picture" endpoint HTTP response body.
+type UpdateProfilePictureResponseBody ProfilePhotoResponseBody
 
 // GetContactInfoResponseBody is the type of the "users" service
 // "get_contact_info" endpoint HTTP response body.
@@ -57,10 +57,10 @@ type UpdateBioUnauthorizedResponseBody struct {
 	Fault bool `form:"fault" json:"fault" xml:"fault"`
 }
 
-// UpdateProfilePhotoUnauthorizedResponseBody is the type of the "users"
-// service "update_profile_photo" endpoint HTTP response body for the
+// UpdateProfilePictureUnauthorizedResponseBody is the type of the "users"
+// service "update_profile_picture" endpoint HTTP response body for the
 // "unauthorized" error.
-type UpdateProfilePhotoUnauthorizedResponseBody struct {
+type UpdateProfilePictureUnauthorizedResponseBody struct {
 	// Name is the name of this class of errors.
 	Name string `form:"name" json:"name" xml:"name"`
 	// ID is a unique identifier for this particular occurrence of the problem.
@@ -104,12 +104,14 @@ type UserResponseBody struct {
 	Phone string `form:"phone" json:"phone" xml:"phone"`
 	// Email
 	Email string `form:"email" json:"email" xml:"email"`
+	// Prof Pic UUID
+	Profpic *string `form:"profpic,omitempty" json:"profpic,omitempty" xml:"profpic,omitempty"`
 }
 
 // ProfilePhotoResponseBody is used to define fields on response body types.
 type ProfilePhotoResponseBody struct {
-	// photo id
-	PhotoUUID *string `form:"photo_uuid,omitempty" json:"photo_uuid,omitempty" xml:"photo_uuid,omitempty"`
+	// Image ID
+	ImageID *string `form:"imageID,omitempty" json:"imageID,omitempty" xml:"imageID,omitempty"`
 }
 
 // NewUpdateBioResponseBody builds the HTTP response body from the result of
@@ -120,15 +122,16 @@ func NewUpdateBioResponseBody(res *users.UpdateBioResult) *UpdateBioResponseBody
 		LastName:  res.UpdatedUser.LastName,
 		Phone:     res.UpdatedUser.Phone,
 		Email:     res.UpdatedUser.Email,
+		Profpic:   res.UpdatedUser.Profpic,
 	}
 	return body
 }
 
-// NewUpdateProfilePhotoResponseBody builds the HTTP response body from the
-// result of the "update_profile_photo" endpoint of the "users" service.
-func NewUpdateProfilePhotoResponseBody(res *users.UpdateProfilePhotoResult) *UpdateProfilePhotoResponseBody {
-	body := &UpdateProfilePhotoResponseBody{
-		PhotoUUID: res.PhotoID.PhotoUUID,
+// NewUpdateProfilePictureResponseBody builds the HTTP response body from the
+// result of the "update_profile_picture" endpoint of the "users" service.
+func NewUpdateProfilePictureResponseBody(res *users.UpdateProfilePictureResult) *UpdateProfilePictureResponseBody {
+	body := &UpdateProfilePictureResponseBody{
+		ImageID: res.ImageID.ImageID,
 	}
 	return body
 }
@@ -141,6 +144,7 @@ func NewGetContactInfoResponseBody(res *users.GetContactInfoResult) *GetContactI
 		LastName:  res.ContactInfo.LastName,
 		Phone:     res.ContactInfo.Phone,
 		Email:     res.ContactInfo.Email,
+		Profpic:   res.ContactInfo.Profpic,
 	}
 	return body
 }
@@ -159,11 +163,11 @@ func NewUpdateBioUnauthorizedResponseBody(res *goa.ServiceError) *UpdateBioUnaut
 	return body
 }
 
-// NewUpdateProfilePhotoUnauthorizedResponseBody builds the HTTP response body
-// from the result of the "update_profile_photo" endpoint of the "users"
+// NewUpdateProfilePictureUnauthorizedResponseBody builds the HTTP response
+// body from the result of the "update_profile_picture" endpoint of the "users"
 // service.
-func NewUpdateProfilePhotoUnauthorizedResponseBody(res *goa.ServiceError) *UpdateProfilePhotoUnauthorizedResponseBody {
-	body := &UpdateProfilePhotoUnauthorizedResponseBody{
+func NewUpdateProfilePictureUnauthorizedResponseBody(res *goa.ServiceError) *UpdateProfilePictureUnauthorizedResponseBody {
+	body := &UpdateProfilePictureUnauthorizedResponseBody{
 		Name:      res.Name,
 		ID:        res.ID,
 		Message:   res.Message,
@@ -201,13 +205,13 @@ func NewUpdateBioPayload(body *UpdateBioRequestBody, token string) *users.Update
 	return res
 }
 
-// NewUpdateProfilePhotoPayload builds a users service update_profile_photo
+// NewUpdateProfilePicturePayload builds a users service update_profile_picture
 // endpoint payload.
-func NewUpdateProfilePhotoPayload(body *UpdateProfilePhotoRequestBody, token string) *users.UpdateProfilePhotoPayload {
+func NewUpdateProfilePicturePayload(body *UpdateProfilePictureRequestBody, token string) *users.UpdateProfilePicturePayload {
 	v := &users.Content{
 		Content: body.Content,
 	}
-	res := &users.UpdateProfilePhotoPayload{
+	res := &users.UpdateProfilePicturePayload{
 		Content: v,
 	}
 	res.Token = token

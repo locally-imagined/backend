@@ -207,6 +207,8 @@ type PostResponse struct {
 	Deliverytype string
 	// User id associated with post
 	UserID string
+	// prof pic id
+	ProfpicID string
 	// Username associated with post
 	Username string
 }
