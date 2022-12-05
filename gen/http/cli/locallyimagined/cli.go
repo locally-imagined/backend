@@ -23,39 +23,38 @@ import (
 
 // UsageCommands returns the set of commands and sub-commands using the format
 //
-//    command (subcommand1|subcommand2|...)
-//
+//	command (subcommand1|subcommand2|...)
 func UsageCommands() string {
 	return `login login
 signup signup
-users (update-bio|get-contact-info)
+users (update-bio|update-profile-photo|get-contact-info)
 postings (create-post|delete-post|edit-post|get-post-page|get-artist-post-page|get-post-page-filtered|get-images-for-post)
 `
 }
 
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
-	return os.Args[0] + ` login login --username "Nihil cum ipsum neque." --password "Voluptatem enim eligendi doloremque ut enim distinctio."` + "\n" +
+	return os.Args[0] + ` login login --username "Aut consequatur culpa." --password "Dignissimos quia."` + "\n" +
 		os.Args[0] + ` signup signup --body '{
-      "email": "Nihil repellendus et ratione.",
-      "firstName": "Autem minima reprehenderit consequuntur.",
-      "lastName": "Veritatis voluptatum nihil.",
-      "phone": "Est iusto eos sunt quis deleniti."
-   }' --username "Error assumenda adipisci." --password "Et commodi."` + "\n" +
+      "email": "Dolore et ad voluptatum est at.",
+      "firstName": "Nihil cum ipsum neque.",
+      "lastName": "Voluptatem enim eligendi doloremque ut enim distinctio.",
+      "phone": "Quisquam eveniet."
+   }' --username "Autem minima reprehenderit consequuntur." --password "Veritatis voluptatum nihil."` + "\n" +
 		os.Args[0] + ` users update-bio --body '{
-      "bio": "Eaque assumenda voluptatem et commodi atque earum."
-   }' --token "Fugit ex."` + "\n" +
+      "bio": "Error assumenda adipisci."
+   }' --token "Et commodi."` + "\n" +
 		os.Args[0] + ` postings create-post --body '{
       "content": [
-         "Consequatur velit eum et.",
-         "Repudiandae minus aut."
+         "Rerum ut.",
+         "Consequatur velit eum et."
       ],
-      "deliverytype": "Exercitationem eaque dolores ea.",
-      "description": "Dolor porro assumenda dolor ex.",
-      "medium": "Et rerum.",
-      "price": "Dicta rerum.",
-      "title": "Voluptatem maiores est maiores."
-   }' --token "Eos doloribus expedita ut."` + "\n" +
+      "deliverytype": "Et rerum.",
+      "description": "Voluptatem maiores est maiores.",
+      "medium": "Repudiandae minus aut.",
+      "price": "Dolor porro assumenda dolor ex.",
+      "title": "Nesciunt excepturi quam eaque."
+   }' --token "Exercitationem eaque dolores ea."` + "\n" +
 		""
 }
 
@@ -87,6 +86,10 @@ func ParseEndpoint(
 		usersUpdateBioFlags     = flag.NewFlagSet("update-bio", flag.ExitOnError)
 		usersUpdateBioBodyFlag  = usersUpdateBioFlags.String("body", "REQUIRED", "")
 		usersUpdateBioTokenFlag = usersUpdateBioFlags.String("token", "REQUIRED", "")
+
+		usersUpdateProfilePhotoFlags     = flag.NewFlagSet("update-profile-photo", flag.ExitOnError)
+		usersUpdateProfilePhotoBodyFlag  = usersUpdateProfilePhotoFlags.String("body", "REQUIRED", "")
+		usersUpdateProfilePhotoTokenFlag = usersUpdateProfilePhotoFlags.String("token", "REQUIRED", "")
 
 		usersGetContactInfoFlags      = flag.NewFlagSet("get-contact-info", flag.ExitOnError)
 		usersGetContactInfoUserIDFlag = usersGetContactInfoFlags.String("user-id", "REQUIRED", "")
@@ -138,6 +141,7 @@ func ParseEndpoint(
 
 	usersFlags.Usage = usersUsage
 	usersUpdateBioFlags.Usage = usersUpdateBioUsage
+	usersUpdateProfilePhotoFlags.Usage = usersUpdateProfilePhotoUsage
 	usersGetContactInfoFlags.Usage = usersGetContactInfoUsage
 
 	postingsFlags.Usage = postingsUsage
@@ -205,6 +209,9 @@ func ParseEndpoint(
 			switch epn {
 			case "update-bio":
 				epf = usersUpdateBioFlags
+
+			case "update-profile-photo":
+				epf = usersUpdateProfilePhotoFlags
 
 			case "get-contact-info":
 				epf = usersGetContactInfoFlags
@@ -276,6 +283,9 @@ func ParseEndpoint(
 			case "update-bio":
 				endpoint = c.UpdateBio()
 				data, err = usersc.BuildUpdateBioPayload(*usersUpdateBioBodyFlag, *usersUpdateBioTokenFlag)
+			case "update-profile-photo":
+				endpoint = c.UpdateProfilePhoto()
+				data, err = usersc.BuildUpdateProfilePhotoPayload(*usersUpdateProfilePhotoBodyFlag, *usersUpdateProfilePhotoTokenFlag)
 			case "get-contact-info":
 				endpoint = c.GetContactInfo()
 				data, err = usersc.BuildGetContactInfoPayload(*usersGetContactInfoUserIDFlag)
@@ -335,7 +345,7 @@ Login implements Login.
     -password STRING: User password
 
 Example:
-    %[1]s login login --username "Nihil cum ipsum neque." --password "Voluptatem enim eligendi doloremque ut enim distinctio."
+    %[1]s login login --username "Aut consequatur culpa." --password "Dignissimos quia."
 `, os.Args[0])
 }
 
@@ -362,11 +372,11 @@ Signup implements Signup.
 
 Example:
     %[1]s signup signup --body '{
-      "email": "Nihil repellendus et ratione.",
-      "firstName": "Autem minima reprehenderit consequuntur.",
-      "lastName": "Veritatis voluptatum nihil.",
-      "phone": "Est iusto eos sunt quis deleniti."
-   }' --username "Error assumenda adipisci." --password "Et commodi."
+      "email": "Dolore et ad voluptatum est at.",
+      "firstName": "Nihil cum ipsum neque.",
+      "lastName": "Voluptatem enim eligendi doloremque ut enim distinctio.",
+      "phone": "Quisquam eveniet."
+   }' --username "Autem minima reprehenderit consequuntur." --password "Veritatis voluptatum nihil."
 `, os.Args[0])
 }
 
@@ -378,6 +388,7 @@ Usage:
 
 COMMAND:
     update-bio: UpdateBio implements update_bio.
+    update-profile-photo: UpdateProfilePhoto implements update_profile_photo.
     get-contact-info: GetContactInfo implements get_contact_info.
 
 Additional help:
@@ -393,8 +404,22 @@ UpdateBio implements update_bio.
 
 Example:
     %[1]s users update-bio --body '{
-      "bio": "Eaque assumenda voluptatem et commodi atque earum."
-   }' --token "Fugit ex."
+      "bio": "Error assumenda adipisci."
+   }' --token "Et commodi."
+`, os.Args[0])
+}
+
+func usersUpdateProfilePhotoUsage() {
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] users update-profile-photo -body JSON -token STRING
+
+UpdateProfilePhoto implements update_profile_photo.
+    -body JSON: 
+    -token STRING: 
+
+Example:
+    %[1]s users update-profile-photo --body '{
+      "content": "Sit voluptates."
+   }' --token "Sed nemo rem nisi consequatur."
 `, os.Args[0])
 }
 
@@ -405,7 +430,7 @@ GetContactInfo implements get_contact_info.
     -user-id STRING: 
 
 Example:
-    %[1]s users get-contact-info --user-id "Nesciunt excepturi quam eaque."
+    %[1]s users get-contact-info --user-id "Qui aut aut saepe eos nam placeat."
 `, os.Args[0])
 }
 
@@ -438,15 +463,15 @@ CreatePost implements create_post.
 Example:
     %[1]s postings create-post --body '{
       "content": [
-         "Consequatur velit eum et.",
-         "Repudiandae minus aut."
+         "Rerum ut.",
+         "Consequatur velit eum et."
       ],
-      "deliverytype": "Exercitationem eaque dolores ea.",
-      "description": "Dolor porro assumenda dolor ex.",
-      "medium": "Et rerum.",
-      "price": "Dicta rerum.",
-      "title": "Voluptatem maiores est maiores."
-   }' --token "Eos doloribus expedita ut."
+      "deliverytype": "Et rerum.",
+      "description": "Voluptatem maiores est maiores.",
+      "medium": "Repudiandae minus aut.",
+      "price": "Dolor porro assumenda dolor ex.",
+      "title": "Nesciunt excepturi quam eaque."
+   }' --token "Exercitationem eaque dolores ea."
 `, os.Args[0])
 }
 

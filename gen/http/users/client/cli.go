@@ -21,7 +21,7 @@ func BuildUpdateBioPayload(usersUpdateBioBody string, usersUpdateBioToken string
 	{
 		err = json.Unmarshal([]byte(usersUpdateBioBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"bio\": \"Eaque assumenda voluptatem et commodi atque earum.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"bio\": \"Error assumenda adipisci.\"\n   }'")
 		}
 	}
 	var token string
@@ -33,6 +33,32 @@ func BuildUpdateBioPayload(usersUpdateBioBody string, usersUpdateBioToken string
 	}
 	res := &users.UpdateBioPayload{
 		Bio: v,
+	}
+	res.Token = token
+
+	return res, nil
+}
+
+// BuildUpdateProfilePhotoPayload builds the payload for the users
+// update_profile_photo endpoint from CLI flags.
+func BuildUpdateProfilePhotoPayload(usersUpdateProfilePhotoBody string, usersUpdateProfilePhotoToken string) (*users.UpdateProfilePhotoPayload, error) {
+	var err error
+	var body UpdateProfilePhotoRequestBody
+	{
+		err = json.Unmarshal([]byte(usersUpdateProfilePhotoBody), &body)
+		if err != nil {
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"content\": \"Sit voluptates.\"\n   }'")
+		}
+	}
+	var token string
+	{
+		token = usersUpdateProfilePhotoToken
+	}
+	v := &users.Content{
+		Content: body.Content,
+	}
+	res := &users.UpdateProfilePhotoPayload{
+		Content: v,
 	}
 	res.Token = token
 

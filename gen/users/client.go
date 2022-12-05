@@ -15,22 +15,24 @@ import (
 
 // Client is the "users" service client.
 type Client struct {
-	UpdateBioEndpoint      goa.Endpoint
-	GetContactInfoEndpoint goa.Endpoint
+	UpdateBioEndpoint          goa.Endpoint
+	UpdateProfilePhotoEndpoint goa.Endpoint
+	GetContactInfoEndpoint     goa.Endpoint
 }
 
 // NewClient initializes a "users" service client given the endpoints.
-func NewClient(updateBio, getContactInfo goa.Endpoint) *Client {
+func NewClient(updateBio, updateProfilePhoto, getContactInfo goa.Endpoint) *Client {
 	return &Client{
-		UpdateBioEndpoint:      updateBio,
-		GetContactInfoEndpoint: getContactInfo,
+		UpdateBioEndpoint:          updateBio,
+		UpdateProfilePhotoEndpoint: updateProfilePhoto,
+		GetContactInfoEndpoint:     getContactInfo,
 	}
 }
 
 // UpdateBio calls the "update_bio" endpoint of the "users" service.
 // UpdateBio may return the following errors:
-//	- "unauthorized" (type Unauthorized)
-//	- error: internal error
+//   - "unauthorized" (type Unauthorized)
+//   - error: internal error
 func (c *Client) UpdateBio(ctx context.Context, p *UpdateBioPayload) (res *UpdateBioResult, err error) {
 	var ires interface{}
 	ires, err = c.UpdateBioEndpoint(ctx, p)
@@ -40,10 +42,24 @@ func (c *Client) UpdateBio(ctx context.Context, p *UpdateBioPayload) (res *Updat
 	return ires.(*UpdateBioResult), nil
 }
 
+// UpdateProfilePhoto calls the "update_profile_photo" endpoint of the "users"
+// service.
+// UpdateProfilePhoto may return the following errors:
+//   - "unauthorized" (type Unauthorized)
+//   - error: internal error
+func (c *Client) UpdateProfilePhoto(ctx context.Context, p *UpdateProfilePhotoPayload) (res *UpdateProfilePhotoResult, err error) {
+	var ires interface{}
+	ires, err = c.UpdateProfilePhotoEndpoint(ctx, p)
+	if err != nil {
+		return
+	}
+	return ires.(*UpdateProfilePhotoResult), nil
+}
+
 // GetContactInfo calls the "get_contact_info" endpoint of the "users" service.
 // GetContactInfo may return the following errors:
-//	- "unauthorized" (type Unauthorized)
-//	- error: internal error
+//   - "unauthorized" (type Unauthorized)
+//   - error: internal error
 func (c *Client) GetContactInfo(ctx context.Context, p *GetContactInfoPayload) (res *GetContactInfoResult, err error) {
 	var ires interface{}
 	ires, err = c.GetContactInfoEndpoint(ctx, p)
