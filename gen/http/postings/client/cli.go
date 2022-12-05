@@ -24,7 +24,7 @@ func BuildCreatePostPayload(postingsCreatePostBody string, postingsCreatePostTok
 	{
 		err = json.Unmarshal([]byte(postingsCreatePostBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"content\": [\n         \"Quos laborum.\",\n         \"Voluptatibus dolor ex veniam voluptatibus et omnis.\",\n         \"Sint possimus et aut quidem eaque.\",\n         \"Expedita numquam natus et nemo aperiam rerum.\"\n      ],\n      \"deliverytype\": \"Soluta est adipisci quia.\",\n      \"description\": \"Doloribus expedita ut consequuntur et est.\",\n      \"medium\": \"Qui assumenda quas non.\",\n      \"price\": \"Molestiae similique.\",\n      \"title\": \"Quos exercitationem eaque dolores ea deleniti.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"content\": [\n         \"Aut quidem eaque laborum expedita.\",\n         \"Natus et nemo aperiam.\",\n         \"Laborum qui assumenda quas non aut.\",\n         \"Est adipisci quia consectetur veritatis quod.\"\n      ],\n      \"deliverytype\": \"Consequatur ratione voluptas consectetur.\",\n      \"description\": \"Rem quos laborum dignissimos voluptatibus dolor.\",\n      \"medium\": \"Officiis quidem iure et.\",\n      \"price\": \"Veniam voluptatibus et omnis beatae sint.\",\n      \"title\": \"Molestiae similique.\"\n   }'")
 		}
 		if body.Content == nil {
 			err = goa.MergeErrors(err, goa.MissingFieldError("content", "body"))
@@ -84,7 +84,7 @@ func BuildEditPostPayload(postingsEditPostBody string, postingsEditPostPostID st
 	{
 		err = json.Unmarshal([]byte(postingsEditPostBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"content\": \"Porro beatae fugiat dolor sed.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"content\": \"Voluptas amet.\"\n   }'")
 		}
 	}
 	var postID string

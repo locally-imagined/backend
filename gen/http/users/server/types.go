@@ -104,8 +104,10 @@ type UserResponseBody struct {
 	Phone string `form:"phone" json:"phone" xml:"phone"`
 	// Email
 	Email string `form:"email" json:"email" xml:"email"`
+	// Bio
+	Bio string `form:"bio" json:"bio" xml:"bio"`
 	// Prof Pic UUID
-	Profpic *string `form:"profpic,omitempty" json:"profpic,omitempty" xml:"profpic,omitempty"`
+	ProfpicID string `form:"profpicID" json:"profpicID" xml:"profpicID"`
 }
 
 // ProfilePhotoResponseBody is used to define fields on response body types.
@@ -122,7 +124,8 @@ func NewUpdateBioResponseBody(res *users.UpdateBioResult) *UpdateBioResponseBody
 		LastName:  res.UpdatedUser.LastName,
 		Phone:     res.UpdatedUser.Phone,
 		Email:     res.UpdatedUser.Email,
-		Profpic:   res.UpdatedUser.Profpic,
+		Bio:       res.UpdatedUser.Bio,
+		ProfpicID: res.UpdatedUser.ProfpicID,
 	}
 	return body
 }
@@ -144,7 +147,8 @@ func NewGetContactInfoResponseBody(res *users.GetContactInfoResult) *GetContactI
 		LastName:  res.ContactInfo.LastName,
 		Phone:     res.ContactInfo.Phone,
 		Email:     res.ContactInfo.Email,
-		Profpic:   res.ContactInfo.Profpic,
+		Bio:       res.ContactInfo.Bio,
+		ProfpicID: res.ContactInfo.ProfpicID,
 	}
 	return body
 }

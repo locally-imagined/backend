@@ -60,8 +60,10 @@ type User struct {
 	Phone string
 	// Email
 	Email string
+	// Bio
+	Bio string
 	// Prof Pic UUID
-	Profpic *string
+	ProfpicID string
 }
 
 // MakeUnauthorized builds a goa.ServiceError from an error.

@@ -259,7 +259,7 @@ paths:
                         type: array
                         items:
                             type: string
-                            example: Vitae dolor.
+                            example: Sit aut ab dolor quasi.
                 "401":
                     description: Unauthorized response.
                     schema:
@@ -400,6 +400,8 @@ paths:
                             - lastName
                             - phone
                             - email
+                            - bio
+                            - profpicID
                 "401":
                     description: Unauthorized response.
                     schema:
@@ -434,6 +436,8 @@ paths:
                             - lastName
                             - phone
                             - email
+                            - bio
+                            - profpicID
                 "401":
                     description: Unauthorized response.
                     schema:
@@ -484,7 +488,7 @@ definitions:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: false
+                example: true
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -500,14 +504,14 @@ definitions:
             temporary:
                 type: boolean
                 description: Is the error temporary?
-                example: false
+                example: true
             timeout:
                 type: boolean
                 description: Is the error a timeout?
-                example: true
+                example: false
         description: Credentials are invalid (default view)
         example:
-            fault: true
+            fault: false
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
@@ -527,15 +531,15 @@ definitions:
             jwt:
                 type: string
                 description: jwt used for future authentication
-                example: Est dolorem.
+                example: Dolores impedit qui aut.
             userID:
                 type: string
                 description: users ID
-                example: Molestiae est quis.
+                example: Aut et laudantium eius quod.
         description: Response from logging in
         example:
-            jwt: Dolores impedit qui aut.
-            userID: Aut et laudantium eius quod.
+            jwt: Iusto animi perferendis cumque aliquid voluptas.
+            userID: Nulla aliquam voluptatem consectetur voluptatem.
     PostResponse:
         title: PostResponse
         type: object
@@ -543,36 +547,37 @@ definitions:
             deliverytype:
                 type: string
                 description: Delivery type
-                example: Ut natus dolores adipisci porro quibusdam natus.
+                example: Natus odit voluptas non quo id.
             description:
                 type: string
                 description: Post description
-                example: Est soluta aut porro.
+                example: Hic enim assumenda quam adipisci.
             imageIDs:
                 type: array
                 items:
                     type: string
-                    example: Qui qui.
+                    example: Qui aliquid id amet nesciunt veniam.
                 description: Image ID
                 example:
-                    - Debitis aut ut.
-                    - Accusamus repudiandae labore sint ad possimus error.
+                    - Ut natus dolores adipisci porro quibusdam natus.
+                    - Dolorem animi asperiores doloremque.
+                    - Accusantium eaque.
             medium:
                 type: string
                 description: Art type
-                example: Adipisci delectus et ducimus.
+                example: Aut et saepe recusandae.
             postID:
                 type: string
                 description: Post ID
-                example: Voluptas est id consequatur hic enim assumenda.
+                example: Doloribus modi.
             price:
                 type: string
                 description: Post price
-                example: Dolorem reiciendis quidem.
+                example: Et ducimus.
             profpicID:
                 type: string
                 description: prof pic id
-                example: Accusantium eaque.
+                example: Perspiciatis expedita rerum maxime et molestiae.
             sold:
                 type: boolean
                 description: is sold
@@ -580,36 +585,37 @@ definitions:
             title:
                 type: string
                 description: Post title
-                example: Magni non qui non.
+                example: Ad possimus error omnis voluptas est id.
             uploadDate:
                 type: string
                 description: Upload Date
-                example: Qui aliquid id amet nesciunt veniam.
+                example: Aspernatur cum animi error.
             userID:
                 type: string
                 description: User id associated with post
-                example: Dolorem animi asperiores doloremque.
+                example: Esse qui natus pariatur.
             username:
                 type: string
                 description: Username associated with post
-                example: Doloribus modi.
+                example: Accusantium iure voluptas facilis culpa maxime.
         description: Describes a post response
         example:
-            deliverytype: Impedit consequatur in laudantium at laboriosam excepturi.
-            description: Aspernatur cum animi error.
+            deliverytype: Dolorem ipsum et rerum enim.
+            description: Nesciunt quod et error.
             imageIDs:
-                - Qui natus pariatur.
-                - Perspiciatis expedita rerum maxime et molestiae.
-                - Accusantium iure voluptas facilis culpa maxime.
-            medium: Nesciunt quod et error.
-            postID: Nisi alias qui.
-            price: Esse natus odit voluptas non quo id.
-            profpicID: Sed consectetur minima.
-            sold: false
-            title: Aut et saepe recusandae.
-            uploadDate: Ut occaecati facere.
-            userID: Quam et dolorem aspernatur qui.
-            username: Veritatis eos sapiente sed sunt dolor.
+                - Impedit consequatur in laudantium at laboriosam excepturi.
+                - Quam et dolorem aspernatur qui.
+                - Sed consectetur minima.
+                - Veritatis eos sapiente sed sunt dolor.
+            medium: Repellat aspernatur vitae est.
+            postID: Doloribus aut quos ducimus voluptates magnam.
+            price: Ut occaecati facere.
+            profpicID: Distinctio quaerat nostrum vitae dolor eveniet doloribus.
+            sold: true
+            title: Nisi alias qui.
+            uploadDate: Et quos voluptatem itaque repellendus.
+            userID: Doloribus quidem ut sint rerum officiis qui.
+            username: Rerum laboriosam.
         required:
             - title
             - description
@@ -630,36 +636,37 @@ definitions:
             deliverytype:
                 type: string
                 description: Delivery type
-                example: Unde beatae sint enim alias delectus odio.
+                example: Repellat esse odit corporis officia quod.
             description:
                 type: string
                 description: Post description
-                example: Est qui qui vel neque consectetur.
+                example: Recusandae sint nihil dolore consequatur molestias.
             imageIDs:
                 type: array
                 items:
                     type: string
-                    example: Sed nulla voluptas consequatur eum voluptates.
+                    example: Rerum nobis sint cupiditate autem.
                 description: Image ID
                 example:
-                    - Exercitationem soluta recusandae ut.
-                    - Rerum ad nihil eum quo recusandae.
+                    - Unde beatae sint enim alias delectus odio.
+                    - Quaerat ut eveniet officiis eum.
+                    - Consequuntur veniam architecto aut nobis vitae voluptatem.
             medium:
                 type: string
                 description: Art type
-                example: Dolore dolorum illum ab rerum nobis.
+                example: Illum debitis accusantium.
             postID:
                 type: string
                 description: Post ID
-                example: Nihil dolore consequatur molestias non consectetur et.
+                example: Autem id eligendi at.
             price:
                 type: string
                 description: Post price
-                example: Placeat et maiores totam.
+                example: Consectetur et ut dolore dolorum illum.
             profpicID:
                 type: string
                 description: prof pic id
-                example: Consequuntur veniam architecto aut nobis vitae voluptatem.
+                example: Aut qui laudantium culpa voluptas quos magni.
             sold:
                 type: boolean
                 description: is sold
@@ -667,36 +674,35 @@ definitions:
             title:
                 type: string
                 description: Post title
-                example: Veniam quia sit esse aliquam.
+                example: Ad nihil eum.
             uploadDate:
                 type: string
                 description: Upload Date
-                example: Cupiditate autem.
+                example: Est quisquam aliquam sed sit.
             userID:
                 type: string
                 description: User id associated with post
-                example: Quaerat ut eveniet officiis eum.
+                example: Rerum consequatur excepturi dicta fugiat.
             username:
                 type: string
                 description: Username associated with post
-                example: Autem id eligendi at.
+                example: Eveniet totam et cum dicta magnam sunt.
         description: Describes a post response
         example:
-            deliverytype: Minus minima hic explicabo.
-            description: Est quisquam aliquam sed sit.
+            deliverytype: Soluta ipsam iusto omnis cupiditate vero.
+            description: Harum vel hic iste eos.
             imageIDs:
-                - Quod ut rerum consequatur excepturi dicta fugiat.
-                - Aut qui laudantium culpa voluptas quos magni.
-                - Eveniet totam et cum dicta magnam sunt.
-            medium: Harum vel hic iste eos.
-            postID: Autem adipisci impedit molestiae in officiis quod.
-            price: Ea repellat esse odit.
-            profpicID: Repellendus expedita iste et ducimus id.
-            sold: false
-            title: Illum debitis accusantium.
-            uploadDate: Quia rerum rerum.
-            userID: Aut nihil dolor nisi perspiciatis.
-            username: Vero aut ex dolore.
+                - Minus minima hic explicabo.
+                - Aut nihil dolor nisi perspiciatis.
+            medium: Vero aut ex dolore.
+            postID: Repellendus expedita iste et ducimus id.
+            price: Quia rerum rerum.
+            profpicID: Est vel.
+            sold: true
+            title: Autem adipisci impedit molestiae in officiis quod.
+            uploadDate: Qui esse iusto iste.
+            userID: Doloribus fugit rem.
+            username: Maxime dolores.
         required:
             - title
             - description
@@ -717,7 +723,7 @@ definitions:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: false
+                example: true
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -740,12 +746,12 @@ definitions:
                 example: true
         description: Internal Error (default view)
         example:
-            fault: false
+            fault: true
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
             temporary: true
-            timeout: true
+            timeout: false
         required:
             - name
             - id
@@ -761,45 +767,43 @@ definitions:
                 type: array
                 items:
                     type: string
-                    example: Laborum et.
+                    example: Voluptatem omnis omnis.
                 description: Post content
                 example:
-                    - Ab non fugiat eum nihil.
-                    - Non placeat aliquid nostrum incidunt similique.
-                    - Ut soluta perferendis et molestias.
-                    - Voluptatem omnis omnis.
+                    - Molestiae veritatis natus quae expedita similique.
+                    - Harum dolores autem eum aut sit eaque.
             deliverytype:
                 type: string
                 description: Delivery type
-                example: Similique voluptate harum dolores autem eum.
+                example: Maiores quia optio numquam.
             description:
                 type: string
                 description: Post description
-                example: Vel qui maxime dolores non.
+                example: Non placeat aliquid nostrum incidunt similique.
             medium:
                 type: string
                 description: Art type
-                example: Rerum molestiae veritatis natus quae.
+                example: Accusantium qui consequatur nulla quia sapiente.
             price:
                 type: string
                 description: Post price
-                example: Velit et alias et et reprehenderit.
+                example: Ut soluta perferendis et molestias.
             title:
                 type: string
                 description: Post title
-                example: Facere doloribus fugit rem perspiciatis.
+                example: Ab non fugiat eum nihil.
         description: Describes a post payload
         example:
             content:
-                - Quibusdam provident quia dolores quae.
-                - Aspernatur nostrum aut repellendus qui.
-                - Voluptatem et quos non.
-                - Dolor nobis.
-            deliverytype: Quis aliquid sequi nesciunt repellendus alias id.
-            description: Nulla quia sapiente.
-            medium: Aut inventore dicta.
-            price: Maiores quia optio numquam.
-            title: Sit eaque consequuntur accusantium qui.
+                - Quos non est dolor nobis sunt aut.
+                - Dicta quis quis aliquid sequi nesciunt repellendus.
+                - Id non inventore eum ut.
+                - Sunt delectus.
+            deliverytype: Et et et inventore officia fuga quaerat.
+            description: Placeat aspernatur nostrum aut.
+            medium: Quas non adipisci non nostrum iure qui.
+            price: Qui et.
+            title: Nam quibusdam provident quia dolores.
         required:
             - title
             - description
@@ -837,7 +841,7 @@ definitions:
             timeout:
                 type: boolean
                 description: Is the error a timeout?
-                example: true
+                example: false
         description: Credentials are invalid (default view)
         example:
             fault: true
@@ -876,7 +880,7 @@ definitions:
             temporary:
                 type: boolean
                 description: Is the error temporary?
-                example: true
+                example: false
             timeout:
                 type: boolean
                 description: Is the error a timeout?
@@ -887,8 +891,8 @@ definitions:
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
-            temporary: false
-            timeout: false
+            temporary: true
+            timeout: true
         required:
             - name
             - id
@@ -903,7 +907,7 @@ definitions:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: true
+                example: false
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -919,11 +923,11 @@ definitions:
             temporary:
                 type: boolean
                 description: Is the error temporary?
-                example: true
+                example: false
             timeout:
                 type: boolean
                 description: Is the error a timeout?
-                example: false
+                example: true
         description: Credentials are invalid (default view)
         example:
             fault: false
@@ -931,7 +935,7 @@ definitions:
             message: parameter 'p' must be an integer
             name: bad_request
             temporary: true
-            timeout: false
+            timeout: true
         required:
             - name
             - id
@@ -969,11 +973,11 @@ definitions:
                 example: false
         description: Internal Error (default view)
         example:
-            fault: false
+            fault: true
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
-            temporary: false
+            temporary: true
             timeout: false
         required:
             - name
@@ -989,10 +993,10 @@ definitions:
             content:
                 type: string
                 description: raw image content
-                example: Corrupti facere dolorem quod saepe quos.
+                example: Deserunt qui qui alias exercitationem debitis aut.
         description: Image Content
         example:
-            content: Ab voluptatem.
+            content: Aut accusamus repudiandae labore.
     PostingsEditPostResponseBody:
         title: PostingsEditPostResponseBody
         $ref: '#/definitions/PostResponseResponseBody'
@@ -1003,7 +1007,7 @@ definitions:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: false
+                example: true
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -1019,19 +1023,19 @@ definitions:
             temporary:
                 type: boolean
                 description: Is the error temporary?
-                example: true
+                example: false
             timeout:
                 type: boolean
                 description: Is the error a timeout?
-                example: false
+                example: true
         description: Credentials are invalid (default view)
         example:
-            fault: false
+            fault: true
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
-            temporary: false
-            timeout: false
+            temporary: true
+            timeout: true
         required:
             - name
             - id
@@ -1062,7 +1066,7 @@ definitions:
             temporary:
                 type: boolean
                 description: Is the error temporary?
-                example: true
+                example: false
             timeout:
                 type: boolean
                 description: Is the error a timeout?
@@ -1074,7 +1078,7 @@ definitions:
             message: parameter 'p' must be an integer
             name: bad_request
             temporary: true
-            timeout: true
+            timeout: false
         required:
             - name
             - id
@@ -1132,6 +1136,49 @@ definitions:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
+                example: true
+            id:
+                type: string
+                description: ID is a unique identifier for this particular occurrence of the problem.
+                example: 123abc
+            message:
+                type: string
+                description: Message is a human-readable explanation specific to this occurrence of the problem.
+                example: parameter 'p' must be an integer
+            name:
+                type: string
+                description: Name is the name of this class of errors.
+                example: bad_request
+            temporary:
+                type: boolean
+                description: Is the error temporary?
+                example: false
+            timeout:
+                type: boolean
+                description: Is the error a timeout?
+                example: false
+        description: Internal Error (default view)
+        example:
+            fault: false
+            id: 123abc
+            message: parameter 'p' must be an integer
+            name: bad_request
+            temporary: true
+            timeout: true
+        required:
+            - name
+            - id
+            - message
+            - temporary
+            - timeout
+            - fault
+    PostingsGetImagesForPostUnauthorizedResponseBody:
+        title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+        type: object
+        properties:
+            fault:
+                type: boolean
+                description: Is the error a server-side fault?
                 example: false
             id:
                 type: string
@@ -1148,12 +1195,12 @@ definitions:
             temporary:
                 type: boolean
                 description: Is the error temporary?
-                example: true
+                example: false
             timeout:
                 type: boolean
                 description: Is the error a timeout?
                 example: true
-        description: Internal Error (default view)
+        description: Credentials are invalid (default view)
         example:
             fault: false
             id: 123abc
@@ -1168,7 +1215,50 @@ definitions:
             - temporary
             - timeout
             - fault
-    PostingsGetImagesForPostUnauthorizedResponseBody:
+    PostingsGetPostPageFilteredInternalResponseBody:
+        title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+        type: object
+        properties:
+            fault:
+                type: boolean
+                description: Is the error a server-side fault?
+                example: true
+            id:
+                type: string
+                description: ID is a unique identifier for this particular occurrence of the problem.
+                example: 123abc
+            message:
+                type: string
+                description: Message is a human-readable explanation specific to this occurrence of the problem.
+                example: parameter 'p' must be an integer
+            name:
+                type: string
+                description: Name is the name of this class of errors.
+                example: bad_request
+            temporary:
+                type: boolean
+                description: Is the error temporary?
+                example: false
+            timeout:
+                type: boolean
+                description: Is the error a timeout?
+                example: true
+        description: Internal Error (default view)
+        example:
+            fault: true
+            id: 123abc
+            message: parameter 'p' must be an integer
+            name: bad_request
+            temporary: true
+            timeout: true
+        required:
+            - name
+            - id
+            - message
+            - temporary
+            - timeout
+            - fault
+    PostingsGetPostPageFilteredUnauthorizedResponseBody:
         title: 'Mediatype identifier: application/vnd.goa.error; view=default'
         type: object
         properties:
@@ -1203,92 +1293,6 @@ definitions:
             message: parameter 'p' must be an integer
             name: bad_request
             temporary: true
-            timeout: true
-        required:
-            - name
-            - id
-            - message
-            - temporary
-            - timeout
-            - fault
-    PostingsGetPostPageFilteredInternalResponseBody:
-        title: 'Mediatype identifier: application/vnd.goa.error; view=default'
-        type: object
-        properties:
-            fault:
-                type: boolean
-                description: Is the error a server-side fault?
-                example: false
-            id:
-                type: string
-                description: ID is a unique identifier for this particular occurrence of the problem.
-                example: 123abc
-            message:
-                type: string
-                description: Message is a human-readable explanation specific to this occurrence of the problem.
-                example: parameter 'p' must be an integer
-            name:
-                type: string
-                description: Name is the name of this class of errors.
-                example: bad_request
-            temporary:
-                type: boolean
-                description: Is the error temporary?
-                example: true
-            timeout:
-                type: boolean
-                description: Is the error a timeout?
-                example: true
-        description: Internal Error (default view)
-        example:
-            fault: true
-            id: 123abc
-            message: parameter 'p' must be an integer
-            name: bad_request
-            temporary: false
-            timeout: false
-        required:
-            - name
-            - id
-            - message
-            - temporary
-            - timeout
-            - fault
-    PostingsGetPostPageFilteredUnauthorizedResponseBody:
-        title: 'Mediatype identifier: application/vnd.goa.error; view=default'
-        type: object
-        properties:
-            fault:
-                type: boolean
-                description: Is the error a server-side fault?
-                example: false
-            id:
-                type: string
-                description: ID is a unique identifier for this particular occurrence of the problem.
-                example: 123abc
-            message:
-                type: string
-                description: Message is a human-readable explanation specific to this occurrence of the problem.
-                example: parameter 'p' must be an integer
-            name:
-                type: string
-                description: Name is the name of this class of errors.
-                example: bad_request
-            temporary:
-                type: boolean
-                description: Is the error temporary?
-                example: true
-            timeout:
-                type: boolean
-                description: Is the error a timeout?
-                example: false
-        description: Credentials are invalid (default view)
-        example:
-            fault: true
-            id: 123abc
-            message: parameter 'p' must be an integer
-            name: bad_request
-            temporary: false
             timeout: false
         required:
             - name
@@ -1304,7 +1308,7 @@ definitions:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: true
+                example: false
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -1331,7 +1335,7 @@ definitions:
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
-            temporary: true
+            temporary: false
             timeout: false
         required:
             - name
@@ -1347,7 +1351,7 @@ definitions:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: false
+                example: true
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -1367,14 +1371,14 @@ definitions:
             timeout:
                 type: boolean
                 description: Is the error a timeout?
-                example: false
+                example: true
         description: Credentials are invalid (default view)
         example:
-            fault: true
+            fault: false
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
-            temporary: true
+            temporary: false
             timeout: false
         required:
             - name
@@ -1390,46 +1394,53 @@ definitions:
             imageID:
                 type: string
                 description: Image ID
-                example: Aperiam officiis ipsa quia praesentium autem impedit.
+                example: Et accusantium ullam dolore excepturi.
         description: Profile Photo uuid
         example:
-            imageID: Soluta molestiae deleniti non aliquam sed.
+            imageID: Veniam quia sit esse aliquam.
     SignupSignupRequestBody:
         title: SignupSignupRequestBody
         type: object
         properties:
+            bio:
+                type: string
+                description: Bio
+                example: Quis ut ea eius minus delectus deserunt.
             email:
                 type: string
                 description: Email
-                example: Expedita adipisci tenetur voluptatibus quisquam.
+                example: Adipisci tenetur voluptatibus.
             firstName:
                 type: string
                 description: First name
-                example: Et in nostrum est ut consequatur explicabo.
+                example: Neque dolorem nulla.
             lastName:
                 type: string
                 description: Last name
-                example: Et aut omnis est eos neque dolorem.
+                example: Laborum magnam.
             phone:
                 type: string
                 description: Phone number
-                example: Placeat laborum magnam laboriosam consequatur.
-            profpic:
+                example: Consequatur tenetur.
+            profpicID:
                 type: string
                 description: Prof Pic UUID
-                example: Ut ea eius minus.
+                example: Et iusto temporibus asperiores sunt dicta molestiae.
         description: Describes a user
         example:
-            email: Laudantium repellat aliquid sed hic omnis.
-            firstName: Deserunt debitis et iusto temporibus.
-            lastName: Sunt dicta molestiae.
-            phone: Laboriosam nesciunt illo ipsam sapiente.
-            profpic: Earum velit eaque aut.
+            bio: Magni reiciendis animi.
+            email: Repudiandae animi et qui repudiandae sit.
+            firstName: Laboriosam nesciunt illo ipsam sapiente.
+            lastName: Laudantium repellat aliquid sed hic omnis.
+            phone: Earum velit eaque aut.
+            profpicID: Explicabo labore nesciunt illo sint ab eaque.
         required:
             - firstName
             - lastName
             - phone
             - email
+            - bio
+            - profpicID
     SignupSignupUnauthorizedResponseBody:
         title: 'Mediatype identifier: application/vnd.goa.error; view=default'
         type: object
@@ -1457,15 +1468,15 @@ definitions:
             timeout:
                 type: boolean
                 description: Is the error a timeout?
-                example: false
+                example: true
         description: Credentials are invalid (default view)
         example:
-            fault: true
+            fault: false
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
             temporary: false
-            timeout: false
+            timeout: true
         required:
             - name
             - id
@@ -1477,38 +1488,45 @@ definitions:
         title: UserResponseBody
         type: object
         properties:
+            bio:
+                type: string
+                description: Bio
+                example: Qui qui non impedit.
             email:
                 type: string
                 description: Email
-                example: Sit ut ipsam reprehenderit et facere rerum.
+                example: Voluptatem sunt illum doloribus.
             firstName:
                 type: string
                 description: First name
-                example: Repudiandae animi et qui repudiandae sit.
+                example: Sit ut ipsam reprehenderit et facere rerum.
             lastName:
                 type: string
                 description: Last name
-                example: Magni reiciendis animi.
+                example: A possimus quae soluta eos nostrum.
             phone:
                 type: string
                 description: Phone number
-                example: Explicabo labore nesciunt illo sint ab eaque.
-            profpic:
+                example: In velit.
+            profpicID:
                 type: string
                 description: Prof Pic UUID
-                example: A possimus quae soluta eos nostrum.
+                example: Vitae quis eos occaecati.
         description: Describes a user
         example:
-            email: Vitae quis eos occaecati.
-            firstName: In velit.
-            lastName: Voluptatem sunt illum doloribus.
-            phone: Qui qui non impedit.
-            profpic: Autem sed dignissimos accusamus in et.
+            bio: Aperiam officiis ipsa quia praesentium autem impedit.
+            email: Magnam sint ut pariatur ducimus voluptas autem.
+            firstName: Autem sed dignissimos accusamus in et.
+            lastName: Molestiae perferendis est esse doloribus.
+            phone: Cumque quasi vitae nihil vero eos.
+            profpicID: Soluta molestiae deleniti non aliquam sed.
         required:
             - firstName
             - lastName
             - phone
             - email
+            - bio
+            - profpicID
     UsersGetContactInfoResponseBody:
         title: UsersGetContactInfoResponseBody
         $ref: '#/definitions/UserResponseBody'
@@ -1519,7 +1537,7 @@ definitions:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: false
+                example: true
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -1535,7 +1553,7 @@ definitions:
             temporary:
                 type: boolean
                 description: Is the error temporary?
-                example: true
+                example: false
             timeout:
                 type: boolean
                 description: Is the error a timeout?
@@ -1562,10 +1580,10 @@ definitions:
             bio:
                 type: string
                 description: New Bio
-                example: Cumque quasi vitae nihil vero eos.
+                example: Sed voluptatibus cum voluptatem amet et maxime.
         description: Updated Bio
         example:
-            bio: Magnam sint ut pariatur ducimus voluptas autem.
+            bio: Dignissimos amet vero sed reprehenderit similique aliquid.
     UsersUpdateBioResponseBody:
         title: UsersUpdateBioResponseBody
         $ref: '#/definitions/UserResponseBody'
@@ -1576,7 +1594,7 @@ definitions:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: false
+                example: true
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -1592,19 +1610,19 @@ definitions:
             temporary:
                 type: boolean
                 description: Is the error temporary?
-                example: false
+                example: true
             timeout:
                 type: boolean
                 description: Is the error a timeout?
-                example: true
+                example: false
         description: Credentials are invalid (default view)
         example:
-            fault: true
+            fault: false
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
-            temporary: true
-            timeout: false
+            temporary: false
+            timeout: true
         required:
             - name
             - id
@@ -1619,10 +1637,10 @@ definitions:
             content:
                 type: string
                 description: raw image content
-                example: Sed voluptatibus cum voluptatem amet et maxime.
+                example: Ea placeat et maiores totam omnis sed.
         description: Image Content
         example:
-            content: Dignissimos amet vero sed reprehenderit similique aliquid.
+            content: Voluptas consequatur eum voluptates corrupti.
     UsersUpdateProfilePictureResponseBody:
         title: UsersUpdateProfilePictureResponseBody
         $ref: '#/definitions/Profile PhotoResponseBody'
@@ -1660,8 +1678,8 @@ definitions:
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
-            temporary: false
-            timeout: true
+            temporary: true
+            timeout: false
         required:
             - name
             - id

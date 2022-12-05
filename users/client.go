@@ -66,7 +66,7 @@ var (
 	GETEDITEDINFO string = "SELECT title, description, price, medium, sold, deliverytype, uploaddate FROM posts where postID=$1"
 	IMAGESPERPAGE int    = 25
 	UPDATEBIO     string = "UPDATE users SET bio = $1 WHERE userID = $2"
-	GETUSER       string = "SELECT firstname, lastname, phone, email FROM users WHERE userID = $1"
+	GETUSER       string = "SELECT firstname, lastname, phone, email, bio, profpicid FROM users WHERE userID = $1"
 )
 
 func (c *client) openDB() (*sql.DB, error) {
@@ -115,13 +115,13 @@ func (c *client) UpdateBio(ctx context.Context, p *users.UpdateBioPayload) (*use
 		return nil, err
 	}
 	rows, err := dbPool.Query(GETUSER, ctx.Value("UserID").(string))
-	var row users.User
+	var user users.User
 	for rows.Next() {
-		if err := rows.Scan(&row.FirstName, &row.LastName, &row.Phone, &row.Email); err != nil {
+		if err := rows.Scan(&user.FirstName, &user.LastName, &user.Phone, &user.Email, &user.Bio, &user.ProfpicID); err != nil {
 			return nil, err
 		}
 	}
-	resp := users.UpdateBioResult{UpdatedUser: &row}
+	resp := users.UpdateBioResult{UpdatedUser: &user}
 	return &resp, err
 }
 
@@ -138,13 +138,13 @@ func (c *client) GetContactInfo(ctx context.Context, p *users.GetContactInfoPayl
 		return nil, err
 	}
 
-	var row users.User
+	var user users.User
 	for rows.Next() {
-		if err := rows.Scan(&row.FirstName, &row.LastName, &row.Phone, &row.Email); err != nil {
+		if err := rows.Scan(&user.FirstName, &user.LastName, &user.Phone, &user.Email, &user.Bio, &user.ProfpicID); err != nil {
 			return nil, err
 		}
 	}
-	resp := users.GetContactInfoResult{ContactInfo: &row}
+	resp := users.GetContactInfoResult{ContactInfo: &user}
 	return &resp, err
 }
 

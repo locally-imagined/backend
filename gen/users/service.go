@@ -108,8 +108,10 @@ type User struct {
 	Phone string
 	// Email
 	Email string
+	// Bio
+	Bio string
 	// Prof Pic UUID
-	Profpic *string
+	ProfpicID string
 }
 
 // Credentials are invalid

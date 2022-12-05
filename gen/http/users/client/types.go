@@ -104,8 +104,10 @@ type UserResponseBody struct {
 	Phone *string `form:"phone,omitempty" json:"phone,omitempty" xml:"phone,omitempty"`
 	// Email
 	Email *string `form:"email,omitempty" json:"email,omitempty" xml:"email,omitempty"`
+	// Bio
+	Bio *string `form:"bio,omitempty" json:"bio,omitempty" xml:"bio,omitempty"`
 	// Prof Pic UUID
-	Profpic *string `form:"profpic,omitempty" json:"profpic,omitempty" xml:"profpic,omitempty"`
+	ProfpicID *string `form:"profpicID,omitempty" json:"profpicID,omitempty" xml:"profpicID,omitempty"`
 }
 
 // ProfilePhotoResponseBody is used to define fields on response body types.
@@ -140,7 +142,8 @@ func NewUpdateBioResultOK(body *UpdateBioResponseBody) *users.UpdateBioResult {
 		LastName:  *body.LastName,
 		Phone:     *body.Phone,
 		Email:     *body.Email,
-		Profpic:   body.Profpic,
+		Bio:       *body.Bio,
+		ProfpicID: *body.ProfpicID,
 	}
 	res := &users.UpdateBioResult{
 		UpdatedUser: v,
@@ -200,7 +203,8 @@ func NewGetContactInfoResultOK(body *GetContactInfoResponseBody) *users.GetConta
 		LastName:  *body.LastName,
 		Phone:     *body.Phone,
 		Email:     *body.Email,
-		Profpic:   body.Profpic,
+		Bio:       *body.Bio,
+		ProfpicID: *body.ProfpicID,
 	}
 	res := &users.GetContactInfoResult{
 		ContactInfo: v,
@@ -239,6 +243,12 @@ func ValidateUpdateBioResponseBody(body *UpdateBioResponseBody) (err error) {
 	if body.Email == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("email", "body"))
 	}
+	if body.Bio == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("bio", "body"))
+	}
+	if body.ProfpicID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("profpicID", "body"))
+	}
 	return
 }
 
@@ -256,6 +266,12 @@ func ValidateGetContactInfoResponseBody(body *GetContactInfoResponseBody) (err e
 	}
 	if body.Email == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("email", "body"))
+	}
+	if body.Bio == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("bio", "body"))
+	}
+	if body.ProfpicID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("profpicID", "body"))
 	}
 	return
 }
@@ -345,6 +361,12 @@ func ValidateUserResponseBody(body *UserResponseBody) (err error) {
 	}
 	if body.Email == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("email", "body"))
+	}
+	if body.Bio == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("bio", "body"))
+	}
+	if body.ProfpicID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("profpicID", "body"))
 	}
 	return
 }

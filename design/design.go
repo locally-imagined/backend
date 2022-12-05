@@ -314,8 +314,9 @@ var User = Type("User", func() {
 	Attribute("lastName", String, "Last name")
 	Attribute("phone", String, "Phone number")
 	Attribute("email", String, "Email")
-	Attribute("profpic", String, "Prof Pic UUID")
-	Required("firstName", "lastName", "phone", "email")
+	Attribute("bio", String, "Bio")
+	Attribute("profpicID", String, "Prof Pic UUID")
+	Required("firstName", "lastName", "phone", "email", "bio", "profpicID")
 })
 
 var ProfilePhoto = Type("Profile Photo", func() {
