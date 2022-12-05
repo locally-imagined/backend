@@ -17,7 +17,7 @@ func UpdateProfilePictureUsersPath() string {
 	return "/users/updateprofilepic"
 }
 
-// GetContactInfoUsersPath returns the URL path to the users service get_contact_info HTTP endpoint.
-func GetContactInfoUsersPath() string {
-	return "/users/contactinfo"
+// GetUserInfoUsersPath returns the URL path to the users service get_user_info HTTP endpoint.
+func GetUserInfoUsersPath() string {
+	return "/users/info"
 }

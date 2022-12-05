@@ -208,13 +208,13 @@ func DecodeUpdateProfilePictureResponse(decoder func(*http.Response) goahttp.Dec
 	}
 }
 
-// BuildGetContactInfoRequest instantiates a HTTP request object with method
-// and path set to call the "users" service "get_contact_info" endpoint
-func (c *Client) BuildGetContactInfoRequest(ctx context.Context, v interface{}) (*http.Request, error) {
-	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: GetContactInfoUsersPath()}
+// BuildGetUserInfoRequest instantiates a HTTP request object with method and
+// path set to call the "users" service "get_user_info" endpoint
+func (c *Client) BuildGetUserInfoRequest(ctx context.Context, v interface{}) (*http.Request, error) {
+	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: GetUserInfoUsersPath()}
 	req, err := http.NewRequest("GET", u.String(), nil)
 	if err != nil {
-		return nil, goahttp.ErrInvalidURL("users", "get_contact_info", u.String(), err)
+		return nil, goahttp.ErrInvalidURL("users", "get_user_info", u.String(), err)
 	}
 	if ctx != nil {
 		req = req.WithContext(ctx)
@@ -223,13 +223,13 @@ func (c *Client) BuildGetContactInfoRequest(ctx context.Context, v interface{}) 
 	return req, nil
 }
 
-// EncodeGetContactInfoRequest returns an encoder for requests sent to the
-// users get_contact_info server.
-func EncodeGetContactInfoRequest(encoder func(*http.Request) goahttp.Encoder) func(*http.Request, interface{}) error {
+// EncodeGetUserInfoRequest returns an encoder for requests sent to the users
+// get_user_info server.
+func EncodeGetUserInfoRequest(encoder func(*http.Request) goahttp.Encoder) func(*http.Request, interface{}) error {
 	return func(req *http.Request, v interface{}) error {
-		p, ok := v.(*users.GetContactInfoPayload)
+		p, ok := v.(*users.GetUserInfoPayload)
 		if !ok {
-			return goahttp.ErrInvalidType("users", "get_contact_info", "*users.GetContactInfoPayload", v)
+			return goahttp.ErrInvalidType("users", "get_user_info", "*users.GetUserInfoPayload", v)
 		}
 		values := req.URL.Query()
 		values.Add("userID", p.UserID)
@@ -238,13 +238,13 @@ func EncodeGetContactInfoRequest(encoder func(*http.Request) goahttp.Encoder) fu
 	}
 }
 
-// DecodeGetContactInfoResponse returns a decoder for responses returned by the
-// users get_contact_info endpoint. restoreBody controls whether the response
-// body should be restored after having been read.
-// DecodeGetContactInfoResponse may return the following errors:
+// DecodeGetUserInfoResponse returns a decoder for responses returned by the
+// users get_user_info endpoint. restoreBody controls whether the response body
+// should be restored after having been read.
+// DecodeGetUserInfoResponse may return the following errors:
 //   - "unauthorized" (type *goa.ServiceError): http.StatusUnauthorized
 //   - error: internal error
-func DecodeGetContactInfoResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
+func DecodeGetUserInfoResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
 	return func(resp *http.Response) (interface{}, error) {
 		if restoreBody {
 			b, err := io.ReadAll(resp.Body)
@@ -261,36 +261,36 @@ func DecodeGetContactInfoResponse(decoder func(*http.Response) goahttp.Decoder, 
 		switch resp.StatusCode {
 		case http.StatusOK:
 			var (
-				body GetContactInfoResponseBody
+				body GetUserInfoResponseBody
 				err  error
 			)
 			err = decoder(resp).Decode(&body)
 			if err != nil {
-				return nil, goahttp.ErrDecodingError("users", "get_contact_info", err)
+				return nil, goahttp.ErrDecodingError("users", "get_user_info", err)
 			}
-			err = ValidateGetContactInfoResponseBody(&body)
+			err = ValidateGetUserInfoResponseBody(&body)
 			if err != nil {
-				return nil, goahttp.ErrValidationError("users", "get_contact_info", err)
+				return nil, goahttp.ErrValidationError("users", "get_user_info", err)
 			}
-			res := NewGetContactInfoResultOK(&body)
+			res := NewGetUserInfoResultOK(&body)
 			return res, nil
 		case http.StatusUnauthorized:
 			var (
-				body GetContactInfoUnauthorizedResponseBody
+				body GetUserInfoUnauthorizedResponseBody
 				err  error
 			)
 			err = decoder(resp).Decode(&body)
 			if err != nil {
-				return nil, goahttp.ErrDecodingError("users", "get_contact_info", err)
+				return nil, goahttp.ErrDecodingError("users", "get_user_info", err)
 			}
-			err = ValidateGetContactInfoUnauthorizedResponseBody(&body)
+			err = ValidateGetUserInfoUnauthorizedResponseBody(&body)
 			if err != nil {
-				return nil, goahttp.ErrValidationError("users", "get_contact_info", err)
+				return nil, goahttp.ErrValidationError("users", "get_user_info", err)
 			}
-			return nil, NewGetContactInfoUnauthorized(&body)
+			return nil, NewGetUserInfoUnauthorized(&body)
 		default:
 			body, _ := io.ReadAll(resp.Body)
-			return nil, goahttp.ErrInvalidResponse("users", "get_contact_info", resp.StatusCode, string(body))
+			return nil, goahttp.ErrInvalidResponse("users", "get_user_info", resp.StatusCode, string(body))
 		}
 	}
 }

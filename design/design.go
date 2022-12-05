@@ -65,7 +65,7 @@ var _ = Service("signup", func() {
 		Payload(func() {
 			Username("username", String, "Raw username")
 			Password("password", String, "User password")
-			Attribute("user", User)
+			Attribute("user", NewUser)
 			Required("username", "password", "user")
 		})
 		Result(func() {
@@ -229,13 +229,13 @@ var _ = Service("users", func() {
 			Required("token", "bio")
 		})
 		Result(func() {
-			Attribute("updated_user", User)
+			Attribute("user", User, "Updated user")
 		})
 		HTTP(func() {
 			PUT("/users/updatebio")
 			Body("bio")
 			Response(func() {
-				Body("updated_user")
+				Body("user")
 			})
 		})
 	})
@@ -257,19 +257,19 @@ var _ = Service("users", func() {
 			})
 		})
 	})
-	Method("get_contact_info", func() {
+	Method("get_user_info", func() {
 		Payload(func() {
 			Attribute("userID", String, "userid of user whose info to retrieve")
 			Required("userID")
 		})
 		Result(func() {
-			Attribute("contact_info", User)
+			Attribute("user", User)
 		})
 		HTTP(func() {
-			GET("/users/contactinfo")
+			GET("/users/info")
 			Param("userID")
 			Response(func() {
-				Body("contact_info")
+				Body("user")
 			})
 		})
 	})
@@ -306,6 +306,15 @@ var Content = Type("Content", func() {
 var Bio = Type("Bio", func() {
 	Description("Updated Bio")
 	Attribute("bio", String, "New Bio")
+})
+
+var NewUser = Type("NewUser", func() {
+	Description("Describes a user at signup")
+	Attribute("firstName", String, "First name")
+	Attribute("lastName", String, "Last name")
+	Attribute("phone", String, "Phone number")
+	Attribute("email", String, "Email")
+	Required("firstName", "lastName", "phone", "email")
 })
 
 var User = Type("User", func() {

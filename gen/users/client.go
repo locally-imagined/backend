@@ -17,15 +17,15 @@ import (
 type Client struct {
 	UpdateBioEndpoint            goa.Endpoint
 	UpdateProfilePictureEndpoint goa.Endpoint
-	GetContactInfoEndpoint       goa.Endpoint
+	GetUserInfoEndpoint          goa.Endpoint
 }
 
 // NewClient initializes a "users" service client given the endpoints.
-func NewClient(updateBio, updateProfilePicture, getContactInfo goa.Endpoint) *Client {
+func NewClient(updateBio, updateProfilePicture, getUserInfo goa.Endpoint) *Client {
 	return &Client{
 		UpdateBioEndpoint:            updateBio,
 		UpdateProfilePictureEndpoint: updateProfilePicture,
-		GetContactInfoEndpoint:       getContactInfo,
+		GetUserInfoEndpoint:          getUserInfo,
 	}
 }
 
@@ -56,15 +56,15 @@ func (c *Client) UpdateProfilePicture(ctx context.Context, p *UpdateProfilePictu
 	return ires.(*UpdateProfilePictureResult), nil
 }
 
-// GetContactInfo calls the "get_contact_info" endpoint of the "users" service.
-// GetContactInfo may return the following errors:
+// GetUserInfo calls the "get_user_info" endpoint of the "users" service.
+// GetUserInfo may return the following errors:
 //   - "unauthorized" (type Unauthorized)
 //   - error: internal error
-func (c *Client) GetContactInfo(ctx context.Context, p *GetContactInfoPayload) (res *GetContactInfoResult, err error) {
+func (c *Client) GetUserInfo(ctx context.Context, p *GetUserInfoPayload) (res *GetUserInfoResult, err error) {
 	var ires interface{}
-	ires, err = c.GetContactInfoEndpoint(ctx, p)
+	ires, err = c.GetUserInfoEndpoint(ctx, p)
 	if err != nil {
 		return
 	}
-	return ires.(*GetContactInfoResult), nil
+	return ires.(*GetUserInfoResult), nil
 }

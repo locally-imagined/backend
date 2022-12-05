@@ -65,14 +65,14 @@ func BuildUpdateProfilePicturePayload(usersUpdateProfilePictureBody string, user
 	return res, nil
 }
 
-// BuildGetContactInfoPayload builds the payload for the users get_contact_info
+// BuildGetUserInfoPayload builds the payload for the users get_user_info
 // endpoint from CLI flags.
-func BuildGetContactInfoPayload(usersGetContactInfoUserID string) (*users.GetContactInfoPayload, error) {
+func BuildGetUserInfoPayload(usersGetUserInfoUserID string) (*users.GetUserInfoPayload, error) {
 	var userID string
 	{
-		userID = usersGetContactInfoUserID
+		userID = usersGetUserInfoUserID
 	}
-	v := &users.GetContactInfoPayload{}
+	v := &users.GetUserInfoPayload{}
 	v.UserID = userID
 
 	return v, nil

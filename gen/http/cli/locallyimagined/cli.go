@@ -27,21 +27,19 @@ import (
 func UsageCommands() string {
 	return `login login
 signup signup
-users (update-bio|update-profile-picture|get-contact-info)
+users (update-bio|update-profile-picture|get-user-info)
 postings (create-post|delete-post|edit-post|get-post-page|get-artist-post-page|get-post-page-filtered|get-images-for-post)
 `
 }
 
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
-	return os.Args[0] + ` login login --username "Nihil cum ipsum neque." --password "Voluptatem enim eligendi doloremque ut enim distinctio."` + "\n" +
+	return os.Args[0] + ` login login --username "Quisquam eveniet." --password "Dolore et ad voluptatum est at."` + "\n" +
 		os.Args[0] + ` signup signup --body '{
-      "bio": "Error assumenda adipisci.",
-      "email": "Nihil repellendus et ratione.",
-      "firstName": "Autem minima reprehenderit consequuntur.",
-      "lastName": "Veritatis voluptatum nihil.",
-      "phone": "Est iusto eos sunt quis deleniti.",
-      "profpicID": "Et commodi."
+      "email": "Et commodi.",
+      "firstName": "Est iusto eos sunt quis deleniti.",
+      "lastName": "Nihil repellendus et ratione.",
+      "phone": "Error assumenda adipisci."
    }' --username "Est velit consectetur et voluptatem magni sunt." --password "Beatae ipsum consequuntur et excepturi praesentium."` + "\n" +
 		os.Args[0] + ` users update-bio --body '{
       "bio": "Sit voluptates."
@@ -95,8 +93,8 @@ func ParseEndpoint(
 		usersUpdateProfilePictureBodyFlag  = usersUpdateProfilePictureFlags.String("body", "REQUIRED", "")
 		usersUpdateProfilePictureTokenFlag = usersUpdateProfilePictureFlags.String("token", "REQUIRED", "")
 
-		usersGetContactInfoFlags      = flag.NewFlagSet("get-contact-info", flag.ExitOnError)
-		usersGetContactInfoUserIDFlag = usersGetContactInfoFlags.String("user-id", "REQUIRED", "")
+		usersGetUserInfoFlags      = flag.NewFlagSet("get-user-info", flag.ExitOnError)
+		usersGetUserInfoUserIDFlag = usersGetUserInfoFlags.String("user-id", "REQUIRED", "")
 
 		postingsFlags = flag.NewFlagSet("postings", flag.ContinueOnError)
 
@@ -146,7 +144,7 @@ func ParseEndpoint(
 	usersFlags.Usage = usersUsage
 	usersUpdateBioFlags.Usage = usersUpdateBioUsage
 	usersUpdateProfilePictureFlags.Usage = usersUpdateProfilePictureUsage
-	usersGetContactInfoFlags.Usage = usersGetContactInfoUsage
+	usersGetUserInfoFlags.Usage = usersGetUserInfoUsage
 
 	postingsFlags.Usage = postingsUsage
 	postingsCreatePostFlags.Usage = postingsCreatePostUsage
@@ -217,8 +215,8 @@ func ParseEndpoint(
 			case "update-profile-picture":
 				epf = usersUpdateProfilePictureFlags
 
-			case "get-contact-info":
-				epf = usersGetContactInfoFlags
+			case "get-user-info":
+				epf = usersGetUserInfoFlags
 
 			}
 
@@ -290,9 +288,9 @@ func ParseEndpoint(
 			case "update-profile-picture":
 				endpoint = c.UpdateProfilePicture()
 				data, err = usersc.BuildUpdateProfilePicturePayload(*usersUpdateProfilePictureBodyFlag, *usersUpdateProfilePictureTokenFlag)
-			case "get-contact-info":
-				endpoint = c.GetContactInfo()
-				data, err = usersc.BuildGetContactInfoPayload(*usersGetContactInfoUserIDFlag)
+			case "get-user-info":
+				endpoint = c.GetUserInfo()
+				data, err = usersc.BuildGetUserInfoPayload(*usersGetUserInfoUserIDFlag)
 			}
 		case "postings":
 			c := postingsc.NewClient(scheme, host, doer, enc, dec, restore)
@@ -349,7 +347,7 @@ Login implements Login.
     -password STRING: User password
 
 Example:
-    %[1]s login login --username "Nihil cum ipsum neque." --password "Voluptatem enim eligendi doloremque ut enim distinctio."
+    %[1]s login login --username "Quisquam eveniet." --password "Dolore et ad voluptatum est at."
 `, os.Args[0])
 }
 
@@ -376,12 +374,10 @@ Signup implements Signup.
 
 Example:
     %[1]s signup signup --body '{
-      "bio": "Error assumenda adipisci.",
-      "email": "Nihil repellendus et ratione.",
-      "firstName": "Autem minima reprehenderit consequuntur.",
-      "lastName": "Veritatis voluptatum nihil.",
-      "phone": "Est iusto eos sunt quis deleniti.",
-      "profpicID": "Et commodi."
+      "email": "Et commodi.",
+      "firstName": "Est iusto eos sunt quis deleniti.",
+      "lastName": "Nihil repellendus et ratione.",
+      "phone": "Error assumenda adipisci."
    }' --username "Est velit consectetur et voluptatem magni sunt." --password "Beatae ipsum consequuntur et excepturi praesentium."
 `, os.Args[0])
 }
@@ -395,7 +391,7 @@ Usage:
 COMMAND:
     update-bio: UpdateBio implements update_bio.
     update-profile-picture: UpdateProfilePicture implements update_profile_picture.
-    get-contact-info: GetContactInfo implements get_contact_info.
+    get-user-info: GetUserInfo implements get_user_info.
 
 Additional help:
     %[1]s users COMMAND --help
@@ -429,14 +425,14 @@ Example:
 `, os.Args[0])
 }
 
-func usersGetContactInfoUsage() {
-	fmt.Fprintf(os.Stderr, `%[1]s [flags] users get-contact-info -user-id STRING
+func usersGetUserInfoUsage() {
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] users get-user-info -user-id STRING
 
-GetContactInfo implements get_contact_info.
+GetUserInfo implements get_user_info.
     -user-id STRING: 
 
 Example:
-    %[1]s users get-contact-info --user-id "Doloribus expedita ut consequuntur et est."
+    %[1]s users get-user-info --user-id "Doloribus expedita ut consequuntur et est."
 `, os.Args[0])
 }
 

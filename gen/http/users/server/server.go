@@ -22,7 +22,7 @@ type Server struct {
 	Mounts               []*MountPoint
 	UpdateBio            http.Handler
 	UpdateProfilePicture http.Handler
-	GetContactInfo       http.Handler
+	GetUserInfo          http.Handler
 	CORS                 http.Handler
 }
 
@@ -55,14 +55,14 @@ func New(
 		Mounts: []*MountPoint{
 			{"UpdateBio", "PUT", "/users/updatebio"},
 			{"UpdateProfilePicture", "PUT", "/users/updateprofilepic"},
-			{"GetContactInfo", "GET", "/users/contactinfo"},
+			{"GetUserInfo", "GET", "/users/info"},
 			{"CORS", "OPTIONS", "/users/updatebio"},
 			{"CORS", "OPTIONS", "/users/updateprofilepic"},
-			{"CORS", "OPTIONS", "/users/contactinfo"},
+			{"CORS", "OPTIONS", "/users/info"},
 		},
 		UpdateBio:            NewUpdateBioHandler(e.UpdateBio, mux, decoder, encoder, errhandler, formatter),
 		UpdateProfilePicture: NewUpdateProfilePictureHandler(e.UpdateProfilePicture, mux, decoder, encoder, errhandler, formatter),
-		GetContactInfo:       NewGetContactInfoHandler(e.GetContactInfo, mux, decoder, encoder, errhandler, formatter),
+		GetUserInfo:          NewGetUserInfoHandler(e.GetUserInfo, mux, decoder, encoder, errhandler, formatter),
 		CORS:                 NewCORSHandler(),
 	}
 }
@@ -74,7 +74,7 @@ func (s *Server) Service() string { return "users" }
 func (s *Server) Use(m func(http.Handler) http.Handler) {
 	s.UpdateBio = m(s.UpdateBio)
 	s.UpdateProfilePicture = m(s.UpdateProfilePicture)
-	s.GetContactInfo = m(s.GetContactInfo)
+	s.GetUserInfo = m(s.GetUserInfo)
 	s.CORS = m(s.CORS)
 }
 
@@ -85,7 +85,7 @@ func (s *Server) MethodNames() []string { return users.MethodNames[:] }
 func Mount(mux goahttp.Muxer, h *Server) {
 	MountUpdateBioHandler(mux, h.UpdateBio)
 	MountUpdateProfilePictureHandler(mux, h.UpdateProfilePicture)
-	MountGetContactInfoHandler(mux, h.GetContactInfo)
+	MountGetUserInfoHandler(mux, h.GetUserInfo)
 	MountCORSHandler(mux, h.CORS)
 }
 
@@ -196,21 +196,21 @@ func NewUpdateProfilePictureHandler(
 	})
 }
 
-// MountGetContactInfoHandler configures the mux to serve the "users" service
-// "get_contact_info" endpoint.
-func MountGetContactInfoHandler(mux goahttp.Muxer, h http.Handler) {
+// MountGetUserInfoHandler configures the mux to serve the "users" service
+// "get_user_info" endpoint.
+func MountGetUserInfoHandler(mux goahttp.Muxer, h http.Handler) {
 	f, ok := HandleUsersOrigin(h).(http.HandlerFunc)
 	if !ok {
 		f = func(w http.ResponseWriter, r *http.Request) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("GET", "/users/contactinfo", f)
+	mux.Handle("GET", "/users/info", f)
 }
 
-// NewGetContactInfoHandler creates a HTTP handler which loads the HTTP request
-// and calls the "users" service "get_contact_info" endpoint.
-func NewGetContactInfoHandler(
+// NewGetUserInfoHandler creates a HTTP handler which loads the HTTP request
+// and calls the "users" service "get_user_info" endpoint.
+func NewGetUserInfoHandler(
 	endpoint goa.Endpoint,
 	mux goahttp.Muxer,
 	decoder func(*http.Request) goahttp.Decoder,
@@ -219,13 +219,13 @@ func NewGetContactInfoHandler(
 	formatter func(ctx context.Context, err error) goahttp.Statuser,
 ) http.Handler {
 	var (
-		decodeRequest  = DecodeGetContactInfoRequest(mux, decoder)
-		encodeResponse = EncodeGetContactInfoResponse(encoder)
-		encodeError    = EncodeGetContactInfoError(encoder, formatter)
+		decodeRequest  = DecodeGetUserInfoRequest(mux, decoder)
+		encodeResponse = EncodeGetUserInfoResponse(encoder)
+		encodeError    = EncodeGetUserInfoError(encoder, formatter)
 	)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
-		ctx = context.WithValue(ctx, goa.MethodKey, "get_contact_info")
+		ctx = context.WithValue(ctx, goa.MethodKey, "get_user_info")
 		ctx = context.WithValue(ctx, goa.ServiceKey, "users")
 		payload, err := decodeRequest(r)
 		if err != nil {
@@ -253,7 +253,7 @@ func MountCORSHandler(mux goahttp.Muxer, h http.Handler) {
 	h = HandleUsersOrigin(h)
 	mux.Handle("OPTIONS", "/users/updatebio", h.ServeHTTP)
 	mux.Handle("OPTIONS", "/users/updateprofilepic", h.ServeHTTP)
-	mux.Handle("OPTIONS", "/users/contactinfo", h.ServeHTTP)
+	mux.Handle("OPTIONS", "/users/info", h.ServeHTTP)
 }
 
 // NewCORSHandler creates a HTTP handler which returns a simple 200 response.

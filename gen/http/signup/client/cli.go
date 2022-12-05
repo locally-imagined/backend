@@ -21,7 +21,7 @@ func BuildSignupPayload(signupSignupBody string, signupSignupUsername string, si
 	{
 		err = json.Unmarshal([]byte(signupSignupBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"bio\": \"Error assumenda adipisci.\",\n      \"email\": \"Nihil repellendus et ratione.\",\n      \"firstName\": \"Autem minima reprehenderit consequuntur.\",\n      \"lastName\": \"Veritatis voluptatum nihil.\",\n      \"phone\": \"Est iusto eos sunt quis deleniti.\",\n      \"profpicID\": \"Et commodi.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"email\": \"Et commodi.\",\n      \"firstName\": \"Est iusto eos sunt quis deleniti.\",\n      \"lastName\": \"Nihil repellendus et ratione.\",\n      \"phone\": \"Error assumenda adipisci.\"\n   }'")
 		}
 	}
 	var username string
@@ -32,13 +32,11 @@ func BuildSignupPayload(signupSignupBody string, signupSignupUsername string, si
 	{
 		password = signupSignupPassword
 	}
-	v := &signup.User{
+	v := &signup.NewUser{
 		FirstName: body.FirstName,
 		LastName:  body.LastName,
 		Phone:     body.Phone,
 		Email:     body.Email,
-		Bio:       body.Bio,
-		ProfpicID: body.ProfpicID,
 	}
 	res := &signup.SignupPayload{
 		User: v,

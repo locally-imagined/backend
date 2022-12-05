@@ -35,9 +35,9 @@ type UpdateBioResponseBody UserResponseBody
 // "update_profile_picture" endpoint HTTP response body.
 type UpdateProfilePictureResponseBody ProfilePhotoResponseBody
 
-// GetContactInfoResponseBody is the type of the "users" service
-// "get_contact_info" endpoint HTTP response body.
-type GetContactInfoResponseBody UserResponseBody
+// GetUserInfoResponseBody is the type of the "users" service "get_user_info"
+// endpoint HTTP response body.
+type GetUserInfoResponseBody UserResponseBody
 
 // UpdateBioUnauthorizedResponseBody is the type of the "users" service
 // "update_bio" endpoint HTTP response body for the "unauthorized" error.
@@ -76,9 +76,9 @@ type UpdateProfilePictureUnauthorizedResponseBody struct {
 	Fault bool `form:"fault" json:"fault" xml:"fault"`
 }
 
-// GetContactInfoUnauthorizedResponseBody is the type of the "users" service
-// "get_contact_info" endpoint HTTP response body for the "unauthorized" error.
-type GetContactInfoUnauthorizedResponseBody struct {
+// GetUserInfoUnauthorizedResponseBody is the type of the "users" service
+// "get_user_info" endpoint HTTP response body for the "unauthorized" error.
+type GetUserInfoUnauthorizedResponseBody struct {
 	// Name is the name of this class of errors.
 	Name string `form:"name" json:"name" xml:"name"`
 	// ID is a unique identifier for this particular occurrence of the problem.
@@ -120,12 +120,12 @@ type ProfilePhotoResponseBody struct {
 // the "update_bio" endpoint of the "users" service.
 func NewUpdateBioResponseBody(res *users.UpdateBioResult) *UpdateBioResponseBody {
 	body := &UpdateBioResponseBody{
-		FirstName: res.UpdatedUser.FirstName,
-		LastName:  res.UpdatedUser.LastName,
-		Phone:     res.UpdatedUser.Phone,
-		Email:     res.UpdatedUser.Email,
-		Bio:       res.UpdatedUser.Bio,
-		ProfpicID: res.UpdatedUser.ProfpicID,
+		FirstName: res.User.FirstName,
+		LastName:  res.User.LastName,
+		Phone:     res.User.Phone,
+		Email:     res.User.Email,
+		Bio:       res.User.Bio,
+		ProfpicID: res.User.ProfpicID,
 	}
 	return body
 }
@@ -139,16 +139,16 @@ func NewUpdateProfilePictureResponseBody(res *users.UpdateProfilePictureResult) 
 	return body
 }
 
-// NewGetContactInfoResponseBody builds the HTTP response body from the result
-// of the "get_contact_info" endpoint of the "users" service.
-func NewGetContactInfoResponseBody(res *users.GetContactInfoResult) *GetContactInfoResponseBody {
-	body := &GetContactInfoResponseBody{
-		FirstName: res.ContactInfo.FirstName,
-		LastName:  res.ContactInfo.LastName,
-		Phone:     res.ContactInfo.Phone,
-		Email:     res.ContactInfo.Email,
-		Bio:       res.ContactInfo.Bio,
-		ProfpicID: res.ContactInfo.ProfpicID,
+// NewGetUserInfoResponseBody builds the HTTP response body from the result of
+// the "get_user_info" endpoint of the "users" service.
+func NewGetUserInfoResponseBody(res *users.GetUserInfoResult) *GetUserInfoResponseBody {
+	body := &GetUserInfoResponseBody{
+		FirstName: res.User.FirstName,
+		LastName:  res.User.LastName,
+		Phone:     res.User.Phone,
+		Email:     res.User.Email,
+		Bio:       res.User.Bio,
+		ProfpicID: res.User.ProfpicID,
 	}
 	return body
 }
@@ -182,10 +182,10 @@ func NewUpdateProfilePictureUnauthorizedResponseBody(res *goa.ServiceError) *Upd
 	return body
 }
 
-// NewGetContactInfoUnauthorizedResponseBody builds the HTTP response body from
-// the result of the "get_contact_info" endpoint of the "users" service.
-func NewGetContactInfoUnauthorizedResponseBody(res *goa.ServiceError) *GetContactInfoUnauthorizedResponseBody {
-	body := &GetContactInfoUnauthorizedResponseBody{
+// NewGetUserInfoUnauthorizedResponseBody builds the HTTP response body from
+// the result of the "get_user_info" endpoint of the "users" service.
+func NewGetUserInfoUnauthorizedResponseBody(res *goa.ServiceError) *GetUserInfoUnauthorizedResponseBody {
+	body := &GetUserInfoUnauthorizedResponseBody{
 		Name:      res.Name,
 		ID:        res.ID,
 		Message:   res.Message,
@@ -223,10 +223,9 @@ func NewUpdateProfilePicturePayload(body *UpdateProfilePictureRequestBody, token
 	return res
 }
 
-// NewGetContactInfoPayload builds a users service get_contact_info endpoint
-// payload.
-func NewGetContactInfoPayload(userID string) *users.GetContactInfoPayload {
-	v := &users.GetContactInfoPayload{}
+// NewGetUserInfoPayload builds a users service get_user_info endpoint payload.
+func NewGetUserInfoPayload(userID string) *users.GetUserInfoPayload {
+	v := &users.GetUserInfoPayload{}
 	v.UserID = userID
 
 	return v

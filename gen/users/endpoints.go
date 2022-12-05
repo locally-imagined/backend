@@ -18,7 +18,7 @@ import (
 type Endpoints struct {
 	UpdateBio            goa.Endpoint
 	UpdateProfilePicture goa.Endpoint
-	GetContactInfo       goa.Endpoint
+	GetUserInfo          goa.Endpoint
 }
 
 // NewEndpoints wraps the methods of the "users" service with endpoints.
@@ -28,7 +28,7 @@ func NewEndpoints(s Service) *Endpoints {
 	return &Endpoints{
 		UpdateBio:            NewUpdateBioEndpoint(s, a.JWTAuth),
 		UpdateProfilePicture: NewUpdateProfilePictureEndpoint(s, a.JWTAuth),
-		GetContactInfo:       NewGetContactInfoEndpoint(s),
+		GetUserInfo:          NewGetUserInfoEndpoint(s),
 	}
 }
 
@@ -36,7 +36,7 @@ func NewEndpoints(s Service) *Endpoints {
 func (e *Endpoints) Use(m func(goa.Endpoint) goa.Endpoint) {
 	e.UpdateBio = m(e.UpdateBio)
 	e.UpdateProfilePicture = m(e.UpdateProfilePicture)
-	e.GetContactInfo = m(e.GetContactInfo)
+	e.GetUserInfo = m(e.GetUserInfo)
 }
 
 // NewUpdateBioEndpoint returns an endpoint function that calls the method
@@ -77,11 +77,11 @@ func NewUpdateProfilePictureEndpoint(s Service, authJWTFn security.AuthJWTFunc) 
 	}
 }
 
-// NewGetContactInfoEndpoint returns an endpoint function that calls the method
-// "get_contact_info" of service "users".
-func NewGetContactInfoEndpoint(s Service) goa.Endpoint {
+// NewGetUserInfoEndpoint returns an endpoint function that calls the method
+// "get_user_info" of service "users".
+func NewGetUserInfoEndpoint(s Service) goa.Endpoint {
 	return func(ctx context.Context, req interface{}) (interface{}, error) {
-		p := req.(*GetContactInfoPayload)
-		return s.GetContactInfo(ctx, p)
+		p := req.(*GetUserInfoPayload)
+		return s.GetUserInfo(ctx, p)
 	}
 }

@@ -25,9 +25,9 @@ type Client struct {
 	// update_profile_picture endpoint.
 	UpdateProfilePictureDoer goahttp.Doer
 
-	// GetContactInfo Doer is the HTTP client used to make requests to the
-	// get_contact_info endpoint.
-	GetContactInfoDoer goahttp.Doer
+	// GetUserInfo Doer is the HTTP client used to make requests to the
+	// get_user_info endpoint.
+	GetUserInfoDoer goahttp.Doer
 
 	// CORS Doer is the HTTP client used to make requests to the  endpoint.
 	CORSDoer goahttp.Doer
@@ -54,7 +54,7 @@ func NewClient(
 	return &Client{
 		UpdateBioDoer:            doer,
 		UpdateProfilePictureDoer: doer,
-		GetContactInfoDoer:       doer,
+		GetUserInfoDoer:          doer,
 		CORSDoer:                 doer,
 		RestoreResponseBody:      restoreBody,
 		scheme:                   scheme,
@@ -112,15 +112,15 @@ func (c *Client) UpdateProfilePicture() goa.Endpoint {
 	}
 }
 
-// GetContactInfo returns an endpoint that makes HTTP requests to the users
-// service get_contact_info server.
-func (c *Client) GetContactInfo() goa.Endpoint {
+// GetUserInfo returns an endpoint that makes HTTP requests to the users
+// service get_user_info server.
+func (c *Client) GetUserInfo() goa.Endpoint {
 	var (
-		encodeRequest  = EncodeGetContactInfoRequest(c.encoder)
-		decodeResponse = DecodeGetContactInfoResponse(c.decoder, c.RestoreResponseBody)
+		encodeRequest  = EncodeGetUserInfoRequest(c.encoder)
+		decodeResponse = DecodeGetUserInfoResponse(c.decoder, c.RestoreResponseBody)
 	)
 	return func(ctx context.Context, v interface{}) (interface{}, error) {
-		req, err := c.BuildGetContactInfoRequest(ctx, v)
+		req, err := c.BuildGetUserInfoRequest(ctx, v)
 		if err != nil {
 			return nil, err
 		}
@@ -128,9 +128,9 @@ func (c *Client) GetContactInfo() goa.Endpoint {
 		if err != nil {
 			return nil, err
 		}
-		resp, err := c.GetContactInfoDoer.Do(req)
+		resp, err := c.GetUserInfoDoer.Do(req)
 		if err != nil {
-			return nil, goahttp.ErrRequestError("users", "get_contact_info", err)
+			return nil, goahttp.ErrRequestError("users", "get_user_info", err)
 		}
 		return decodeResponse(resp)
 	}

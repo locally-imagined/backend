@@ -35,9 +35,9 @@ type UpdateBioResponseBody UserResponseBody
 // "update_profile_picture" endpoint HTTP response body.
 type UpdateProfilePictureResponseBody ProfilePhotoResponseBody
 
-// GetContactInfoResponseBody is the type of the "users" service
-// "get_contact_info" endpoint HTTP response body.
-type GetContactInfoResponseBody UserResponseBody
+// GetUserInfoResponseBody is the type of the "users" service "get_user_info"
+// endpoint HTTP response body.
+type GetUserInfoResponseBody UserResponseBody
 
 // UpdateBioUnauthorizedResponseBody is the type of the "users" service
 // "update_bio" endpoint HTTP response body for the "unauthorized" error.
@@ -76,9 +76,9 @@ type UpdateProfilePictureUnauthorizedResponseBody struct {
 	Fault *bool `form:"fault,omitempty" json:"fault,omitempty" xml:"fault,omitempty"`
 }
 
-// GetContactInfoUnauthorizedResponseBody is the type of the "users" service
-// "get_contact_info" endpoint HTTP response body for the "unauthorized" error.
-type GetContactInfoUnauthorizedResponseBody struct {
+// GetUserInfoUnauthorizedResponseBody is the type of the "users" service
+// "get_user_info" endpoint HTTP response body for the "unauthorized" error.
+type GetUserInfoUnauthorizedResponseBody struct {
 	// Name is the name of this class of errors.
 	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
 	// ID is a unique identifier for this particular occurrence of the problem.
@@ -146,7 +146,7 @@ func NewUpdateBioResultOK(body *UpdateBioResponseBody) *users.UpdateBioResult {
 		ProfpicID: *body.ProfpicID,
 	}
 	res := &users.UpdateBioResult{
-		UpdatedUser: v,
+		User: v,
 	}
 
 	return res
@@ -195,9 +195,9 @@ func NewUpdateProfilePictureUnauthorized(body *UpdateProfilePictureUnauthorizedR
 	return v
 }
 
-// NewGetContactInfoResultOK builds a "users" service "get_contact_info"
-// endpoint result from a HTTP "OK" response.
-func NewGetContactInfoResultOK(body *GetContactInfoResponseBody) *users.GetContactInfoResult {
+// NewGetUserInfoResultOK builds a "users" service "get_user_info" endpoint
+// result from a HTTP "OK" response.
+func NewGetUserInfoResultOK(body *GetUserInfoResponseBody) *users.GetUserInfoResult {
 	v := &users.User{
 		FirstName: *body.FirstName,
 		LastName:  *body.LastName,
@@ -206,16 +206,16 @@ func NewGetContactInfoResultOK(body *GetContactInfoResponseBody) *users.GetConta
 		Bio:       *body.Bio,
 		ProfpicID: *body.ProfpicID,
 	}
-	res := &users.GetContactInfoResult{
-		ContactInfo: v,
+	res := &users.GetUserInfoResult{
+		User: v,
 	}
 
 	return res
 }
 
-// NewGetContactInfoUnauthorized builds a users service get_contact_info
-// endpoint unauthorized error.
-func NewGetContactInfoUnauthorized(body *GetContactInfoUnauthorizedResponseBody) *goa.ServiceError {
+// NewGetUserInfoUnauthorized builds a users service get_user_info endpoint
+// unauthorized error.
+func NewGetUserInfoUnauthorized(body *GetUserInfoUnauthorizedResponseBody) *goa.ServiceError {
 	v := &goa.ServiceError{
 		Name:      *body.Name,
 		ID:        *body.ID,
@@ -252,9 +252,9 @@ func ValidateUpdateBioResponseBody(body *UpdateBioResponseBody) (err error) {
 	return
 }
 
-// ValidateGetContactInfoResponseBody runs the validations defined on
-// get_contact_info_response_body
-func ValidateGetContactInfoResponseBody(body *GetContactInfoResponseBody) (err error) {
+// ValidateGetUserInfoResponseBody runs the validations defined on
+// get_user_info_response_body
+func ValidateGetUserInfoResponseBody(body *GetUserInfoResponseBody) (err error) {
 	if body.FirstName == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("firstName", "body"))
 	}
@@ -324,9 +324,9 @@ func ValidateUpdateProfilePictureUnauthorizedResponseBody(body *UpdateProfilePic
 	return
 }
 
-// ValidateGetContactInfoUnauthorizedResponseBody runs the validations defined
-// on get_contact_info_unauthorized_response_body
-func ValidateGetContactInfoUnauthorizedResponseBody(body *GetContactInfoUnauthorizedResponseBody) (err error) {
+// ValidateGetUserInfoUnauthorizedResponseBody runs the validations defined on
+// get_user_info_unauthorized_response_body
+func ValidateGetUserInfoUnauthorizedResponseBody(body *GetUserInfoUnauthorizedResponseBody) (err error) {
 	if body.Name == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("name", "body"))
 	}

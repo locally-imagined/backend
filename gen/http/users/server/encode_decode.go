@@ -175,21 +175,21 @@ func EncodeUpdateProfilePictureError(encoder func(context.Context, http.Response
 	}
 }
 
-// EncodeGetContactInfoResponse returns an encoder for responses returned by
-// the users get_contact_info endpoint.
-func EncodeGetContactInfoResponse(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder) func(context.Context, http.ResponseWriter, interface{}) error {
+// EncodeGetUserInfoResponse returns an encoder for responses returned by the
+// users get_user_info endpoint.
+func EncodeGetUserInfoResponse(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder) func(context.Context, http.ResponseWriter, interface{}) error {
 	return func(ctx context.Context, w http.ResponseWriter, v interface{}) error {
-		res, _ := v.(*users.GetContactInfoResult)
+		res, _ := v.(*users.GetUserInfoResult)
 		enc := encoder(ctx, w)
-		body := NewGetContactInfoResponseBody(res)
+		body := NewGetUserInfoResponseBody(res)
 		w.WriteHeader(http.StatusOK)
 		return enc.Encode(body)
 	}
 }
 
-// DecodeGetContactInfoRequest returns a decoder for requests sent to the users
-// get_contact_info endpoint.
-func DecodeGetContactInfoRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (interface{}, error) {
+// DecodeGetUserInfoRequest returns a decoder for requests sent to the users
+// get_user_info endpoint.
+func DecodeGetUserInfoRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (interface{}, error) {
 	return func(r *http.Request) (interface{}, error) {
 		var (
 			userID string
@@ -202,15 +202,15 @@ func DecodeGetContactInfoRequest(mux goahttp.Muxer, decoder func(*http.Request) 
 		if err != nil {
 			return nil, err
 		}
-		payload := NewGetContactInfoPayload(userID)
+		payload := NewGetUserInfoPayload(userID)
 
 		return payload, nil
 	}
 }
 
-// EncodeGetContactInfoError returns an encoder for errors returned by the
-// get_contact_info users endpoint.
-func EncodeGetContactInfoError(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder, formatter func(ctx context.Context, err error) goahttp.Statuser) func(context.Context, http.ResponseWriter, error) error {
+// EncodeGetUserInfoError returns an encoder for errors returned by the
+// get_user_info users endpoint.
+func EncodeGetUserInfoError(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder, formatter func(ctx context.Context, err error) goahttp.Statuser) func(context.Context, http.ResponseWriter, error) error {
 	encodeError := goahttp.ErrorEncoder(encoder, formatter)
 	return func(ctx context.Context, w http.ResponseWriter, v error) error {
 		var en goa.GoaErrorNamer
@@ -226,7 +226,7 @@ func EncodeGetContactInfoError(encoder func(context.Context, http.ResponseWriter
 			if formatter != nil {
 				body = formatter(ctx, res)
 			} else {
-				body = NewGetContactInfoUnauthorizedResponseBody(res)
+				body = NewGetUserInfoUnauthorizedResponseBody(res)
 			}
 			w.Header().Set("goa-error", res.GoaErrorName())
 			w.WriteHeader(http.StatusUnauthorized)

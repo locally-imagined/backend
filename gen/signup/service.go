@@ -36,22 +36,8 @@ const ServiceName = "signup"
 // MethodKey key.
 var MethodNames = [1]string{"Signup"}
 
-// SignupPayload is the payload type of the signup service Signup method.
-type SignupPayload struct {
-	// Raw username
-	Username string
-	// User password
-	Password string
-	User     *User
-}
-
-// SignupResult is the result type of the signup service Signup method.
-type SignupResult struct {
-	JWT *string
-}
-
-// Describes a user
-type User struct {
+// Describes a user at signup
+type NewUser struct {
 	// First name
 	FirstName string
 	// Last name
@@ -60,10 +46,20 @@ type User struct {
 	Phone string
 	// Email
 	Email string
-	// Bio
-	Bio string
-	// Prof Pic UUID
-	ProfpicID string
+}
+
+// SignupPayload is the payload type of the signup service Signup method.
+type SignupPayload struct {
+	// Raw username
+	Username string
+	// User password
+	Password string
+	User     *NewUser
+}
+
+// SignupResult is the result type of the signup service Signup method.
+type SignupResult struct {
+	JWT *string
 }
 
 // MakeUnauthorized builds a goa.ServiceError from an error.

@@ -24,10 +24,6 @@ type SignupRequestBody struct {
 	Phone *string `form:"phone,omitempty" json:"phone,omitempty" xml:"phone,omitempty"`
 	// Email
 	Email *string `form:"email,omitempty" json:"email,omitempty" xml:"email,omitempty"`
-	// Bio
-	Bio *string `form:"bio,omitempty" json:"bio,omitempty" xml:"bio,omitempty"`
-	// Prof Pic UUID
-	ProfpicID *string `form:"profpicID,omitempty" json:"profpicID,omitempty" xml:"profpicID,omitempty"`
 }
 
 // SignupUnauthorizedResponseBody is the type of the "signup" service "Signup"
@@ -64,13 +60,11 @@ func NewSignupUnauthorizedResponseBody(res *goa.ServiceError) *SignupUnauthorize
 
 // NewSignupPayload builds a signup service Signup endpoint payload.
 func NewSignupPayload(body *SignupRequestBody) *signup.SignupPayload {
-	v := &signup.User{
+	v := &signup.NewUser{
 		FirstName: *body.FirstName,
 		LastName:  *body.LastName,
 		Phone:     *body.Phone,
 		Email:     *body.Email,
-		Bio:       *body.Bio,
-		ProfpicID: *body.ProfpicID,
 	}
 	res := &signup.SignupPayload{
 		User: v,
@@ -92,12 +86,6 @@ func ValidateSignupRequestBody(body *SignupRequestBody) (err error) {
 	}
 	if body.Email == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("email", "body"))
-	}
-	if body.Bio == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("bio", "body"))
-	}
-	if body.ProfpicID == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("profpicID", "body"))
 	}
 	return
 }

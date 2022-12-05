@@ -31,7 +31,7 @@ func (s *Service) UpdateBio(ctx context.Context, p *users.UpdateBioPayload) (*us
 	return res, nil
 }
 
-func (s *Service) GetContactInfo(ctx context.Context, p *users.GetContactInfoPayload) (*users.GetContactInfoResult, error) {
+func (s *Service) GetUserInfo(ctx context.Context, p *users.GetUserInfoPayload) (*users.GetUserInfoResult, error) {
 	res, err := s.usersClient.GetContactInfo(ctx, p)
 	if err != nil {
 		return nil, err

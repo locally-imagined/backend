@@ -19,8 +19,8 @@ type Service interface {
 	UpdateBio(context.Context, *UpdateBioPayload) (res *UpdateBioResult, err error)
 	// UpdateProfilePicture implements update_profile_picture.
 	UpdateProfilePicture(context.Context, *UpdateProfilePicturePayload) (res *UpdateProfilePictureResult, err error)
-	// GetContactInfo implements get_contact_info.
-	GetContactInfo(context.Context, *GetContactInfoPayload) (res *GetContactInfoResult, err error)
+	// GetUserInfo implements get_user_info.
+	GetUserInfo(context.Context, *GetUserInfoPayload) (res *GetUserInfoResult, err error)
 }
 
 // Auther defines the authorization functions to be implemented by the service.
@@ -37,7 +37,7 @@ const ServiceName = "users"
 // MethodNames lists the service method names as defined in the design. These
 // are the same values that are set in the endpoint request contexts under the
 // MethodKey key.
-var MethodNames = [3]string{"update_bio", "update_profile_picture", "get_contact_info"}
+var MethodNames = [3]string{"update_bio", "update_profile_picture", "get_user_info"}
 
 // Updated Bio
 type Bio struct {
@@ -51,17 +51,17 @@ type Content struct {
 	Content *string
 }
 
-// GetContactInfoPayload is the payload type of the users service
-// get_contact_info method.
-type GetContactInfoPayload struct {
+// GetUserInfoPayload is the payload type of the users service get_user_info
+// method.
+type GetUserInfoPayload struct {
 	// userid of user whose info to retrieve
 	UserID string
 }
 
-// GetContactInfoResult is the result type of the users service
-// get_contact_info method.
-type GetContactInfoResult struct {
-	ContactInfo *User
+// GetUserInfoResult is the result type of the users service get_user_info
+// method.
+type GetUserInfoResult struct {
+	User *User
 }
 
 // Profile Photo uuid
@@ -80,7 +80,8 @@ type UpdateBioPayload struct {
 
 // UpdateBioResult is the result type of the users service update_bio method.
 type UpdateBioResult struct {
-	UpdatedUser *User
+	// Updated user
+	User *User
 }
 
 // UpdateProfilePicturePayload is the payload type of the users service
