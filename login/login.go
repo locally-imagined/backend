@@ -61,7 +61,7 @@ func (s *Service) BasicAuth(ctx context.Context, user, pass string, scheme *secu
 func (s *Service) Login(ctx context.Context, p *login.LoginPayload) (*login.LoginResult, error) {
 	// add userID into token
 	UserID := ctx.Value("UserID").(string)
-	ProfpicID := ctx.value("ProfpicID").(string)
+	ProfpicID := ctx.Value("ProfpicID").(string)
 	token, err := auth.MakeToken(p.Username, ctx.Value("UserID").(string))
 	if err != nil {
 		return nil, err
