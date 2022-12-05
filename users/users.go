@@ -38,3 +38,7 @@ func (s *Service) GetContactInfo(ctx context.Context, p *users.GetContactInfoPay
 	}
 	return res, nil
 }
+
+func (s *Service) UpdateProfilePhoto(ctx context.Context, p *users.UpdateProfilePhotoPayload) {
+
+}

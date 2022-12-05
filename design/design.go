@@ -314,6 +314,7 @@ var User = Type("User", func() {
 	Attribute("lastName", String, "Last name")
 	Attribute("phone", String, "Phone number")
 	Attribute("email", String, "Email")
+	Attribute("profpic", String, "Prof Pic UUID")
 	Required("firstName", "lastName", "phone", "email")
 })
 
@@ -346,6 +347,7 @@ var PostResponse = Type("PostResponse", func() {
 	Attribute("sold", Boolean, "is sold")
 	Attribute("deliverytype", String, "Delivery type")
 	Attribute("userID", String, "User id associated with post")
+	Attribute("profpicID", String, "prof pic id")
 	Attribute("username", String, "Username associated with post")
-	Required("title", "description", "price", "imageIDs", "postID", "medium", "uploadDate", "sold", "deliverytype", "username", "userID")
+	Required("title", "description", "price", "imageIDs", "postID", "medium", "uploadDate", "sold", "deliverytype", "username", "userID", "profpicID")
 })
