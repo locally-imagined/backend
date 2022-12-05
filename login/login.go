@@ -42,30 +42,34 @@ func (s *Service) BasicAuth(ctx context.Context, user, pass string, scheme *secu
 		return ctx, ErrUnauthorized
 	}
 	var userID string
-	row, err = dbPool.Query("SELECT userID from users where username=$1", user)
+	var profpicID string
+	row, err = dbPool.Query("SELECT userID, profpicID from users where username=$1", user)
 	if err == sql.ErrNoRows {
 		return ctx, ErrUnauthorized
 	}
 	for row.Next() {
-		if err := row.Scan(&userID); err != nil {
+		if err := row.Scan(&userID, &profpicID); err != nil {
 			return ctx, ErrUnauthorized
 		}
 	}
 	// add userID into context
 	ctx = context.WithValue(ctx, "UserID", userID)
+	ctx = context.WithValue(ctx, "ProfpicID", profpicID)
 	return ctx, nil
 }
 
 func (s *Service) Login(ctx context.Context, p *login.LoginPayload) (*login.LoginResult, error) {
 	// add userID into token
 	UserID := ctx.Value("UserID").(string)
+	ProfpicID := ctx.value("ProfpicID").(string)
 	token, err := auth.MakeToken(p.Username, ctx.Value("UserID").(string))
 	if err != nil {
 		return nil, err
 	}
 	resp := &login.LoginResponse{
-		UserID: &UserID,
-		JWT:    &token,
+		UserID:    &UserID,
+		ProfpicID: &ProfpicID,
+		JWT:       &token,
 	}
 	res := &login.LoginResult{
 		LoginResponse: resp,

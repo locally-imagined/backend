@@ -50,6 +50,8 @@ type LoginResponse struct {
 	JWT *string
 	// users ID
 	UserID *string
+	// profile pic ID
+	ProfpicID *string
 }
 
 // LoginResult is the result type of the login service Login method.

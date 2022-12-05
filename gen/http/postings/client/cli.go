@@ -24,7 +24,7 @@ func BuildCreatePostPayload(postingsCreatePostBody string, postingsCreatePostTok
 	{
 		err = json.Unmarshal([]byte(postingsCreatePostBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"content\": [\n         \"Aut quidem eaque laborum expedita.\",\n         \"Natus et nemo aperiam.\",\n         \"Laborum qui assumenda quas non aut.\",\n         \"Est adipisci quia consectetur veritatis quod.\"\n      ],\n      \"deliverytype\": \"Consequatur ratione voluptas consectetur.\",\n      \"description\": \"Rem quos laborum dignissimos voluptatibus dolor.\",\n      \"medium\": \"Officiis quidem iure et.\",\n      \"price\": \"Veniam voluptatibus et omnis beatae sint.\",\n      \"title\": \"Molestiae similique.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"content\": [\n         \"Adipisci quia consectetur veritatis.\",\n         \"Est officiis quidem.\",\n         \"Et totam.\",\n         \"Ratione voluptas consectetur.\"\n      ],\n      \"deliverytype\": \"Cumque ipsam unde excepturi.\",\n      \"description\": \"Et nemo aperiam.\",\n      \"medium\": \"Excepturi molestiae.\",\n      \"price\": \"Laborum qui assumenda quas non aut.\",\n      \"title\": \"Et aut quidem eaque laborum expedita numquam.\"\n   }'")
 		}
 		if body.Content == nil {
 			err = goa.MergeErrors(err, goa.MissingFieldError("content", "body"))
@@ -84,7 +84,7 @@ func BuildEditPostPayload(postingsEditPostBody string, postingsEditPostPostID st
 	{
 		err = json.Unmarshal([]byte(postingsEditPostBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"content\": \"Voluptas amet.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"content\": \"Amet quas placeat magnam ipsum quia.\"\n   }'")
 		}
 	}
 	var postID string

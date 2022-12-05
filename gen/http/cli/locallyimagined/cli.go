@@ -34,31 +34,31 @@ postings (create-post|delete-post|edit-post|get-post-page|get-artist-post-page|g
 
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
-	return os.Args[0] + ` login login --username "Nihil cum ipsum neque." --password "Voluptatem enim eligendi doloremque ut enim distinctio."` + "\n" +
+	return os.Args[0] + ` login login --username "Quisquam eveniet." --password "Dolore et ad voluptatum est at."` + "\n" +
 		os.Args[0] + ` signup signup --body '{
-      "bio": "Error assumenda adipisci.",
-      "email": "Nihil repellendus et ratione.",
-      "firstName": "Autem minima reprehenderit consequuntur.",
-      "lastName": "Veritatis voluptatum nihil.",
-      "phone": "Est iusto eos sunt quis deleniti.",
-      "profpicID": "Et commodi."
-   }' --username "Est velit consectetur et voluptatem magni sunt." --password "Beatae ipsum consequuntur et excepturi praesentium."` + "\n" +
+      "bio": "Beatae ipsum consequuntur et excepturi praesentium.",
+      "email": "Est velit consectetur et voluptatem magni sunt.",
+      "firstName": "Nihil repellendus et ratione.",
+      "lastName": "Error assumenda adipisci.",
+      "phone": "Et commodi.",
+      "profpicID": "Eaque assumenda voluptatem et commodi atque earum."
+   }' --username "Fugit ex." --password "Sit voluptates."` + "\n" +
 		os.Args[0] + ` users update-bio --body '{
-      "bio": "Sit voluptates."
-   }' --token "Sed nemo rem nisi consequatur."` + "\n" +
+      "bio": "Qui aut aut saepe eos nam placeat."
+   }' --token "Nesciunt excepturi quam eaque."` + "\n" +
 		os.Args[0] + ` postings create-post --body '{
       "content": [
-         "Aut quidem eaque laborum expedita.",
-         "Natus et nemo aperiam.",
-         "Laborum qui assumenda quas non aut.",
-         "Est adipisci quia consectetur veritatis quod."
+         "Adipisci quia consectetur veritatis.",
+         "Est officiis quidem.",
+         "Et totam.",
+         "Ratione voluptas consectetur."
       ],
-      "deliverytype": "Consequatur ratione voluptas consectetur.",
-      "description": "Rem quos laborum dignissimos voluptatibus dolor.",
-      "medium": "Officiis quidem iure et.",
-      "price": "Veniam voluptatibus et omnis beatae sint.",
-      "title": "Molestiae similique."
-   }' --token "Excepturi molestiae."` + "\n" +
+      "deliverytype": "Cumque ipsam unde excepturi.",
+      "description": "Et nemo aperiam.",
+      "medium": "Excepturi molestiae.",
+      "price": "Laborum qui assumenda quas non aut.",
+      "title": "Et aut quidem eaque laborum expedita numquam."
+   }' --token "Laborum assumenda soluta eos inventore ut ipsam."` + "\n" +
 		""
 }
 
@@ -349,7 +349,7 @@ Login implements Login.
     -password STRING: User password
 
 Example:
-    %[1]s login login --username "Nihil cum ipsum neque." --password "Voluptatem enim eligendi doloremque ut enim distinctio."
+    %[1]s login login --username "Quisquam eveniet." --password "Dolore et ad voluptatum est at."
 `, os.Args[0])
 }
 
@@ -376,13 +376,13 @@ Signup implements Signup.
 
 Example:
     %[1]s signup signup --body '{
-      "bio": "Error assumenda adipisci.",
-      "email": "Nihil repellendus et ratione.",
-      "firstName": "Autem minima reprehenderit consequuntur.",
-      "lastName": "Veritatis voluptatum nihil.",
-      "phone": "Est iusto eos sunt quis deleniti.",
-      "profpicID": "Et commodi."
-   }' --username "Est velit consectetur et voluptatem magni sunt." --password "Beatae ipsum consequuntur et excepturi praesentium."
+      "bio": "Beatae ipsum consequuntur et excepturi praesentium.",
+      "email": "Est velit consectetur et voluptatem magni sunt.",
+      "firstName": "Nihil repellendus et ratione.",
+      "lastName": "Error assumenda adipisci.",
+      "phone": "Et commodi.",
+      "profpicID": "Eaque assumenda voluptatem et commodi atque earum."
+   }' --username "Fugit ex." --password "Sit voluptates."
 `, os.Args[0])
 }
 
@@ -410,8 +410,8 @@ UpdateBio implements update_bio.
 
 Example:
     %[1]s users update-bio --body '{
-      "bio": "Sit voluptates."
-   }' --token "Sed nemo rem nisi consequatur."
+      "bio": "Qui aut aut saepe eos nam placeat."
+   }' --token "Nesciunt excepturi quam eaque."
 `, os.Args[0])
 }
 
@@ -424,8 +424,8 @@ UpdateProfilePicture implements update_profile_picture.
 
 Example:
     %[1]s users update-profile-picture --body '{
-      "content": "Fuga consequatur velit."
-   }' --token "Et quia repudiandae minus aut sint et."
+      "content": "Doloribus expedita ut consequuntur et est."
+   }' --token "Molestiae similique."
 `, os.Args[0])
 }
 
@@ -436,7 +436,7 @@ GetContactInfo implements get_contact_info.
     -user-id STRING: 
 
 Example:
-    %[1]s users get-contact-info --user-id "Doloribus expedita ut consequuntur et est."
+    %[1]s users get-contact-info --user-id "Veniam voluptatibus et omnis beatae sint."
 `, os.Args[0])
 }
 
@@ -469,17 +469,17 @@ CreatePost implements create_post.
 Example:
     %[1]s postings create-post --body '{
       "content": [
-         "Aut quidem eaque laborum expedita.",
-         "Natus et nemo aperiam.",
-         "Laborum qui assumenda quas non aut.",
-         "Est adipisci quia consectetur veritatis quod."
+         "Adipisci quia consectetur veritatis.",
+         "Est officiis quidem.",
+         "Et totam.",
+         "Ratione voluptas consectetur."
       ],
-      "deliverytype": "Consequatur ratione voluptas consectetur.",
-      "description": "Rem quos laborum dignissimos voluptatibus dolor.",
-      "medium": "Officiis quidem iure et.",
-      "price": "Veniam voluptatibus et omnis beatae sint.",
-      "title": "Molestiae similique."
-   }' --token "Excepturi molestiae."
+      "deliverytype": "Cumque ipsam unde excepturi.",
+      "description": "Et nemo aperiam.",
+      "medium": "Excepturi molestiae.",
+      "price": "Laborum qui assumenda quas non aut.",
+      "title": "Et aut quidem eaque laborum expedita numquam."
+   }' --token "Laborum assumenda soluta eos inventore ut ipsam."
 `, os.Args[0])
 }
 
@@ -491,7 +491,7 @@ DeletePost implements delete_post.
     -token STRING: 
 
 Example:
-    %[1]s postings delete-post --post-id "Porro beatae fugiat dolor sed." --token "Ipsa consequatur dignissimos ut voluptatem accusantium fuga."
+    %[1]s postings delete-post --post-id "Fugiat dolor sed blanditiis ipsa consequatur." --token "Ut voluptatem accusantium fuga laudantium aut aut."
 `, os.Args[0])
 }
 
@@ -512,8 +512,8 @@ EditPost implements edit_post.
 
 Example:
     %[1]s postings edit-post --body '{
-      "content": "Voluptas amet."
-   }' --post-id "Placeat magnam ipsum quia." --title "Inventore iure a aperiam consectetur." --description "Perferendis sit amet dignissimos expedita." --price "Ea voluptas similique rerum molestias dignissimos reiciendis." --medium "Ratione voluptatem cumque." --sold false --deliverytype "In placeat enim." --image-id "Deleniti nihil ut omnis eum recusandae iste." --token "Repellendus illum vitae voluptatibus laboriosam vero nesciunt."
+      "content": "Amet quas placeat magnam ipsum quia."
+   }' --post-id "Inventore iure a aperiam consectetur." --title "Perferendis sit amet dignissimos expedita." --description "Ea voluptas similique rerum molestias dignissimos reiciendis." --price "Ratione voluptatem cumque." --medium "Ex in placeat enim nobis." --sold true --deliverytype "Ut omnis eum recusandae iste labore." --image-id "Illum vitae." --token "Laboriosam vero nesciunt."
 `, os.Args[0])
 }
 
