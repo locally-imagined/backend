@@ -95,7 +95,7 @@ var (
 					LEFT JOIN users AS u ON p.userid = u.userid
 					ORDER BY p.uploaddate OFFSET $1 ROWS FETCH NEXT 25 ROWS ONLY`
 	GETPOSTPAGEFILTERED string = `SELECT p.postid, p.userid, p.title, p.description, 
-					p.price, p.medium, p.sold, p.uploaddate, i.imgid, u.username u.profpicid FROM posts AS p LEFT 
+					p.price, p.medium, p.sold, p.uploaddate, i.imgid, u.username FROM posts AS p LEFT 
 					JOIN images AS i ON p.postid=i.postid LEFT JOIN users AS u ON p.userid = u.userid WHERE (i.index=0) AND ((LOWER(p.title) LIKE $1) OR 
 					(LOWER(p.description) LIKE $1)) AND (p.uploaddate >= $2) AND (p.uploaddate <= $3) AND (p.medium LIKE $4) 
 					ORDER BY p.uploaddate OFFSET $5 ROWS FETCH NEXT 25 ROWS ONLY`
@@ -236,12 +236,12 @@ func (c *client) GetArtistPostPage(ctx context.Context, p *postings.GetArtistPos
 	res := make([]*postings.PostResponse, 0)
 	for rows.Next() {
 		var row post
-		if err := rows.Scan(&row.postID, &row.userID, &row.username, &row.profpicID, &row.postTitle, &row.postDesc, &row.price, &row.medium, &row.sold, &row.uploadDate, &row.deliverytype, &row.imageID); err != nil {
+		if err := rows.Scan(&row.postID, &row.userID, &row.username, &row.postTitle, &row.postDesc, &row.price, &row.medium, &row.sold, &row.uploadDate, &row.deliverytype, &row.imageID); err != nil {
 			return nil, err
 		}
 		imageID := make([]string, 0)
 		imageID = append(imageID, row.imageID)
-		res = append(res, &postings.PostResponse{UserID: row.userID, Username: row.username, ProfpicID: row.profpicID, Title: row.postTitle, Description: row.postDesc, Price: row.price, ImageIDs: imageID, PostID: row.postID, UploadDate: row.uploadDate, Medium: row.medium, Sold: row.sold, Deliverytype: row.deliverytype})
+		res = append(res, &postings.PostResponse{UserID: row.userID, Username: row.username, Title: row.postTitle, Description: row.postDesc, Price: row.price, ImageIDs: imageID, PostID: row.postID, UploadDate: row.uploadDate, Medium: row.medium, Sold: row.sold, Deliverytype: row.deliverytype})
 	}
 	return &postings.GetArtistPostPageResult{Posts: res}, err
 }
