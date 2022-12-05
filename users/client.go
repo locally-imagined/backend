@@ -58,7 +58,7 @@ var (
 
 	// add prepares before queries?
 	//
-	GETPROFILEPIC    string = "SELECT profpicid FROM users WHERE userid=$1"
+	GETPROFILEPIC    string = "SELECT profpicid FROM users WHERE userid=$1 AND profpicid IS NOT NULL"
 	UPDATEPROFILEPIC string = "UPDATE users SET profpicid=$1 WHERE userid=$2"
 
 	UPDATEINDEX   string = "UPDATE images SET index = index - 1 WHERE (postid=$1 AND index>(SELECT index FROM images WHERE imgid=$2))"
@@ -157,23 +157,24 @@ func (c *client) UpdateProfilePicture(ctx context.Context, p *users.UpdateProfil
 
 	var rows *sql.Rows
 	rows, err = dbPool.Query(GETPROFILEPIC, ctx.Value("UserID").(string))
-	if err != nil {
+	if (err != nil) && (err != sql.ErrNoRows) {
 		return nil, err
 	}
-
-	var oldID string
-	for rows.Next() {
-		if err := rows.Scan(&oldID); err != nil {
+	bucketName, svc := c.getS3Session()
+	if err != sql.ErrNoRows {
+		var oldID string
+		for rows.Next() {
+			if err := rows.Scan(&oldID); err != nil {
+				return nil, err
+			}
+		}
+		err = deleteImageFromS3(ctx, svc, bucketName, oldID)
+		if err != nil {
 			return nil, err
 		}
 	}
-	bucketName, svc := c.getS3Session()
-	err = deleteImageFromS3(ctx, svc, bucketName, oldID)
-	if err != nil {
-		return nil, err
-	}
 	newID := uuid.New().String()
-	rows, err = dbPool.Query(UPDATEPROFILEPIC, newID, ctx.Value("UserID").(string))
+	_, err = dbPool.Query(UPDATEPROFILEPIC, newID, ctx.Value("UserID").(string))
 	if err != nil {
 		return nil, err
 	}
@@ -183,6 +184,6 @@ func (c *client) UpdateProfilePicture(ctx context.Context, p *users.UpdateProfil
 		return nil, err
 	}
 	photo := users.ProfilePhoto{ImageID: &newID}
-	resp := users.UpdateProfilePictureResult{&photo}
+	resp := users.UpdateProfilePictureResult{ImageID: &photo}
 	return &resp, err
 }
