@@ -22,6 +22,7 @@ paths:
                                 $ref: '#/components/schemas/LoginLoginResponseBody'
                             example:
                                 jwt: Autem minima reprehenderit consequuntur.
+                                profpicID: Est iusto eos sunt quis deleniti.
                                 userID: Veritatis voluptatum nihil.
                 "401":
                     description: 'unauthorized: Credentials are invalid'
@@ -69,115 +70,108 @@ paths:
                                     $ref: '#/components/schemas/PostResponse'
                                 example:
                                     - deliverytype: Aliquid praesentium repellendus beatae.
-                                      description: A sunt reiciendis.
+                                      description: Ea nam quibusdam sunt.
                                       imageIDs:
+                                        - Quisquam reiciendis in debitis.
                                         - Voluptatem possimus quo sunt eligendi asperiores.
                                         - Laborum distinctio accusamus veniam doloribus ipsum.
                                       medium: Delectus ipsam sint facere ut.
                                       postID: Accusantium voluptatem quia qui dolorem.
-                                      price: Labore quisquam reiciendis in.
+                                      price: A sunt reiciendis.
                                       profpicID: Atque iste unde repudiandae nisi.
                                       sold: false
-                                      title: Ea nam quibusdam sunt.
+                                      title: Rerum ducimus vel perspiciatis non aut.
                                       uploadDate: Aut dolor qui consequatur placeat enim voluptas.
                                       userID: Omnis eveniet.
                                       username: Odio molestiae et optio corrupti fugit ut.
                                     - deliverytype: Aliquid praesentium repellendus beatae.
-                                      description: A sunt reiciendis.
+                                      description: Ea nam quibusdam sunt.
                                       imageIDs:
+                                        - Quisquam reiciendis in debitis.
                                         - Voluptatem possimus quo sunt eligendi asperiores.
                                         - Laborum distinctio accusamus veniam doloribus ipsum.
                                       medium: Delectus ipsam sint facere ut.
                                       postID: Accusantium voluptatem quia qui dolorem.
-                                      price: Labore quisquam reiciendis in.
+                                      price: A sunt reiciendis.
                                       profpicID: Atque iste unde repudiandae nisi.
                                       sold: false
-                                      title: Ea nam quibusdam sunt.
+                                      title: Rerum ducimus vel perspiciatis non aut.
                                       uploadDate: Aut dolor qui consequatur placeat enim voluptas.
                                       userID: Omnis eveniet.
                                       username: Odio molestiae et optio corrupti fugit ut.
                                     - deliverytype: Aliquid praesentium repellendus beatae.
-                                      description: A sunt reiciendis.
+                                      description: Ea nam quibusdam sunt.
                                       imageIDs:
+                                        - Quisquam reiciendis in debitis.
                                         - Voluptatem possimus quo sunt eligendi asperiores.
                                         - Laborum distinctio accusamus veniam doloribus ipsum.
                                       medium: Delectus ipsam sint facere ut.
                                       postID: Accusantium voluptatem quia qui dolorem.
-                                      price: Labore quisquam reiciendis in.
+                                      price: A sunt reiciendis.
                                       profpicID: Atque iste unde repudiandae nisi.
                                       sold: false
-                                      title: Ea nam quibusdam sunt.
-                                      uploadDate: Aut dolor qui consequatur placeat enim voluptas.
-                                      userID: Omnis eveniet.
-                                      username: Odio molestiae et optio corrupti fugit ut.
-                                    - deliverytype: Aliquid praesentium repellendus beatae.
-                                      description: A sunt reiciendis.
-                                      imageIDs:
-                                        - Voluptatem possimus quo sunt eligendi asperiores.
-                                        - Laborum distinctio accusamus veniam doloribus ipsum.
-                                      medium: Delectus ipsam sint facere ut.
-                                      postID: Accusantium voluptatem quia qui dolorem.
-                                      price: Labore quisquam reiciendis in.
-                                      profpicID: Atque iste unde repudiandae nisi.
-                                      sold: false
-                                      title: Ea nam quibusdam sunt.
+                                      title: Rerum ducimus vel perspiciatis non aut.
                                       uploadDate: Aut dolor qui consequatur placeat enim voluptas.
                                       userID: Omnis eveniet.
                                       username: Odio molestiae et optio corrupti fugit ut.
                             example:
                                 - deliverytype: Aliquid praesentium repellendus beatae.
-                                  description: A sunt reiciendis.
+                                  description: Ea nam quibusdam sunt.
                                   imageIDs:
+                                    - Quisquam reiciendis in debitis.
                                     - Voluptatem possimus quo sunt eligendi asperiores.
                                     - Laborum distinctio accusamus veniam doloribus ipsum.
                                   medium: Delectus ipsam sint facere ut.
                                   postID: Accusantium voluptatem quia qui dolorem.
-                                  price: Labore quisquam reiciendis in.
+                                  price: A sunt reiciendis.
                                   profpicID: Atque iste unde repudiandae nisi.
                                   sold: false
-                                  title: Ea nam quibusdam sunt.
+                                  title: Rerum ducimus vel perspiciatis non aut.
                                   uploadDate: Aut dolor qui consequatur placeat enim voluptas.
                                   userID: Omnis eveniet.
                                   username: Odio molestiae et optio corrupti fugit ut.
                                 - deliverytype: Aliquid praesentium repellendus beatae.
-                                  description: A sunt reiciendis.
+                                  description: Ea nam quibusdam sunt.
                                   imageIDs:
+                                    - Quisquam reiciendis in debitis.
                                     - Voluptatem possimus quo sunt eligendi asperiores.
                                     - Laborum distinctio accusamus veniam doloribus ipsum.
                                   medium: Delectus ipsam sint facere ut.
                                   postID: Accusantium voluptatem quia qui dolorem.
-                                  price: Labore quisquam reiciendis in.
+                                  price: A sunt reiciendis.
                                   profpicID: Atque iste unde repudiandae nisi.
                                   sold: false
-                                  title: Ea nam quibusdam sunt.
+                                  title: Rerum ducimus vel perspiciatis non aut.
                                   uploadDate: Aut dolor qui consequatur placeat enim voluptas.
                                   userID: Omnis eveniet.
                                   username: Odio molestiae et optio corrupti fugit ut.
                                 - deliverytype: Aliquid praesentium repellendus beatae.
-                                  description: A sunt reiciendis.
+                                  description: Ea nam quibusdam sunt.
                                   imageIDs:
+                                    - Quisquam reiciendis in debitis.
                                     - Voluptatem possimus quo sunt eligendi asperiores.
                                     - Laborum distinctio accusamus veniam doloribus ipsum.
                                   medium: Delectus ipsam sint facere ut.
                                   postID: Accusantium voluptatem quia qui dolorem.
-                                  price: Labore quisquam reiciendis in.
+                                  price: A sunt reiciendis.
                                   profpicID: Atque iste unde repudiandae nisi.
                                   sold: false
-                                  title: Ea nam quibusdam sunt.
+                                  title: Rerum ducimus vel perspiciatis non aut.
                                   uploadDate: Aut dolor qui consequatur placeat enim voluptas.
                                   userID: Omnis eveniet.
                                   username: Odio molestiae et optio corrupti fugit ut.
                                 - deliverytype: Aliquid praesentium repellendus beatae.
-                                  description: A sunt reiciendis.
+                                  description: Ea nam quibusdam sunt.
                                   imageIDs:
+                                    - Quisquam reiciendis in debitis.
                                     - Voluptatem possimus quo sunt eligendi asperiores.
                                     - Laborum distinctio accusamus veniam doloribus ipsum.
                                   medium: Delectus ipsam sint facere ut.
                                   postID: Accusantium voluptatem quia qui dolorem.
-                                  price: Labore quisquam reiciendis in.
+                                  price: A sunt reiciendis.
                                   profpicID: Atque iste unde repudiandae nisi.
                                   sold: false
-                                  title: Ea nam quibusdam sunt.
+                                  title: Rerum ducimus vel perspiciatis non aut.
                                   uploadDate: Aut dolor qui consequatur placeat enim voluptas.
                                   userID: Omnis eveniet.
                                   username: Odio molestiae et optio corrupti fugit ut.
@@ -208,15 +202,13 @@ paths:
                             $ref: '#/components/schemas/Post'
                         example:
                             content:
-                                - Aut quidem eaque laborum expedita.
-                                - Natus et nemo aperiam.
-                                - Laborum qui assumenda quas non aut.
-                                - Est adipisci quia consectetur veritatis quod.
-                            deliverytype: Consequatur ratione voluptas consectetur.
-                            description: Rem quos laborum dignissimos voluptatibus dolor.
-                            medium: Officiis quidem iure et.
-                            price: Veniam voluptatibus et omnis beatae sint.
-                            title: Molestiae similique.
+                                - Nemo aperiam rerum.
+                                - Qui assumenda quas non.
+                            deliverytype: Veritatis quod est officiis quidem iure et.
+                            description: Veniam voluptatibus et omnis beatae sint.
+                            medium: Soluta est adipisci quia.
+                            price: Et aut quidem eaque laborum expedita numquam.
+                            title: Rem quos laborum dignissimos voluptatibus dolor.
             responses:
                 "200":
                     description: OK response.
@@ -226,17 +218,18 @@ paths:
                                 $ref: '#/components/schemas/PostingscreatePostResponseBody'
                             example:
                                 deliverytype: Aut et sit doloremque pariatur.
-                                description: Laborum assumenda soluta eos inventore ut ipsam.
+                                description: Cumque ipsam unde excepturi.
                                 imageIDs:
-                                    - Omnis dignissimos et maxime.
-                                    - Accusamus velit est soluta ratione.
-                                    - Vel porro ut maiores iste exercitationem.
-                                medium: Minima fuga.
-                                postID: Officiis tenetur est dolor.
-                                price: Iusto et in eum reiciendis.
+                                    - Et in.
+                                    - Reiciendis fuga hic omnis.
+                                    - Et maxime atque accusamus velit est soluta.
+                                    - Pariatur vel.
+                                medium: Est dolor placeat minima fuga.
+                                postID: Ut maiores iste exercitationem itaque officiis.
+                                price: Laborum assumenda soluta eos inventore ut ipsam.
                                 profpicID: Necessitatibus sed provident deserunt optio.
                                 sold: false
-                                title: Cumque ipsam unde excepturi.
+                                title: Excepturi molestiae.
                                 uploadDate: Quidem quia reiciendis.
                                 userID: Alias in recusandae incidunt.
                                 username: Blanditiis ipsum repudiandae ea voluptatem et.
@@ -384,17 +377,18 @@ paths:
                                 $ref: '#/components/schemas/PostResponse'
                             example:
                                 deliverytype: Aut et sit doloremque pariatur.
-                                description: Laborum assumenda soluta eos inventore ut ipsam.
+                                description: Cumque ipsam unde excepturi.
                                 imageIDs:
-                                    - Omnis dignissimos et maxime.
-                                    - Accusamus velit est soluta ratione.
-                                    - Vel porro ut maiores iste exercitationem.
-                                medium: Minima fuga.
-                                postID: Officiis tenetur est dolor.
-                                price: Iusto et in eum reiciendis.
+                                    - Et in.
+                                    - Reiciendis fuga hic omnis.
+                                    - Et maxime atque accusamus velit est soluta.
+                                    - Pariatur vel.
+                                medium: Est dolor placeat minima fuga.
+                                postID: Ut maiores iste exercitationem itaque officiis.
+                                price: Laborum assumenda soluta eos inventore ut ipsam.
                                 profpicID: Necessitatibus sed provident deserunt optio.
                                 sold: false
-                                title: Cumque ipsam unde excepturi.
+                                title: Excepturi molestiae.
                                 uploadDate: Quidem quia reiciendis.
                                 userID: Alias in recusandae incidunt.
                                 username: Blanditiis ipsum repudiandae ea voluptatem et.
@@ -437,11 +431,10 @@ paths:
                                 type: array
                                 items:
                                     type: string
-                                    example: Sit et voluptas reprehenderit et et.
+                                    example: Et voluptas reprehenderit et et nulla.
                                 example:
-                                    - Repellat similique illum consequuntur doloremque qui tempora.
-                                    - Molestias repudiandae qui.
-                                    - Nesciunt voluptas.
+                                    - Similique illum consequuntur doloremque.
+                                    - Tempora vel molestias repudiandae qui omnis.
                             example:
                                 - Et nam.
                                 - Facere quo quia autem provident.
@@ -485,59 +478,93 @@ paths:
                                     $ref: '#/components/schemas/PostResponse'
                                 example:
                                     - deliverytype: Aliquid praesentium repellendus beatae.
-                                      description: A sunt reiciendis.
+                                      description: Ea nam quibusdam sunt.
                                       imageIDs:
+                                        - Quisquam reiciendis in debitis.
                                         - Voluptatem possimus quo sunt eligendi asperiores.
                                         - Laborum distinctio accusamus veniam doloribus ipsum.
                                       medium: Delectus ipsam sint facere ut.
                                       postID: Accusantium voluptatem quia qui dolorem.
-                                      price: Labore quisquam reiciendis in.
+                                      price: A sunt reiciendis.
                                       profpicID: Atque iste unde repudiandae nisi.
                                       sold: false
-                                      title: Ea nam quibusdam sunt.
+                                      title: Rerum ducimus vel perspiciatis non aut.
                                       uploadDate: Aut dolor qui consequatur placeat enim voluptas.
                                       userID: Omnis eveniet.
                                       username: Odio molestiae et optio corrupti fugit ut.
                                     - deliverytype: Aliquid praesentium repellendus beatae.
-                                      description: A sunt reiciendis.
+                                      description: Ea nam quibusdam sunt.
                                       imageIDs:
+                                        - Quisquam reiciendis in debitis.
                                         - Voluptatem possimus quo sunt eligendi asperiores.
                                         - Laborum distinctio accusamus veniam doloribus ipsum.
                                       medium: Delectus ipsam sint facere ut.
                                       postID: Accusantium voluptatem quia qui dolorem.
-                                      price: Labore quisquam reiciendis in.
+                                      price: A sunt reiciendis.
                                       profpicID: Atque iste unde repudiandae nisi.
                                       sold: false
-                                      title: Ea nam quibusdam sunt.
+                                      title: Rerum ducimus vel perspiciatis non aut.
+                                      uploadDate: Aut dolor qui consequatur placeat enim voluptas.
+                                      userID: Omnis eveniet.
+                                      username: Odio molestiae et optio corrupti fugit ut.
+                                    - deliverytype: Aliquid praesentium repellendus beatae.
+                                      description: Ea nam quibusdam sunt.
+                                      imageIDs:
+                                        - Quisquam reiciendis in debitis.
+                                        - Voluptatem possimus quo sunt eligendi asperiores.
+                                        - Laborum distinctio accusamus veniam doloribus ipsum.
+                                      medium: Delectus ipsam sint facere ut.
+                                      postID: Accusantium voluptatem quia qui dolorem.
+                                      price: A sunt reiciendis.
+                                      profpicID: Atque iste unde repudiandae nisi.
+                                      sold: false
+                                      title: Rerum ducimus vel perspiciatis non aut.
+                                      uploadDate: Aut dolor qui consequatur placeat enim voluptas.
+                                      userID: Omnis eveniet.
+                                      username: Odio molestiae et optio corrupti fugit ut.
+                                    - deliverytype: Aliquid praesentium repellendus beatae.
+                                      description: Ea nam quibusdam sunt.
+                                      imageIDs:
+                                        - Quisquam reiciendis in debitis.
+                                        - Voluptatem possimus quo sunt eligendi asperiores.
+                                        - Laborum distinctio accusamus veniam doloribus ipsum.
+                                      medium: Delectus ipsam sint facere ut.
+                                      postID: Accusantium voluptatem quia qui dolorem.
+                                      price: A sunt reiciendis.
+                                      profpicID: Atque iste unde repudiandae nisi.
+                                      sold: false
+                                      title: Rerum ducimus vel perspiciatis non aut.
                                       uploadDate: Aut dolor qui consequatur placeat enim voluptas.
                                       userID: Omnis eveniet.
                                       username: Odio molestiae et optio corrupti fugit ut.
                             example:
                                 - deliverytype: Aliquid praesentium repellendus beatae.
-                                  description: A sunt reiciendis.
+                                  description: Ea nam quibusdam sunt.
                                   imageIDs:
+                                    - Quisquam reiciendis in debitis.
                                     - Voluptatem possimus quo sunt eligendi asperiores.
                                     - Laborum distinctio accusamus veniam doloribus ipsum.
                                   medium: Delectus ipsam sint facere ut.
                                   postID: Accusantium voluptatem quia qui dolorem.
-                                  price: Labore quisquam reiciendis in.
+                                  price: A sunt reiciendis.
                                   profpicID: Atque iste unde repudiandae nisi.
                                   sold: false
-                                  title: Ea nam quibusdam sunt.
+                                  title: Rerum ducimus vel perspiciatis non aut.
                                   uploadDate: Aut dolor qui consequatur placeat enim voluptas.
                                   userID: Omnis eveniet.
                                   username: Odio molestiae et optio corrupti fugit ut.
                                 - deliverytype: Aliquid praesentium repellendus beatae.
-                                  description: A sunt reiciendis.
+                                  description: Ea nam quibusdam sunt.
                                   imageIDs:
+                                    - Quisquam reiciendis in debitis.
                                     - Voluptatem possimus quo sunt eligendi asperiores.
                                     - Laborum distinctio accusamus veniam doloribus ipsum.
                                   medium: Delectus ipsam sint facere ut.
                                   postID: Accusantium voluptatem quia qui dolorem.
-                                  price: Labore quisquam reiciendis in.
+                                  price: A sunt reiciendis.
                                   profpicID: Atque iste unde repudiandae nisi.
                                   sold: false
-                                  title: Ea nam quibusdam sunt.
+                                  title: Rerum ducimus vel perspiciatis non aut.
                                   uploadDate: Aut dolor qui consequatur placeat enim voluptas.
                                   userID: Omnis eveniet.
                                   username: Odio molestiae et optio corrupti fugit ut.
@@ -617,101 +644,123 @@ paths:
                                     $ref: '#/components/schemas/PostResponse'
                                 example:
                                     - deliverytype: Aliquid praesentium repellendus beatae.
-                                      description: A sunt reiciendis.
+                                      description: Ea nam quibusdam sunt.
                                       imageIDs:
+                                        - Quisquam reiciendis in debitis.
                                         - Voluptatem possimus quo sunt eligendi asperiores.
                                         - Laborum distinctio accusamus veniam doloribus ipsum.
                                       medium: Delectus ipsam sint facere ut.
                                       postID: Accusantium voluptatem quia qui dolorem.
-                                      price: Labore quisquam reiciendis in.
+                                      price: A sunt reiciendis.
                                       profpicID: Atque iste unde repudiandae nisi.
                                       sold: false
-                                      title: Ea nam quibusdam sunt.
+                                      title: Rerum ducimus vel perspiciatis non aut.
                                       uploadDate: Aut dolor qui consequatur placeat enim voluptas.
                                       userID: Omnis eveniet.
                                       username: Odio molestiae et optio corrupti fugit ut.
                                     - deliverytype: Aliquid praesentium repellendus beatae.
-                                      description: A sunt reiciendis.
+                                      description: Ea nam quibusdam sunt.
                                       imageIDs:
+                                        - Quisquam reiciendis in debitis.
                                         - Voluptatem possimus quo sunt eligendi asperiores.
                                         - Laborum distinctio accusamus veniam doloribus ipsum.
                                       medium: Delectus ipsam sint facere ut.
                                       postID: Accusantium voluptatem quia qui dolorem.
-                                      price: Labore quisquam reiciendis in.
+                                      price: A sunt reiciendis.
                                       profpicID: Atque iste unde repudiandae nisi.
                                       sold: false
-                                      title: Ea nam quibusdam sunt.
+                                      title: Rerum ducimus vel perspiciatis non aut.
                                       uploadDate: Aut dolor qui consequatur placeat enim voluptas.
                                       userID: Omnis eveniet.
                                       username: Odio molestiae et optio corrupti fugit ut.
                                     - deliverytype: Aliquid praesentium repellendus beatae.
-                                      description: A sunt reiciendis.
+                                      description: Ea nam quibusdam sunt.
                                       imageIDs:
+                                        - Quisquam reiciendis in debitis.
                                         - Voluptatem possimus quo sunt eligendi asperiores.
                                         - Laborum distinctio accusamus veniam doloribus ipsum.
                                       medium: Delectus ipsam sint facere ut.
                                       postID: Accusantium voluptatem quia qui dolorem.
-                                      price: Labore quisquam reiciendis in.
+                                      price: A sunt reiciendis.
                                       profpicID: Atque iste unde repudiandae nisi.
                                       sold: false
-                                      title: Ea nam quibusdam sunt.
+                                      title: Rerum ducimus vel perspiciatis non aut.
+                                      uploadDate: Aut dolor qui consequatur placeat enim voluptas.
+                                      userID: Omnis eveniet.
+                                      username: Odio molestiae et optio corrupti fugit ut.
+                                    - deliverytype: Aliquid praesentium repellendus beatae.
+                                      description: Ea nam quibusdam sunt.
+                                      imageIDs:
+                                        - Quisquam reiciendis in debitis.
+                                        - Voluptatem possimus quo sunt eligendi asperiores.
+                                        - Laborum distinctio accusamus veniam doloribus ipsum.
+                                      medium: Delectus ipsam sint facere ut.
+                                      postID: Accusantium voluptatem quia qui dolorem.
+                                      price: A sunt reiciendis.
+                                      profpicID: Atque iste unde repudiandae nisi.
+                                      sold: false
+                                      title: Rerum ducimus vel perspiciatis non aut.
                                       uploadDate: Aut dolor qui consequatur placeat enim voluptas.
                                       userID: Omnis eveniet.
                                       username: Odio molestiae et optio corrupti fugit ut.
                             example:
                                 - deliverytype: Aliquid praesentium repellendus beatae.
-                                  description: A sunt reiciendis.
+                                  description: Ea nam quibusdam sunt.
                                   imageIDs:
+                                    - Quisquam reiciendis in debitis.
                                     - Voluptatem possimus quo sunt eligendi asperiores.
                                     - Laborum distinctio accusamus veniam doloribus ipsum.
                                   medium: Delectus ipsam sint facere ut.
                                   postID: Accusantium voluptatem quia qui dolorem.
-                                  price: Labore quisquam reiciendis in.
+                                  price: A sunt reiciendis.
                                   profpicID: Atque iste unde repudiandae nisi.
                                   sold: false
-                                  title: Ea nam quibusdam sunt.
+                                  title: Rerum ducimus vel perspiciatis non aut.
                                   uploadDate: Aut dolor qui consequatur placeat enim voluptas.
                                   userID: Omnis eveniet.
                                   username: Odio molestiae et optio corrupti fugit ut.
                                 - deliverytype: Aliquid praesentium repellendus beatae.
-                                  description: A sunt reiciendis.
+                                  description: Ea nam quibusdam sunt.
                                   imageIDs:
+                                    - Quisquam reiciendis in debitis.
                                     - Voluptatem possimus quo sunt eligendi asperiores.
                                     - Laborum distinctio accusamus veniam doloribus ipsum.
                                   medium: Delectus ipsam sint facere ut.
                                   postID: Accusantium voluptatem quia qui dolorem.
-                                  price: Labore quisquam reiciendis in.
+                                  price: A sunt reiciendis.
                                   profpicID: Atque iste unde repudiandae nisi.
                                   sold: false
-                                  title: Ea nam quibusdam sunt.
+                                  title: Rerum ducimus vel perspiciatis non aut.
                                   uploadDate: Aut dolor qui consequatur placeat enim voluptas.
                                   userID: Omnis eveniet.
                                   username: Odio molestiae et optio corrupti fugit ut.
                                 - deliverytype: Aliquid praesentium repellendus beatae.
-                                  description: A sunt reiciendis.
+                                  description: Ea nam quibusdam sunt.
                                   imageIDs:
+                                    - Quisquam reiciendis in debitis.
                                     - Voluptatem possimus quo sunt eligendi asperiores.
                                     - Laborum distinctio accusamus veniam doloribus ipsum.
                                   medium: Delectus ipsam sint facere ut.
                                   postID: Accusantium voluptatem quia qui dolorem.
-                                  price: Labore quisquam reiciendis in.
+                                  price: A sunt reiciendis.
                                   profpicID: Atque iste unde repudiandae nisi.
                                   sold: false
-                                  title: Ea nam quibusdam sunt.
+                                  title: Rerum ducimus vel perspiciatis non aut.
                                   uploadDate: Aut dolor qui consequatur placeat enim voluptas.
                                   userID: Omnis eveniet.
                                   username: Odio molestiae et optio corrupti fugit ut.
                                 - deliverytype: Aliquid praesentium repellendus beatae.
-                                  description: A sunt reiciendis.
+                                  description: Ea nam quibusdam sunt.
                                   imageIDs:
+                                    - Quisquam reiciendis in debitis.
                                     - Voluptatem possimus quo sunt eligendi asperiores.
                                     - Laborum distinctio accusamus veniam doloribus ipsum.
                                   medium: Delectus ipsam sint facere ut.
                                   postID: Accusantium voluptatem quia qui dolorem.
-                                  price: Labore quisquam reiciendis in.
+                                  price: A sunt reiciendis.
                                   profpicID: Atque iste unde repudiandae nisi.
                                   sold: false
-                                  title: Ea nam quibusdam sunt.
+                                  title: Rerum ducimus vel perspiciatis non aut.
                                   uploadDate: Aut dolor qui consequatur placeat enim voluptas.
                                   userID: Omnis eveniet.
                                   username: Odio molestiae et optio corrupti fugit ut.
@@ -740,10 +789,10 @@ paths:
                         schema:
                             $ref: '#/components/schemas/NewUser'
                         example:
-                            email: Et commodi.
-                            firstName: Est iusto eos sunt quis deleniti.
-                            lastName: Nihil repellendus et ratione.
-                            phone: Error assumenda adipisci.
+                            email: Est velit consectetur et voluptatem magni sunt.
+                            firstName: Nihil repellendus et ratione.
+                            lastName: Error assumenda adipisci.
+                            phone: Et commodi.
             responses:
                 "200":
                     description: OK response.
@@ -751,8 +800,8 @@ paths:
                         application/json:
                             schema:
                                 type: string
-                                example: Aliquid sit.
-                            example: Enim quidem ea.
+                                example: Exercitationem est.
+                            example: Voluptas beatae enim quidem ea.
                 "401":
                     description: 'unauthorized: Credentials are invalid'
                     content:
@@ -786,12 +835,12 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/User'
                             example:
-                                bio: Dolor porro assumenda dolor ex.
-                                email: Voluptatem maiores est maiores.
-                                firstName: Iure quam possimus quaerat maxime et.
-                                lastName: Qui aut aut saepe eos nam placeat.
-                                phone: Nesciunt excepturi quam eaque.
-                                profpicID: Dicta rerum.
+                                bio: Dicta rerum.
+                                email: Dolor porro assumenda dolor ex.
+                                firstName: Qui aut aut saepe eos nam placeat.
+                                lastName: Nesciunt excepturi quam eaque.
+                                phone: Voluptatem maiores est maiores.
+                                profpicID: Fuga consequatur velit.
                 "401":
                     description: 'unauthorized: Credentials are invalid'
                     content:
@@ -812,7 +861,7 @@ paths:
                         schema:
                             $ref: '#/components/schemas/Bio'
                         example:
-                            bio: Sit voluptates.
+                            bio: Sed nemo rem nisi consequatur.
             responses:
                 "200":
                     description: OK response.
@@ -821,12 +870,12 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/UsersupdateBioResponseBody'
                             example:
-                                bio: Dolor porro assumenda dolor ex.
-                                email: Voluptatem maiores est maiores.
-                                firstName: Iure quam possimus quaerat maxime et.
-                                lastName: Qui aut aut saepe eos nam placeat.
-                                phone: Nesciunt excepturi quam eaque.
-                                profpicID: Dicta rerum.
+                                bio: Dicta rerum.
+                                email: Dolor porro assumenda dolor ex.
+                                firstName: Qui aut aut saepe eos nam placeat.
+                                lastName: Nesciunt excepturi quam eaque.
+                                phone: Voluptatem maiores est maiores.
+                                profpicID: Fuga consequatur velit.
                 "401":
                     description: 'unauthorized: Credentials are invalid'
                     content:
@@ -849,7 +898,7 @@ paths:
                         schema:
                             $ref: '#/components/schemas/Content'
                         example:
-                            content: Fuga consequatur velit.
+                            content: Et quia repudiandae minus aut sint et.
             responses:
                 "200":
                     description: OK response.
@@ -858,7 +907,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/UsersupdateProfilePictureResponseBody'
                             example:
-                                imageID: Quos exercitationem eaque dolores ea deleniti.
+                                imageID: Doloribus expedita ut consequuntur et est.
                 "401":
                     description: 'unauthorized: Credentials are invalid'
                     content:
@@ -875,20 +924,20 @@ components:
                 bio:
                     type: string
                     description: New Bio
-                    example: Minima omnis nulla quos.
+                    example: Qui cum ratione sed doloribus blanditiis.
             description: Updated Bio
             example:
-                bio: Dolores distinctio explicabo expedita consequatur et cum.
+                bio: Quo adipisci aut.
         Content:
             type: object
             properties:
                 content:
                     type: string
                     description: raw image content
-                    example: Odio aut consequatur consequatur ea similique.
+                    example: Repellat porro ea et tempora voluptas.
             description: Image Content
             example:
-                content: Velit aliquid non nobis aut.
+                content: Non animi eum quia repudiandae neque sed.
         Error:
             type: object
             properties:
@@ -936,40 +985,45 @@ components:
                 jwt:
                     type: string
                     description: jwt used for future authentication
-                    example: Illum voluptatibus.
+                    example: Aut perferendis.
+                profpicID:
+                    type: string
+                    description: profile pic ID
+                    example: Sed sit et.
                 userID:
                     type: string
                     description: users ID
-                    example: Vel omnis officia totam doloremque.
+                    example: Autem sit aut ab dolor quasi eaque.
             description: Response from logging in
             example:
-                jwt: Et magnam distinctio.
-                userID: Nulla eos excepturi.
+                jwt: Provident dignissimos.
+                profpicID: Totam id soluta.
+                userID: Ex ea.
         NewUser:
             type: object
             properties:
                 email:
                     type: string
                     description: Email
-                    example: Et placeat provident.
+                    example: Omnis nulla.
                 firstName:
                     type: string
                     description: First name
-                    example: Officiis ea mollitia corporis placeat.
+                    example: Nam aspernatur totam incidunt ut ea ducimus.
                 lastName:
                     type: string
                     description: Last name
-                    example: Perferendis dolor autem sit.
+                    example: Et sapiente quas adipisci id.
                 phone:
                     type: string
                     description: Phone number
-                    example: Ab dolor quasi eaque fugit sed.
+                    example: Sit molestiae.
             description: Describes a user at signup
             example:
-                email: Ea ducimus doloribus et sapiente quas adipisci.
-                firstName: Alias ex ea natus.
-                lastName: Id soluta autem non.
-                phone: Tempore nam aspernatur totam incidunt.
+                email: Molestias ex alias doloribus ut inventore.
+                firstName: Repudiandae dolores distinctio explicabo.
+                lastName: Consequatur et cum.
+                phone: Molestiae fugiat iure dicta provident a error.
             required:
                 - firstName
                 - lastName
@@ -982,43 +1036,41 @@ components:
                     type: array
                     items:
                         type: string
-                        example: Labore perspiciatis.
+                        example: Non molestiae provident.
                     description: Post content
                     example:
-                        - Id voluptatem animi tenetur iste.
-                        - Quos ea.
-                        - Qui consequatur ut.
+                        - Enim corrupti ab praesentium.
+                        - Consectetur voluptatibus in laudantium.
                 deliverytype:
                     type: string
                     description: Delivery type
-                    example: Tempore enim corrupti.
+                    example: Nam provident.
                 description:
                     type: string
                     description: Post description
-                    example: Repellat porro ea et tempora voluptas.
+                    example: Quos ea.
                 medium:
                     type: string
                     description: Art type
-                    example: Non molestiae provident.
+                    example: Eligendi quia ipsa.
                 price:
                     type: string
                     description: Post price
-                    example: Non animi eum quia repudiandae neque sed.
+                    example: Qui consequatur ut.
                 title:
                     type: string
                     description: Post title
-                    example: Doloremque provident ut culpa sunt quia nostrum.
+                    example: Animi tenetur iste.
             description: Describes a post payload
             example:
                 content:
-                    - Dolor impedit voluptatem odit illo id.
-                    - Et soluta minus consequatur.
-                    - Rerum accusantium sed est voluptate error.
-                deliverytype: Vitae non.
-                description: Voluptatibus in laudantium reprehenderit eligendi quia ipsa.
-                medium: Et vel sit et eveniet.
-                price: Nam provident.
-                title: Praesentium optio.
+                    - Vel sit et eveniet dolores.
+                    - Non error et cumque rerum repellat sed.
+                deliverytype: Explicabo quidem sed.
+                description: Id sint et soluta minus consequatur.
+                medium: Quod laborum suscipit commodi.
+                price: Rerum accusantium sed est voluptate error.
+                title: Qui dolor impedit voluptatem odit.
             required:
                 - title
                 - description
@@ -1032,37 +1084,37 @@ components:
                 deliverytype:
                     type: string
                     description: Delivery type
-                    example: Consequatur qui dolores expedita et hic nam.
+                    example: Illum numquam eveniet.
                 description:
                     type: string
                     description: Post description
-                    example: Quidem quod laborum.
+                    example: Totam labore id quia culpa delectus.
                 imageIDs:
                     type: array
                     items:
                         type: string
-                        example: Omnis cum accusantium laboriosam esse magnam cupiditate.
+                        example: Dolores nisi explicabo tempore ea qui.
                     description: Image ID
                     example:
-                        - Id quia culpa delectus maiores qui atque.
-                        - Voluptatibus est a numquam.
-                        - Dolores nisi explicabo tempore ea qui.
+                        - Et ipsa et.
+                        - Cupiditate enim expedita fuga minima aspernatur.
+                        - Excepturi quasi dolore.
                 medium:
                     type: string
                     description: Art type
-                    example: Cupiditate enim expedita fuga minima aspernatur.
+                    example: Hic nam molestiae.
                 postID:
                     type: string
                     description: Post ID
-                    example: Qui et ipsa et.
+                    example: Error consequatur qui dolores expedita.
                 price:
                     type: string
                     description: Post price
-                    example: Commodi libero explicabo quidem.
+                    example: Qui atque repudiandae voluptatibus est a numquam.
                 profpicID:
                     type: string
                     description: prof pic id
-                    example: Qui consequatur ut cum nihil.
+                    example: Qui culpa autem.
                 sold:
                     type: boolean
                     description: is sold
@@ -1070,37 +1122,36 @@ components:
                 title:
                     type: string
                     description: Post title
-                    example: Et cumque rerum repellat.
+                    example: Cum accusantium laboriosam esse magnam.
                 uploadDate:
                     type: string
                     description: Upload Date
-                    example: Excepturi quasi dolore.
+                    example: Ea voluptas dicta qui consequatur ut.
                 userID:
                     type: string
                     description: User id associated with post
-                    example: Rerum ea voluptas.
+                    example: Nihil quia ut nihil nulla facere aut.
                 username:
                     type: string
                     description: Username associated with post
-                    example: Numquam eveniet quia nihil quia ut nihil.
+                    example: Illum culpa maxime soluta.
             description: Describes a post response
             example:
-                deliverytype: Veritatis fugit.
-                description: Qui culpa autem.
+                deliverytype: Recusandae quas architecto aspernatur est.
+                description: Laboriosam accusantium.
                 imageIDs:
-                    - Omnis quae quod architecto laboriosam accusantium.
-                    - Magni pariatur voluptatem velit sapiente tempore at.
-                    - Consequatur distinctio molestiae nesciunt.
+                    - Distinctio molestiae nesciunt.
                     - Ullam soluta aut est architecto occaecati aut.
-                medium: Non molestiae ut sit dolorem quae vero.
-                postID: Quidem voluptatem amet autem laboriosam.
-                price: Illum culpa maxime soluta.
-                profpicID: Facere dolore reiciendis facere nesciunt ut eligendi.
+                    - Quidem voluptatem amet autem laboriosam.
+                medium: Voluptatum ea quo minus dolorem ab sed.
+                postID: Non molestiae ut sit dolorem quae vero.
+                price: Magni pariatur voluptatem velit sapiente tempore at.
+                profpicID: Placeat enim quam.
                 sold: true
-                title: Facere aut.
-                uploadDate: Voluptatum ea quo minus dolorem ab sed.
-                userID: Incidunt recusandae quas architecto aspernatur est ad.
-                username: Enim quam est nisi molestiae.
+                title: Laudantium omnis quae quod.
+                uploadDate: Delectus veritatis fugit.
+                userID: Et facere dolore reiciendis facere nesciunt ut.
+                username: Nisi molestiae saepe.
             required:
                 - title
                 - description
@@ -1122,45 +1173,45 @@ components:
                 imageID:
                     type: string
                     description: Image ID
-                    example: Quas velit et ipsum sit dolore non.
+                    example: Labore perspiciatis.
             description: Profile Photo uuid
             example:
-                imageID: Repudiandae magni autem.
+                imageID: Praesentium id.
         User:
             type: object
             properties:
                 bio:
                     type: string
                     description: Bio
-                    example: Quo adipisci aut.
+                    example: Architecto aut sed quia.
                 email:
                     type: string
                     description: Email
-                    example: Qui cum ratione sed doloribus blanditiis.
+                    example: Facere et libero sunt voluptate.
                 firstName:
                     type: string
                     description: First name
-                    example: Molestiae fugiat iure dicta provident a error.
+                    example: Autem illum.
                 lastName:
                     type: string
                     description: Last name
-                    example: Molestias ex alias doloribus ut inventore.
+                    example: Repellendus dolores minima quod.
                 phone:
                     type: string
                     description: Phone number
-                    example: Exercitationem est.
+                    example: Beatae qui.
                 profpicID:
                     type: string
                     description: Prof Pic UUID
-                    example: Autem illum.
+                    example: Qui maiores doloremque magnam labore est fugit.
             description: Describes a user
             example:
-                bio: Qui maiores doloremque magnam labore est fugit.
-                email: Architecto aut sed quia.
-                firstName: Repellendus dolores minima quod.
-                lastName: Beatae qui.
-                phone: Facere et libero sunt voluptate.
-                profpicID: Et placeat et nihil numquam quae.
+                bio: Repudiandae magni autem.
+                email: Quas velit et ipsum sit dolore non.
+                firstName: Et placeat et nihil numquam quae.
+                lastName: Odio aut consequatur consequatur ea similique.
+                phone: Velit aliquid non nobis aut.
+                profpicID: Doloremque provident ut culpa sunt quia nostrum.
             required:
                 - firstName
                 - lastName

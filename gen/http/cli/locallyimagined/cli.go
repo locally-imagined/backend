@@ -36,27 +36,25 @@ postings (create-post|delete-post|edit-post|get-post-page|get-artist-post-page|g
 func UsageExamples() string {
 	return os.Args[0] + ` login login --username "Quisquam eveniet." --password "Dolore et ad voluptatum est at."` + "\n" +
 		os.Args[0] + ` signup signup --body '{
-      "email": "Et commodi.",
-      "firstName": "Est iusto eos sunt quis deleniti.",
-      "lastName": "Nihil repellendus et ratione.",
-      "phone": "Error assumenda adipisci."
-   }' --username "Est velit consectetur et voluptatem magni sunt." --password "Beatae ipsum consequuntur et excepturi praesentium."` + "\n" +
+      "email": "Est velit consectetur et voluptatem magni sunt.",
+      "firstName": "Nihil repellendus et ratione.",
+      "lastName": "Error assumenda adipisci.",
+      "phone": "Et commodi."
+   }' --username "Beatae ipsum consequuntur et excepturi praesentium." --password "Eaque assumenda voluptatem et commodi atque earum."` + "\n" +
 		os.Args[0] + ` users update-bio --body '{
-      "bio": "Sit voluptates."
-   }' --token "Sed nemo rem nisi consequatur."` + "\n" +
+      "bio": "Sed nemo rem nisi consequatur."
+   }' --token "Iure quam possimus quaerat maxime et."` + "\n" +
 		os.Args[0] + ` postings create-post --body '{
       "content": [
-         "Aut quidem eaque laborum expedita.",
-         "Natus et nemo aperiam.",
-         "Laborum qui assumenda quas non aut.",
-         "Est adipisci quia consectetur veritatis quod."
+         "Nemo aperiam rerum.",
+         "Qui assumenda quas non."
       ],
-      "deliverytype": "Consequatur ratione voluptas consectetur.",
-      "description": "Rem quos laborum dignissimos voluptatibus dolor.",
-      "medium": "Officiis quidem iure et.",
-      "price": "Veniam voluptatibus et omnis beatae sint.",
-      "title": "Molestiae similique."
-   }' --token "Excepturi molestiae."` + "\n" +
+      "deliverytype": "Veritatis quod est officiis quidem iure et.",
+      "description": "Veniam voluptatibus et omnis beatae sint.",
+      "medium": "Soluta est adipisci quia.",
+      "price": "Et aut quidem eaque laborum expedita numquam.",
+      "title": "Rem quos laborum dignissimos voluptatibus dolor."
+   }' --token "Consequatur ratione voluptas consectetur."` + "\n" +
 		""
 }
 
@@ -374,11 +372,11 @@ Signup implements Signup.
 
 Example:
     %[1]s signup signup --body '{
-      "email": "Et commodi.",
-      "firstName": "Est iusto eos sunt quis deleniti.",
-      "lastName": "Nihil repellendus et ratione.",
-      "phone": "Error assumenda adipisci."
-   }' --username "Est velit consectetur et voluptatem magni sunt." --password "Beatae ipsum consequuntur et excepturi praesentium."
+      "email": "Est velit consectetur et voluptatem magni sunt.",
+      "firstName": "Nihil repellendus et ratione.",
+      "lastName": "Error assumenda adipisci.",
+      "phone": "Et commodi."
+   }' --username "Beatae ipsum consequuntur et excepturi praesentium." --password "Eaque assumenda voluptatem et commodi atque earum."
 `, os.Args[0])
 }
 
@@ -406,8 +404,8 @@ UpdateBio implements update_bio.
 
 Example:
     %[1]s users update-bio --body '{
-      "bio": "Sit voluptates."
-   }' --token "Sed nemo rem nisi consequatur."
+      "bio": "Sed nemo rem nisi consequatur."
+   }' --token "Iure quam possimus quaerat maxime et."
 `, os.Args[0])
 }
 
@@ -420,8 +418,8 @@ UpdateProfilePicture implements update_profile_picture.
 
 Example:
     %[1]s users update-profile-picture --body '{
-      "content": "Fuga consequatur velit."
-   }' --token "Et quia repudiandae minus aut sint et."
+      "content": "Et quia repudiandae minus aut sint et."
+   }' --token "Quos exercitationem eaque dolores ea deleniti."
 `, os.Args[0])
 }
 
@@ -432,7 +430,7 @@ GetUserInfo implements get_user_info.
     -user-id STRING: 
 
 Example:
-    %[1]s users get-user-info --user-id "Doloribus expedita ut consequuntur et est."
+    %[1]s users get-user-info --user-id "Molestiae similique."
 `, os.Args[0])
 }
 
@@ -465,17 +463,15 @@ CreatePost implements create_post.
 Example:
     %[1]s postings create-post --body '{
       "content": [
-         "Aut quidem eaque laborum expedita.",
-         "Natus et nemo aperiam.",
-         "Laborum qui assumenda quas non aut.",
-         "Est adipisci quia consectetur veritatis quod."
+         "Nemo aperiam rerum.",
+         "Qui assumenda quas non."
       ],
-      "deliverytype": "Consequatur ratione voluptas consectetur.",
-      "description": "Rem quos laborum dignissimos voluptatibus dolor.",
-      "medium": "Officiis quidem iure et.",
-      "price": "Veniam voluptatibus et omnis beatae sint.",
-      "title": "Molestiae similique."
-   }' --token "Excepturi molestiae."
+      "deliverytype": "Veritatis quod est officiis quidem iure et.",
+      "description": "Veniam voluptatibus et omnis beatae sint.",
+      "medium": "Soluta est adipisci quia.",
+      "price": "Et aut quidem eaque laborum expedita numquam.",
+      "title": "Rem quos laborum dignissimos voluptatibus dolor."
+   }' --token "Consequatur ratione voluptas consectetur."
 `, os.Args[0])
 }
 

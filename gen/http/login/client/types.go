@@ -41,14 +41,17 @@ type LoginResponseResponseBody struct {
 	JWT *string `form:"jwt,omitempty" json:"jwt,omitempty" xml:"jwt,omitempty"`
 	// users ID
 	UserID *string `form:"userID,omitempty" json:"userID,omitempty" xml:"userID,omitempty"`
+	// profile pic ID
+	ProfpicID *string `form:"profpicID,omitempty" json:"profpicID,omitempty" xml:"profpicID,omitempty"`
 }
 
 // NewLoginResultOK builds a "login" service "Login" endpoint result from a
 // HTTP "OK" response.
 func NewLoginResultOK(body *LoginResponseBody) *login.LoginResult {
 	v := &login.LoginResponse{
-		JWT:    body.JWT,
-		UserID: body.UserID,
+		JWT:       body.JWT,
+		UserID:    body.UserID,
+		ProfpicID: body.ProfpicID,
 	}
 	res := &login.LoginResult{
 		LoginResponse: v,

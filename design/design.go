@@ -47,7 +47,7 @@ var _ = Service("login", func() {
 			Required("username", "password")
 		})
 		Result(func() {
-			Attribute("LoginResponse", LoginResponse, "JWT and UserID")
+			Attribute("LoginResponse", LoginResponse, "JWT, UserID, and profile pic id")
 		})
 		HTTP(func() {
 			POST("/login")
@@ -296,6 +296,7 @@ var LoginResponse = Type("LoginResponse", func() {
 	Description("Response from logging in")
 	Attribute("jwt", String, "jwt used for future authentication")
 	Attribute("userID", String, "users ID")
+	Attribute("profpicID", String, "profile pic ID")
 })
 
 var Content = Type("Content", func() {

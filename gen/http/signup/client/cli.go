@@ -21,7 +21,7 @@ func BuildSignupPayload(signupSignupBody string, signupSignupUsername string, si
 	{
 		err = json.Unmarshal([]byte(signupSignupBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"email\": \"Et commodi.\",\n      \"firstName\": \"Est iusto eos sunt quis deleniti.\",\n      \"lastName\": \"Nihil repellendus et ratione.\",\n      \"phone\": \"Error assumenda adipisci.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"email\": \"Est velit consectetur et voluptatem magni sunt.\",\n      \"firstName\": \"Nihil repellendus et ratione.\",\n      \"lastName\": \"Error assumenda adipisci.\",\n      \"phone\": \"Et commodi.\"\n   }'")
 		}
 	}
 	var username string

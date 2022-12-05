@@ -21,7 +21,7 @@ type (
 		UpdateBio(ctx context.Context, p *users.UpdateBioPayload) (*users.UpdateBioResult, error)
 
 		// Retrieves contact info for given userid
-		GetContactInfo(ctx context.Context, p *users.GetUserInfoPayload) (*users.GetUserInfoResult, error)
+		GetUserInfo(ctx context.Context, p *users.GetUserInfoPayload) (*users.GetUserInfoResult, error)
 
 		// Updates user profile picture
 		UpdateProfilePicture(ctx context.Context, p *users.UpdateProfilePicturePayload) (*users.UpdateProfilePictureResult, error)
@@ -125,7 +125,7 @@ func (c *client) UpdateBio(ctx context.Context, p *users.UpdateBioPayload) (*use
 	return &resp, err
 }
 
-func (c *client) GetContactInfo(ctx context.Context, p *users.GetUserInfoPayload) (*users.GetUserInfoResult, error) {
+func (c *client) GetUserInfo(ctx context.Context, p *users.GetUserInfoPayload) (*users.GetUserInfoResult, error) {
 	dbPool, err := c.openDB()
 	if err != nil {
 		return nil, err

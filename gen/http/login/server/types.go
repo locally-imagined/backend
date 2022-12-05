@@ -41,14 +41,17 @@ type LoginResponseResponseBody struct {
 	JWT *string `form:"jwt,omitempty" json:"jwt,omitempty" xml:"jwt,omitempty"`
 	// users ID
 	UserID *string `form:"userID,omitempty" json:"userID,omitempty" xml:"userID,omitempty"`
+	// profile pic ID
+	ProfpicID *string `form:"profpicID,omitempty" json:"profpicID,omitempty" xml:"profpicID,omitempty"`
 }
 
 // NewLoginResponseBody builds the HTTP response body from the result of the
 // "Login" endpoint of the "login" service.
 func NewLoginResponseBody(res *login.LoginResult) *LoginResponseBody {
 	body := &LoginResponseBody{
-		JWT:    res.LoginResponse.JWT,
-		UserID: res.LoginResponse.UserID,
+		JWT:       res.LoginResponse.JWT,
+		UserID:    res.LoginResponse.UserID,
+		ProfpicID: res.LoginResponse.ProfpicID,
 	}
 	return body
 }
