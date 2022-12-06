@@ -6,6 +6,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
@@ -57,7 +58,7 @@ func MakeToken(username, userID string) (string, error) {
 		RegisteredClaims: claims,
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, payload)
-	signedJWT, err := token.SignedString([]byte("test"))
+	signedJWT, err := token.SignedString([]byte(os.Getenv("JWT_SECRET_KEY")))
 	if err != nil {
 		return "", ErrUnauthorized
 	}
@@ -67,7 +68,7 @@ func MakeToken(username, userID string) (string, error) {
 func DecodeToken(tokenString string) *jwt.Token {
 	claims := jwt.MapClaims{}
 	token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
-		return []byte("test"), nil
+		return []byte(os.Getenv("JWT_SECRET_KEY")), nil
 	})
 	if err != nil {
 		return nil
