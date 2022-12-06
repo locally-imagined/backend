@@ -2,16 +2,13 @@ package postings
 
 import (
 	"backend/gen/postings"
+	"backend/helpers"
 	"context"
 	"database/sql"
 	"fmt"
 	"strings"
 	"time"
 
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/credentials"
-	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/google/uuid"
 	_ "github.com/lib/pq"
 )
@@ -39,12 +36,6 @@ type (
 
 		// Edits post with params given
 		EditPost(ctx context.Context, p *postings.EditPostPayload) (*postings.EditPostResult, error)
-
-		// Opens postgres db connection
-		openDB() (*sql.DB, error)
-
-		// Creates s3 session
-		getS3Session() (string, *s3.S3)
 	}
 
 	client struct {
@@ -115,45 +106,10 @@ var (
 	IMAGESPERPAGE int    = 25
 )
 
-func (c *client) openDB() (*sql.DB, error) {
-	return sql.Open("postgres", c.dbURL)
-}
-
-func (c *client) getS3Session() (string, *s3.S3) {
-	awsAccessKey := c.awsAccessKey
-	awsSecretKey := c.awsSecretKey
-	awsRegion := c.awsRegion
-	awsBucketName := c.awsBucketName
-	sess := session.Must(session.NewSession(&aws.Config{
-		Region:      aws.String(awsRegion),
-		Credentials: credentials.NewStaticCredentials(awsAccessKey, awsSecretKey, ""),
-	}))
-	// create a new instance of the service's client with a session.
-	svc := s3.New(sess)
-	return awsBucketName, svc
-}
-
-func putImageToS3(ctx context.Context, svc *s3.S3, awsBucketName, imageID string, reader *strings.Reader) error {
-	_, err := svc.PutObjectWithContext(ctx, &s3.PutObjectInput{
-		Bucket: aws.String(awsBucketName),
-		Key:    aws.String("public/" + imageID),
-		Body:   reader,
-	})
-	return err
-}
-
-func deleteImageFromS3(ctx context.Context, svc *s3.S3, awsBucketName, imageID string) error {
-	_, err := svc.DeleteObjectWithContext(ctx, &s3.DeleteObjectInput{
-		Bucket: aws.String(awsBucketName),
-		Key:    aws.String("public/" + imageID),
-	})
-	return err
-}
-
 func (c *client) CreatePost(ctx context.Context, p *postings.CreatePostPayload) (*postings.CreatePostResult, error) {
-	awsBucketName, svc := c.getS3Session()
+	awsBucketName, svc := helpers.GetS3Session(c.awsAccessKey, c.awsSecretKey, c.awsRegion, c.awsBucketName)
 	postID := uuid.New().String()
-	dbPool, err := c.openDB()
+	dbPool, err := helpers.OpenDB(c.dbURL)
 	if err != nil {
 		return nil, err
 	}
@@ -169,7 +125,7 @@ func (c *client) CreatePost(ctx context.Context, p *postings.CreatePostPayload) 
 		imageIDs = append(imageIDs, imageID)
 		reader := strings.NewReader(string(content))
 		// put the object in the bucket
-		err := putImageToS3(ctx, svc, awsBucketName, imageID, reader)
+		err := helpers.PutImageToS3(ctx, svc, awsBucketName, imageID, reader)
 		if err != nil {
 			return nil, err
 		}
@@ -197,7 +153,7 @@ func (c *client) CreatePost(ctx context.Context, p *postings.CreatePostPayload) 
 }
 
 func (c *client) GetPostPage(ctx context.Context, p *postings.GetPostPagePayload) (*postings.GetPostPageResult, error) {
-	dbPool, err := c.openDB()
+	dbPool, err := helpers.OpenDB(c.dbURL)
 	if err != nil {
 		return nil, err
 	}
@@ -222,7 +178,7 @@ func (c *client) GetPostPage(ctx context.Context, p *postings.GetPostPagePayload
 }
 
 func (c *client) GetArtistPostPage(ctx context.Context, p *postings.GetArtistPostPagePayload) (*postings.GetArtistPostPageResult, error) {
-	dbPool, err := c.openDB()
+	dbPool, err := helpers.OpenDB(c.dbURL)
 	if err != nil {
 		return nil, err
 	}
@@ -247,7 +203,7 @@ func (c *client) GetArtistPostPage(ctx context.Context, p *postings.GetArtistPos
 }
 
 func (c *client) GetPostPageFiltered(ctx context.Context, p *postings.GetPostPageFilteredPayload) (*postings.GetPostPageFilteredResult, error) {
-	dbPool, err := c.openDB()
+	dbPool, err := helpers.OpenDB(c.dbURL)
 	if err != nil {
 		return nil, err
 	}
@@ -288,7 +244,7 @@ func (c *client) GetPostPageFiltered(ctx context.Context, p *postings.GetPostPag
 }
 
 func (c *client) GetImagesForPost(ctx context.Context, p *postings.GetImagesForPostPayload) (*postings.GetImagesForPostResult, error) {
-	dbPool, err := c.openDB()
+	dbPool, err := helpers.OpenDB(c.dbURL)
 	if err != nil {
 		return nil, err
 	}
@@ -309,7 +265,7 @@ func (c *client) GetImagesForPost(ctx context.Context, p *postings.GetImagesForP
 }
 
 func (c *client) DeletePost(ctx context.Context, p *postings.DeletePostPayload) error {
-	dbPool, err := c.openDB()
+	dbPool, err := helpers.OpenDB(c.dbURL)
 	if err != nil {
 		return err
 	}
@@ -349,10 +305,10 @@ func (c *client) DeletePost(ctx context.Context, p *postings.DeletePostPayload) 
 	if err != nil {
 		return err
 	}
-	awsBucketName, svc := c.getS3Session()
+	awsBucketName, svc := helpers.GetS3Session(c.awsAccessKey, c.awsSecretKey, c.awsRegion, c.awsBucketName)
 	// delete the images in the bucket
 	for _, imageID := range imageIDs {
-		err = deleteImageFromS3(ctx, svc, awsBucketName, imageID)
+		err = helpers.DeleteImageFromS3(ctx, svc, awsBucketName, imageID)
 		if err != nil {
 			return err
 		}
@@ -361,7 +317,7 @@ func (c *client) DeletePost(ctx context.Context, p *postings.DeletePostPayload) 
 }
 
 func (c *client) EditPost(ctx context.Context, p *postings.EditPostPayload) (*postings.EditPostResult, error) {
-	dbPool, err := c.openDB()
+	dbPool, err := helpers.OpenDB(c.dbURL)
 	if err != nil {
 		return nil, err
 	}
@@ -434,8 +390,8 @@ func (c *client) EditPost(ctx context.Context, p *postings.EditPostPayload) (*po
 		if err != nil {
 			return nil, err
 		}
-		awsBucketName, svc := c.getS3Session()
-		err = deleteImageFromS3(ctx, svc, awsBucketName, *p.ImageID)
+		awsBucketName, svc := helpers.GetS3Session(c.awsAccessKey, c.awsSecretKey, c.awsRegion, c.awsBucketName)
+		err = helpers.DeleteImageFromS3(ctx, svc, awsBucketName, *p.ImageID)
 		if err != nil {
 			return nil, err
 		}
@@ -444,10 +400,10 @@ func (c *client) EditPost(ctx context.Context, p *postings.EditPostPayload) (*po
 		fmt.Printf("%v", p.Content)
 		fmt.Printf("%s", *p.Content.Content)
 		imageID := uuid.New().String()
-		awsBucketName, svc := c.getS3Session()
+		awsBucketName, svc := helpers.GetS3Session(c.awsAccessKey, c.awsSecretKey, c.awsRegion, c.awsBucketName)
 		reader := strings.NewReader(string(*p.Content.Content))
 		// put the object in the bucket
-		err := putImageToS3(ctx, svc, awsBucketName, imageID, reader)
+		err := helpers.PutImageToS3(ctx, svc, awsBucketName, imageID, reader)
 		if err != nil {
 			return nil, err
 		}

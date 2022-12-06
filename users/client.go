@@ -2,14 +2,11 @@ package users
 
 import (
 	"backend/gen/users"
+	"backend/helpers"
 	"context"
 	"database/sql"
 	"strings"
 
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/credentials"
-	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/google/uuid"
 	_ "github.com/lib/pq"
 )
@@ -25,12 +22,6 @@ type (
 
 		// Updates user profile picture
 		UpdateProfilePicture(ctx context.Context, p *users.UpdateProfilePicturePayload) (*users.UpdateProfilePictureResult, error)
-
-		// Opens postgres db connection
-		openDB() (*sql.DB, error)
-
-		// Creates s3 session
-		getS3Session() (string, *s3.S3)
 	}
 
 	client struct {
@@ -53,59 +44,14 @@ func New(awsAccessKey, awsSecretKey, awsRegion, awsBucketName, dbURL string) Cli
 }
 
 var (
-	// ErrUnauthorized is the error returned by Login when the request credentials
-	// are invalid.
-
-	// add prepares before queries?
-	//
 	GETPROFILEPIC    string = "SELECT profpicid FROM users WHERE userid=$1"
 	UPDATEPROFILEPIC string = "UPDATE users SET profpicid=$1 WHERE userid=$2"
-
-	UPDATEINDEX   string = "UPDATE images SET index = index - 1 WHERE (postid=$1 AND index>(SELECT index FROM images WHERE imgid=$2))"
-	ADDIMAGE      string = "INSERT INTO images VALUES($1, $2, (SELECT MAX(index) FROM images where postID=$3) + 1)"
-	GETEDITEDINFO string = "SELECT title, description, price, medium, sold, deliverytype, uploaddate FROM posts where postID=$1"
-	IMAGESPERPAGE int    = 25
-	UPDATEBIO     string = "UPDATE users SET bio = $1 WHERE userID = $2"
-	GETUSER       string = "SELECT firstname, lastname, phone, email, bio, profpicid FROM users WHERE userID = $1"
+	UPDATEBIO        string = "UPDATE users SET bio = $1 WHERE userID = $2"
+	GETUSER          string = "SELECT firstname, lastname, phone, email, bio, profpicid FROM users WHERE userID = $1"
 )
 
-func (c *client) openDB() (*sql.DB, error) {
-	return sql.Open("postgres", c.dbURL)
-}
-
-func (c *client) getS3Session() (string, *s3.S3) {
-	awsAccessKey := c.awsAccessKey
-	awsSecretKey := c.awsSecretKey
-	awsRegion := c.awsRegion
-	awsBucketName := c.awsBucketName
-	sess := session.Must(session.NewSession(&aws.Config{
-		Region:      aws.String(awsRegion),
-		Credentials: credentials.NewStaticCredentials(awsAccessKey, awsSecretKey, ""),
-	}))
-	// create a new instance of the service's client with a session.
-	svc := s3.New(sess)
-	return awsBucketName, svc
-}
-
-func putImageToS3(ctx context.Context, svc *s3.S3, awsBucketName, imageID string, reader *strings.Reader) error {
-	_, err := svc.PutObjectWithContext(ctx, &s3.PutObjectInput{
-		Bucket: aws.String(awsBucketName),
-		Key:    aws.String("public/" + imageID),
-		Body:   reader,
-	})
-	return err
-}
-
-func deleteImageFromS3(ctx context.Context, svc *s3.S3, awsBucketName, imageID string) error {
-	_, err := svc.DeleteObjectWithContext(ctx, &s3.DeleteObjectInput{
-		Bucket: aws.String(awsBucketName),
-		Key:    aws.String("public/" + imageID),
-	})
-	return err
-}
-
 func (c *client) UpdateBio(ctx context.Context, p *users.UpdateBioPayload) (*users.UpdateBioResult, error) {
-	dbPool, err := c.openDB()
+	dbPool, err := helpers.OpenDB(c.dbURL)
 	if err != nil {
 		return nil, err
 	}
@@ -126,7 +72,7 @@ func (c *client) UpdateBio(ctx context.Context, p *users.UpdateBioPayload) (*use
 }
 
 func (c *client) GetUserInfo(ctx context.Context, p *users.GetUserInfoPayload) (*users.GetUserInfoResult, error) {
-	dbPool, err := c.openDB()
+	dbPool, err := helpers.OpenDB(c.dbURL)
 	if err != nil {
 		return nil, err
 	}
@@ -149,7 +95,7 @@ func (c *client) GetUserInfo(ctx context.Context, p *users.GetUserInfoPayload) (
 }
 
 func (c *client) UpdateProfilePicture(ctx context.Context, p *users.UpdateProfilePicturePayload) (*users.UpdateProfilePictureResult, error) {
-	dbPool, err := c.openDB()
+	dbPool, err := helpers.OpenDB(c.dbURL)
 	if err != nil {
 		return nil, err
 	}
@@ -160,7 +106,7 @@ func (c *client) UpdateProfilePicture(ctx context.Context, p *users.UpdateProfil
 	if err != nil {
 		return nil, err
 	}
-	bucketName, svc := c.getS3Session()
+	bucketName, svc := helpers.GetS3Session(c.awsAccessKey, c.awsSecretKey, c.awsRegion, c.awsBucketName)
 	var oldID string
 	for rows.Next() {
 		if err := rows.Scan(&oldID); err != nil {
@@ -168,7 +114,7 @@ func (c *client) UpdateProfilePicture(ctx context.Context, p *users.UpdateProfil
 		}
 	}
 	if oldID != uuid.Nil.String() {
-		err = deleteImageFromS3(ctx, svc, bucketName, oldID)
+		err = helpers.DeleteImageFromS3(ctx, svc, bucketName, oldID)
 		if err != nil {
 			return nil, err
 		}
@@ -179,7 +125,7 @@ func (c *client) UpdateProfilePicture(ctx context.Context, p *users.UpdateProfil
 		return nil, err
 	}
 	reader := strings.NewReader(string(*p.Content.Content))
-	err = putImageToS3(ctx, svc, bucketName, newID, reader)
+	err = helpers.PutImageToS3(ctx, svc, bucketName, newID, reader)
 	if err != nil {
 		return nil, err
 	}

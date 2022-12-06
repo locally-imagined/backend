@@ -54,9 +54,8 @@ func main() {
 	usersServer.Mount(mux, usersSvr)                                     //# Mount Goa server on mux
 
 	httpsvr := &http.Server{ // # Create Go HTTP server
-		Addr: ":" + port, // # Configure server address (this is for heroku)
-		//Addr:    "localhost:8080", // this is for localhost obviously
-		Handler: mux, // # Set request handler
+		Addr:    ":" + port, // # Configure server address (this is for heroku)
+		Handler: mux,        // # Set request handler
 	}
 	if err := httpsvr.ListenAndServe(); err != nil { // # Start HTTP server
 		panic(err)
