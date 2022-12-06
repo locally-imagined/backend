@@ -79,7 +79,7 @@ func (m *Mock) CreatePost(ctx context.Context, p *postings.CreatePostPayload) (*
 }
 
 func (m *Mock) EditPost(ctx context.Context, p *postings.EditPostPayload) (*postings.EditPostResult, error) {
-	if f := m.m.Next("CreatePost"); f != nil {
+	if f := m.m.Next("EditPost"); f != nil {
 		return f.(EditPostFunc)(ctx, p)
 	}
 	m.t.Error("unexpected call to EditPost")
