@@ -36,14 +36,14 @@ var _ = API("locallyimagined", func() {
 		cors.MaxAge(600)                                        // How long to cache a preflight request response
 		cors.Credentials()                                      // Sets Access-Control-Allow-Credentials header
 	})
-	cors.Origin("http://www.locallyimagined.com/", func() { // Define CORS policy, may be prefixed with "*" wildcard
+	cors.Origin("http://www.locallyimagined.com", func() { // Define CORS policy, may be prefixed with "*" wildcard
 		cors.Headers("*")                                       // One or more authorized headers, use "*" to authorize all
 		cors.Methods("GET", "POST", "DELETE", "PUT", "OPTIONS") // One or more authorized HTTP methods
 		cors.Expose("*")                                        // One or more headers exposed to clients
 		cors.MaxAge(600)                                        // How long to cache a preflight request response
 		cors.Credentials()                                      // Sets Access-Control-Allow-Credentials header
 	})
-	cors.Origin("https://www.locallyimagined.com/", func() { // Define CORS policy, may be prefixed with "*" wildcard
+	cors.Origin("https://www.locallyimagined.com", func() { // Define CORS policy, may be prefixed with "*" wildcard
 		cors.Headers("*")                                       // One or more authorized headers, use "*" to authorize all
 		cors.Methods("GET", "POST", "DELETE", "PUT", "OPTIONS") // One or more authorized HTTP methods
 		cors.Expose("*")                                        // One or more headers exposed to clients
