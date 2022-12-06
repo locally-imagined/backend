@@ -7,6 +7,7 @@ import (
 	"database/sql"
 	"fmt"
 	"os"
+	"strings"
 
 	_ "github.com/lib/pq"
 	goa "goa.design/goa/v3/pkg"
@@ -43,7 +44,7 @@ func (s *Service) BasicAuth(ctx context.Context, user, pass string, scheme *secu
 	}
 	var userID string
 	var profpicID string
-	row, err = dbPool.Query("SELECT userID, profpicID from users where username=$1", user)
+	row, err = dbPool.Query("SELECT userID, profpicID from users where username=$1", strings.ToLower(user))
 	if err == sql.ErrNoRows {
 		return ctx, ErrUnauthorized
 	}

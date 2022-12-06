@@ -7,6 +7,7 @@ import (
 	"database/sql"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/google/uuid"
 	_ "github.com/lib/pq"
@@ -54,7 +55,7 @@ func (s *Service) Signup(ctx context.Context, p *signup.SignupPayload) (*signup.
 	defer dbPool.Close()
 	hashedPassword := auth.ShaHashing(p.Password)
 	userID := uuid.New().String()
-	_, err = dbPool.Query("INSERT INTO Users Values ($1, $2, $3, $4, $5, $6, $7)", userID, p.Username, p.User.FirstName, p.User.LastName, p.User.Phone, p.User.Email, hashedPassword)
+	_, err = dbPool.Query("INSERT INTO Users Values ($1, $2, $3, $4, $5, $6, $7)", userID, strings.ToLower(p.Username), p.User.FirstName, p.User.LastName, p.User.Phone, p.User.Email, hashedPassword)
 	if err != nil {
 		return nil, err
 	}

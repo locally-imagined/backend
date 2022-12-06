@@ -93,17 +93,17 @@ var (
 					p.price, p.medium, p.sold, p.uploaddate, p.deliverytype, i.imgid FROM posts AS p
 					LEFT JOIN (SELECT imgid, postid FROM images WHERE index=0) AS i ON p.postid=i.postid 
 					LEFT JOIN users AS u ON p.userid = u.userid
-					ORDER BY p.uploaddate OFFSET $1 ROWS FETCH NEXT 25 ROWS ONLY`
+					ORDER BY p.uploaddate DESC OFFSET $1 ROWS FETCH NEXT 25 ROWS ONLY`
 	GETPOSTPAGEFILTERED string = `SELECT p.postid, p.userid, p.title, p.description, 
 					p.price, p.medium, p.sold, p.uploaddate, i.imgid, u.username, u.profpicid FROM posts AS p LEFT 
 					JOIN images AS i ON p.postid=i.postid LEFT JOIN users AS u ON p.userid = u.userid WHERE (i.index=0) AND ((LOWER(p.title) LIKE $1) OR 
 					(LOWER(p.description) LIKE $1)) AND (p.uploaddate >= $2) AND (p.uploaddate <= $3) AND (p.medium LIKE $4) 
-					ORDER BY p.uploaddate OFFSET $5 ROWS FETCH NEXT 25 ROWS ONLY`
+					ORDER BY p.uploaddate DESC OFFSET $5 ROWS FETCH NEXT 25 ROWS ONLY`
 	GETPOSTPAGEFORARTIST string = `SELECT p.postid, p.userid, u.username, u.profpicid, p.title, 
 					p.description, p.price, p.medium, p.sold, p.uploaddate, p.deliverytype, i.imgid FROM posts AS p
 					LEFT JOIN (SELECT imgid, postid FROM images WHERE index=0) AS i ON p.postid=i.postid 
 					LEFT JOIN users AS u ON p.userid = u.userid where p.userid=$1      
-					ORDER BY p.uploaddate OFFSET $2 ROWS FETCH NEXT 25 ROWS ONLY;`
+					ORDER BY p.uploaddate DESC OFFSET $2 ROWS FETCH NEXT 25 ROWS ONLY;`
 	SELECTIMAGES  string = "SELECT imgid from images where postid=$1 ORDER BY index"
 	SELECTUSERID  string = "SELECT userID from Posts where postID=$1"
 	DELETEIMAGES  string = "DELETE FROM images WHERE postID=$1"
