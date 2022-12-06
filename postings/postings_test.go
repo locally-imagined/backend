@@ -101,3 +101,110 @@ func MakeCreatePostPayload(t *testing.T, token, title, description, price, mediu
 		Token: token,
 	}
 }
+
+func TestGetPostPage(t *testing.T) {
+	var (
+		title        = "New Post"
+		description  = "This describes the post"
+		price        = "999"
+		medium       = "Painting"
+		imageIDs     = []string{"imageID1", "imageID2"}
+		postID       = "postID"
+		uploadDate   = "2022-10-09"
+		sold         = false
+		deliveryType = "Local Delivery"
+		userID       = "userID"
+		content      = []string{"MyBinaryImageData1, MyBinaryImageData2"}
+		token        = "MyJWT"
+
+		posts = []*postings.PostResponse{}
+		resp  = postings.PostResponse{
+			Title:        title,
+			Description:  description,
+			Price:        price,
+			ImageIDs:     imageIDs,
+			PostID:       postID,
+			Medium:       medium,
+			UploadDate:   uploadDate,
+			Sold:         sold,
+			Deliverytype: deliveryType,
+			UserID:       userID,
+		}
+	)
+	posts = append(posts, &resp)
+	goodres := postings.GetPostPageResult{
+		Posts: posts,
+	}
+	emptyres := postings.GetPostPageResult{
+		Posts: []*postings.PostResponse{},
+	}
+	cases := []struct {
+		Name        string
+		Payload     *postings.GetPostPagePayload
+		Expected    *postings.GetPostPageResult
+		ExpectedErr error
+	}{
+		{
+			Name:        "Success",
+			Payload:     MakeGetPostPagePayload(t, token, title, description, price, medium, deliveryType, content),
+			Expected:    &goodres,
+			ExpectedErr: nil,
+		},
+		{
+			Name:        "Empty res",
+			Payload:     MakeGetPostPagePayload(t, token, "Empty", description, price, medium, deliveryType, content),
+			Expected:    &emptyres,
+			ExpectedErr: nil,
+		},
+	}
+
+	for _, c := range cases {
+		t.Run(c.Name, func(t *testing.T) {
+			mock := NewMock(t)
+			mock.SetGetPostPageFunc(func(ctx context.Context, p *postings.GetPostPagePayload) (*postings.GetPostPageResult, error) {
+				if p.Page == 0 {
+					return &goodres, nil
+				} else {
+					return &emptyres, nil
+				}
+			})
+			svc := NewService(mock)
+
+			res, err := svc.GetPostPage(context.Background(), c.Payload)
+			if err != nil {
+				t.Errorf("should not be erroring, this is a simple test")
+				return
+			}
+			if (res != &emptyres) && (res.Posts[0].Title != "New Post") {
+				t.Errorf("got %s results, expected %s", res.Posts[0].Title, title)
+				return
+			}
+			// if res.Posted.Description != "This describes the post" {
+			// 	t.Errorf("got %s results, expected %s", res.Posted.Description, description)
+			// 	return
+			// }
+			// if res.Posted.Description != "This describes the post" {
+			// 	t.Errorf("got %s results, expected %s", res.Posted.Description, description)
+			// 	return
+			// }
+			// if res.Posted.ImageIDs[1] != "imageID2" {
+			// 	t.Errorf("got %s results, expected %s", res.Posted.ImageIDs[1], imageIDs[1])
+			// 	return
+			// }
+
+		})
+	}
+}
+
+func MakeGetPostPagePayload(t *testing.T, token, title, description, price, medium, deliverytype string, content []string) *postings.GetPostPagePayload {
+	t.Helper()
+	if title == "New Post" {
+		return &postings.GetPostPagePayload{
+			Page: 0,
+		}
+	} else {
+		return &postings.GetPostPagePayload{
+			Page: 2,
+		}
+	}
+}
