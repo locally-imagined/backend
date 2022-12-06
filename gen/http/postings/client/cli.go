@@ -24,7 +24,7 @@ func BuildCreatePostPayload(postingsCreatePostBody string, postingsCreatePostTok
 	{
 		err = json.Unmarshal([]byte(postingsCreatePostBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"content\": [\n         \"Nemo aperiam rerum.\",\n         \"Qui assumenda quas non.\"\n      ],\n      \"deliverytype\": \"Veritatis quod est officiis quidem iure et.\",\n      \"description\": \"Veniam voluptatibus et omnis beatae sint.\",\n      \"medium\": \"Soluta est adipisci quia.\",\n      \"price\": \"Et aut quidem eaque laborum expedita numquam.\",\n      \"title\": \"Rem quos laborum dignissimos voluptatibus dolor.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"content\": [\n         \"Molestiae repellat cumque ipsam unde excepturi.\",\n         \"Laborum assumenda soluta eos inventore ut ipsam.\",\n         \"Iusto et in eum reiciendis.\"\n      ],\n      \"deliverytype\": \"Atque accusamus velit est soluta ratione pariatur.\",\n      \"description\": \"Officiis quidem iure et.\",\n      \"medium\": \"Hic omnis dignissimos et.\",\n      \"price\": \"Consequatur ratione voluptas consectetur.\",\n      \"title\": \"Est adipisci quia consectetur veritatis quod.\"\n   }'")
 		}
 		if body.Content == nil {
 			err = goa.MergeErrors(err, goa.MissingFieldError("content", "body"))
@@ -84,7 +84,7 @@ func BuildEditPostPayload(postingsEditPostBody string, postingsEditPostPostID st
 	{
 		err = json.Unmarshal([]byte(postingsEditPostBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"content\": \"Voluptas amet.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"content\": \"Ratione voluptatem cumque.\"\n   }'")
 		}
 	}
 	var postID string

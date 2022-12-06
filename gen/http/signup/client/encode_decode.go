@@ -73,14 +73,14 @@ func DecodeSignupResponse(decoder func(*http.Response) goahttp.Decoder, restoreB
 		switch resp.StatusCode {
 		case http.StatusOK:
 			var (
-				body string
+				body SignupResponseBody
 				err  error
 			)
 			err = decoder(resp).Decode(&body)
 			if err != nil {
 				return nil, goahttp.ErrDecodingError("signup", "Signup", err)
 			}
-			res := NewSignupResultOK(body)
+			res := NewSignupResultOK(&body)
 			return res, nil
 		case http.StatusUnauthorized:
 			var (

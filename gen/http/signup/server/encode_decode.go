@@ -24,7 +24,7 @@ func EncodeSignupResponse(encoder func(context.Context, http.ResponseWriter) goa
 	return func(ctx context.Context, w http.ResponseWriter, v interface{}) error {
 		res, _ := v.(*signup.SignupResult)
 		enc := encoder(ctx, w)
-		body := res.JWT
+		body := NewSignupResponseBody(res)
 		w.WriteHeader(http.StatusOK)
 		return enc.Encode(body)
 	}

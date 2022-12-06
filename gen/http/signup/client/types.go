@@ -26,6 +26,10 @@ type SignupRequestBody struct {
 	Email string `form:"email" json:"email" xml:"email"`
 }
 
+// SignupResponseBody is the type of the "signup" service "Signup" endpoint
+// HTTP response body.
+type SignupResponseBody SignupResponseResponseBody
+
 // SignupUnauthorizedResponseBody is the type of the "signup" service "Signup"
 // endpoint HTTP response body for the "unauthorized" error.
 type SignupUnauthorizedResponseBody struct {
@@ -44,6 +48,14 @@ type SignupUnauthorizedResponseBody struct {
 	Fault *bool `form:"fault,omitempty" json:"fault,omitempty" xml:"fault,omitempty"`
 }
 
+// SignupResponseResponseBody is used to define fields on response body types.
+type SignupResponseResponseBody struct {
+	// jwt used for future authentication
+	JWT *string `form:"jwt,omitempty" json:"jwt,omitempty" xml:"jwt,omitempty"`
+	// users ID
+	UserID *string `form:"userID,omitempty" json:"userID,omitempty" xml:"userID,omitempty"`
+}
+
 // NewSignupRequestBody builds the HTTP request body from the payload of the
 // "Signup" endpoint of the "signup" service.
 func NewSignupRequestBody(p *signup.SignupPayload) *SignupRequestBody {
@@ -58,10 +70,13 @@ func NewSignupRequestBody(p *signup.SignupPayload) *SignupRequestBody {
 
 // NewSignupResultOK builds a "signup" service "Signup" endpoint result from a
 // HTTP "OK" response.
-func NewSignupResultOK(body string) *signup.SignupResult {
-	v := body
+func NewSignupResultOK(body *SignupResponseBody) *signup.SignupResult {
+	v := &signup.SignupResponse{
+		JWT:    body.JWT,
+		UserID: body.UserID,
+	}
 	res := &signup.SignupResult{
-		JWT: &v,
+		User: v,
 	}
 
 	return res

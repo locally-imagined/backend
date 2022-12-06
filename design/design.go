@@ -90,13 +90,13 @@ var _ = Service("signup", func() {
 			Required("username", "password", "user")
 		})
 		Result(func() {
-			Attribute("jwt", String)
+			Attribute("user", SignupResponse)
 		})
 		HTTP(func() {
 			POST("/signup")
 			Body("user")
 			Response(func() {
-				Body("jwt")
+				Body("user")
 			})
 		})
 	})
@@ -318,6 +318,12 @@ var LoginResponse = Type("LoginResponse", func() {
 	Attribute("jwt", String, "jwt used for future authentication")
 	Attribute("userID", String, "users ID")
 	Attribute("profpicID", String, "profile pic ID")
+})
+
+var SignupResponse = Type("SignupResponse", func() {
+	Description("Response from logging in")
+	Attribute("jwt", String, "jwt used for future authentication")
+	Attribute("userID", String, "users ID")
 })
 
 var Content = Type("Content", func() {

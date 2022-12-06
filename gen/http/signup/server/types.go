@@ -26,6 +26,10 @@ type SignupRequestBody struct {
 	Email *string `form:"email,omitempty" json:"email,omitempty" xml:"email,omitempty"`
 }
 
+// SignupResponseBody is the type of the "signup" service "Signup" endpoint
+// HTTP response body.
+type SignupResponseBody SignupResponseResponseBody
+
 // SignupUnauthorizedResponseBody is the type of the "signup" service "Signup"
 // endpoint HTTP response body for the "unauthorized" error.
 type SignupUnauthorizedResponseBody struct {
@@ -42,6 +46,24 @@ type SignupUnauthorizedResponseBody struct {
 	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
 	// Is the error a server-side fault?
 	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// SignupResponseResponseBody is used to define fields on response body types.
+type SignupResponseResponseBody struct {
+	// jwt used for future authentication
+	JWT *string `form:"jwt,omitempty" json:"jwt,omitempty" xml:"jwt,omitempty"`
+	// users ID
+	UserID *string `form:"userID,omitempty" json:"userID,omitempty" xml:"userID,omitempty"`
+}
+
+// NewSignupResponseBody builds the HTTP response body from the result of the
+// "Signup" endpoint of the "signup" service.
+func NewSignupResponseBody(res *signup.SignupResult) *SignupResponseBody {
+	body := &SignupResponseBody{
+		JWT:    res.User.JWT,
+		UserID: res.User.UserID,
+	}
+	return body
 }
 
 // NewSignupUnauthorizedResponseBody builds the HTTP response body from the

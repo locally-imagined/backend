@@ -49,18 +49,19 @@ func (s *Service) BasicAuth(ctx context.Context, user, pass string, scheme *secu
 func (s *Service) Signup(ctx context.Context, p *signup.SignupPayload) (*signup.SignupResult, error) {
 	dbPool, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
 	if err != nil {
-		return &signup.SignupResult{JWT: nil}, err
+		return nil, err
 	}
 	defer dbPool.Close()
 	hashedPassword := auth.ShaHashing(p.Password)
 	userID := uuid.New().String()
 	_, err = dbPool.Query("INSERT INTO Users Values ($1, $2, $3, $4, $5, $6, $7)", userID, p.Username, p.User.FirstName, p.User.LastName, p.User.Phone, p.User.Email, hashedPassword)
 	if err != nil {
-		return &signup.SignupResult{JWT: nil}, err
+		return nil, err
 	}
 	token, err := auth.MakeToken(p.Username, userID)
 	if err != nil {
-		return &signup.SignupResult{JWT: nil}, err
+		return nil, err
 	}
-	return &signup.SignupResult{JWT: &token}, nil
+	resp := signup.SignupResponse{JWT: &token, UserID: &userID}
+	return &signup.SignupResult{User: &resp}, nil
 }

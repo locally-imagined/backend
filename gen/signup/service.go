@@ -57,9 +57,17 @@ type SignupPayload struct {
 	User     *NewUser
 }
 
+// Response from logging in
+type SignupResponse struct {
+	// jwt used for future authentication
+	JWT *string
+	// users ID
+	UserID *string
+}
+
 // SignupResult is the result type of the signup service Signup method.
 type SignupResult struct {
-	JWT *string
+	User *SignupResponse
 }
 
 // MakeUnauthorized builds a goa.ServiceError from an error.

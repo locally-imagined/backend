@@ -21,7 +21,7 @@ func BuildUpdateBioPayload(usersUpdateBioBody string, usersUpdateBioToken string
 	{
 		err = json.Unmarshal([]byte(usersUpdateBioBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"bio\": \"Sed nemo rem nisi consequatur.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"bio\": \"Dolor porro assumenda dolor ex.\"\n   }'")
 		}
 	}
 	var token string
@@ -47,7 +47,7 @@ func BuildUpdateProfilePicturePayload(usersUpdateProfilePictureBody string, user
 	{
 		err = json.Unmarshal([]byte(usersUpdateProfilePictureBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"content\": \"Et quia repudiandae minus aut sint et.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"content\": \"Veniam voluptatibus et omnis beatae sint.\"\n   }'")
 		}
 	}
 	var token string
