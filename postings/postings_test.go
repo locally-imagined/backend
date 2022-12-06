@@ -101,3 +101,60 @@ func MakeCreatePostPayload(t *testing.T, token, title, description, price, mediu
 		Token: token,
 	}
 }
+
+func TestGetPostPage(t *testing.T) {
+
+	cases := []struct {
+		Name        string
+		Payload     *postings.GetPostPagePayload
+		Expected    *postings.GetPostPageResult
+		ExpectedErr error
+	}{
+		{
+			Name:        "Success",
+			Payload:     MakeGetPostPagePayload(t, 0),
+			Expected:    &res,
+			ExpectedErr: nil,
+		},
+	}
+
+	for _, c := range cases {
+		t.Run(c.Name, func(t *testing.T) {
+			mock := NewMock(t)
+			mock.SetGetPostPageFunc(func(ctx context.Context, p *postings.GetPostPagePayload) (*postings.GetPostPageeResult, error) {
+				return &res, nil
+			})
+			svc := NewService(mock)
+
+			_, err := svc.GetPostPage(context.Background(), c.Payload)
+			if err != nil {
+				t.Errorf("should not be erroring, this is a simple test")
+				return
+			}
+			if res.Posted.Title != "New Post" {
+				t.Errorf("got %s results, expected %s", res.Posted.Title, title)
+				return
+			}
+			if res.Posted.Description != "This describes the post" {
+				t.Errorf("got %s results, expected %s", res.Posted.Description, description)
+				return
+			}
+			if res.Posted.Description != "This describes the post" {
+				t.Errorf("got %s results, expected %s", res.Posted.Description, description)
+				return
+			}
+			if res.Posted.ImageIDs[1] != "imageID2" {
+				t.Errorf("got %s results, expected %s", res.Posted.ImageIDs[1], imageIDs[1])
+				return
+			}
+
+		})
+	}
+}
+
+func MakeGetPostPagePayload(t *testing.T, page int) *postings.GetPostPagePayload {
+	t.Helper()
+	return &postings.GetPostPagePayload{
+		Page: page,
+	}
+}
