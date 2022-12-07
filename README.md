@@ -31,7 +31,7 @@
 
 ## To Create a Service:
 + Follow the style of Postings
-+ Mount service endpoints to mux in main.go
++ Mount service endpoints on mux in main.go
 
 ## To Create an Endpoint:
 + Add to design.go under correct service
