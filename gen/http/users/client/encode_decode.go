@@ -62,8 +62,8 @@ func EncodeUpdateBioRequest(encoder func(*http.Request) goahttp.Encoder) func(*h
 // users update_bio endpoint. restoreBody controls whether the response body
 // should be restored after having been read.
 // DecodeUpdateBioResponse may return the following errors:
-//   - "unauthorized" (type *goa.ServiceError): http.StatusUnauthorized
-//   - error: internal error
+//	- "unauthorized" (type *goa.ServiceError): http.StatusUnauthorized
+//	- error: internal error
 func DecodeUpdateBioResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
 	return func(resp *http.Response) (interface{}, error) {
 		if restoreBody {
@@ -159,8 +159,8 @@ func EncodeUpdateProfilePictureRequest(encoder func(*http.Request) goahttp.Encod
 // by the users update_profile_picture endpoint. restoreBody controls whether
 // the response body should be restored after having been read.
 // DecodeUpdateProfilePictureResponse may return the following errors:
-//   - "unauthorized" (type *goa.ServiceError): http.StatusUnauthorized
-//   - error: internal error
+//	- "unauthorized" (type *goa.ServiceError): http.StatusUnauthorized
+//	- error: internal error
 func DecodeUpdateProfilePictureResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
 	return func(resp *http.Response) (interface{}, error) {
 		if restoreBody {
@@ -242,8 +242,8 @@ func EncodeGetUserInfoRequest(encoder func(*http.Request) goahttp.Encoder) func(
 // users get_user_info endpoint. restoreBody controls whether the response body
 // should be restored after having been read.
 // DecodeGetUserInfoResponse may return the following errors:
-//   - "unauthorized" (type *goa.ServiceError): http.StatusUnauthorized
-//   - error: internal error
+//	- "unauthorized" (type *goa.ServiceError): http.StatusUnauthorized
+//	- error: internal error
 func DecodeGetUserInfoResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
 	return func(resp *http.Response) (interface{}, error) {
 		if restoreBody {

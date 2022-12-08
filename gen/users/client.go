@@ -31,8 +31,8 @@ func NewClient(updateBio, updateProfilePicture, getUserInfo goa.Endpoint) *Clien
 
 // UpdateBio calls the "update_bio" endpoint of the "users" service.
 // UpdateBio may return the following errors:
-//   - "unauthorized" (type Unauthorized)
-//   - error: internal error
+//	- "unauthorized" (type Unauthorized)
+//	- error: internal error
 func (c *Client) UpdateBio(ctx context.Context, p *UpdateBioPayload) (res *UpdateBioResult, err error) {
 	var ires interface{}
 	ires, err = c.UpdateBioEndpoint(ctx, p)
@@ -45,8 +45,8 @@ func (c *Client) UpdateBio(ctx context.Context, p *UpdateBioPayload) (res *Updat
 // UpdateProfilePicture calls the "update_profile_picture" endpoint of the
 // "users" service.
 // UpdateProfilePicture may return the following errors:
-//   - "unauthorized" (type Unauthorized)
-//   - error: internal error
+//	- "unauthorized" (type Unauthorized)
+//	- error: internal error
 func (c *Client) UpdateProfilePicture(ctx context.Context, p *UpdateProfilePicturePayload) (res *UpdateProfilePictureResult, err error) {
 	var ires interface{}
 	ires, err = c.UpdateProfilePictureEndpoint(ctx, p)
@@ -58,8 +58,8 @@ func (c *Client) UpdateProfilePicture(ctx context.Context, p *UpdateProfilePictu
 
 // GetUserInfo calls the "get_user_info" endpoint of the "users" service.
 // GetUserInfo may return the following errors:
-//   - "unauthorized" (type Unauthorized)
-//   - error: internal error
+//	- "unauthorized" (type Unauthorized)
+//	- error: internal error
 func (c *Client) GetUserInfo(ctx context.Context, p *GetUserInfoPayload) (res *GetUserInfoResult, err error) {
 	var ires interface{}
 	ires, err = c.GetUserInfoEndpoint(ctx, p)

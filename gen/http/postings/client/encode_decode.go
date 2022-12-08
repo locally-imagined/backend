@@ -64,9 +64,9 @@ func EncodeCreatePostRequest(encoder func(*http.Request) goahttp.Encoder) func(*
 // postings create_post endpoint. restoreBody controls whether the response
 // body should be restored after having been read.
 // DecodeCreatePostResponse may return the following errors:
-//   - "unauthorized" (type *goa.ServiceError): http.StatusUnauthorized
-//   - "internal" (type *goa.ServiceError): http.StatusInternalServerError
-//   - error: internal error
+//	- "unauthorized" (type *goa.ServiceError): http.StatusUnauthorized
+//	- "internal" (type *goa.ServiceError): http.StatusInternalServerError
+//	- error: internal error
 func DecodeCreatePostResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
 	return func(resp *http.Response) (interface{}, error) {
 		if restoreBody {
@@ -181,9 +181,9 @@ func EncodeDeletePostRequest(encoder func(*http.Request) goahttp.Encoder) func(*
 // postings delete_post endpoint. restoreBody controls whether the response
 // body should be restored after having been read.
 // DecodeDeletePostResponse may return the following errors:
-//   - "unauthorized" (type *goa.ServiceError): http.StatusUnauthorized
-//   - "internal" (type *goa.ServiceError): http.StatusInternalServerError
-//   - error: internal error
+//	- "unauthorized" (type *goa.ServiceError): http.StatusUnauthorized
+//	- "internal" (type *goa.ServiceError): http.StatusInternalServerError
+//	- error: internal error
 func DecodeDeletePostResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
 	return func(resp *http.Response) (interface{}, error) {
 		if restoreBody {
@@ -312,9 +312,9 @@ func EncodeEditPostRequest(encoder func(*http.Request) goahttp.Encoder) func(*ht
 // postings edit_post endpoint. restoreBody controls whether the response body
 // should be restored after having been read.
 // DecodeEditPostResponse may return the following errors:
-//   - "unauthorized" (type *goa.ServiceError): http.StatusUnauthorized
-//   - "internal" (type *goa.ServiceError): http.StatusInternalServerError
-//   - error: internal error
+//	- "unauthorized" (type *goa.ServiceError): http.StatusUnauthorized
+//	- "internal" (type *goa.ServiceError): http.StatusInternalServerError
+//	- error: internal error
 func DecodeEditPostResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
 	return func(resp *http.Response) (interface{}, error) {
 		if restoreBody {
@@ -409,9 +409,9 @@ func (c *Client) BuildGetPostPageRequest(ctx context.Context, v interface{}) (*h
 // postings get_post_page endpoint. restoreBody controls whether the response
 // body should be restored after having been read.
 // DecodeGetPostPageResponse may return the following errors:
-//   - "unauthorized" (type *goa.ServiceError): http.StatusUnauthorized
-//   - "internal" (type *goa.ServiceError): http.StatusInternalServerError
-//   - error: internal error
+//	- "unauthorized" (type *goa.ServiceError): http.StatusUnauthorized
+//	- "internal" (type *goa.ServiceError): http.StatusInternalServerError
+//	- error: internal error
 func DecodeGetPostPageResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
 	return func(resp *http.Response) (interface{}, error) {
 		if restoreBody {
@@ -527,9 +527,9 @@ func EncodeGetArtistPostPageRequest(encoder func(*http.Request) goahttp.Encoder)
 // the postings get_artist_post_page endpoint. restoreBody controls whether the
 // response body should be restored after having been read.
 // DecodeGetArtistPostPageResponse may return the following errors:
-//   - "unauthorized" (type *goa.ServiceError): http.StatusUnauthorized
-//   - "internal" (type *goa.ServiceError): http.StatusInternalServerError
-//   - error: internal error
+//	- "unauthorized" (type *goa.ServiceError): http.StatusUnauthorized
+//	- "internal" (type *goa.ServiceError): http.StatusInternalServerError
+//	- error: internal error
 func DecodeGetArtistPostPageResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
 	return func(resp *http.Response) (interface{}, error) {
 		if restoreBody {
@@ -657,9 +657,9 @@ func EncodeGetPostPageFilteredRequest(encoder func(*http.Request) goahttp.Encode
 // by the postings get_post_page_filtered endpoint. restoreBody controls
 // whether the response body should be restored after having been read.
 // DecodeGetPostPageFilteredResponse may return the following errors:
-//   - "unauthorized" (type *goa.ServiceError): http.StatusUnauthorized
-//   - "internal" (type *goa.ServiceError): http.StatusInternalServerError
-//   - error: internal error
+//	- "unauthorized" (type *goa.ServiceError): http.StatusUnauthorized
+//	- "internal" (type *goa.ServiceError): http.StatusInternalServerError
+//	- error: internal error
 func DecodeGetPostPageFilteredResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
 	return func(resp *http.Response) (interface{}, error) {
 		if restoreBody {
@@ -760,9 +760,9 @@ func (c *Client) BuildGetImagesForPostRequest(ctx context.Context, v interface{}
 // the postings get_images_for_post endpoint. restoreBody controls whether the
 // response body should be restored after having been read.
 // DecodeGetImagesForPostResponse may return the following errors:
-//   - "unauthorized" (type *goa.ServiceError): http.StatusUnauthorized
-//   - "internal" (type *goa.ServiceError): http.StatusInternalServerError
-//   - error: internal error
+//	- "unauthorized" (type *goa.ServiceError): http.StatusUnauthorized
+//	- "internal" (type *goa.ServiceError): http.StatusInternalServerError
+//	- error: internal error
 func DecodeGetImagesForPostResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
 	return func(resp *http.Response) (interface{}, error) {
 		if restoreBody {

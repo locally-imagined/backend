@@ -54,8 +54,8 @@ func EncodeSignupRequest(encoder func(*http.Request) goahttp.Encoder) func(*http
 // Signup endpoint. restoreBody controls whether the response body should be
 // restored after having been read.
 // DecodeSignupResponse may return the following errors:
-//   - "unauthorized" (type *goa.ServiceError): http.StatusUnauthorized
-//   - error: internal error
+//	- "unauthorized" (type *goa.ServiceError): http.StatusUnauthorized
+//	- error: internal error
 func DecodeSignupResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
 	return func(resp *http.Response) (interface{}, error) {
 		if restoreBody {
