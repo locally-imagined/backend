@@ -57,6 +57,10 @@ type GetArtistPostPageResponseBody []*PostResponse
 // "get_post_page_filtered" endpoint HTTP response body.
 type GetPostPageFilteredResponseBody []*PostResponse
 
+// GetArtistsResponseBody is the type of the "postings" service "get_artists"
+// endpoint HTTP response body.
+type GetArtistsResponseBody []*Artist
+
 // CreatePostUnauthorizedResponseBody is the type of the "postings" service
 // "create_post" endpoint HTTP response body for the "unauthorized" error.
 type CreatePostUnauthorizedResponseBody struct {
@@ -313,6 +317,42 @@ type GetImagesForPostInternalResponseBody struct {
 	Fault bool `form:"fault" json:"fault" xml:"fault"`
 }
 
+// GetArtistsUnauthorizedResponseBody is the type of the "postings" service
+// "get_artists" endpoint HTTP response body for the "unauthorized" error.
+type GetArtistsUnauthorizedResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// GetArtistsInternalResponseBody is the type of the "postings" service
+// "get_artists" endpoint HTTP response body for the "internal" error.
+type GetArtistsInternalResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
 // PostResponseResponseBody is used to define fields on response body types.
 type PostResponseResponseBody struct {
 	// Post title
@@ -367,6 +407,16 @@ type PostResponse struct {
 	ProfpicID string `form:"profpicID" json:"profpicID" xml:"profpicID"`
 	// Username associated with post
 	Username string `form:"username" json:"username" xml:"username"`
+}
+
+// Artist is used to define fields on response body types.
+type Artist struct {
+	// Artist User ID
+	UserID string `form:"userID" json:"userID" xml:"userID"`
+	// Artist username
+	Username string `form:"username" json:"username" xml:"username"`
+	// Artist Profile picture ID
+	ProfpicID string `form:"profpicID" json:"profpicID" xml:"profpicID"`
 }
 
 // NewCreatePostResponseBody builds the HTTP response body from the result of
@@ -445,6 +495,16 @@ func NewGetPostPageFilteredResponseBody(res *postings.GetPostPageFilteredResult)
 	body := make([]*PostResponse, len(res.Posts))
 	for i, val := range res.Posts {
 		body[i] = marshalPostingsPostResponseToPostResponse(val)
+	}
+	return body
+}
+
+// NewGetArtistsResponseBody builds the HTTP response body from the result of
+// the "get_artists" endpoint of the "postings" service.
+func NewGetArtistsResponseBody(res *postings.GetArtistsResult) GetArtistsResponseBody {
+	body := make([]*Artist, len(res.Artists))
+	for i, val := range res.Artists {
+		body[i] = marshalPostingsArtistToArtist(val)
 	}
 	return body
 }
@@ -649,6 +709,34 @@ func NewGetImagesForPostInternalResponseBody(res *goa.ServiceError) *GetImagesFo
 	return body
 }
 
+// NewGetArtistsUnauthorizedResponseBody builds the HTTP response body from the
+// result of the "get_artists" endpoint of the "postings" service.
+func NewGetArtistsUnauthorizedResponseBody(res *goa.ServiceError) *GetArtistsUnauthorizedResponseBody {
+	body := &GetArtistsUnauthorizedResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewGetArtistsInternalResponseBody builds the HTTP response body from the
+// result of the "get_artists" endpoint of the "postings" service.
+func NewGetArtistsInternalResponseBody(res *goa.ServiceError) *GetArtistsInternalResponseBody {
+	body := &GetArtistsInternalResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
 // NewCreatePostPayload builds a postings service create_post endpoint payload.
 func NewCreatePostPayload(body *CreatePostRequestBody, token string) *postings.CreatePostPayload {
 	v := &postings.Post{
@@ -737,6 +825,14 @@ func NewGetPostPageFilteredPayload(page int, keyword *string, startDate *string,
 func NewGetImagesForPostPayload(postID string) *postings.GetImagesForPostPayload {
 	v := &postings.GetImagesForPostPayload{}
 	v.PostID = postID
+
+	return v
+}
+
+// NewGetArtistsPayload builds a postings service get_artists endpoint payload.
+func NewGetArtistsPayload(page int) *postings.GetArtistsPayload {
+	v := &postings.GetArtistsPayload{}
+	v.Page = page
 
 	return v
 }

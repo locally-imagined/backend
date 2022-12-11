@@ -30,6 +30,8 @@ type Service interface {
 	GetPostPageFiltered(context.Context, *GetPostPageFilteredPayload) (res *GetPostPageFilteredResult, err error)
 	// GetImagesForPost implements get_images_for_post.
 	GetImagesForPost(context.Context, *GetImagesForPostPayload) (res *GetImagesForPostResult, err error)
+	// GetArtists implements get_artists.
+	GetArtists(context.Context, *GetArtistsPayload) (res *GetArtistsResult, err error)
 }
 
 // Auther defines the authorization functions to be implemented by the service.
@@ -46,7 +48,17 @@ const ServiceName = "postings"
 // MethodNames lists the service method names as defined in the design. These
 // are the same values that are set in the endpoint request contexts under the
 // MethodKey key.
-var MethodNames = [7]string{"create_post", "delete_post", "edit_post", "get_post_page", "get_artist_post_page", "get_post_page_filtered", "get_images_for_post"}
+var MethodNames = [8]string{"create_post", "delete_post", "edit_post", "get_post_page", "get_artist_post_page", "get_post_page_filtered", "get_images_for_post", "get_artists"}
+
+// Describes an artist
+type Artist struct {
+	// Artist User ID
+	UserID string
+	// Artist username
+	Username string
+	// Artist Profile picture ID
+	ProfpicID string
+}
 
 // Image Content
 type Content struct {
@@ -120,6 +132,19 @@ type GetArtistPostPagePayload struct {
 // get_artist_post_page method.
 type GetArtistPostPageResult struct {
 	Posts []*PostResponse
+}
+
+// GetArtistsPayload is the payload type of the postings service get_artists
+// method.
+type GetArtistsPayload struct {
+	// Page to get artists for
+	Page int
+}
+
+// GetArtistsResult is the result type of the postings service get_artists
+// method.
+type GetArtistsResult struct {
+	Artists []*Artist
 }
 
 // GetImagesForPostPayload is the payload type of the postings service

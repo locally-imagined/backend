@@ -16,6 +16,7 @@ type (
 	GetImagesForPostFunc    func(ctx context.Context, p *postings.GetImagesForPostPayload) (*postings.GetImagesForPostResult, error)
 	DeletePostFunc          func(ctx context.Context, p *postings.DeletePostPayload) error
 	EditPostFunc            func(ctx context.Context, p *postings.EditPostPayload) (*postings.EditPostResult, error)
+	GetArtistsFunc          func(ctx context.Context, p *postings.GetArtistsPayload) (*postings.GetArtistsResult, error)
 	Mock                    struct {
 		m *mock.Mock
 		t *testing.T
@@ -49,6 +50,9 @@ func (m *Mock) AddGetPostPageFilteredFunc(f GetPostPageFilteredFunc) {
 func (m *Mock) AddGetImagesForPostFunc(f GetImagesForPostFunc) {
 	m.m.Add("GetImagesForPost", f)
 }
+func (m *Mock) AddGetArtistsFunc(f GetArtistsFunc) {
+	m.m.Add("GetArtists", f)
+}
 func (m *Mock) SetCreatePostFunc(f CreatePostFunc) {
 	m.m.Set("CreatePost", f)
 }
@@ -70,6 +74,10 @@ func (m *Mock) SetGetPostPageFilteredFunc(f GetPostPageFilteredFunc) {
 func (m *Mock) SetGetImagesForPostFunc(f GetImagesForPostFunc) {
 	m.m.Set("GetImagesForPost", f)
 }
+func (m *Mock) SetGetArtistsFunc(f GetArtistsFunc) {
+	m.m.Set("GetArtists", f)
+}
+
 func (m *Mock) CreatePost(ctx context.Context, p *postings.CreatePostPayload) (*postings.CreatePostResult, error) {
 	if f := m.m.Next("CreatePost"); f != nil {
 		return f.(CreatePostFunc)(ctx, p)
@@ -123,6 +131,14 @@ func (m *Mock) GetImagesForPost(ctx context.Context, p *postings.GetImagesForPos
 		return f.(GetImagesForPostFunc)(ctx, p)
 	}
 	m.t.Error("unexpected call to GetImagesForPost")
+	return nil, nil
+}
+
+func (m *Mock) GetArtists(ctx context.Context, p *postings.GetArtistsPayload) (*postings.GetArtistsResult, error) {
+	if f := m.m.Next("GetArtists"); f != nil {
+		return f.(GetArtistsFunc)(ctx, p)
+	}
+	m.t.Error("unexpected call to GetArtists")
 	return nil, nil
 }
 

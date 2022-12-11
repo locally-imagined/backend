@@ -36,6 +36,9 @@ type (
 
 		// Edits post with params given
 		EditPost(ctx context.Context, p *postings.EditPostPayload) (*postings.EditPostResult, error)
+
+		// Get list of first 25 artists
+		GetArtists(ctx context.Context, p *postings.GetArtistsPayload) (*postings.GetArtistsResult, error)
 	}
 
 	client struct {
@@ -63,6 +66,11 @@ type (
 		deliverytype string
 		username     string
 		profpicID    string
+	}
+	artist struct {
+		userID    string
+		username  string
+		profpicID string
 	}
 )
 
@@ -103,6 +111,7 @@ var (
 	UPDATEINDEX   string = "UPDATE images SET index = index - 1 WHERE (postid=$1 AND index>(SELECT index FROM images WHERE imgid=$2))"
 	ADDIMAGE      string = "INSERT INTO images VALUES($1, $2, (SELECT MAX(index) FROM images where postID=$3) + 1)"
 	GETEDITEDINFO string = "SELECT title, description, price, medium, sold, deliverytype, uploaddate FROM posts where postID=$1"
+	GETARTISTS    string = "SELECT u.username, u.userid, u.profpicid from users as u where userid in (select userid from posts) OFFSET $1 ROWS FETCH NEXT 25 ROWS ONLY"
 	IMAGESPERPAGE int    = 25
 )
 
@@ -451,4 +460,27 @@ func (c *client) EditPost(ctx context.Context, p *postings.EditPostPayload) (*po
 	}
 	return res, nil
 
+}
+
+func (c *client) GetArtists(ctx context.Context, p *postings.GetArtistsPayload) (*postings.GetArtistsResult, error) {
+	dbPool, err := helpers.OpenDB(c.dbURL)
+	if err != nil {
+		return nil, err
+	}
+	defer dbPool.Close()
+	offset := p.Page * IMAGESPERPAGE
+	var rows *sql.Rows
+	rows, err = dbPool.Query(GETARTISTS, offset)
+	if err != nil {
+		return nil, err
+	}
+	res := make([]*postings.Artist, 0)
+	for rows.Next() {
+		var row artist
+		if err := rows.Scan(&row.username, &row.userID, &row.profpicID); err != nil {
+			return nil, err
+		}
+		res = append(res, &postings.Artist{ProfpicID: row.profpicID, UserID: row.userID, Username: row.username})
+	}
+	return &postings.GetArtistsResult{Artists: res}, err
 }

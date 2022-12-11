@@ -24,7 +24,7 @@ func BuildCreatePostPayload(postingsCreatePostBody string, postingsCreatePostTok
 	{
 		err = json.Unmarshal([]byte(postingsCreatePostBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"content\": [\n         \"Molestiae repellat cumque ipsam unde excepturi.\",\n         \"Laborum assumenda soluta eos inventore ut ipsam.\",\n         \"Iusto et in eum reiciendis.\"\n      ],\n      \"deliverytype\": \"Atque accusamus velit est soluta ratione pariatur.\",\n      \"description\": \"Officiis quidem iure et.\",\n      \"medium\": \"Hic omnis dignissimos et.\",\n      \"price\": \"Consequatur ratione voluptas consectetur.\",\n      \"title\": \"Est adipisci quia consectetur veritatis quod.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"content\": [\n         \"Omnis dignissimos et maxime.\",\n         \"Accusamus velit est soluta ratione.\",\n         \"Vel porro ut maiores iste exercitationem.\"\n      ],\n      \"deliverytype\": \"Minima fuga.\",\n      \"description\": \"Laborum assumenda soluta eos inventore ut ipsam.\",\n      \"medium\": \"Officiis tenetur est dolor.\",\n      \"price\": \"Iusto et in eum reiciendis.\",\n      \"title\": \"Cumque ipsam unde excepturi.\"\n   }'")
 		}
 		if body.Content == nil {
 			err = goa.MergeErrors(err, goa.MissingFieldError("content", "body"))
@@ -84,7 +84,7 @@ func BuildEditPostPayload(postingsEditPostBody string, postingsEditPostPostID st
 	{
 		err = json.Unmarshal([]byte(postingsEditPostBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"content\": \"Ratione voluptatem cumque.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"content\": \"Vitae voluptatibus laboriosam vero.\"\n   }'")
 		}
 	}
 	var postID string
@@ -260,6 +260,25 @@ func BuildGetImagesForPostPayload(postingsGetImagesForPostPostID string) (*posti
 	}
 	v := &postings.GetImagesForPostPayload{}
 	v.PostID = postID
+
+	return v, nil
+}
+
+// BuildGetArtistsPayload builds the payload for the postings get_artists
+// endpoint from CLI flags.
+func BuildGetArtistsPayload(postingsGetArtistsPage string) (*postings.GetArtistsPayload, error) {
+	var err error
+	var page int
+	{
+		var v int64
+		v, err = strconv.ParseInt(postingsGetArtistsPage, 10, strconv.IntSize)
+		page = int(v)
+		if err != nil {
+			return nil, fmt.Errorf("invalid value for page, must be INT")
+		}
+	}
+	v := &postings.GetArtistsPayload{}
+	v.Page = page
 
 	return v, nil
 }

@@ -45,6 +45,10 @@ type Client struct {
 	// get_images_for_post endpoint.
 	GetImagesForPostDoer goahttp.Doer
 
+	// GetArtists Doer is the HTTP client used to make requests to the get_artists
+	// endpoint.
+	GetArtistsDoer goahttp.Doer
+
 	// CORS Doer is the HTTP client used to make requests to the  endpoint.
 	CORSDoer goahttp.Doer
 
@@ -75,6 +79,7 @@ func NewClient(
 		GetArtistPostPageDoer:   doer,
 		GetPostPageFilteredDoer: doer,
 		GetImagesForPostDoer:    doer,
+		GetArtistsDoer:          doer,
 		CORSDoer:                doer,
 		RestoreResponseBody:     restoreBody,
 		scheme:                  scheme,
@@ -237,6 +242,25 @@ func (c *Client) GetImagesForPost() goa.Endpoint {
 		resp, err := c.GetImagesForPostDoer.Do(req)
 		if err != nil {
 			return nil, goahttp.ErrRequestError("postings", "get_images_for_post", err)
+		}
+		return decodeResponse(resp)
+	}
+}
+
+// GetArtists returns an endpoint that makes HTTP requests to the postings
+// service get_artists server.
+func (c *Client) GetArtists() goa.Endpoint {
+	var (
+		decodeResponse = DecodeGetArtistsResponse(c.decoder, c.RestoreResponseBody)
+	)
+	return func(ctx context.Context, v interface{}) (interface{}, error) {
+		req, err := c.BuildGetArtistsRequest(ctx, v)
+		if err != nil {
+			return nil, err
+		}
+		resp, err := c.GetArtistsDoer.Do(req)
+		if err != nil {
+			return nil, goahttp.ErrRequestError("postings", "get_artists", err)
 		}
 		return decodeResponse(resp)
 	}

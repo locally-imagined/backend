@@ -231,6 +231,21 @@ var _ = Service("postings", func() {
 			})
 		})
 	})
+	Method("get_artists", func() {
+		Payload(func() {
+			Attribute("page", Int, "Page to get artists for")
+			Required("page")
+		})
+		Result(func() {
+			Attribute("Artists", ArrayOf(Artist))
+		})
+		HTTP(func() {
+			GET("/posts/artists/{page}")
+			Response(func() {
+				Body("Artists")
+			})
+		})
+	})
 })
 
 var _ = Service("users", func() {
@@ -381,4 +396,12 @@ var PostResponse = Type("PostResponse", func() {
 	Attribute("profpicID", String, "prof pic id")
 	Attribute("username", String, "Username associated with post")
 	Required("title", "description", "price", "imageIDs", "postID", "medium", "uploadDate", "sold", "deliverytype", "username", "userID", "profpicID")
+})
+
+var Artist = Type("Artist", func() {
+	Description("Describes an artist")
+	Attribute("userID", String, "Artist User ID")
+	Attribute("username", String, "Artist username")
+	Attribute("profpicID", String, "Artist Profile picture ID")
+	Required("userID", "username", "profpicID")
 })

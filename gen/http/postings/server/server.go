@@ -27,6 +27,7 @@ type Server struct {
 	GetArtistPostPage   http.Handler
 	GetPostPageFiltered http.Handler
 	GetImagesForPost    http.Handler
+	GetArtists          http.Handler
 	CORS                http.Handler
 }
 
@@ -64,6 +65,7 @@ func New(
 			{"GetArtistPostPage", "GET", "/posts/artistposts/{page}"},
 			{"GetPostPageFiltered", "GET", "/posts/getpagefiltered/{page}"},
 			{"GetImagesForPost", "GET", "/posts/getimages/{postID}"},
+			{"GetArtists", "GET", "/posts/artists/{page}"},
 			{"CORS", "OPTIONS", "/posts/create"},
 			{"CORS", "OPTIONS", "/posts/delete/{postID}"},
 			{"CORS", "OPTIONS", "/posts/edit/{postID}"},
@@ -71,6 +73,7 @@ func New(
 			{"CORS", "OPTIONS", "/posts/artistposts/{page}"},
 			{"CORS", "OPTIONS", "/posts/getpagefiltered/{page}"},
 			{"CORS", "OPTIONS", "/posts/getimages/{postID}"},
+			{"CORS", "OPTIONS", "/posts/artists/{page}"},
 		},
 		CreatePost:          NewCreatePostHandler(e.CreatePost, mux, decoder, encoder, errhandler, formatter),
 		DeletePost:          NewDeletePostHandler(e.DeletePost, mux, decoder, encoder, errhandler, formatter),
@@ -79,6 +82,7 @@ func New(
 		GetArtistPostPage:   NewGetArtistPostPageHandler(e.GetArtistPostPage, mux, decoder, encoder, errhandler, formatter),
 		GetPostPageFiltered: NewGetPostPageFilteredHandler(e.GetPostPageFiltered, mux, decoder, encoder, errhandler, formatter),
 		GetImagesForPost:    NewGetImagesForPostHandler(e.GetImagesForPost, mux, decoder, encoder, errhandler, formatter),
+		GetArtists:          NewGetArtistsHandler(e.GetArtists, mux, decoder, encoder, errhandler, formatter),
 		CORS:                NewCORSHandler(),
 	}
 }
@@ -95,6 +99,7 @@ func (s *Server) Use(m func(http.Handler) http.Handler) {
 	s.GetArtistPostPage = m(s.GetArtistPostPage)
 	s.GetPostPageFiltered = m(s.GetPostPageFiltered)
 	s.GetImagesForPost = m(s.GetImagesForPost)
+	s.GetArtists = m(s.GetArtists)
 	s.CORS = m(s.CORS)
 }
 
@@ -110,6 +115,7 @@ func Mount(mux goahttp.Muxer, h *Server) {
 	MountGetArtistPostPageHandler(mux, h.GetArtistPostPage)
 	MountGetPostPageFilteredHandler(mux, h.GetPostPageFiltered)
 	MountGetImagesForPostHandler(mux, h.GetImagesForPost)
+	MountGetArtistsHandler(mux, h.GetArtists)
 	MountCORSHandler(mux, h.CORS)
 }
 
@@ -475,6 +481,57 @@ func NewGetImagesForPostHandler(
 	})
 }
 
+// MountGetArtistsHandler configures the mux to serve the "postings" service
+// "get_artists" endpoint.
+func MountGetArtistsHandler(mux goahttp.Muxer, h http.Handler) {
+	f, ok := HandlePostingsOrigin(h).(http.HandlerFunc)
+	if !ok {
+		f = func(w http.ResponseWriter, r *http.Request) {
+			h.ServeHTTP(w, r)
+		}
+	}
+	mux.Handle("GET", "/posts/artists/{page}", f)
+}
+
+// NewGetArtistsHandler creates a HTTP handler which loads the HTTP request and
+// calls the "postings" service "get_artists" endpoint.
+func NewGetArtistsHandler(
+	endpoint goa.Endpoint,
+	mux goahttp.Muxer,
+	decoder func(*http.Request) goahttp.Decoder,
+	encoder func(context.Context, http.ResponseWriter) goahttp.Encoder,
+	errhandler func(context.Context, http.ResponseWriter, error),
+	formatter func(ctx context.Context, err error) goahttp.Statuser,
+) http.Handler {
+	var (
+		decodeRequest  = DecodeGetArtistsRequest(mux, decoder)
+		encodeResponse = EncodeGetArtistsResponse(encoder)
+		encodeError    = EncodeGetArtistsError(encoder, formatter)
+	)
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
+		ctx = context.WithValue(ctx, goa.MethodKey, "get_artists")
+		ctx = context.WithValue(ctx, goa.ServiceKey, "postings")
+		payload, err := decodeRequest(r)
+		if err != nil {
+			if err := encodeError(ctx, w, err); err != nil {
+				errhandler(ctx, w, err)
+			}
+			return
+		}
+		res, err := endpoint(ctx, payload)
+		if err != nil {
+			if err := encodeError(ctx, w, err); err != nil {
+				errhandler(ctx, w, err)
+			}
+			return
+		}
+		if err := encodeResponse(ctx, w, res); err != nil {
+			errhandler(ctx, w, err)
+		}
+	})
+}
+
 // MountCORSHandler configures the mux to serve the CORS endpoints for the
 // service postings.
 func MountCORSHandler(mux goahttp.Muxer, h http.Handler) {
@@ -486,6 +543,7 @@ func MountCORSHandler(mux goahttp.Muxer, h http.Handler) {
 	mux.Handle("OPTIONS", "/posts/artistposts/{page}", h.ServeHTTP)
 	mux.Handle("OPTIONS", "/posts/getpagefiltered/{page}", h.ServeHTTP)
 	mux.Handle("OPTIONS", "/posts/getimages/{postID}", h.ServeHTTP)
+	mux.Handle("OPTIONS", "/posts/artists/{page}", h.ServeHTTP)
 }
 
 // NewCORSHandler creates a HTTP handler which returns a simple 200 response.

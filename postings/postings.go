@@ -92,3 +92,11 @@ func (s *Service) EditPost(ctx context.Context, p *postings.EditPostPayload) (*p
 	}
 	return res, nil
 }
+
+func (s *Service) GetArtists(ctx context.Context, p *postings.GetArtistsPayload) (*postings.GetArtistsResult, error) {
+	res, err := s.postingsClient.GetArtists(ctx, p)
+	if err != nil {
+		return nil, ErrInternal
+	}
+	return res, nil
+}

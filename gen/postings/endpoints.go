@@ -23,6 +23,7 @@ type Endpoints struct {
 	GetArtistPostPage   goa.Endpoint
 	GetPostPageFiltered goa.Endpoint
 	GetImagesForPost    goa.Endpoint
+	GetArtists          goa.Endpoint
 }
 
 // NewEndpoints wraps the methods of the "postings" service with endpoints.
@@ -37,6 +38,7 @@ func NewEndpoints(s Service) *Endpoints {
 		GetArtistPostPage:   NewGetArtistPostPageEndpoint(s),
 		GetPostPageFiltered: NewGetPostPageFilteredEndpoint(s),
 		GetImagesForPost:    NewGetImagesForPostEndpoint(s),
+		GetArtists:          NewGetArtistsEndpoint(s),
 	}
 }
 
@@ -49,6 +51,7 @@ func (e *Endpoints) Use(m func(goa.Endpoint) goa.Endpoint) {
 	e.GetArtistPostPage = m(e.GetArtistPostPage)
 	e.GetPostPageFiltered = m(e.GetPostPageFiltered)
 	e.GetImagesForPost = m(e.GetImagesForPost)
+	e.GetArtists = m(e.GetArtists)
 }
 
 // NewCreatePostEndpoint returns an endpoint function that calls the method
@@ -141,5 +144,14 @@ func NewGetImagesForPostEndpoint(s Service) goa.Endpoint {
 	return func(ctx context.Context, req interface{}) (interface{}, error) {
 		p := req.(*GetImagesForPostPayload)
 		return s.GetImagesForPost(ctx, p)
+	}
+}
+
+// NewGetArtistsEndpoint returns an endpoint function that calls the method
+// "get_artists" of service "postings".
+func NewGetArtistsEndpoint(s Service) goa.Endpoint {
+	return func(ctx context.Context, req interface{}) (interface{}, error) {
+		p := req.(*GetArtistsPayload)
+		return s.GetArtists(ctx, p)
 	}
 }

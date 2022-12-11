@@ -824,6 +824,109 @@ func DecodeGetImagesForPostResponse(decoder func(*http.Response) goahttp.Decoder
 	}
 }
 
+// BuildGetArtistsRequest instantiates a HTTP request object with method and
+// path set to call the "postings" service "get_artists" endpoint
+func (c *Client) BuildGetArtistsRequest(ctx context.Context, v interface{}) (*http.Request, error) {
+	var (
+		page int
+	)
+	{
+		p, ok := v.(*postings.GetArtistsPayload)
+		if !ok {
+			return nil, goahttp.ErrInvalidType("postings", "get_artists", "*postings.GetArtistsPayload", v)
+		}
+		page = p.Page
+	}
+	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: GetArtistsPostingsPath(page)}
+	req, err := http.NewRequest("GET", u.String(), nil)
+	if err != nil {
+		return nil, goahttp.ErrInvalidURL("postings", "get_artists", u.String(), err)
+	}
+	if ctx != nil {
+		req = req.WithContext(ctx)
+	}
+
+	return req, nil
+}
+
+// DecodeGetArtistsResponse returns a decoder for responses returned by the
+// postings get_artists endpoint. restoreBody controls whether the response
+// body should be restored after having been read.
+// DecodeGetArtistsResponse may return the following errors:
+//	- "unauthorized" (type *goa.ServiceError): http.StatusUnauthorized
+//	- "internal" (type *goa.ServiceError): http.StatusInternalServerError
+//	- error: internal error
+func DecodeGetArtistsResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
+	return func(resp *http.Response) (interface{}, error) {
+		if restoreBody {
+			b, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return nil, err
+			}
+			resp.Body = io.NopCloser(bytes.NewBuffer(b))
+			defer func() {
+				resp.Body = io.NopCloser(bytes.NewBuffer(b))
+			}()
+		} else {
+			defer resp.Body.Close()
+		}
+		switch resp.StatusCode {
+		case http.StatusOK:
+			var (
+				body GetArtistsResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("postings", "get_artists", err)
+			}
+			for _, e := range body {
+				if e != nil {
+					if err2 := ValidateArtist(e); err2 != nil {
+						err = goa.MergeErrors(err, err2)
+					}
+				}
+			}
+			if err != nil {
+				return nil, goahttp.ErrValidationError("postings", "get_artists", err)
+			}
+			res := NewGetArtistsResultOK(body)
+			return res, nil
+		case http.StatusUnauthorized:
+			var (
+				body GetArtistsUnauthorizedResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("postings", "get_artists", err)
+			}
+			err = ValidateGetArtistsUnauthorizedResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("postings", "get_artists", err)
+			}
+			return nil, NewGetArtistsUnauthorized(&body)
+		case http.StatusInternalServerError:
+			var (
+				body GetArtistsInternalResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("postings", "get_artists", err)
+			}
+			err = ValidateGetArtistsInternalResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("postings", "get_artists", err)
+			}
+			return nil, NewGetArtistsInternal(&body)
+		default:
+			body, _ := io.ReadAll(resp.Body)
+			return nil, goahttp.ErrInvalidResponse("postings", "get_artists", resp.StatusCode, string(body))
+		}
+	}
+}
+
 // unmarshalPostResponseToPostingsPostResponse builds a value of type
 // *postings.PostResponse from a value of type *PostResponse.
 func unmarshalPostResponseToPostingsPostResponse(v *PostResponse) *postings.PostResponse {
@@ -843,6 +946,18 @@ func unmarshalPostResponseToPostingsPostResponse(v *PostResponse) *postings.Post
 	res.ImageIDs = make([]string, len(v.ImageIDs))
 	for i, val := range v.ImageIDs {
 		res.ImageIDs[i] = val
+	}
+
+	return res
+}
+
+// unmarshalArtistToPostingsArtist builds a value of type *postings.Artist from
+// a value of type *Artist.
+func unmarshalArtistToPostingsArtist(v *Artist) *postings.Artist {
+	res := &postings.Artist{
+		UserID:    *v.UserID,
+		Username:  *v.Username,
+		ProfpicID: *v.ProfpicID,
 	}
 
 	return res

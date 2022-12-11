@@ -22,10 +22,11 @@ type Client struct {
 	GetArtistPostPageEndpoint   goa.Endpoint
 	GetPostPageFilteredEndpoint goa.Endpoint
 	GetImagesForPostEndpoint    goa.Endpoint
+	GetArtistsEndpoint          goa.Endpoint
 }
 
 // NewClient initializes a "postings" service client given the endpoints.
-func NewClient(createPost, deletePost, editPost, getPostPage, getArtistPostPage, getPostPageFiltered, getImagesForPost goa.Endpoint) *Client {
+func NewClient(createPost, deletePost, editPost, getPostPage, getArtistPostPage, getPostPageFiltered, getImagesForPost, getArtists goa.Endpoint) *Client {
 	return &Client{
 		CreatePostEndpoint:          createPost,
 		DeletePostEndpoint:          deletePost,
@@ -34,6 +35,7 @@ func NewClient(createPost, deletePost, editPost, getPostPage, getArtistPostPage,
 		GetArtistPostPageEndpoint:   getArtistPostPage,
 		GetPostPageFilteredEndpoint: getPostPageFiltered,
 		GetImagesForPostEndpoint:    getImagesForPost,
+		GetArtistsEndpoint:          getArtists,
 	}
 }
 
@@ -132,4 +134,18 @@ func (c *Client) GetImagesForPost(ctx context.Context, p *GetImagesForPostPayloa
 		return
 	}
 	return ires.(*GetImagesForPostResult), nil
+}
+
+// GetArtists calls the "get_artists" endpoint of the "postings" service.
+// GetArtists may return the following errors:
+//	- "unauthorized" (type *goa.ServiceError): Credentials are invalid
+//	- "internal" (type *goa.ServiceError): Internal Error
+//	- error: internal error
+func (c *Client) GetArtists(ctx context.Context, p *GetArtistsPayload) (res *GetArtistsResult, err error) {
+	var ires interface{}
+	ires, err = c.GetArtistsEndpoint(ctx, p)
+	if err != nil {
+		return
+	}
+	return ires.(*GetArtistsResult), nil
 }

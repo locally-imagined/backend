@@ -57,6 +57,10 @@ type GetArtistPostPageResponseBody []*PostResponse
 // "get_post_page_filtered" endpoint HTTP response body.
 type GetPostPageFilteredResponseBody []*PostResponse
 
+// GetArtistsResponseBody is the type of the "postings" service "get_artists"
+// endpoint HTTP response body.
+type GetArtistsResponseBody []*Artist
+
 // CreatePostUnauthorizedResponseBody is the type of the "postings" service
 // "create_post" endpoint HTTP response body for the "unauthorized" error.
 type CreatePostUnauthorizedResponseBody struct {
@@ -313,6 +317,42 @@ type GetImagesForPostInternalResponseBody struct {
 	Fault *bool `form:"fault,omitempty" json:"fault,omitempty" xml:"fault,omitempty"`
 }
 
+// GetArtistsUnauthorizedResponseBody is the type of the "postings" service
+// "get_artists" endpoint HTTP response body for the "unauthorized" error.
+type GetArtistsUnauthorizedResponseBody struct {
+	// Name is the name of this class of errors.
+	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID *string `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message *string `form:"message,omitempty" json:"message,omitempty" xml:"message,omitempty"`
+	// Is the error temporary?
+	Temporary *bool `form:"temporary,omitempty" json:"temporary,omitempty" xml:"temporary,omitempty"`
+	// Is the error a timeout?
+	Timeout *bool `form:"timeout,omitempty" json:"timeout,omitempty" xml:"timeout,omitempty"`
+	// Is the error a server-side fault?
+	Fault *bool `form:"fault,omitempty" json:"fault,omitempty" xml:"fault,omitempty"`
+}
+
+// GetArtistsInternalResponseBody is the type of the "postings" service
+// "get_artists" endpoint HTTP response body for the "internal" error.
+type GetArtistsInternalResponseBody struct {
+	// Name is the name of this class of errors.
+	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID *string `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message *string `form:"message,omitempty" json:"message,omitempty" xml:"message,omitempty"`
+	// Is the error temporary?
+	Temporary *bool `form:"temporary,omitempty" json:"temporary,omitempty" xml:"temporary,omitempty"`
+	// Is the error a timeout?
+	Timeout *bool `form:"timeout,omitempty" json:"timeout,omitempty" xml:"timeout,omitempty"`
+	// Is the error a server-side fault?
+	Fault *bool `form:"fault,omitempty" json:"fault,omitempty" xml:"fault,omitempty"`
+}
+
 // PostResponseResponseBody is used to define fields on response body types.
 type PostResponseResponseBody struct {
 	// Post title
@@ -367,6 +407,16 @@ type PostResponse struct {
 	ProfpicID *string `form:"profpicID,omitempty" json:"profpicID,omitempty" xml:"profpicID,omitempty"`
 	// Username associated with post
 	Username *string `form:"username,omitempty" json:"username,omitempty" xml:"username,omitempty"`
+}
+
+// Artist is used to define fields on response body types.
+type Artist struct {
+	// Artist User ID
+	UserID *string `form:"userID,omitempty" json:"userID,omitempty" xml:"userID,omitempty"`
+	// Artist username
+	Username *string `form:"username,omitempty" json:"username,omitempty" xml:"username,omitempty"`
+	// Artist Profile picture ID
+	ProfpicID *string `form:"profpicID,omitempty" json:"profpicID,omitempty" xml:"profpicID,omitempty"`
 }
 
 // NewCreatePostRequestBody builds the HTTP request body from the payload of
@@ -705,6 +755,50 @@ func NewGetImagesForPostUnauthorized(body *GetImagesForPostUnauthorizedResponseB
 // NewGetImagesForPostInternal builds a postings service get_images_for_post
 // endpoint internal error.
 func NewGetImagesForPostInternal(body *GetImagesForPostInternalResponseBody) *goa.ServiceError {
+	v := &goa.ServiceError{
+		Name:      *body.Name,
+		ID:        *body.ID,
+		Message:   *body.Message,
+		Temporary: *body.Temporary,
+		Timeout:   *body.Timeout,
+		Fault:     *body.Fault,
+	}
+
+	return v
+}
+
+// NewGetArtistsResultOK builds a "postings" service "get_artists" endpoint
+// result from a HTTP "OK" response.
+func NewGetArtistsResultOK(body []*Artist) *postings.GetArtistsResult {
+	v := make([]*postings.Artist, len(body))
+	for i, val := range body {
+		v[i] = unmarshalArtistToPostingsArtist(val)
+	}
+	res := &postings.GetArtistsResult{
+		Artists: v,
+	}
+
+	return res
+}
+
+// NewGetArtistsUnauthorized builds a postings service get_artists endpoint
+// unauthorized error.
+func NewGetArtistsUnauthorized(body *GetArtistsUnauthorizedResponseBody) *goa.ServiceError {
+	v := &goa.ServiceError{
+		Name:      *body.Name,
+		ID:        *body.ID,
+		Message:   *body.Message,
+		Temporary: *body.Temporary,
+		Timeout:   *body.Timeout,
+		Fault:     *body.Fault,
+	}
+
+	return v
+}
+
+// NewGetArtistsInternal builds a postings service get_artists endpoint
+// internal error.
+func NewGetArtistsInternal(body *GetArtistsInternalResponseBody) *goa.ServiceError {
 	v := &goa.ServiceError{
 		Name:      *body.Name,
 		ID:        *body.ID,
@@ -1137,6 +1231,54 @@ func ValidateGetImagesForPostInternalResponseBody(body *GetImagesForPostInternal
 	return
 }
 
+// ValidateGetArtistsUnauthorizedResponseBody runs the validations defined on
+// get_artists_unauthorized_response_body
+func ValidateGetArtistsUnauthorizedResponseBody(body *GetArtistsUnauthorizedResponseBody) (err error) {
+	if body.Name == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("name", "body"))
+	}
+	if body.ID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("id", "body"))
+	}
+	if body.Message == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("message", "body"))
+	}
+	if body.Temporary == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("temporary", "body"))
+	}
+	if body.Timeout == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("timeout", "body"))
+	}
+	if body.Fault == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("fault", "body"))
+	}
+	return
+}
+
+// ValidateGetArtistsInternalResponseBody runs the validations defined on
+// get_artists_internal_response_body
+func ValidateGetArtistsInternalResponseBody(body *GetArtistsInternalResponseBody) (err error) {
+	if body.Name == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("name", "body"))
+	}
+	if body.ID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("id", "body"))
+	}
+	if body.Message == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("message", "body"))
+	}
+	if body.Temporary == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("temporary", "body"))
+	}
+	if body.Timeout == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("timeout", "body"))
+	}
+	if body.Fault == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("fault", "body"))
+	}
+	return
+}
+
 // ValidatePostResponseResponseBody runs the validations defined on
 // PostResponseResponseBody
 func ValidatePostResponseResponseBody(body *PostResponseResponseBody) (err error) {
@@ -1213,6 +1355,20 @@ func ValidatePostResponse(body *PostResponse) (err error) {
 	}
 	if body.UserID == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("userID", "body"))
+	}
+	if body.ProfpicID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("profpicID", "body"))
+	}
+	return
+}
+
+// ValidateArtist runs the validations defined on Artist
+func ValidateArtist(body *Artist) (err error) {
+	if body.UserID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("userID", "body"))
+	}
+	if body.Username == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("username", "body"))
 	}
 	if body.ProfpicID == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("profpicID", "body"))

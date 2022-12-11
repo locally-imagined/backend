@@ -671,6 +671,87 @@ func EncodeGetImagesForPostError(encoder func(context.Context, http.ResponseWrit
 	}
 }
 
+// EncodeGetArtistsResponse returns an encoder for responses returned by the
+// postings get_artists endpoint.
+func EncodeGetArtistsResponse(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder) func(context.Context, http.ResponseWriter, interface{}) error {
+	return func(ctx context.Context, w http.ResponseWriter, v interface{}) error {
+		res, _ := v.(*postings.GetArtistsResult)
+		enc := encoder(ctx, w)
+		body := NewGetArtistsResponseBody(res)
+		w.WriteHeader(http.StatusOK)
+		return enc.Encode(body)
+	}
+}
+
+// DecodeGetArtistsRequest returns a decoder for requests sent to the postings
+// get_artists endpoint.
+func DecodeGetArtistsRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (interface{}, error) {
+	return func(r *http.Request) (interface{}, error) {
+		var (
+			page int
+			err  error
+
+			params = mux.Vars(r)
+		)
+		{
+			pageRaw := params["page"]
+			v, err2 := strconv.ParseInt(pageRaw, 10, strconv.IntSize)
+			if err2 != nil {
+				err = goa.MergeErrors(err, goa.InvalidFieldTypeError("page", pageRaw, "integer"))
+			}
+			page = int(v)
+		}
+		if err != nil {
+			return nil, err
+		}
+		payload := NewGetArtistsPayload(page)
+
+		return payload, nil
+	}
+}
+
+// EncodeGetArtistsError returns an encoder for errors returned by the
+// get_artists postings endpoint.
+func EncodeGetArtistsError(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder, formatter func(ctx context.Context, err error) goahttp.Statuser) func(context.Context, http.ResponseWriter, error) error {
+	encodeError := goahttp.ErrorEncoder(encoder, formatter)
+	return func(ctx context.Context, w http.ResponseWriter, v error) error {
+		var en goa.GoaErrorNamer
+		if !errors.As(v, &en) {
+			return encodeError(ctx, w, v)
+		}
+		switch en.GoaErrorName() {
+		case "unauthorized":
+			var res *goa.ServiceError
+			errors.As(v, &res)
+			enc := encoder(ctx, w)
+			var body interface{}
+			if formatter != nil {
+				body = formatter(ctx, res)
+			} else {
+				body = NewGetArtistsUnauthorizedResponseBody(res)
+			}
+			w.Header().Set("goa-error", res.GoaErrorName())
+			w.WriteHeader(http.StatusUnauthorized)
+			return enc.Encode(body)
+		case "internal":
+			var res *goa.ServiceError
+			errors.As(v, &res)
+			enc := encoder(ctx, w)
+			var body interface{}
+			if formatter != nil {
+				body = formatter(ctx, res)
+			} else {
+				body = NewGetArtistsInternalResponseBody(res)
+			}
+			w.Header().Set("goa-error", res.GoaErrorName())
+			w.WriteHeader(http.StatusInternalServerError)
+			return enc.Encode(body)
+		default:
+			return encodeError(ctx, w, v)
+		}
+	}
+}
+
 // marshalPostingsPostResponseToPostResponse builds a value of type
 // *PostResponse from a value of type *postings.PostResponse.
 func marshalPostingsPostResponseToPostResponse(v *postings.PostResponse) *PostResponse {
@@ -692,6 +773,18 @@ func marshalPostingsPostResponseToPostResponse(v *postings.PostResponse) *PostRe
 		for i, val := range v.ImageIDs {
 			res.ImageIDs[i] = val
 		}
+	}
+
+	return res
+}
+
+// marshalPostingsArtistToArtist builds a value of type *Artist from a value of
+// type *postings.Artist.
+func marshalPostingsArtistToArtist(v *postings.Artist) *Artist {
+	res := &Artist{
+		UserID:    v.UserID,
+		Username:  v.Username,
+		ProfpicID: v.ProfpicID,
 	}
 
 	return res
