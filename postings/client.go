@@ -182,6 +182,7 @@ func (c *client) GetPostPage(ctx context.Context, p *postings.GetPostPagePayload
 		imageID := make([]string, 0)
 		imageID = append(imageID, row.imageID)
 		res = append(res, &postings.PostResponse{ProfpicID: row.profpicID, UserID: row.userID, Username: row.username, Title: row.postTitle, Description: row.postDesc, Price: row.price, ImageIDs: imageID, PostID: row.postID, UploadDate: row.uploadDate, Medium: row.medium, Sold: row.sold, Deliverytype: row.deliverytype})
+		fmt.Printf("%v", res)
 	}
 	return &postings.GetPostPageResult{Posts: res}, err
 }
