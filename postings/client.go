@@ -89,7 +89,7 @@ var (
 	INSERTIMAGES string = "INSERT INTO Images Values ($1, $2, $3)"
 	GETUSERNAME  string = "SELECT username FROM users WHERE userid=$1"
 	GETPOSTPAGE  string = `SELECT p.postid, p.userid, u.username, u.profpicid, p.title, p.description, 
-					p.price, p.medium, p.sold, p.uploaddate, p.deliverytype, i.imgid FROM posts AS p
+					p.price, p.medium, p.sold, p.upldate, p.deliverytype, i.imgid FROM posts AS p
 					LEFT JOIN (SELECT imgid, postid FROM images WHERE index=0) AS i ON p.postid=i.postid 
 					LEFT JOIN users AS u ON p.userid = u.userid
 					ORDER BY p.uploaddate DESC OFFSET $1 ROWS FETCH NEXT 25 ROWS ONLY`
