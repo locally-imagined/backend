@@ -92,17 +92,17 @@ var (
 					p.price, p.medium, p.sold, p.upldate, p.deliverytype, i.imgid FROM posts AS p
 					LEFT JOIN (SELECT imgid, postid FROM images WHERE index=0) AS i ON p.postid=i.postid 
 					LEFT JOIN users AS u ON p.userid = u.userid
-					ORDER BY p.uploaddate DESC OFFSET $1 ROWS FETCH NEXT 25 ROWS ONLY`
+					ORDER BY p.upldate DESC OFFSET $1 ROWS FETCH NEXT 25 ROWS ONLY`
 	GETPOSTPAGEFILTERED string = `SELECT p.postid, p.userid, p.title, p.description, 
-					p.price, p.medium, p.sold, p.uploaddate, i.imgid, u.username, u.profpicid FROM posts AS p LEFT 
+					p.price, p.medium, p.sold, p.upldate, i.imgid, u.username, u.profpicid FROM posts AS p LEFT 
 					JOIN images AS i ON p.postid=i.postid LEFT JOIN users AS u ON p.userid = u.userid WHERE (i.index=0) AND ((LOWER(p.title) LIKE $1) OR 
-					(LOWER(p.description) LIKE $1)) AND (p.uploaddate >= $2) AND (p.uploaddate <= $3) AND (p.medium LIKE $4) 
-					ORDER BY p.uploaddate DESC OFFSET $5 ROWS FETCH NEXT 25 ROWS ONLY`
+					(LOWER(p.description) LIKE $1)) AND (p.upldate >= $2) AND (p.upldate <= $3) AND (p.medium LIKE $4) 
+					ORDER BY p.upldate DESC OFFSET $5 ROWS FETCH NEXT 25 ROWS ONLY`
 	GETPOSTPAGEFORARTIST string = `SELECT p.postid, p.userid, u.username, u.profpicid, p.title, 
-					p.description, p.price, p.medium, p.sold, p.uploaddate, p.deliverytype, i.imgid FROM posts AS p
+					p.description, p.price, p.medium, p.sold, p.upldate, p.deliverytype, i.imgid FROM posts AS p
 					LEFT JOIN (SELECT imgid, postid FROM images WHERE index=0) AS i ON p.postid=i.postid 
 					LEFT JOIN users AS u ON p.userid = u.userid where p.userid=$1      
-					ORDER BY p.uploaddate DESC OFFSET $2 ROWS FETCH NEXT 25 ROWS ONLY;`
+					ORDER BY p.upldate DESC OFFSET $2 ROWS FETCH NEXT 25 ROWS ONLY;`
 	SELECTIMAGES  string = "SELECT imgid from images where postid=$1 ORDER BY index"
 	SELECTUSERID  string = "SELECT userID from Posts where postID=$1"
 	DELETEIMAGES  string = "DELETE FROM images WHERE postID=$1"
@@ -110,7 +110,7 @@ var (
 	DELETEIMAGE   string = "DELETE FROM images where imgid=$1"
 	UPDATEINDEX   string = "UPDATE images SET index = index - 1 WHERE (postid=$1 AND index>(SELECT index FROM images WHERE imgid=$2))"
 	ADDIMAGE      string = "INSERT INTO images VALUES($1, $2, (SELECT MAX(index) FROM images where postID=$3) + 1)"
-	GETEDITEDINFO string = "SELECT title, description, price, medium, sold, deliverytype, uploaddate FROM posts where postID=$1"
+	GETEDITEDINFO string = "SELECT title, description, price, medium, sold, deliverytype, upldate FROM posts where postID=$1"
 	GETARTISTS    string = "SELECT u.username, u.userid, u.profpicid from users as u where userid in (select userid from posts) OFFSET $1 ROWS FETCH NEXT 25 ROWS ONLY"
 	IMAGESPERPAGE int    = 25
 )
@@ -151,7 +151,7 @@ func (c *client) CreatePost(ctx context.Context, p *postings.CreatePostPayload) 
 		PostID:       postID,
 		Medium:       p.Post.Medium,
 		Sold:         false,
-		UploadDate:   now[0:10],
+		UploadDate:   now,
 		Deliverytype: p.Post.Deliverytype,
 		UserID:       ctx.Value("UserID").(string),
 	}
