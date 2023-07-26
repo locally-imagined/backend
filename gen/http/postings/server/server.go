@@ -563,7 +563,7 @@ func HandlePostingsOrigin(h http.Handler) http.Handler {
 			h.ServeHTTP(w, r)
 			return
 		}
-		if cors.MatchOrigin(origin, "http://localhost") {
+		if cors.MatchOrigin(origin, "http://localhost:3000") {
 			w.Header().Set("Access-Control-Allow-Origin", origin)
 			w.Header().Set("Vary", "Origin")
 			w.Header().Set("Access-Control-Expose-Headers", "*")
@@ -577,7 +577,7 @@ func HandlePostingsOrigin(h http.Handler) http.Handler {
 			h.ServeHTTP(w, r)
 			return
 		}
-		if cors.MatchOrigin(origin, "http://localhost:3000") {
+		if cors.MatchOrigin(origin, "https://locally-imagined.netlify.app") {
 			w.Header().Set("Access-Control-Allow-Origin", origin)
 			w.Header().Set("Vary", "Origin")
 			w.Header().Set("Access-Control-Expose-Headers", "*")
@@ -606,20 +606,6 @@ func HandlePostingsOrigin(h http.Handler) http.Handler {
 			return
 		}
 		if cors.MatchOrigin(origin, "https://locallyimagined.netlify.app") {
-			w.Header().Set("Access-Control-Allow-Origin", origin)
-			w.Header().Set("Vary", "Origin")
-			w.Header().Set("Access-Control-Expose-Headers", "*")
-			w.Header().Set("Access-Control-Max-Age", "600")
-			w.Header().Set("Access-Control-Allow-Credentials", "true")
-			if acrm := r.Header.Get("Access-Control-Request-Method"); acrm != "" {
-				// We are handling a preflight request
-				w.Header().Set("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, OPTIONS")
-				w.Header().Set("Access-Control-Allow-Headers", "*")
-			}
-			h.ServeHTTP(w, r)
-			return
-		}
-		if cors.MatchOrigin(origin, "https://www.locallyimagined.com") {
 			w.Header().Set("Access-Control-Allow-Origin", origin)
 			w.Header().Set("Vary", "Origin")
 			w.Header().Set("Access-Control-Expose-Headers", "*")
